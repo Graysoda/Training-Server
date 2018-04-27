@@ -1,0 +1,66 @@
+<definitions name="SoapService"
+	targetNamespace="http://localhost:8080/ws/wsdl/SoapService.wsdl"
+	xmlns = "http://schemas.xmlsoap.org/wsdl/"
+	xmlns:soap = "http://schemas.xmlsoap.org/wsdl/soap"
+	xmlns:tns = "http://localhost:8080/ws/wsdl/SoapService.wsdl"
+	xmlns:xsd = "http://www.w3.org/2001/XMLSchema">
+	
+	<message name="getActorsRequest"/>
+	
+	<message name="getActorsResponse">
+		<part name="actors" type="tns:actors" />
+	</message>
+	
+	<types>
+		<xsd:element name="actors">
+			<xsd:complexType>
+				<xsd:sequence maxOccurs="unbounded">
+					<xsd:sequence>
+						<xsd:element name="actor_id" type="xsd:int"/>
+						<xsd:element name="first_name" type="xsd:string" />
+						<xsd:element name="last_name" type="xsd:string"/>
+						<xsd:element name="last_update" type="xsd:string"/>
+					</xsd:sequence>
+				</xsd:sequence>
+			</xsd:complexType>
+		</xsd:element>
+
+
+	</types>
+	
+	<portType name="ActorsPort_Type">
+		<operation name="getActors">
+			<input message="getActorsRequest"/>
+			<output message="getActorsResponse"/>
+		</operation>
+	</portType>
+	
+	<binding name="Soap_Binding" type="tns:ActorsPort_Type">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http"/>
+		<operation name="getActors">
+			<soap:operation soapAction="getActors" />
+			<input>
+				<soap:body
+					encodingStyle="http://schemas.xmlsoap.org/soap/encoding"
+					namespace="urn:examples:soapservice"
+					use = "encoded"/>
+			</input>
+			
+			<output>
+				<soap:body
+					encodingStyle="http://schemas.xmlsoap.org/soap/encoding"
+					namespace="urn:examples:soapservice"
+					use="encoded"/>
+			</output>
+		</operation>
+	</binding>
+	
+	<service name = "Soap_Service">
+		<documentation>WSDL File for SoapService</documentation>
+		<port binding = "tns:Soap_Binding" name="Actors_Port">
+			<soap:address
+				location = "http://localhost:8080/ws/getActors/"/>
+		</port>
+	</service>
+</definitions>

@@ -1,0 +1,46 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="my-namespace"
+           xmlns:tns="my-namespace"
+           elementFormDefault="qualified">
+
+    <xs:element name="getActorsRequest">
+        <xs:complexType>
+            <xs:sequence minOccurs="1" maxOccurs="1">
+                <!--<xs:element name="actor_id" type="xs:int" nillable="true"/>-->
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getActorsResponse">
+        <xs:complexType>
+            <xs:sequence minOccurs="1" maxOccurs="unbounded">
+                <xs:element name="actors" type="tns:actor"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getActorRequest">
+        <xs:complexType>
+            <xs:sequence maxOccurs="1">
+                <xs:element name="actor_id" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getActorResponse">
+        <xs:complexType>
+            <xs:sequence maxOccurs="1">
+                <xs:element name="actor" type="tns:actor"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="actor">
+        <xs:sequence>
+            <xs:element name="actor_id" type="xs:int"/>
+            <xs:element name="first_name" type="xs:string" />
+            <xs:element name="last_name" type="xs:string"/>
+            <xs:element name="last_update" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>
