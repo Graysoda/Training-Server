@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="my-namespace"
+           xmlns:tns="my-namespace"
+           elementFormDefault="qualified">
+
+    <xs:complexType name="inventory">
+        <xs:sequence>
+            <xs:element name="inventory_id" type="xs:long"/>
+            <xs:element name="film" type="tns:film"/>
+            <xs:element name="store" type="tns:store"/>
+            <xs:element name="lastUpdate" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="rental">
+        <xs:sequence>
+            <xs:element name="rental_id" type="xs:long"/>
+            <xs:element name="rental_date" type="xs:string"/>
+            <xs:element name="item" type="tns:film"/>
+            <xs:element name="customer" type="tns:customer"/>
+            <xs:element name="return_date" type="xs:string"/>
+            <xs:element name="staff" type="tns:staff"/>
+            <xs:element name="lastUpdate" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="staff">
+        <xs:sequence>
+            <xs:element name="staff_id" type="xs:long"/>
+            <xs:element name="first_name" type="xs:string"/>
+            <xs:element name="last_name" type="xs:string"/>
+            <xs:element name="address" type="tns:address"/>
+            <!--<xs:element name="picture" type="" TODO-->
+            <xs:element name="email" type="xs:string"/>
+            <xs:element name="store" type="tns:store"/>
+            <xs:element name="isActive" type="xs:boolean"/>
+            <xs:element name="username" type="xs:string"/>
+            <xs:element name="password" type="xs:string"/>
+            <xs:element name="lastUpdate" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="store">
+        <xs:sequence>
+            <xs:element name="store_id" type="xs:long"/>
+            <xs:element name="manager" type="tns:staff"/>
+            <xs:element name="address" type="tns:address"/>
+            <xs:element name="lastUpdate" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="customer">
+        <xs:sequence>
+            <xs:element name="customer_id" type="xs:long"/>
+            <xs:element name="store_id" type="xs:long"/>
+            <xs:element name="first_name" type="xs:string"/>
+            <xs:element name="last_name" type="xs:string"/>
+            <xs:element name="email" type="xs:string"/>
+            <xs:element name="address" type="tns:address"/>
+            <xs:element name="is_active" type="xs:boolean"/>
+            <xs:element name="create_date" type="xs:string"/>
+            <xs:element name="lastUpdate" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="address">
+        <xs:sequence>
+            <xs:element name="address_id" type="xs:long"/>
+            <xs:element name="address" type="xs:string"/>
+            <xs:element name="address2" type="xs:string"/>
+            <xs:element name="district" type="xs:string"/>
+            <xs:element name="city" type="xs:string"/>
+            <xs:element name="postal_code" type="xs:string"/>
+            <xs:element name="phone" type="xs:string"/>
+            <xs:element name="lastUpdate" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="actor">
+        <xs:sequence>
+            <xs:element name="actor_id" type="xs:long"/>
+            <xs:element name="first_name" type="xs:string" />
+            <xs:element name="last_name" type="xs:string"/>
+            <xs:element name="lastUpdate" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="film">
+        <xs:sequence>
+            <xs:element name="filmId" type="xs:positiveInteger"/>
+            <xs:element name="title" type="xs:string"/>
+            <xs:element name="description" type="xs:string"/>
+            <xs:element name="releaseYear" type="xs:int"/>
+            <xs:element name="language" type="xs:string"/>
+            <xs:element name="original_language" type="xs:string"/>
+            <xs:element name="rentalDuration" type="xs:int"/>
+            <xs:element name="rentalRate" type="xs:float"/>
+            <xs:element name="length" type="xs:int"/>
+            <xs:element name="replacementCost" type="xs:float"/>
+            <xs:element name="rating" type="xs:string"/>
+            <xs:element name="specialFeatures" type="xs:string"/>
+            <xs:element name="lastUpdate" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

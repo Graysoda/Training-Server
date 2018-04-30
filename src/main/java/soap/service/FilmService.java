@@ -1,14 +1,14 @@
-package soap.database.dao;
+package soap.service;
 
 import soap.generated.CreateFilmRequest;
 import soap.generated.Film;
 
 import java.util.List;
 
-public interface FilmDao {
+public interface FilmService {
 	public void addFilm(CreateFilmRequest film);
-	public List<Film> listFilms();
-	public Film getFilmById(long id);
-	public void removeFilm(long id);
 	public void updateFilm(Film film);
+	public Film getFilmById(long id);
+	public List<Film> listFilms();
+	public void removeFilm(long id);
 }

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernat MApping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="soap.database.entity.FilmEntity" table="sakila.film">
+        <id name="filmId" type="long" column="filmId">
+            <generator class="native"/>
+        </id>
+        <property name="title" column="title" type="string"/>
+        <property name="description" column="description" type="string"/>
+        <property name="releaseYear" column="releaseYear" type="int"/>
+        <property name="languageId" column="language_id" type="long"/>
+        <property name="originalLanguage" column="original_language" type="long"/>
+        <property name="rentalDuration" column="rental_duration" type="int"/>
+        <property name="rentalRate" column="rental_rate" type="float"/>
+        <property name="length" column="length" type="int"/>
+        <property name="replacementCost" column="replacement_cost" type="float"/>
+        <property name="rating" column="rating" type="string"/>
+        <property name="specialFeatures" column="special_features" type="string"/>
+        <property name="lastUpdate" column="last_update" type="timestamp"/>
+    </class>
+</hibernate-mapping>

@@ -1,54 +1,53 @@
 package soap.database.entity;
 
+import org.springframework.lang.Nullable;
+import soap.generated.CreateFilmRequest;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity(name = "sakila.film")
 @Table(name = "film")
-public class FilmEntity {
+public class FilmEntity implements Film{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long film_id;
+	private long filmId;
 	@NotNull private String title;
 	@NotNull private String description;
-	@NotNull private int release_year;
-	@NotNull private long language_id;
-	@NotNull private long original_language;
-	@NotNull private int rental_duration;
-	@NotNull private float rental_rate;
+	@NotNull private int releaseYear;
+	@NotNull private long languageId;
+	@Nullable private long originalLanguage;
+	@NotNull private int rentalDuration;
+	@NotNull private float rentalRate;
 	@NotNull private int length;
-	@NotNull private float replacement_cost;
+	@NotNull private float replacementCost;
 	@NotNull private String rating;
-	@NotNull private String special_features;
-	@NotNull private String last_update;
+	@NotNull private String specialFeatures;
+	@NotNull private String lastUpdate;
 
-	public FilmEntity(long film_id, @NotNull String title, @NotNull String description,
-					  @NotNull int release_year, @NotNull long language_id,
-					  @NotNull long original_language, @NotNull int rental_duration,
-					  @NotNull float rental_rate, @NotNull int length, @NotNull float replacement_cost,
-					  @NotNull String rating, @NotNull String special_features,
-					  @NotNull String last_update) {
-		this.film_id = film_id;
-		this.title = title;
-		this.description = description;
-		this.release_year = release_year;
-		this.language_id = language_id;
-		this.original_language = original_language;
-		this.rental_duration = rental_duration;
-		this.rental_rate = rental_rate;
-		this.length = length;
-		this.replacement_cost = replacement_cost;
-		this.rating = rating;
-		this.special_features = special_features;
-		this.last_update = last_update;
+	public FilmEntity() {
 	}
 
-	public long getFilm_id() {
-		return film_id;
+	public FilmEntity(CreateFilmRequest request) {
+		this.title = request.getTitle();
+		this.description = request.getDescription();
+		this.languageId = request.getLanguageId();
+		this.releaseYear = request.getReleaseYear();
+		this.rentalDuration = request.getRentalDuration();
+		this.rentalRate = request.getRentalRate();
+		this.length = request.getLength();
+		this.replacementCost = request.getReplacementCost();
+		this.rating = request.getRating();
+		this.specialFeatures = request.getSpecialFeatures();
+		this.originalLanguage = 0;
 	}
 
-	public void setFilm_id(long film_id) {
-		this.film_id = film_id;
+	public long getFilmId() {
+		return filmId;
+	}
+
+	public void setFilmId(long filmId) {
+		this.filmId = filmId;
 	}
 
 	public String getTitle() {
@@ -67,44 +66,44 @@ public class FilmEntity {
 		this.description = description;
 	}
 
-	public int getRelease_year() {
-		return release_year;
+	public int getReleaseYear() {
+		return releaseYear;
 	}
 
-	public void setRelease_year(int release_year) {
-		this.release_year = release_year;
+	public void setReleaseYear(int releaseYear) {
+		this.releaseYear = releaseYear;
 	}
 
-	public long getLanguage_id() {
-		return language_id;
+	public long getLanguageId() {
+		return languageId;
 	}
 
-	public void setLanguage_id(long language_id) {
-		this.language_id = language_id;
+	public void setLanguageId(long languageId) {
+		this.languageId = languageId;
 	}
 
-	public long getOriginal_language() {
-		return original_language;
+//	public long getOriginal_language() {
+//		return originalLanguage;
+//	}
+//
+//	public void setOriginal_language(long originalLanguage) {
+//		this.originalLanguage = originalLanguage;
+//	}
+
+	public int getRentalDuration() {
+		return rentalDuration;
 	}
 
-	public void setOriginal_language(long original_language) {
-		this.original_language = original_language;
+	public void setRentalDuration(int rentalDuration) {
+		this.rentalDuration = rentalDuration;
 	}
 
-	public int getRental_duration() {
-		return rental_duration;
+	public float getRentalRate() {
+		return rentalRate;
 	}
 
-	public void setRental_duration(int rental_duration) {
-		this.rental_duration = rental_duration;
-	}
-
-	public float getRental_rate() {
-		return rental_rate;
-	}
-
-	public void setRental_rate(float rental_rate) {
-		this.rental_rate = rental_rate;
+	public void setRentalRate(float rentalRate) {
+		this.rentalRate = rentalRate;
 	}
 
 	public int getLength() {
@@ -115,12 +114,12 @@ public class FilmEntity {
 		this.length = length;
 	}
 
-	public float getReplacement_cost() {
-		return replacement_cost;
+	public float getReplacementCost() {
+		return replacementCost;
 	}
 
-	public void setReplacement_cost(float replacement_cost) {
-		this.replacement_cost = replacement_cost;
+	public void setReplacementCost(float replacementCost) {
+		this.replacementCost = replacementCost;
 	}
 
 	public String getRating() {
@@ -131,19 +130,43 @@ public class FilmEntity {
 		this.rating = rating;
 	}
 
-	public String getSpecial_features() {
-		return special_features;
+	public String getSpecialFeatures() {
+		return specialFeatures;
 	}
 
-	public void setSpecial_features(String special_features) {
-		this.special_features = special_features;
+	public void setSpecialFeatures(String specialFeatures) {
+		this.specialFeatures = specialFeatures;
 	}
 
-	public String getLast_update() {
-		return last_update;
+	public String getLastUpdate() {
+		return lastUpdate;
 	}
 
-	public void setLast_update(String last_update) {
-		this.last_update = last_update;
+	public void setLastUpdate(String lastUpdate) {
+		this.lastUpdate = lastUpdate;
+	}
+
+	public long getOriginalLanguage() {
+		return originalLanguage;
+	}
+
+	public void setOriginalLanguage(long originalLanguage) {
+		this.originalLanguage = originalLanguage;
+	}
+
+	@Override
+	public String toString() {
+		return "filmId="+ filmId +", " +
+				"title="+title+", " +
+				"description="+description+", " +
+				"languageId="+ languageId +", " +
+				"releaseYear="+ releaseYear +", " +
+				"rentalDuration="+ rentalDuration +", " +
+				"rentalRate="+ rentalRate +", " +
+				"length="+length+", " +
+				"replacementCost="+ replacementCost +", " +
+				"rating="+rating+", " +
+				"specialFeatures="+ specialFeatures +", " +
+				"lastUpdate="+ lastUpdate;
 	}
 }

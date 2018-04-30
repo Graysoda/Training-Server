@@ -11,20 +11,19 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import soap.database.entity.ActorEntity;
+import soap.database.entity.FilmEntity;
 
 import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-@EntityScan(
-		basePackageClasses = {ActorEntity.class}
-)
+@EntityScan(basePackageClasses = {ActorEntity.class,FilmEntity.class})
 public class Database {
-	public Database() {
-	}
+	public Database() {}
 
-	private Properties additionalProperties() {
+	@Bean
+	public Properties additionalProperties() {
 		Properties properties = new Properties();
 		properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
 		return properties;

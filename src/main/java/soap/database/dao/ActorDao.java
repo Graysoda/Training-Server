@@ -30,8 +30,8 @@ public class ActorDao {
 		ArrayList<Actor> actors = new ArrayList<>();
 		TypedQuery<ActorEntity> query = this.em.createQuery(this.baseQuery, ActorEntity.class);
 
-		for (Object actor : query.getResultList()) {
-			actors.add(this.convertActorEntityToGenerated((ActorEntity) actor));
+		for (ActorEntity actor : query.getResultList()) {
+			actors.add(this.convertActorEntityToGenerated(actor));
 		}
 
 		return actors;
