@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="my-namespace"
+           xmlns:data="my-namespace"
+           elementFormDefault="qualified">
+    <xs:include schemaLocation="data_elements.xsd"/>
+
+    <xs:element name="createAddressRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="address" type="xs:string"/>
+                <xs:element name="address2" type="xs:string"/>
+                <xs:element name="district" type="xs:string"/>
+                <xs:element name="city" type="xs:string"/>
+                <xs:element name="postal_code" type="xs:string"/>
+                <xs:element name="phone" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="updateAddressRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="address_id" type="xs:long"/>
+                <xs:element name="address" type="xs:string" nillable="true"/>
+                <xs:element name="address2" type="xs:string" nillable="true"/>
+                <xs:element name="district" type="xs:string" nillable="true"/>
+                <xs:element name="city" type="xs:string" nillable="true"/>
+                <xs:element name="postal_code" type="xs:string" nillable="true"/>
+                <xs:element name="phone" type="xs:string" nillable="true"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="deleteAddressRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="address_id" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getAllAddressRequest">
+        <xs:complexType>
+            <xs:sequence maxOccurs="1" minOccurs="1"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getAllAddressResponse">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded">
+                <xs:element name="address" type="data:address"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

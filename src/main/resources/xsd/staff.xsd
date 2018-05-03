@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="my-namespace"
+           xmlns:data="my-namespace"
+           elementFormDefault="qualified">
+    <xs:include schemaLocation="data_elements.xsd"/>
+
+    <xs:element name="createStaffRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="first_name" type="xs:string"/>
+                <xs:element name="last_name" type="xs:string"/>
+                <xs:element name="address_id" type="xs:long"/>
+                <xs:element name="email" type="xs:string"/>
+                <xs:element name="store_id" type="xs:long"/>
+                <xs:element name="active" type="xs:boolean"/>
+                <xs:element name="username" type="xs:string"/>
+                <xs:element name="password" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="updateStaffRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="staff_id" type="xs:long"/>
+                <xs:element name="first_name" type="xs:string" nillable="true"/>
+                <xs:element name="last_name" type="xs:string" nillable="true"/>
+                <xs:element name="address_id" type="xs:long" nillable="true"/>
+                <xs:element name="email" type="xs:string" nillable="true"/>
+                <xs:element name="store_id" type="xs:long" nillable="true"/>
+                <xs:element name="active" type="xs:boolean" nillable="true"/>
+                <xs:element name="username" type="xs:string" nillable="true"/>
+                <xs:element name="password" type="xs:string" nillable="true"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="deleteStaffRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="staff_id" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getAllStaffRequest">
+        <xs:complexType>
+            <xs:sequence maxOccurs="1" minOccurs="1"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getAllStaffResponse">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded">
+                <xs:element name="staff" type="data:staff"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getStaffByIdRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="staff_id" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getStaffByIdResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="staff" type="data:staff"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="my-namespace"
+           xmlns:data="my-namespace"
+           elementFormDefault="qualified">
+    <xs:include schemaLocation="data_elements.xsd"/>
+
+    <xs:element name="getAllFilmsRequest">
+        <xs:complexType>
+            <xs:sequence maxOccurs="1" minOccurs="1"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getAllFilmsResponse">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded">
+                <xs:element name="film" type="data:film"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getFilmByTitleRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="title" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getFilmByTitleResponse">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded">
+                <xs:element name="film" type="data:film"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getFilmByIdRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="film_id" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getFilmByIdResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="film" type="data:film"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getFilmByReleaseYearRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="release_year" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getFilmByReleaseYearResponse">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded">
+                <xs:element name="film" type="data:film"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getFilmByRatingRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="rating" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getFilmByRatingResponse">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded">
+                <xs:element name="film" type="data:film"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getFilmTextRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="film_id" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getFilmTextResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="film_text" type="data:summary"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getFilmsActorsRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="film_id" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getFilmsActorsResponse">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded">
+                <xs:element name="actors" type="data:actor"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="createFilmRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="title" type="xs:string"/>
+                <xs:element name="description" type="xs:string"/>
+                <xs:element name="release_year" type="xs:int"/>
+                <xs:element name="language_id" type="xs:string"/>
+                <xs:element name="original_language" type="xs:string"/>
+                <xs:element name="rental_duration" type="xs:int"/>
+                <xs:element name="rental_rate" type="xs:float"/>
+                <xs:element name="length" type="xs:int"/>
+                <xs:element name="replacement_cost" type="xs:float"/>
+                <xs:element name="rating" type="xs:string"/>
+                <xs:element name="special_features" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="updateFilmRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="film_id" type="xs:long"/>
+                <xs:element name="title" type="xs:string" nillable="true"/>
+                <xs:element name="description" type="xs:string" nillable="true"/>
+                <xs:element name="release_year" type="xs:int" nillable="true"/>
+                <xs:element name="language" type="xs:string" nillable="true"/>
+                <xs:element name="original_language" type="xs:string" nillable="true"/>
+                <xs:element name="rental_duration" type="xs:int" nillable="true"/>
+                <xs:element name="rental_rate" type="xs:float" nillable="true"/>
+                <xs:element name="length" type="xs:int" nillable="true"/>
+                <xs:element name="replacement_cost" type="xs:float" nillable="true"/>
+                <xs:element name="rating" type="xs:string" nillable="true"/>
+                <xs:element name="special_features" type="xs:string" nillable="true"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="deleteFilmRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="film_id" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

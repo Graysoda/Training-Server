@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="my-namespace"
+           xmlns:data="my-namespace"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="data_elements.xsd"/>
+
+    <xs:element name="createActorRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="first_name" type="xs:string"/>
+                <xs:element name="last_name" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="updateActorRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="actor_id" type="xs:long"/>
+                <xs:element name="new_first_name" type="xs:string" nillable="true"/>
+                <xs:element name="new_last_name" type="xs:string" nillable="true"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="deleteActorRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="actor_id" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getAllActorsRequest">
+        <xs:complexType>
+            <xs:sequence maxOccurs="1" minOccurs="1"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getAllActorsResponse">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded">
+                <xs:element name="actor" type="data:actor"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getActorsByIdRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="actor_id" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getActorsByIdResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="actor" type="data:actor"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getActorsByFirstNameRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="actor_first_name" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getActorsByFirstNameResponse">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded">
+                <xs:element name="actor" type="data:actor"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getFilmsWithActorRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="actor_id" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getFilmsWithActorResponse">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded">
+                <xs:element name="films" type="data:film"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

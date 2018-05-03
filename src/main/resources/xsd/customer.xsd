@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="my-namespace"
+           xmlns:data="my-namespace"
+           elementFormDefault="qualified">
+    <xs:include schemaLocation="data_elements.xsd"/>
+
+    <xs:element name="createCustomerRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="store_id" type="xs:long"/>
+                <xs:element name="first_name" type="xs:string"/>
+                <xs:element name="last_name" type="xs:string"/>
+                <xs:element name="email" type="xs:string"/>
+                <xs:element name="address_id" type="xs:long"/>
+                <xs:element name="active" type="xs:boolean"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="updateCustomerRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="customer_id" type="xs:long"/>
+                <xs:element name="store_id" type="xs:long" nillable="true"/>
+                <xs:element name="first_name" type="xs:string" nillable="true"/>
+                <xs:element name="last_name" type="xs:string" nillable="true"/>
+                <xs:element name="email" type="xs:string" nillable="true"/>
+                <xs:element name="address_id" type="xs:long" nillable="true"/>
+                <xs:element name="active" type="xs:boolean" nillable="true"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="deleteCustomerRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="customer_id" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getAllCustomersRequest">
+        <xs:complexType>
+            <xs:sequence maxOccurs="1" minOccurs="1"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getAllCustomersResponse">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded">
+                <xs:element name="customer" type="data:customer"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getCustomerByIdRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="customer_id" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getCustomerByIdResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="customer" type="data:customer"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getActiveCustomersRequest">
+        <xs:complexType>
+            <xs:sequence maxOccurs="1" minOccurs="1"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getActiveCustomersResponse">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded">
+                <xs:element name="customer" type="data:customer"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getCustomersByStoreRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="store_id" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getCustomersByStoreResponse">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded">
+                <xs:element name="customer" type="data:customer"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

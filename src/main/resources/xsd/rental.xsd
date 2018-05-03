@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="my-namespace"
+           xmlns:data="my-namespace"
+           elementFormDefault="qualified">
+    <xs:include schemaLocation="data_elements.xsd"/>
+
+    <xs:element name="createRentalRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="customer_id" type="xs:long"/>
+                <xs:element name="staff_id" type="xs:long"/>
+                <xs:element name="inventory_id" type="xs:long"/>
+                <xs:element name="rental_date" type="xs:string"/>
+                <xs:element name="return_date" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="updateRentalRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="rental_id" type="xs:long"/>
+                <xs:element name="customer_id" type="xs:long" nillable="true"/>
+                <xs:element name="staff_id" type="xs:long" nillable="true"/>
+                <xs:element name="inventory_id" type="xs:long" nillable="true"/>
+                <xs:element name="rental_date" type="xs:string" nillable="true"/>
+                <xs:element name="return_date" type="xs:string" nillable="true"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="deleteRentalRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="rental_id" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getRentalByCustomerIdRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="customer_id" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getRentalByCustomerIdResponse">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded">
+                <xs:element name="rental" type="data:rental"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getRentalByStartDateRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="rental_start_date" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getRentalByStartDateResponse">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded">
+                <xs:element name="rental" type="data:rental"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getRentalByIdRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="rental_id" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getRentalByIdResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="rental" type="data:rental"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getRentalByReturnDateRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="return_date" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getRentalByReturnDateResponse">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded">
+                <xs:element name="rental" type="data:rental"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getRentalByStaffIdRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="staff_id" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getRentalByStaffIdResponse">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded">
+                <xs:element name="rental" type="data:rental"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

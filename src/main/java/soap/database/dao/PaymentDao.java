@@ -1,0 +1,101 @@
+package soap.database.dao;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import soap.database.entity.PaymentEntity;
+import soap.generated.CreatePaymentRequest;
+import soap.generated.Payment;
+import soap.generated.UpdatePaymentRequest;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+@Repository
+public class PaymentDao {
+	@PersistenceContext
+	private EntityManager em;
+	private Connection connection;
+	private String baseQuery = "SELECT p FROM sakila.payment p ";
+
+	@Autowired
+	public void setConnection(Connection connection) {
+		this.connection = connection;
+	}
+
+	public List<Payment> getAll(){
+		return convertEntitiesToGenerated(this.em.createQuery(baseQuery,PaymentEntity.class).getResultList());
+	}
+
+	private List<Payment> convertEntitiesToGenerated(List<PaymentEntity> entities){
+		List<Payment> payments = new ArrayList<>(entities.size());
+
+		for (PaymentEntity entity : entities) {
+			payments.add(convertEntityToGenerated(entity));
+		}
+
+		return payments;
+	}
+
+	private Payment convertEntityToGenerated(PaymentEntity entity){
+		Payment payment = new Payment();
+
+		payment.setPaymentId(entity.getPayment_id());
+		payment.setAmount(entity.getAmount());
+		payment.setCustomerId(entity.getCustomer_id());
+		payment.setPaymentDate(entity.getPayment_date());
+		payment.setRentalId(entity.getRental_id());
+		payment.setStaffId(entity.getStaff_id());
+
+		return payment;
+	}
+
+	public void insert(CreatePaymentRequest request) {
+		String sql = "INSERT INTO sakila.payment (customer_id, staff_id, rental_id, amount, payment_date) VALUES " +
+				"("+request.getCustomerId()+", " +
+				request.getStaffId()+", " +
+				request.getRentalId()+", " +
+				request.getAmount()+", " +
+				request.getPaymentDate()+");";
+		try {
+			connection.createStatement().executeUpdate(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void delete(long paymentId) {
+		String sql = "DELETE FROM sakila.payment WHERE payment_id='"+paymentId+"';";
+		try {
+			connection.createStatement().executeUpdate(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void update(UpdatePaymentRequest request) {
+		String sql = "UPDATE sakila.payment SET ";
+
+		if (request.getAmount()!=null)
+			sql += "amount = '"+request.getAmount()+"', ";
+		if (request.getCustomerId()!=null)
+			sql += "customer_id = '"+request.getCustomerId()+"', ";
+		if (request.getPaymentDate()!=null)
+			sql += "payment_date = '"+request.getPaymentDate()+"', ";
+		if (request.getRentalId()!=null)
+			sql += "rental_id = '"+request.getRentalId()+"', ";
+		if (request.getStaffId()!=null)
+			sql += "staff_id = '"+request.getStaffId()+"', ";
+
+		sql = sql.substring(0,sql.length()-3) + " WHERE payment_id = '"+request.getPaymentId()+"';";
+
+		try {
+			connection.createStatement().executeUpdate(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+}
