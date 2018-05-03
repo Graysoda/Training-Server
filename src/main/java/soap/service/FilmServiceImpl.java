@@ -3,53 +3,74 @@ package soap.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import soap.database.dao.FilmDaoImpl;
-import soap.generated.CreateFilmRequest;
-import soap.generated.Film;
+import soap.database.dao.FilmDao;
+import soap.generated.*;
 
 import java.util.List;
 @Service
 public class FilmServiceImpl implements FilmService {
-	private FilmDaoImpl filmDao;
-
-	public FilmServiceImpl() {
-		System.out.println("made new film service impl");
-	}
+	private FilmDao filmDao;
 
 	@Autowired
-	public void setFilmDao(FilmDaoImpl filmDao) {
-		System.out.println("film dao is set");
+	public void setFilmDao(FilmDao filmDao) {
 		this.filmDao = filmDao;
 	}
 
 	@Override
 	@Transactional
-	public void addFilm(CreateFilmRequest film) {
-		this.filmDao.addFilm(film);
+	public void createFilm(CreateFilmRequest film) {
+		this.filmDao.create(film);
 	}
 
 	@Override
 	@Transactional
-	public void updateFilm(Film film) {
-		this.filmDao.updateFilm(film);
+	public void updateFilm(UpdateFilmRequest film) {
+		this.filmDao.update(film);
 	}
 
 	@Override
 	@Transactional
 	public Film getFilmById(long id) {
-		return this.filmDao.getFilmById(id);
+		return this.filmDao.getById(id);
 	}
 
 	@Override
 	@Transactional
 	public List<Film> listFilms() {
-		System.out.println("service impl list films");
-		return this.filmDao.listFilms();
+		return this.filmDao.getAll();
+	}
+
+
+	@Override
+	@Transactional
+	public List<Film> getFilmByRating(String rating) {
+		return this.filmDao.getByRating(rating);
 	}
 
 	@Override
 	@Transactional
-	public void removeFilm(long id) {
-		this.filmDao.removeFilm(id);
+	public List<Film> getFilmByReleaseYear(int year) {
+		return this.filmDao.getByReleaseYear(year);
+	}
+
+	@Override
+	@Transactional
+	public List<Film> getFilmByTitle(String title) {
+		return this.filmDao.getByTitle(title);
+	}
+
+	@Override
+	public void deleteFilm(long filmId) {
+		filmDao.delete(filmId);
+	}
+
+	@Override
+	public Summary getFilmSummary(long filmId) {
+		return filmDao.getSummary(filmId);
+	}
+
+	@Override
+	public List<Actor> getFilmsActors(long filmId) {
+		return filmDao.getActors(filmId);
 	}
 }

@@ -1,7 +1,6 @@
 package soap.endpoint;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
@@ -9,30 +8,38 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 import soap.generated.*;
 import soap.service.FilmServiceImpl;
 
-import java.util.List;
 
-@Controller
 @Endpoint
 public class FilmsEndpoint {
-	private static final String NAMESPACE_URI = "my-namespace";
-
+	private static final String NAMESPACE_URI = Constants.NAMESPACE_URI;
 	private FilmServiceImpl filmService;
 
-	@Autowired(required = true)
+	@Autowired
 	public void setFilmService(FilmServiceImpl filmService){
 		this.filmService = filmService;
 	}
 
+	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "createFilmRequest")
+	public void createFilm(@RequestPayload CreateFilmRequest request){
+		filmService.createFilm(request);
+	}
 
+	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "deleteFilmRequest")
+	public void deleteFilm(@RequestPayload DeleteFilmRequest request){
+		filmService.deleteFilm(request.getFilmId());
+	}
+
+	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "updateFilmRequest")
+	public void updateFilm(@RequestPayload UpdateFilmRequest request){
+		filmService.updateFilm(request);
+	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI,localPart = "getAllFilmsRequest")
 	@ResponsePayload
 	public GetAllFilmsResponse getAllFilms(@RequestPayload GetAllFilmsRequest request){
 		System.out.println("get all films");
 		GetAllFilmsResponse response = new GetAllFilmsResponse();
-
-		List<Film> films = filmService.listFilms();
-		response.setFilm(films);
+		response.setFilm(filmService.listFilms());
 		return response;
 	}
 
@@ -45,8 +52,43 @@ public class FilmsEndpoint {
 		return response;
 	}
 
-	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "createFilmRequest")
-	public void createFilm(@RequestPayload CreateFilmRequest request){
-		filmService.addFilm(request);
+	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getByRating")
+	@ResponsePayload
+	public GetFilmByRatingResponse getFilmByRating(@RequestPayload GetFilmByRatingRequest request){
+		GetFilmByRatingResponse response = new GetFilmByRatingResponse();
+		response.setFilm(filmService.getFilmByRating(request.getRating()));
+		return response;
+	}
+
+	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getByReleaseYear")
+	@ResponsePayload
+	public GetFilmByReleaseYearResponse getFilmByReleaseYear(@RequestPayload GetFilmByReleaseYearRequest request){
+		GetFilmByReleaseYearResponse response = new GetFilmByReleaseYearResponse();
+		response.setFilm(filmService.getFilmByReleaseYear(request.getReleaseYear()));
+		return response;
+	}
+
+	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getFilmByTitleRequest")
+	@ResponsePayload
+	public GetFilmByTitleResponse getFilmByTitle(@RequestPayload GetFilmByTitleRequest request){
+		GetFilmByTitleResponse response = new GetFilmByTitleResponse();
+		response.setFilm(filmService.getFilmByTitle(request.getTitle()));
+		return response;
+	}
+
+	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getFilmTextRequest")
+	@ResponsePayload
+	public GetFilmTextResponse getFilmText(@RequestPayload GetFilmTextRequest request){
+		GetFilmTextResponse response = new GetFilmTextResponse();
+		response.setFilmText(filmService.getFilmSummary(request.getFilmId()));
+		return response;
+	}
+
+	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getFilmsActorsRequest")
+	@ResponsePayload
+	public GetFilmsActorsResponse getFilmsActors(@RequestPayload GetFilmsActorsRequest request){
+		GetFilmsActorsResponse response = new GetFilmsActorsResponse();
+		response.setActors(filmService.getFilmsActors(request.getFilmId()));
+		return response;
 	}
 }
