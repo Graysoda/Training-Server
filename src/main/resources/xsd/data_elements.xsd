@@ -104,7 +104,7 @@
             <xs:element name="description" type="xs:string"/>
             <xs:element name="release_year" type="xs:int"/>
             <xs:element name="language" type="xs:string"/>
-            <xs:element name="original_language" type="xs:string"/>
+            <xs:element name="original_language" type="xs:string" nillable="true"/>
             <xs:element name="rental_duration" type="xs:int"/>
             <xs:element name="rental_rate" type="xs:float"/>
             <xs:element name="length" type="xs:int"/>

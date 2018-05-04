@@ -17,7 +17,10 @@ public class LanguageDao {
 	public LanguageDao() {}
 
 	String getLanguage(long id){
-		return this.em.createQuery(baseQuery+"WHERE l.language_id = '"+id+"'",LanguageEntity.class).getSingleResult().getName();
+		if (id != -1)
+			return this.em.createQuery(baseQuery+"WHERE l.language_id = '"+id+"'",LanguageEntity.class).getSingleResult().getName();
+		else
+			return "";
 	}
 
 	long getId(String language){
