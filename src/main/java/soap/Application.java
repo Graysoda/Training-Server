@@ -39,6 +39,7 @@ public class Application {
 		for (String fileName : fileNames) {
 			StringBuilder fileString = new StringBuilder();
 			try {
+                System.out.println(ClassLoader.getSystemResource("xsd/"+fileName).getPath());
 				reader = new BufferedReader(new InputStreamReader(new FileInputStream(Objects.requireNonNull(ClassLoader.getSystemResource("xsd/"+fileName)).getFile())));
 				line = reader.readLine();
 
