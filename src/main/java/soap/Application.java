@@ -40,7 +40,7 @@ public class Application {
 			StringBuilder fileString = new StringBuilder();
 			try {
                 System.out.println();
-				reader = new BufferedReader(new InputStreamReader(ResourceUtils.getURL("xsd/"+fileName).openStream()));
+				reader = new BufferedReader(new InputStreamReader(ResourceUtils.getURL("target/classes/xsd/"+fileName).openStream()));
 				line = reader.readLine();
 
 				while (line != null){
@@ -56,7 +56,7 @@ public class Application {
 		sb.append(foot).append("\n");
 
 		try {
-			File ops = new File(ResourceUtils.getFile("xsd/operations.xsd").toURI());
+			File ops = new File(ResourceUtils.getFile("target/classes/xsd/operations.xsd").toURI());
 			FileWriter writer = new FileWriter(ops, false);
 			writer.write(sb.toString());
 			writer.flush();
