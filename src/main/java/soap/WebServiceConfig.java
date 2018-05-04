@@ -21,7 +21,7 @@ import java.io.*;
 public class WebServiceConfig extends WsConfigurerAdapter {
 
 	public WebServiceConfig() {
-		//combineSchemas();
+		combineSchemas();
 	}
 
 	@Bean
@@ -45,8 +45,8 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 	@Bean(name = "operationsSchema")
 	public XsdSchema operationSchema() throws FileNotFoundException {
 		ClassPathResource resource = new ClassPathResource("xsd/operations.xsd");
-		Resource resource1 = new FileSystemResource("/target/classes/xsd/operations.xsd");
-		return new SimpleXsdSchema(resource);
+		Resource resource1 = new FileSystemResource("/app/target/classes/xsd/operations.xsd");
+		return new SimpleXsdSchema(resource1);
 	}
 
 	@Bean(name = "data_elements")
@@ -122,7 +122,7 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 			try {
 				//ResourceUtils.getFile("target/classes/xsd/"+fileName)
 				System.out.println(new FileSystemResource("").getPath());
-				reader = new BufferedReader(new InputStreamReader(new FileInputStream(new FileSystemResource("app/target/classes/xsd/"+fileName).getFile())));
+				reader = new BufferedReader(new InputStreamReader(new FileInputStream(new FileSystemResource("/app/target/classes/xsd/"+fileName).getFile())));
 				line = reader.readLine();
 				System.out.println("line = ["+line+"]");
 
@@ -142,7 +142,7 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 
 		try {
 			//ResourceUtils.getFile("target/classes/xsd/operations.xsd");
-			File ops = new FileSystemResource("/target/classes/xsd/operations.xsd").getFile();
+			File ops = new FileSystemResource("/app/target/classes/xsd/operations.xsd").getFile();
 			ops.setWritable(true);
 			FileWriter writer = new FileWriter(ops, false);
 			writer.write(sb.toString());
