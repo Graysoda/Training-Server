@@ -39,12 +39,7 @@ public class Application {
 		for (String fileName : fileNames) {
 			StringBuilder fileString = new StringBuilder();
 			try {
-                for (File file : ResourceUtils.getFile("target/classes/xsd/").listFiles()) {
-                    System.out.println(file.getName());
-                }
-                System.out.println(ResourceUtils.getFile("target/classes/xsd/"+fileName).getPath());
-
-				reader = new BufferedReader(new InputStreamReader(ResourceUtils.getURL("target/classes/xsd/"+fileName).openStream()));
+				reader = new BufferedReader(new InputStreamReader(new FileInputStream(ResourceUtils.getFile("target/classes/xsd/"+fileName))));
 				line = reader.readLine();
 
 				while (line != null){
@@ -60,7 +55,7 @@ public class Application {
 		sb.append(foot).append("\n");
 
 		try {
-			File ops = new File(ResourceUtils.getFile("target/classes/xsd/operations.xsd").toURI());
+			File ops = ResourceUtils.getFile("target/classes/xsd/operations.xsd");
 			FileWriter writer = new FileWriter(ops, false);
 			writer.write(sb.toString());
 			writer.flush();
