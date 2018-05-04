@@ -19,9 +19,7 @@ import java.util.Objects;
 @Configuration
 public class WebServiceConfig extends WsConfigurerAdapter {
 
-	public WebServiceConfig() {
-		combineSchemas();
-	}
+	public WebServiceConfig() {}
 
 	@Bean
 	public ServletRegistrationBean messageDispatherServlet(ApplicationContext applicationContext){
@@ -33,6 +31,7 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 
 	@Bean(name = "operations")
 	public DefaultWsdl11Definition defaultWsdl11Definition(XsdSchema operationsSchema){
+		combineSchemas();
 		DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
 		wsdl11Definition.setPortTypeName("OperationPort");
 		wsdl11Definition.setLocationUri("/ws");
