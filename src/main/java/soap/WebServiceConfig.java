@@ -5,6 +5,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.ws.config.annotation.EnableWs;
 import org.springframework.ws.config.annotation.WsConfigurerAdapter;
 import org.springframework.ws.transport.http.MessageDispatcherServlet;
@@ -39,10 +41,10 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 	}
 
 	@Bean(name = "operationsSchema")
-	public XsdSchema operationSchema(){
+	public XsdSchema operationSchema() throws FileNotFoundException {
 		ClassPathResource resource = new ClassPathResource("xsd/operations.xsd");
-
-		return new SimpleXsdSchema(resource);
+		Resource resource1 = new FileSystemResource("/target/classes/xsd/operations.xsd");
+		return new SimpleXsdSchema(resource1);
 	}
 
 	@Bean(name = "data_elements")
@@ -117,8 +119,7 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 			StringBuilder fileString = new StringBuilder();
 			try {
 				//ResourceUtils.getFile("target/classes/xsd/"+fileName)
-				System.out.println(new ClassPathResource("xsd/"+fileName).getPath());
-				reader = new BufferedReader(new InputStreamReader(new FileInputStream(new ClassPathResource("xsd/"+fileName).getFile())));
+				reader = new BufferedReader(new InputStreamReader(new FileInputStream(new FileSystemResource("/target/classes/xsd/"+fileName).getFile())));
 				line = reader.readLine();
 				System.out.println("line = ["+line+"]");
 
@@ -138,7 +139,7 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 
 		try {
 			//ResourceUtils.getFile("target/classes/xsd/operations.xsd");
-			File ops = new ClassPathResource("xsd/operations.xsd").getFile();
+			File ops = new FileSystemResource("/target/classes/xsd/operations.xsd").getFile();
 			ops.setWritable(true);
 			FileWriter writer = new FileWriter(ops, false);
 			writer.write(sb.toString());
