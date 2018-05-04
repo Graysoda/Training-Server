@@ -2,9 +2,9 @@ package soap;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.util.ResourceUtils;
 
 import java.io.*;
-import java.util.Objects;
 
 @SpringBootApplication
 public class Application {
@@ -39,8 +39,8 @@ public class Application {
 		for (String fileName : fileNames) {
 			StringBuilder fileString = new StringBuilder();
 			try {
-                System.out.println(ClassLoader.getSystemResource("xsd/"+fileName).getPath());
-				reader = new BufferedReader(new InputStreamReader(new FileInputStream(Objects.requireNonNull(ClassLoader.getSystemResource("xsd/"+fileName)).getFile())));
+                System.out.println();
+				reader = new BufferedReader(new InputStreamReader(ResourceUtils.getURL("xsd/"+fileName).openStream()));
 				line = reader.readLine();
 
 				while (line != null){
@@ -55,8 +55,8 @@ public class Application {
 
 		sb.append(foot).append("\n");
 
-		File ops = new File(Objects.requireNonNull(ClassLoader.getSystemResource("xsd/operations.xsd")).getFile());
 		try {
+			File ops = new File(ResourceUtils.getFile("xsd/operations.xsd").toURI());
 			FileWriter writer = new FileWriter(ops, false);
 			writer.write(sb.toString());
 			writer.flush();
