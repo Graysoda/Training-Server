@@ -117,6 +117,7 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 			StringBuilder fileString = new StringBuilder();
 			try {
 				//ResourceUtils.getFile("target/classes/xsd/"+fileName)
+				System.out.println(new ClassPathResource("/static").getPath());
 				reader = new BufferedReader(new InputStreamReader(new ClassPathResource("xsd/"+fileName).getInputStream()));
 				line = reader.readLine();
 
