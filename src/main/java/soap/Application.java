@@ -39,7 +39,7 @@ public class Application {
 		for (String fileName : fileNames) {
 			StringBuilder fileString = new StringBuilder();
 			try {
-				reader = new BufferedReader(new InputStreamReader(new FileInputStream(Objects.requireNonNull(Application.class.getClassLoader().getResource("xsd/"+fileName)).getFile())));
+				reader = new BufferedReader(new InputStreamReader(new FileInputStream(Objects.requireNonNull(WebServiceConfig.class.getClassLoader().getResource("xsd/"+fileName)).getFile())));
 				line = reader.readLine();
 
 				while (line != null){
@@ -54,7 +54,7 @@ public class Application {
 
 		sb.append(foot).append("\n");
 
-		File ops = new File(Objects.requireNonNull(Application.class.getClassLoader().getResource("xsd/operations.xsd")).getFile());
+		File ops = new File(Objects.requireNonNull(WebServiceConfig.class.getClassLoader().getResource("xsd/operations.xsd")).getFile());
 		try {
 			FileWriter writer = new FileWriter(ops, false);
 			writer.write(sb.toString());
