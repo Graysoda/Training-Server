@@ -20,7 +20,9 @@ import java.io.*;
 @Configuration
 public class WebServiceConfig extends WsConfigurerAdapter {
 
-	public WebServiceConfig() {combineSchemas();}
+	public WebServiceConfig() {
+		//combineSchemas();
+	}
 
 	@Bean
 	public ServletRegistrationBean messageDispatherServlet(ApplicationContext applicationContext){
@@ -44,7 +46,7 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 	public XsdSchema operationSchema() throws FileNotFoundException {
 		ClassPathResource resource = new ClassPathResource("xsd/operations.xsd");
 		Resource resource1 = new FileSystemResource("/target/classes/xsd/operations.xsd");
-		return new SimpleXsdSchema(resource1);
+		return new SimpleXsdSchema(resource);
 	}
 
 	@Bean(name = "data_elements")
