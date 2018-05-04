@@ -39,8 +39,11 @@ public class Application {
 		for (String fileName : fileNames) {
 			StringBuilder fileString = new StringBuilder();
 			try {
-                System.out.println(ResourceUtils.getFile("target/classes/xsd/").getPath());
-                System.out.println(ResourceUtils.getFile("target/classes/xsd/").listFiles().toString());
+                for (File file : ResourceUtils.getFile("target/classes/xsd/").listFiles()) {
+                    System.out.println(file.getName());
+                }
+                System.out.println(ResourceUtils.getFile("target/classes/xsd/"+fileName).getPath());
+
 				reader = new BufferedReader(new InputStreamReader(ResourceUtils.getURL("target/classes/xsd/"+fileName).openStream()));
 				line = reader.readLine();
 
