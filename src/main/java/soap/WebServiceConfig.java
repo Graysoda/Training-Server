@@ -31,7 +31,6 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 
 	@Bean(name = "operations")
 	public DefaultWsdl11Definition defaultWsdl11Definition(XsdSchema operationsSchema){
-		combineSchemas();
 		DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
 		wsdl11Definition.setPortTypeName("OperationPort");
 		wsdl11Definition.setLocationUri("/ws");
@@ -42,7 +41,7 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 
 	@Bean(name = "operationsSchema")
 	public XsdSchema operationSchema(){
-		return new SimpleXsdSchema(new ClassPathResource("xsd/operations.xsd"));
+		return new SimpleXsdSchema(combineSchemas());
 	}
 
 	@Bean(name = "data_elements")
@@ -90,7 +89,7 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 		return new SimpleXsdSchema(new ClassPathResource("xsd/staff.xsd"));
 	}
 
-	private void combineSchemas() {
+	private ClassPathResource combineSchemas() {
 		StringBuilder sb = new StringBuilder();
 		String header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
 				"<xs:schema xmlns:xs=\"http://www.w3.org/2001/XMLSchema\"" +
@@ -141,6 +140,8 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+		return new ClassPathResource("xsd/operations.xsd");
 	}
 
 	private String clean(String s) {
