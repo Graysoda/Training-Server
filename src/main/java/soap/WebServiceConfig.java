@@ -5,8 +5,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-import org.springframework.util.ResourceUtils;
 import org.springframework.ws.config.annotation.EnableWs;
 import org.springframework.ws.config.annotation.WsConfigurerAdapter;
 import org.springframework.ws.transport.http.MessageDispatcherServlet;
@@ -14,13 +12,13 @@ import org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition;
 import org.springframework.xml.xsd.SimpleXsdSchema;
 import org.springframework.xml.xsd.XsdSchema;
 
-import java.io.FileNotFoundException;
+import java.io.*;
 
 @EnableWs
 @Configuration
 public class WebServiceConfig extends WsConfigurerAdapter {
 
-	public WebServiceConfig() {}
+	public WebServiceConfig() {combineSchemas();}
 
 	@Bean
 	public ServletRegistrationBean messageDispatherServlet(ApplicationContext applicationContext){
@@ -41,8 +39,10 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 	}
 
 	@Bean(name = "operationsSchema")
-	public XsdSchema operationSchema() throws FileNotFoundException {
-		return new SimpleXsdSchema((Resource) ResourceUtils.getFile("target/classes/xsd/operations.xsd"));
+	public XsdSchema operationSchema(){
+		ClassPathResource resource = new ClassPathResource("xsd/operations.xsd");
+
+		return new SimpleXsdSchema();
 	}
 
 	@Bean(name = "data_elements")
@@ -88,5 +88,74 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 	@Bean(name = "staff")
 	public SimpleXsdSchema staffSchema(){
 		return new SimpleXsdSchema(new ClassPathResource("xsd/staff.xsd"));
+	}
+
+	private void combineSchemas() {
+		StringBuilder sb = new StringBuilder();
+		String header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+				"<xs:schema xmlns:xs=\"http://www.w3.org/2001/XMLSchema\"" +
+				"           targetNamespace=\"my-namespace\"" +
+				"			xmlns:data=\"my-namespace\""+
+				"           elementFormDefault=\"qualified\">";
+		String foot = "</xs:schema>";
+		String[] fileNames = new String[]{
+				"actor.xsd",
+				"address.xsd",
+				"customer.xsd",
+				"films.xsd",
+				"inventory.xsd",
+				"payments.xsd",
+				"rental.xsd",
+				"staff.xsd"
+		};
+		String line;
+		BufferedReader reader = null;
+
+		sb.append(header).append("\n<xs:include schemaLocation=\"data_elements.xsd\"/>");
+
+		for (String fileName : fileNames) {
+			StringBuilder fileString = new StringBuilder();
+			try {
+				//ResourceUtils.getFile("target/classes/xsd/"+fileName)
+				reader = new BufferedReader(new InputStreamReader(new ClassPathResource("xsd/"+fileName).getInputStream()));
+				line = reader.readLine();
+
+				while (line != null){
+					fileString.append(line);
+					line = reader.readLine();
+				}
+
+				reader.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			sb.append(clean(fileString.toString()));
+		}
+
+		sb.append(foot).append("\n");
+
+		try {
+			//ResourceUtils.getFile("target/classes/xsd/operations.xsd");
+			File ops = new ClassPathResource("xsd/operations.xsd").getFile();
+			FileWriter writer = new FileWriter(ops, false);
+			writer.write(sb.toString());
+			writer.flush();
+			writer.close();
+
+			System.out.println("file exists = "+ops.exists());
+			System.out.println("file name = "+ops.getName());
+			System.out.println("file path = "+ops.getPath());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private String clean(String s) {
+		String xmlHeader = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+		String schemaHeader = "<xs:schema xmlns:xs=\"http://www.w3.org/2001/XMLSchema\"           targetNamespace=\"my-namespace\"           xmlns:data=\"my-namespace\"           elementFormDefault=\"qualified\">";
+		String include = "<xs:include schemaLocation=\"data_elements.xsd\"/>";
+		String foot = "</xs:schema>";
+
+		return s.replace(xmlHeader,"").replace(schemaHeader,"").replace(include,"").replace(foot,"").trim();
 	}
 }
