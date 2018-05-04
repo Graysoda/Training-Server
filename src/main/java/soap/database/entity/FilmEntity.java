@@ -15,7 +15,7 @@ public class FilmEntity{
 	@NotNull private String description;
 	@NotNull private int release_year;
 	@NotNull private long language_id;
-	@Nullable private long original_language_id;
+	@Nullable private Long original_language_id;
 	@NotNull private int rental_duration;
 	@NotNull private float rental_rate;
 	@NotNull private int length;
