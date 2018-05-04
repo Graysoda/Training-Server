@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
 import org.springframework.ws.config.annotation.EnableWs;
 import org.springframework.ws.config.annotation.WsConfigurerAdapter;
 import org.springframework.ws.transport.http.MessageDispatcherServlet;
@@ -44,9 +43,7 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 
 	@Bean(name = "operationsSchema")
 	public XsdSchema operationSchema() throws FileNotFoundException {
-		ClassPathResource resource = new ClassPathResource("xsd/operations.xsd");
-		Resource resource1 = new FileSystemResource("/app/target/classes/xsd/operations.xsd");
-		return new SimpleXsdSchema(resource1);
+		return new SimpleXsdSchema(new FileSystemResource("/app/target/classes/xsd/operations.xsd"));
 	}
 
 	@Bean(name = "data_elements")
@@ -120,11 +117,8 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 		for (String fileName : fileNames) {
 			StringBuilder fileString = new StringBuilder();
 			try {
-				//ResourceUtils.getFile("target/classes/xsd/"+fileName)
-				System.out.println(new FileSystemResource("").getPath());
 				reader = new BufferedReader(new InputStreamReader(new FileInputStream(new FileSystemResource("/app/target/classes/xsd/"+fileName).getFile())));
 				line = reader.readLine();
-				System.out.println("line = ["+line+"]");
 
 				while (line != null){
 					fileString.append(line);
@@ -141,17 +135,12 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 		sb.append(foot).append("\n");
 
 		try {
-			//ResourceUtils.getFile("target/classes/xsd/operations.xsd");
 			File ops = new FileSystemResource("/app/target/classes/xsd/operations.xsd").getFile();
 			ops.setWritable(true);
 			FileWriter writer = new FileWriter(ops, false);
 			writer.write(sb.toString());
 			writer.flush();
 			writer.close();
-
-			System.out.println("file exists = "+ops.exists());
-			System.out.println("file name = "+ops.getName());
-			System.out.println("file path = "+ops.getPath());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
