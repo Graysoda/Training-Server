@@ -40,54 +40,54 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 
 	@Bean(name = "operationsSchema")
 	public XsdSchema operationSchema(){
-		ClassPathResource resource = new ClassPathResource("xsd/operations.xsd");
+		ClassPathResource resource = new ClassPathResource("classpath:xsd/operations.xsd");
 
 		return new SimpleXsdSchema(resource);
 	}
 
 	@Bean(name = "data_elements")
 	public SimpleXsdSchema dataElements(){
-		return new SimpleXsdSchema(new ClassPathResource("xsd/data_elements.xsd"));
+		return new SimpleXsdSchema(new ClassPathResource("classpath:xsd/data_elements.xsd"));
 	}
 
 	@Bean(name = "actor")
 	public SimpleXsdSchema actorSchema(){
-		return new SimpleXsdSchema(new ClassPathResource("xsd/actor.xsd"));
+		return new SimpleXsdSchema(new ClassPathResource("classpath:xsd/actor.xsd"));
 	}
 
 	@Bean(name = "address")
 	public SimpleXsdSchema addressSchema(){
-		return new SimpleXsdSchema(new ClassPathResource("xsd/address.xsd"));
+		return new SimpleXsdSchema(new ClassPathResource("classpath:xsd/address.xsd"));
 	}
 
 	@Bean(name = "customer")
 	public SimpleXsdSchema customerSchema(){
-		return new SimpleXsdSchema(new ClassPathResource("xsd/customer.xsd"));
+		return new SimpleXsdSchema(new ClassPathResource("classpath:xsd/customer.xsd"));
 	}
 
 	@Bean(name = "films")
 	public SimpleXsdSchema filmSchema(){
-		return new SimpleXsdSchema(new ClassPathResource("xsd/films.xsd"));
+		return new SimpleXsdSchema(new ClassPathResource("classpath:xsd/films.xsd"));
 	}
 
 	@Bean(name = "inventory")
 	public SimpleXsdSchema inventorySchema(){
-		return new SimpleXsdSchema(new ClassPathResource("xsd/inventory.xsd"));
+		return new SimpleXsdSchema(new ClassPathResource("classpath:xsd/inventory.xsd"));
 	}
 
 	@Bean(name = "payments")
 	public SimpleXsdSchema paymentsSchema(){
-		return new SimpleXsdSchema(new ClassPathResource("xsd/payments.xsd"));
+		return new SimpleXsdSchema(new ClassPathResource("classpath:xsd/payments.xsd"));
 	}
 
 	@Bean(name = "rental")
 	public SimpleXsdSchema rentalSchema(){
-		return new SimpleXsdSchema(new ClassPathResource("xsd/rental.xsd"));
+		return new SimpleXsdSchema(new ClassPathResource("classpath:xsd/rental.xsd"));
 	}
 
 	@Bean(name = "staff")
 	public SimpleXsdSchema staffSchema(){
-		return new SimpleXsdSchema(new ClassPathResource("xsd/staff.xsd"));
+		return new SimpleXsdSchema(new ClassPathResource("classpath:xsd/staff.xsd"));
 	}
 
 	private void combineSchemas() {
@@ -117,8 +117,8 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 			StringBuilder fileString = new StringBuilder();
 			try {
 				//ResourceUtils.getFile("target/classes/xsd/"+fileName)
-				System.out.println(new ClassPathResource("/static").getPath());
-				reader = new BufferedReader(new InputStreamReader(new ClassPathResource("xsd/"+fileName).getInputStream()));
+				System.out.println(new ClassPathResource("classpath:xsd/"+fileName).getPath());
+				reader = new BufferedReader(new InputStreamReader(new ClassPathResource("classpath:xsd/"+fileName).getInputStream()));
 				line = reader.readLine();
 
 				while (line != null){
@@ -137,7 +137,7 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 
 		try {
 			//ResourceUtils.getFile("target/classes/xsd/operations.xsd");
-			File ops = new ClassPathResource("xsd/operations.xsd").getFile();
+			File ops = new ClassPathResource("classpath:xsd/operations.xsd").getFile();
 			FileWriter writer = new FileWriter(ops, false);
 			writer.write(sb.toString());
 			writer.flush();
