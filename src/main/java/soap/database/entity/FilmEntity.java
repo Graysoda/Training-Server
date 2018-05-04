@@ -15,7 +15,7 @@ public class FilmEntity{
 	@NotNull private String description;
 	@NotNull private int release_year;
 	@NotNull private long language_id;
-	@Nullable private long original_language;
+	@Nullable private long original_language_id;
 	@NotNull private int rental_duration;
 	@NotNull private float rental_rate;
 	@NotNull private int length;
@@ -64,12 +64,12 @@ public class FilmEntity{
 		this.language_id = language_id;
 	}
 
-//	public long getOriginal_language() {
-//		return original_language;
+//	public long getOriginal_language_id() {
+//		return original_language_id;
 //	}
 //
-//	public void setOriginal_language(long original_language) {
-//		this.original_language = original_language;
+//	public void setOriginal_language_id(long original_language_id) {
+//		this.original_language_id = original_language_id;
 //	}
 
 	public int getRental_duration() {
@@ -128,12 +128,12 @@ public class FilmEntity{
 		this.last_update = last_update;
 	}
 
-	public long getOriginal_language() {
-		return original_language;
+	public long getOriginal_language_id() {
+		return original_language_id;
 	}
 
-	public void setOriginal_language(long original_language) {
-		this.original_language = original_language;
+	public void setOriginal_language_id(long original_language_id) {
+		this.original_language_id = original_language_id;
 	}
 
 	@Override

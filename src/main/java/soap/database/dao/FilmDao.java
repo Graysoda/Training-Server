@@ -174,7 +174,7 @@ public class FilmDao {
 		film.setDescription(entity.getDescription());
 		film.setReleaseYear(entity.getRelease_year());
 		film.setLanguage(languageDao.getLanguage(entity.getLanguage_id()));
-//		film.setOriginal_language(entity.getOriginal_language());
+//		film.setOriginal_language_id(entity.getOriginal_language_id());
 		film.setRentalDuration(entity.getRental_duration());
 		film.setRentalRate(entity.getRental_rate());
 		film.setLength(entity.getLength());
