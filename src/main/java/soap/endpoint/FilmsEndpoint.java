@@ -43,7 +43,7 @@ public class FilmsEndpoint {
 		return response;
 	}
 
-	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getFilmsById")
+	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getFilmsByIdRequest")
 	@ResponsePayload
 	public GetFilmByIdResponse getFilmById(@RequestPayload GetFilmByIdRequest request){
 		System.out.println("get film by id");
@@ -52,7 +52,7 @@ public class FilmsEndpoint {
 		return response;
 	}
 
-	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getByRating")
+	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getByRatingRequest")
 	@ResponsePayload
 	public GetFilmByRatingResponse getFilmByRating(@RequestPayload GetFilmByRatingRequest request){
 		GetFilmByRatingResponse response = new GetFilmByRatingResponse();
@@ -60,7 +60,7 @@ public class FilmsEndpoint {
 		return response;
 	}
 
-	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getByReleaseYear")
+	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getByReleaseYearRequest")
 	@ResponsePayload
 	public GetFilmByReleaseYearResponse getFilmByReleaseYear(@RequestPayload GetFilmByReleaseYearRequest request){
 		GetFilmByReleaseYearResponse response = new GetFilmByReleaseYearResponse();
