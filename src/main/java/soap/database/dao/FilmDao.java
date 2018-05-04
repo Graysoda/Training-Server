@@ -23,7 +23,10 @@ public class FilmDao {
 	private SummaryDao summaryDao;
 	private FilmActorDao filmActorDao;
 	private FilmCategoryDao filmCategoryDao;
-	private String baseQuery = "SELECT f FROM sakila.film f ";
+	private String baseQuery = "SELECT f.film_id, f.title, f.description, f.release_year, f.language_id, " +
+			"COALESCE(f.original_language_id, -1), f.rental_duration, f.rental_rate, f.length, " +
+			"f.replacement_cost, f.rating, f.special_features, f.last_update " +
+			"FROM sakila.film f ";
 
 	@Autowired
 	public void setLanguageDao(LanguageDao languageDao) {
