@@ -64,12 +64,12 @@ public class FilmEntity{
 		this.language_id = language_id;
 	}
 
-	public long getOriginal_language_id() {
+	public Long getOriginal_language_id() {
 		return original_language_id;
 	}
 
-	public void setOriginal_language_id(@Nullable long original_language_id) {
-		this.original_language_id = Long.valueOf(original_language_id) == null ? -1 : original_language_id;
+	public void setOriginal_language_id(@Nullable Long original_language_id) {
+		this.original_language_id = original_language_id == null ? -1 : original_language_id;
 	}
 
 	public int getRental_duration() {
