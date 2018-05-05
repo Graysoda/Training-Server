@@ -3,13 +3,13 @@ package soap.database.dao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import soap.database.entity.FilmActorEntity;
-import soap.database.entity.FilmEntity;
 import soap.generated.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.math.BigInteger;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,20 @@ public class FilmDao {
 	private SummaryDao summaryDao;
 	private FilmActorDao filmActorDao;
 	private FilmCategoryDao filmCategoryDao;
-	private String baseQuery = "SELECT f FROM sakila.film f ";
+	private static final String baseQuery = "SELECT " +
+			"film_id, " +
+			"title, " +
+			"description, " +
+			"release_year, " +
+			"language_id, " +
+			"COALESCE(original_language_id, -1), " +
+			"rental_duration, " +
+			"rental_rate, " +
+			"length, " +
+			"replacement_cost, " +
+			"rating, " +
+			"special_features " +
+			"FROM film";
 
 	@Autowired
 	public void setLanguageDao(LanguageDao languageDao) {
@@ -129,24 +142,24 @@ public class FilmDao {
 	/****************************************
 	 				Queries
 	 ****************************************/
-	public List<Film> getAll() {
-		return convertFilmEntityToGenerated(em.createQuery(baseQuery+"WHERE f.original_language_id IS NOT NULL", FilmEntity.class).getResultList());
+	public List<Film> getAll() throws SQLException {
+		return convertListToGenerated(connection.prepareStatement(baseQuery+";").executeQuery());
 	}
 
-	public Film getById(long id) {
-		return convertFilmEntityToGenerated(em.createQuery(baseQuery+"WHERE f.film_id = '" + id+"'",FilmEntity.class).getSingleResult());
+	public Film getById(long id) throws SQLException {
+		return convertSingleToGenerated(connection.prepareStatement(baseQuery+"WHERE f.film_id = '" + id+"'").executeQuery());
 	}
 
-	public List<Film> getByRating(String rating) {
-		return convertFilmEntityToGenerated(this.em.createQuery(baseQuery+"WHERE f.rating='"+rating+"'",FilmEntity.class).getResultList());
+	public List<Film> getByRating(String rating) throws SQLException {
+		return convertListToGenerated(connection.prepareStatement(baseQuery+"WHERE f.rating='"+rating+"'").executeQuery());
 	}
 
-	public List<Film> getByReleaseYear(int year) {
-		return convertFilmEntityToGenerated(this.em.createQuery(baseQuery+"WHERE f.release_year='"+year+"'",FilmEntity.class).getResultList());
+	public List<Film> getByReleaseYear(int year) throws SQLException {
+		return convertListToGenerated(connection.prepareStatement(baseQuery+"WHERE f.release_year='"+year+"'").executeQuery());
 	}
 
-	public List<Film> getByTitle(String title) {
-		return convertFilmEntityToGenerated(this.em.createQuery(baseQuery+"WHERE f.title='"+title+"'",FilmEntity.class).getResultList());
+	public List<Film> getByTitle(String title) throws SQLException {
+		return convertListToGenerated(connection.prepareStatement(baseQuery+"WHERE f.title='"+title+"'").executeQuery());
 	}
 
 	public Summary getSummary(long id){
@@ -155,40 +168,41 @@ public class FilmDao {
 
 	/******************************
 			Conversions
-	*******************************/
-	private List<Film> convertFilmEntityToGenerated(List<FilmEntity> filmEntityEntityList) {
-		List<Film> filmList = new ArrayList<>(filmEntityEntityList.size());
+	******************************
+	 * @param resultSet*/
+	private List<Film> convertListToGenerated(ResultSet resultSet) throws SQLException {
+		List<Film> filmList = new ArrayList<>();
 
-		for (FilmEntity filmEntity : filmEntityEntityList){
-			filmList.add(convertFilmEntityToGenerated(filmEntity));
+		while (resultSet.next()){
+			filmList.add(convertSingleToGenerated(resultSet));
 		}
 
 		return filmList;
 	}
 
-	private Film convertFilmEntityToGenerated(FilmEntity entity) {
+	private Film convertSingleToGenerated(ResultSet resultSet) throws SQLException {
 		Film film = new Film();
 
-		film.setFilmId(BigInteger.valueOf(entity.getFilm_id()));
-		film.setTitle(entity.getTitle());
-		film.setDescription(entity.getDescription());
-		film.setReleaseYear(entity.getRelease_year());
-		film.setLanguage(languageDao.getLanguage(entity.getLanguage_id()));
-		film.setOriginalLanguage(languageDao.getLanguage(entity.getOriginal_language_id()));
-		film.setRentalDuration(entity.getRental_duration());
-		film.setRentalRate(entity.getRental_rate());
-		film.setLength(entity.getLength());
-		film.setReplacementCost(entity.getReplacement_cost());
-		film.setRating(entity.getRating());
-		film.setSpecialFeatures(entity.getSpecial_features());
-		film.setLastUpdate(entity.getLast_update());
-		film.setCategory(filmCategoryDao.getById(entity.getFilm_id()));
-		film.setActors(filmActorDao.getActors(entity.getFilm_id()));
+		film.setFilmId(BigInteger.valueOf(resultSet.getLong("film_id")));
+		film.setTitle(resultSet.getString("title"));
+		film.setDescription(resultSet.getString("description"));
+		film.setReleaseYear(resultSet.getInt("release_year"));
+		film.setLanguage(languageDao.getLanguage(resultSet.getLong("language_id")));
+		film.setOriginalLanguage(languageDao.getLanguage(resultSet.getLong("original_language_id")));
+		film.setRentalDuration(resultSet.getInt("rental_duration"));
+		film.setRentalRate(resultSet.getFloat("rental_rate"));
+		film.setLength(resultSet.getInt("length"));
+		film.setReplacementCost(resultSet.getFloat("replacement_cost"));
+		film.setRating(resultSet.getString("rating"));
+		film.setSpecialFeatures(resultSet.getString("special_features"));
+		film.setLastUpdate(resultSet.getString("last_update"));
+		film.setCategory(filmCategoryDao.getById(resultSet.getLong("film_id")));
+		film.setActors(filmActorDao.getActors(resultSet.getLong("film_id")));
 
 		return film;
 	}
 
-	List<Film> getAllFilms(List<FilmActorEntity> resultList) {
+	List<Film> getAllFilms(List<FilmActorEntity> resultList) throws SQLException {
 		StringBuilder query = new StringBuilder(baseQuery + "WHERE film_id IN (");
 
 		for (FilmActorEntity filmActorEntity : resultList) {
@@ -197,7 +211,7 @@ public class FilmDao {
 
 		query.deleteCharAt(query.length()).deleteCharAt(query.length()).append(")");
 
-		return convertFilmEntityToGenerated(this.em.createQuery(query.toString(),FilmEntity.class).getResultList());
+		return convertListToGenerated(connection.prepareStatement(query.toString()).getResultSet());
 	}
 
 	public List<Actor> getActors(long filmId) {
