@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import soap.database.dao.ActorDao;
 import soap.generated.*;
 
+import java.sql.SQLException;
 import java.util.List;
 
 @Service
@@ -53,7 +54,7 @@ public class ActorServiceImpl implements ActorService {
 	}
 
 	@Override
-	public List<Film> getFilmsWithActor(long actorId) {
+	public List<Film> getFilmsWithActor(long actorId) throws SQLException {
 		return actorDao.getFilms(actorId);
 	}
 }

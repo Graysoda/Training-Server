@@ -39,7 +39,7 @@ public class RentalDao {
 		this.customerDao = customerDao;
 	}
 
-	private Rental convertEntityToGenerated(RentalEntity entity) {
+	private Rental convertEntityToGenerated(RentalEntity entity) throws SQLException {
 		Rental rental = new Rental();
 
 		rental.setRentalId(entity.getRental_id());
@@ -52,7 +52,7 @@ public class RentalDao {
 		return rental;
 	}
 
-	private List<Rental> convertEntitiesToGenerated(List<RentalEntity> entities){
+	private List<Rental> convertEntitiesToGenerated(List<RentalEntity> entities) throws SQLException {
 		List<Rental> rentals = new ArrayList<>(entities.size());
 
 		for (RentalEntity entity : entities) {
@@ -62,25 +62,25 @@ public class RentalDao {
 		return rentals;
 	}
 
-	public Rental getById(long id) {
+	public Rental getById(long id) throws SQLException {
 		return convertEntityToGenerated(this.em.createQuery(baseQuery+"WHERE r.rental_id='"+id+"'",RentalEntity.class).getSingleResult());
 	}
 
 
 
-	public List<Rental> getByCustomerId(long id) {
+	public List<Rental> getByCustomerId(long id) throws SQLException {
 		return convertEntitiesToGenerated(this.em.createQuery(baseQuery+"WHERE r.customer_id='"+id+"'",RentalEntity.class).getResultList());
 	}
 
-	public List<Rental> getByStaffId(long id) {
+	public List<Rental> getByStaffId(long id) throws SQLException {
 		return convertEntitiesToGenerated(this.em.createQuery(baseQuery+"WHERE r.staff_id='"+id+"'",RentalEntity.class).getResultList());
 	}
 
-	public List<Rental> getByStartDate(String date) {
+	public List<Rental> getByStartDate(String date) throws SQLException {
 		return convertEntitiesToGenerated(this.em.createQuery(baseQuery+"WHERE r.rental_date='"+date+"'",RentalEntity.class).getResultList());
 	}
 
-	public List<Rental> getByReturnDate(String date) {
+	public List<Rental> getByReturnDate(String date) throws SQLException {
 		return convertEntitiesToGenerated(this.em.createQuery(baseQuery+"WHERE r.return_date='"+date+"'",RentalEntity.class).getResultList());
 	}
 

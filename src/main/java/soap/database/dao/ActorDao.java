@@ -126,7 +126,7 @@ public class ActorDao {
 		return convertActorEntitiesToGenerated(this.em.createQuery(query.toString(),ActorEntity.class).getResultList());
 	}
 
-	public List<Film> getFilms(long actorId) {
+	public List<Film> getFilms(long actorId) throws SQLException {
 		return filmActorDao.getFilms(actorId);
 	}
 }

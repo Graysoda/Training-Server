@@ -2,6 +2,7 @@ package soap.service;
 
 import soap.generated.*;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public interface ActorService {
@@ -11,5 +12,5 @@ public interface ActorService {
 	public void insertActor(CreateActorRequest request);
 	void updateActor(UpdateActorRequest request);
 	void deleteActor(DeleteActorRequest request);
-	List<Film> getFilmsWithActor(long actorId);
+	List<Film> getFilmsWithActor(long actorId) throws SQLException;
 }

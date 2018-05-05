@@ -8,6 +8,8 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 import soap.generated.*;
 import soap.service.InventoryServiceImpl;
 
+import java.sql.SQLException;
+
 @Endpoint
 public class InventoryEndpoint {
 	private static final String NAMESPACE_URI = Constants.NAMESPACE_URI;
@@ -20,7 +22,7 @@ public class InventoryEndpoint {
 
 	@PayloadRoot(namespace = NAMESPACE_URI,localPart = "getAllInventoryRequest")
 	@ResponsePayload
-	public GetAllInventoryResponse getAllInventory(@RequestPayload GetAllInventoryRequest request){
+	public GetAllInventoryResponse getAllInventory(@RequestPayload GetAllInventoryRequest request) throws SQLException {
 		GetAllInventoryResponse response = new GetAllInventoryResponse();
 		response.setInventory(inventoryService.getAllInventory());
 		return response;
@@ -28,7 +30,7 @@ public class InventoryEndpoint {
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getInventoryByIdRequest")
 	@ResponsePayload
-	public GetInventoryByIdResponse getInventoryById(@RequestPayload GetInventoryByIdRequest request){
+	public GetInventoryByIdResponse getInventoryById(@RequestPayload GetInventoryByIdRequest request) throws SQLException {
 		GetInventoryByIdResponse response = new GetInventoryByIdResponse();
 		response.setInventory(inventoryService.getInventoryById(request.getInventoryId()));
 		return response;
@@ -36,7 +38,7 @@ public class InventoryEndpoint {
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getStoreInventoryRequest")
 	@ResponsePayload
-	public GetStoreInventoryResponse getStoreInventory(@RequestPayload GetStoreInventoryRequest request){
+	public GetStoreInventoryResponse getStoreInventory(@RequestPayload GetStoreInventoryRequest request) throws SQLException {
 		GetStoreInventoryResponse response = new GetStoreInventoryResponse();
 		response.setInventory(inventoryService.getStoreInventory(request.getStoreId()));
 		return response;

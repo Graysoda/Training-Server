@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import soap.database.dao.FilmDao;
 import soap.generated.*;
 
+import java.sql.SQLException;
 import java.util.List;
 @Service
 public class FilmServiceImpl implements FilmService {
@@ -30,32 +31,32 @@ public class FilmServiceImpl implements FilmService {
 
 	@Override
 	@Transactional
-	public Film getFilmById(long id) {
+	public Film getFilmById(long id) throws SQLException {
 		return this.filmDao.getById(id);
 	}
 
 	@Override
 	@Transactional
-	public List<Film> listFilms() {
+	public List<Film> listFilms() throws SQLException {
 		return this.filmDao.getAll();
 	}
 
 
 	@Override
 	@Transactional
-	public List<Film> getFilmByRating(String rating) {
+	public List<Film> getFilmByRating(String rating) throws SQLException {
 		return this.filmDao.getByRating(rating);
 	}
 
 	@Override
 	@Transactional
-	public List<Film> getFilmByReleaseYear(int year) {
+	public List<Film> getFilmByReleaseYear(int year) throws SQLException {
 		return this.filmDao.getByReleaseYear(year);
 	}
 
 	@Override
 	@Transactional
-	public List<Film> getFilmByTitle(String title) {
+	public List<Film> getFilmByTitle(String title) throws SQLException {
 		return this.filmDao.getByTitle(title);
 	}
 

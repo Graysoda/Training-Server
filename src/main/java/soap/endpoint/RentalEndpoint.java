@@ -8,6 +8,8 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 import soap.generated.*;
 import soap.service.RentalServiceImpl;
 
+import java.sql.SQLException;
+
 @Endpoint
 public class RentalEndpoint {
 	private static final String NAMESPACE_URI = Constants.NAMESPACE_URI;
@@ -20,7 +22,7 @@ public class RentalEndpoint {
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getRentalByCustomerIdRequest")
 	@ResponsePayload
-	public GetRentalByCustomerIdResponse getRentalByCustomerId(@RequestPayload GetRentalByCustomerIdRequest request){
+	public GetRentalByCustomerIdResponse getRentalByCustomerId(@RequestPayload GetRentalByCustomerIdRequest request) throws SQLException {
 		GetRentalByCustomerIdResponse response = new GetRentalByCustomerIdResponse();
 		response.setRental(rentalService.getRentalsByCustomerId(request.getCustomerId()));
 		return response;
@@ -28,7 +30,7 @@ public class RentalEndpoint {
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getRentalByIdRequest")
 	@ResponsePayload
-	public GetRentalByIdResponse getRentalById(@RequestPayload GetRentalByIdRequest request){
+	public GetRentalByIdResponse getRentalById(@RequestPayload GetRentalByIdRequest request) throws SQLException {
 		GetRentalByIdResponse response = new GetRentalByIdResponse();
 		response.setRental(rentalService.getRentalById(request.getRentalId()));
 		return response;
@@ -36,7 +38,7 @@ public class RentalEndpoint {
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getRentalByReturnDateRequest")
 	@ResponsePayload
-	public GetRentalByReturnDateResponse getRentalByReturnDate(@RequestPayload GetRentalByReturnDateRequest request){
+	public GetRentalByReturnDateResponse getRentalByReturnDate(@RequestPayload GetRentalByReturnDateRequest request) throws SQLException {
 		GetRentalByReturnDateResponse response = new GetRentalByReturnDateResponse();
 		response.setRental(rentalService.getRentalsByReturnDate(request.getReturnDate()));
 		return response;
@@ -44,7 +46,7 @@ public class RentalEndpoint {
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getRentalByStaffIdRequest")
 	@ResponsePayload
-	public GetRentalByStaffIdResponse getRentalByStaffId(@RequestPayload GetRentalByStaffIdRequest request){
+	public GetRentalByStaffIdResponse getRentalByStaffId(@RequestPayload GetRentalByStaffIdRequest request) throws SQLException {
 		GetRentalByStaffIdResponse response = new GetRentalByStaffIdResponse();
 		response.setRental(rentalService.getRentalByStaffId(request.getStaffId()));
 		return response;
@@ -52,7 +54,7 @@ public class RentalEndpoint {
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getRentalByStartDateRequest")
 	@ResponsePayload
-	public GetRentalByStartDateResponse getRentalByStartDate(@RequestPayload GetRentalByStartDateRequest request){
+	public GetRentalByStartDateResponse getRentalByStartDate(@RequestPayload GetRentalByStartDateRequest request) throws SQLException {
 		GetRentalByStartDateResponse response = new GetRentalByStartDateResponse();
 		response.setRental(rentalService.getRentalByStartDate(request.getRentalStartDate()));
 		return response;

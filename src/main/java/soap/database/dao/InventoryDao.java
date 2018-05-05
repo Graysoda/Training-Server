@@ -39,13 +39,11 @@ public class InventoryDao {
 		this.storeDao = storeDao;
 	}
 
-	public List<Inventory> getAll() {
-		return convertEntitiesToGenerated(this.em
-				.createQuery(baseQuery,InventoryEntity.class)
-				.getResultList());
+	public List<Inventory> getAll() throws SQLException {
+		return convertEntitiesToGenerated(this.em.createQuery(baseQuery,InventoryEntity.class).getResultList());
 	}
 
-	private Inventory convertEntityToGenerated(InventoryEntity entity){
+	private Inventory convertEntityToGenerated(InventoryEntity entity) throws SQLException {
 		Inventory inventory = new Inventory();
 
 		inventory.setInventoryId(entity.getInventory_id());
@@ -56,7 +54,7 @@ public class InventoryDao {
 		return inventory;
 	}
 
-	private List<Inventory> convertEntitiesToGenerated(List<InventoryEntity> entities){
+	private List<Inventory> convertEntitiesToGenerated(List<InventoryEntity> entities) throws SQLException {
 		List<Inventory> inventories = new ArrayList<>();
 
 		for (InventoryEntity entity : entities) {
@@ -66,11 +64,11 @@ public class InventoryDao {
 		return inventories;
 	}
 
-	public Inventory getById(long id) {
+	public Inventory getById(long id) throws SQLException {
 		return convertEntityToGenerated(this.em.createQuery(baseQuery+"WHERE i.inventory_id='"+id+"'",InventoryEntity.class).getSingleResult());
 	}
 
-	public List<Inventory> getStoreInventory(long storeId) {
+	public List<Inventory> getStoreInventory(long storeId) throws SQLException {
 		return convertEntitiesToGenerated(this.em.createQuery(baseQuery+"WHERE i.store_id='"+storeId+"'",InventoryEntity.class).getResultList());
 	}
 

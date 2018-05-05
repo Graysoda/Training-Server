@@ -8,6 +8,8 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 import soap.generated.*;
 import soap.service.FilmServiceImpl;
 
+import java.sql.SQLException;
+
 
 @Endpoint
 public class FilmsEndpoint {
@@ -36,7 +38,7 @@ public class FilmsEndpoint {
 
 	@PayloadRoot(namespace = NAMESPACE_URI,localPart = "getAllFilmsRequest")
 	@ResponsePayload
-	public GetAllFilmsResponse getAllFilms(@RequestPayload GetAllFilmsRequest request){
+	public GetAllFilmsResponse getAllFilms(@RequestPayload GetAllFilmsRequest request) throws SQLException {
 		System.out.println("get all films");
 		GetAllFilmsResponse response = new GetAllFilmsResponse();
 		response.setFilm(filmService.listFilms());
@@ -45,7 +47,7 @@ public class FilmsEndpoint {
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getFilmsByIdRequest")
 	@ResponsePayload
-	public GetFilmByIdResponse getFilmById(@RequestPayload GetFilmByIdRequest request){
+	public GetFilmByIdResponse getFilmById(@RequestPayload GetFilmByIdRequest request) throws SQLException {
 		System.out.println("get film by id");
 		GetFilmByIdResponse response = new GetFilmByIdResponse();
 		response.setFilm(filmService.getFilmById(request.getFilmId()));
@@ -54,7 +56,7 @@ public class FilmsEndpoint {
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getByRatingRequest")
 	@ResponsePayload
-	public GetFilmByRatingResponse getFilmByRating(@RequestPayload GetFilmByRatingRequest request){
+	public GetFilmByRatingResponse getFilmByRating(@RequestPayload GetFilmByRatingRequest request) throws SQLException {
 		GetFilmByRatingResponse response = new GetFilmByRatingResponse();
 		response.setFilm(filmService.getFilmByRating(request.getRating()));
 		return response;
@@ -62,7 +64,7 @@ public class FilmsEndpoint {
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getByReleaseYearRequest")
 	@ResponsePayload
-	public GetFilmByReleaseYearResponse getFilmByReleaseYear(@RequestPayload GetFilmByReleaseYearRequest request){
+	public GetFilmByReleaseYearResponse getFilmByReleaseYear(@RequestPayload GetFilmByReleaseYearRequest request) throws SQLException {
 		GetFilmByReleaseYearResponse response = new GetFilmByReleaseYearResponse();
 		response.setFilm(filmService.getFilmByReleaseYear(request.getReleaseYear()));
 		return response;
@@ -70,7 +72,7 @@ public class FilmsEndpoint {
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getFilmByTitleRequest")
 	@ResponsePayload
-	public GetFilmByTitleResponse getFilmByTitle(@RequestPayload GetFilmByTitleRequest request){
+	public GetFilmByTitleResponse getFilmByTitle(@RequestPayload GetFilmByTitleRequest request) throws SQLException {
 		GetFilmByTitleResponse response = new GetFilmByTitleResponse();
 		response.setFilm(filmService.getFilmByTitle(request.getTitle()));
 		return response;

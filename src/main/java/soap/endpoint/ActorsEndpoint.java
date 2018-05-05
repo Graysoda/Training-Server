@@ -8,6 +8,8 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 import soap.generated.*;
 import soap.service.ActorServiceImpl;
 
+import java.sql.SQLException;
+
 
 @Endpoint
 public class ActorsEndpoint {
@@ -62,7 +64,7 @@ public class ActorsEndpoint {
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getFilmsWithActorRequest")
 	@ResponsePayload
-	public GetFilmsWithActorResponse getFilmsWithActor(@RequestPayload GetFilmsWithActorRequest request){
+	public GetFilmsWithActorResponse getFilmsWithActor(@RequestPayload GetFilmsWithActorRequest request) throws SQLException {
 		GetFilmsWithActorResponse response = new GetFilmsWithActorResponse();
 		response.setFilms(actorService.getFilmsWithActor(request.getActorId()));
 		return response;
