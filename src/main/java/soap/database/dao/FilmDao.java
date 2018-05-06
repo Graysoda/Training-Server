@@ -29,7 +29,7 @@ public class FilmDao {
 			"film.description, " +
 			"film.release_year, " +
 			"film.language_id, " +
-			"COALESCE(film.original_language, -1), " +
+			"COALESCE(film.original_language_id, '-1'), " +
 			"film.rental_duration, " +
 			"film.rental_rate, " +
 			"film.length, " +
