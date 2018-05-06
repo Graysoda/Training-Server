@@ -188,7 +188,7 @@ public class FilmDao {
 		film.setDescription(resultSet.getString("description"));
 		film.setReleaseYear(resultSet.getInt("release_year"));
 		film.setLanguage(languageDao.getLanguage(resultSet.getLong("language_id")));
-		film.setOriginalLanguage(languageDao.getLanguage(resultSet.getLong("original_language_id")));
+		film.setOriginalLanguage(languageDao.getLanguage(resultSet.getLong(5)));
 		film.setRentalDuration(resultSet.getInt("rental_duration"));
 		film.setRentalRate(resultSet.getFloat("rental_rate"));
 		film.setLength(resultSet.getInt("length"));
