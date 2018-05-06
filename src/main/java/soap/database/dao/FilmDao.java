@@ -36,6 +36,7 @@ public class FilmDao {
 			"film.replacement_cost, " +
 			"film.rating, " +
 			"film.special_features " +
+            "film.last_update " +
 			"FROM film";
 
 	@Autowired
