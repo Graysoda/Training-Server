@@ -24,18 +24,18 @@ public class FilmDao {
 	private FilmActorDao filmActorDao;
 	private FilmCategoryDao filmCategoryDao;
 	private static final String baseQuery = "SELECT " +
-			"film_id, " +
-			"title, " +
-			"description, " +
-			"release_year, " +
-			"language_id, " +
-			"COALESCE(original_language_id, -1), " +
-			"rental_duration, " +
-			"rental_rate, " +
-			"length, " +
-			"replacement_cost, " +
-			"rating, " +
-			"special_features " +
+			"film.film_id, " +
+			"film.title, " +
+			"film.description, " +
+			"film.release_year, " +
+			"film.language_id, " +
+			"COALESCE(film.original_language_id, -1), " +
+			"film.rental_duration, " +
+			"film.rental_rate, " +
+			"film.length, " +
+			"film.replacement_cost, " +
+			"film.rating, " +
+			"film.special_features " +
 			"FROM film";
 
 	@Autowired
@@ -64,18 +64,18 @@ public class FilmDao {
 	}
 
 	public void create(CreateFilmRequest request) {
-		String sql = "INSERT INTO sakila.film " +
-				"(title, " +
-				"description, " +
-				"release_year, " +
-				"language_id, " +
-				"original_language, " +
-				"rental_duration, " +
-				"rental_rate, " +
-				"length, " +
-				"replacement_cost, " +
-				"rating, " +
-				"special_features) " +
+		String sql = "INSERT INTO film " +
+				"(film.title, " +
+				"film.description, " +
+				"film.release_year, " +
+				"film.language_id, " +
+				"film.original_language_id, " +
+				"film.rental_duration, " +
+				"film.rental_rate, " +
+				"film.length, " +
+				"film.replacement_cost, " +
+				"film.rating, " +
+				"film.special_features) " +
 				"VALUES " +
 				"("+request.getTitle()+", " +
 				request.getDescription()+", " +
@@ -147,19 +147,19 @@ public class FilmDao {
 	}
 
 	public Film getById(long id) throws SQLException {
-		return convertSingleToGenerated(connection.prepareStatement(baseQuery+"WHERE f.film_id = '" + id+"'").executeQuery());
+		return convertSingleToGenerated(connection.prepareStatement(baseQuery+"WHERE film.film_id = '" + id+"'").executeQuery());
 	}
 
 	public List<Film> getByRating(String rating) throws SQLException {
-		return convertListToGenerated(connection.prepareStatement(baseQuery+"WHERE f.rating='"+rating+"'").executeQuery());
+		return convertListToGenerated(connection.prepareStatement(baseQuery+"WHERE film.rating='"+rating+"';").executeQuery());
 	}
 
 	public List<Film> getByReleaseYear(int year) throws SQLException {
-		return convertListToGenerated(connection.prepareStatement(baseQuery+"WHERE f.release_year='"+year+"'").executeQuery());
+		return convertListToGenerated(connection.prepareStatement(baseQuery+"WHERE film.release_year='"+year+"';").executeQuery());
 	}
 
 	public List<Film> getByTitle(String title) throws SQLException {
-		return convertListToGenerated(connection.prepareStatement(baseQuery+"WHERE f.title='"+title+"'").executeQuery());
+		return convertListToGenerated(connection.prepareStatement(baseQuery+"WHERE film.title='"+title+"';").executeQuery());
 	}
 
 	public Summary getSummary(long id){
@@ -203,13 +203,13 @@ public class FilmDao {
 	}
 
 	List<Film> getAllFilms(List<FilmActorEntity> resultList) throws SQLException {
-		StringBuilder query = new StringBuilder(baseQuery + "WHERE film_id IN (");
+		StringBuilder query = new StringBuilder(baseQuery + "WHERE film.film_id IN (");
 
 		for (FilmActorEntity filmActorEntity : resultList) {
 			query.append("'").append(filmActorEntity.getFilm_id()).append("', ");
 		}
 
-		query.deleteCharAt(query.length()).deleteCharAt(query.length()).append(")");
+		query.deleteCharAt(query.length()).deleteCharAt(query.length()).append(");");
 
 		return convertListToGenerated(connection.prepareStatement(query.toString()).getResultSet());
 	}
