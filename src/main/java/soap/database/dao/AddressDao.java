@@ -40,7 +40,7 @@ public class AddressDao extends Database {
 				request.getPostalCode()+"', '"+
 				request.getPhone()+"');";
 		try {
-			connection.createStatement().executeUpdate(sql);
+			getConnection().createStatement().executeUpdate(sql);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -79,7 +79,7 @@ public class AddressDao extends Database {
 	public void delete(long addressId) {
 		String sql = "DELETE FROM sakila.address WHERE address_id='"+addressId+"';";
 		try {
-			connection.createStatement().executeUpdate(sql);
+			getConnection().createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -104,7 +104,7 @@ public class AddressDao extends Database {
 		sql = sql.substring(0,sql.length()-3) + " WHERE address_id = '"+request.getAddressId()+"';";
 
 		try {
-			connection.createStatement().executeUpdate(sql);
+			getConnection().createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
