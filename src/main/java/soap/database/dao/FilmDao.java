@@ -60,7 +60,7 @@ public class FilmDao {
 	}
 
 	@Autowired
-	private void setConnection(Connection connection){
+	public void setConnection(Connection connection){
 		this.connection = connection;
 	}
 
