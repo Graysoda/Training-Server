@@ -115,7 +115,7 @@ public class ActorDao {
 
 	List<Actor> getAllActors(List<FilmActorEntity> resultList) {
 		StringBuilder query = new StringBuilder(baseQuery);
-		query.append("WHERE actor_id IN (");
+		query.append("WHERE a.actor_id IN (");
 
 		for (FilmActorEntity filmActorEntity : resultList) {
 			query.append("'").append(filmActorEntity.getActor_id()).append("', ");
