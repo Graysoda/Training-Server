@@ -115,6 +115,7 @@ public class ActorDao {
 	}
 
 	List<Actor> getAllActors(List<FilmActorEntity> resultList) throws SQLException {
+        System.out.println("actor dao get all actors");
 		StringBuilder query = new StringBuilder("SELECT actor.actor_id, actor.first_name, actor.last_name, actor.last_update FROM actor WHERE actor.actor_id IN (");
 
 		for (FilmActorEntity filmActorEntity : resultList) {
@@ -123,11 +124,13 @@ public class ActorDao {
 
 		query.deleteCharAt(query.length()).deleteCharAt(query.length()).append(")");
 
+        System.out.println("query = ["+ query.toString()+"]");
 		return parseResultSetToList(connection.prepareStatement(query.toString()).executeQuery());
 	}
 
     private List<Actor> parseResultSetToList(ResultSet resultSet) throws SQLException {
         List<Actor> actors = new ArrayList<>();
+        System.out.println("parse result set to list");
 
         while (resultSet.next()){
             Actor actor = new Actor();
@@ -139,6 +142,8 @@ public class ActorDao {
 
             actors.add(actor);
         }
+
+        System.out.println("size of list = ["+actors.size()+"]");
 
         return actors;
     }

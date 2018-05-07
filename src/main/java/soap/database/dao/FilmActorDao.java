@@ -22,6 +22,7 @@ public class FilmActorDao {
 
 	List<Actor> getActors(long film_id) throws SQLException {
 		ActorDao actorDao = new ActorDao();
+		System.out.println("film actor dao get actors");
 		return actorDao.getAllActors(parseResultSetToList(connection.prepareStatement(
 		        "SELECT film_actor.actor_id, film_actor.film_id, film_actor.last_update " +
                 "FROM film_actor " +
@@ -32,6 +33,8 @@ public class FilmActorDao {
 	private List<FilmActorEntity> parseResultSetToList(ResultSet resultSet) throws SQLException {
 		List<FilmActorEntity> entityList = new ArrayList<>();
 
+		System.out.println("parse result set to list");
+
 		while(resultSet.next()){
 			FilmActorEntity entity = new FilmActorEntity();
 
@@ -41,6 +44,8 @@ public class FilmActorDao {
 
 			entityList.add(entity);
 		}
+
+		System.out.println("size of list = ["+entityList.size()+"]");
 
 		return entityList;
 	}
