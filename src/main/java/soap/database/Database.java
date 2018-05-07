@@ -23,6 +23,10 @@ import java.sql.SQLException;
 public class Database {
 	protected Connection connection;
 
+	public Database() throws SQLException {
+		getConnection();
+	}
+
 	@Bean
 	public BasicDataSource dataSource() throws URISyntaxException, SQLException {
 		URI dbUri = new URI(System.getenv("DATABASE_URL"));
@@ -42,6 +46,7 @@ public class Database {
 	@Bean
 	public Connection getConnection() throws SQLException {
 		String dbUrl = System.getenv("JDBC_DATABASE_URL");
-		return connection =  DriverManager.getConnection(dbUrl);
+		connection =  DriverManager.getConnection(dbUrl);
+		return connection;
 	}
 }
