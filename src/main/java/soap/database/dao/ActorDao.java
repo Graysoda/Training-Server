@@ -116,6 +116,9 @@ public class ActorDao {
 
 	List<Actor> getAllActors(List<FilmActorEntity> resultList) throws SQLException {
         System.out.println("actor dao get all actors");
+        if (resultList.size()==0)
+            return new ArrayList<Actor>();
+
 		StringBuilder query = new StringBuilder("SELECT actor.actor_id, actor.first_name, actor.last_name, actor.last_update FROM actor WHERE actor.actor_id IN (");
 
 		for (FilmActorEntity filmActorEntity : resultList) {
