@@ -38,7 +38,7 @@ public class CustomerDao extends Database {
 				request.getAddressId()+"', '"+
 				request.isActive()+"');";
 		try {
-			connection.createStatement().executeUpdate(sql);
+			getConnection().createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -88,7 +88,7 @@ public class CustomerDao extends Database {
 	public void delete(long customerId) {
 		String sql = "DELETE FROM sakila.customer WHERE customer_id='"+customerId+"';";
 		try {
-			connection.createStatement().executeUpdate(sql);
+			getConnection().createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -116,7 +116,7 @@ public class CustomerDao extends Database {
 		sql += values + " WHERE customer_id = '"+request.getCustomerId()+"';";
 
 		try {
-			connection.createStatement().executeUpdate(sql);
+			getConnection().createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
