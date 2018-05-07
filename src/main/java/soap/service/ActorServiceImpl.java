@@ -11,12 +11,12 @@ import java.util.List;
 
 @Service
 public class ActorServiceImpl implements ActorService {
-	private ActorDao actorDao;
+	@Autowired private ActorDao actorDao;
 
-	@Autowired
-	public void setActorDao(ActorDao actorDao){
-		this.actorDao = actorDao;
-	}
+//	@Autowired
+//	public void setActorDao(ActorDao actorDao){
+//		this.actorDao = actorDao;
+//	}
 
 	@Override
 	@Transactional
