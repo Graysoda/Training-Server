@@ -179,26 +179,31 @@ public class FilmDao extends Database{
 		return filmList;
 	}
 
-	private Film convertSingleToGenerated(FilmEntity filmEntity) {
+	private Film convertSingleToGenerated(FilmEntity entity) {
 		Film film = new Film();
 
 		System.out.println("converting single to generated");
 
-		film.setFilmId(BigInteger.valueOf(filmEntity.getFilm_id()));
-		film.setTitle(filmEntity.getTitle());
-		film.setDescription(filmEntity.getDescription());
-		film.setReleaseYear(filmEntity.getRelease_year());
-		film.setLanguage(languageDao.getLanguage(filmEntity.getLanguage_id()));
-		film.setOriginalLanguage(languageDao.getLanguage(filmEntity.getOriginal_language_id()));
-		film.setRentalDuration(filmEntity.getRental_duration());
-		film.setRentalRate(filmEntity.getRental_rate());
-		film.setLength(filmEntity.getLength());
-		film.setReplacementCost(filmEntity.getReplacement_cost());
-		film.setRating(filmEntity.getRating());
-		film.setSpecialFeatures(filmEntity.getSpecial_features());
-		film.setLastUpdate(filmEntity.getLast_update());
-		film.setCategory(filmCategoryDao.getById(filmEntity.getFilm_id()));
-		film.setActors(filmActorDao.getActors(filmEntity.getFilm_id()));
+		System.out.println("film_id = ["+entity.getFilm_id()+"]");
+		film.setFilmId(BigInteger.valueOf(entity.getFilm_id()));
+		System.out.println("title = ["+entity.getTitle()+"]");
+		film.setTitle(entity.getTitle());
+		System.out.println("description = ["+entity.getDescription()+"]");
+		film.setDescription(entity.getDescription());
+		System.out.println("release year = ["+entity.getRelease_year()+"]");
+		film.setReleaseYear(entity.getRelease_year());
+		System.out.println();
+		film.setLanguage(languageDao.getLanguage(entity.getLanguage_id()));
+		film.setOriginalLanguage(languageDao.getLanguage(entity.getOriginal_language_id()));
+		film.setRentalDuration(entity.getRental_duration());
+		film.setRentalRate(entity.getRental_rate());
+		film.setLength(entity.getLength());
+		film.setReplacementCost(entity.getReplacement_cost());
+		film.setRating(entity.getRating());
+		film.setSpecialFeatures(entity.getSpecial_features());
+		film.setLastUpdate(entity.getLast_update());
+		film.setCategory(filmCategoryDao.getById(entity.getFilm_id()));
+		film.setActors(filmActorDao.getActors(entity.getFilm_id()));
 
 		System.out.println("film_id = "+film.getFilmId());
 
