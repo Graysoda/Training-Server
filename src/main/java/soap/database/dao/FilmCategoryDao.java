@@ -20,6 +20,6 @@ public class FilmCategoryDao {
 	}
 
 	public String getById(long film_id){
-		return categoryDao.getById(this.em.createQuery(baseQuery+"WHERE fc.film_id = '"+film_id+"'",FilmCategoryEntity.class).getSingleResult().getCategory_id()).getName();
+		return categoryDao.getById(this.em.createQuery(baseQuery+"WHERE fc.film_id = "+film_id,FilmCategoryEntity.class).getSingleResult().getCategory_id()).getName();
 	}
 }
