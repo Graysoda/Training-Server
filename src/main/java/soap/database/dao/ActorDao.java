@@ -1,8 +1,3 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by Fernflower decompiler)
-//
-
 package soap.database.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +9,7 @@ import soap.generated.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +19,6 @@ import java.util.List;
 public class ActorDao extends Database {
 	@PersistenceContext
 	private EntityManager em;
-	private Connection connection;
 	private FilmActorDao filmActorDao;
 	private String baseQuery = "SELECT a FROM sakila.actor a ";
 
@@ -36,37 +27,21 @@ public class ActorDao extends Database {
 		this.filmActorDao = filmActorDao;
 	}
 
-	public void insert(CreateActorRequest request) throws SQLException {
+	public void insert(CreateActorRequest request) {
 		String sql = "INSERT INTO actor (actor.first_name, actor.last_name) VALUES ('"+request.getFirstName()+"', '"+request.getLastName()+"');";
 		try {
-			connection = getConnection();
-			connection.createStatement().executeUpdate(sql);
+			getConnection().createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {
-			if (isConnectionOpen(connection))
-				connection.close();
 		}
-	}
-
-	private boolean isConnectionOpen(Connection connection) throws SQLException {
-		return connection!=null && !connection.isClosed();
 	}
 
 	public List<Actor> getAllActors() {
-		ArrayList<Actor> actors = new ArrayList<>();
-		TypedQuery<ActorEntity> query = this.em.createQuery(this.baseQuery, ActorEntity.class);
-
-		for (ActorEntity actor : query.getResultList()) {
-			actors.add(this.convertActorEntityToGenerated(actor));
-		}
-
-		return actors;
+		return convertActorEntitiesToGenerated(this.em.createQuery(this.baseQuery, ActorEntity.class).getResultList());
 	}
 
 	public Actor findById(long id) {
-		ActorEntity actor = (ActorEntity)this.em.createQuery(this.baseQuery + "WHERE a.actor_id = " + id).getSingleResult();
-		return this.convertActorEntityToGenerated(actor);
+		return this.convertActorEntityToGenerated(this.em.createQuery(this.baseQuery + "WHERE a.actor_id = " + id, ActorEntity.class).getSingleResult());
 	}
 
 	private Actor convertActorEntityToGenerated(ActorEntity actorEntity) {
@@ -79,8 +54,7 @@ public class ActorDao extends Database {
 	}
 
 	public List<Actor> findByFirstName(String actorFirstName) {
-		List<ActorEntity> actorEntityList = this.em.createQuery(baseQuery+"WHERE a.first_name = "+actorFirstName,ActorEntity.class).getResultList();
-		return convertActorEntitiesToGenerated(actorEntityList);
+		return convertActorEntitiesToGenerated(this.em.createQuery(baseQuery+"WHERE a.first_name = "+actorFirstName,ActorEntity.class).getResultList());
 	}
 
 	private List<Actor> convertActorEntitiesToGenerated(List<ActorEntity> actorEntityList) {
@@ -93,7 +67,7 @@ public class ActorDao extends Database {
 		return actors;
 	}
 
-	public void update(UpdateActorRequest request) throws SQLException {
+	public void update(UpdateActorRequest request) {
 		String sql = "UPDATE actor SET ";
 
 		 if (request.getNewLastName() != null)
@@ -103,35 +77,27 @@ public class ActorDao extends Database {
 
 		sql = sql.substring(0, sql.length()-3) + " WHERE actor.actor_id='"+request.getActorId()+"';";
 		try{
-			connection = getConnection();
-			connection.createStatement().executeUpdate(sql);
+			getConnection().createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {
-			if (isConnectionOpen(connection))
-				connection.close();
 		}
 	}
 
-	public void delete(DeleteActorRequest request) throws SQLException {
+	public void delete(DeleteActorRequest request) {
 		String sql = "DELETE FROM actor WHERE actor.actor_id='"+request.getActorId()+"';";
 		try {
-			connection = getConnection();
-			connection.createStatement().executeUpdate(sql);
+			getConnection().createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {
-			if (isConnectionOpen(connection))
-				connection.close();
 		}
 	}
 
-	List<Actor> getAllActors(List<FilmActorEntity> resultList) throws SQLException {
+	List<Actor> getAllActors(List<FilmActorEntity> resultList) {
         System.out.println("actor dao get all actors");
         if (resultList.size()==0)
             return new ArrayList<Actor>();
 
-		StringBuilder query = new StringBuilder("SELECT actor.actor_id, actor.first_name, actor.last_name, actor.last_update FROM actor WHERE actor.actor_id IN (");
+		StringBuilder query = new StringBuilder("WHERE a.actor_id IN (");
 
 		for (FilmActorEntity filmActorEntity : resultList) {
 			query.append("'").append(filmActorEntity.getActor_id()).append("', ");
@@ -140,36 +106,11 @@ public class ActorDao extends Database {
 		query.deleteCharAt(query.length()-1).deleteCharAt(query.length()-1).append(")");
 
         System.out.println("query = ["+ query.toString()+"]");
-        connection = getConnection();
-		List<Actor> actors =  parseResultSetToList(connection.prepareStatement(query.toString()).executeQuery());
 
-		if (isConnectionOpen(connection))
-			connection.close();
-
-		return actors;
+		return convertActorEntitiesToGenerated(this.em.createQuery(query.toString(),ActorEntity.class).getResultList());
 	}
 
-    private List<Actor> parseResultSetToList(ResultSet resultSet) throws SQLException {
-        List<Actor> actors = new ArrayList<>();
-        System.out.println("parse result set to list");
-
-        while (resultSet.next()){
-            Actor actor = new Actor();
-
-            actor.setActorId(resultSet.getLong("actor_id"));
-            actor.setFirstName(resultSet.getString("first_name"));
-            actor.setLastName(resultSet.getString("last_name"));
-            actor.setLastUpdate(resultSet.getString("last_update"));
-
-            actors.add(actor);
-        }
-
-        System.out.println("size of list = ["+actors.size()+"]");
-
-        return actors;
-    }
-
-    public List<Film> getFilms(long actorId) throws SQLException {
+    public List<Film> getFilms(long actorId) {
 		return filmActorDao.getFilms(actorId);
 	}
 }

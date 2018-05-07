@@ -47,7 +47,7 @@ public class PaymentDao extends Database {
 	}
 
 	public void insert(CreatePaymentRequest request) {
-		String sql = "INSERT INTO sakila.payment (customer_id, staff_id, rental_id, amount, payment_date) VALUES " +
+		String sql = "INSERT INTO payment (payment.customer_id, payment.staff_id, payment.rental_id, payment.amount, payment.payment_date) VALUES " +
 				"("+request.getCustomerId()+", " +
 				request.getStaffId()+", " +
 				request.getRentalId()+", " +
@@ -61,7 +61,7 @@ public class PaymentDao extends Database {
 	}
 
 	public void delete(long paymentId) {
-		String sql = "DELETE FROM sakila.payment WHERE payment_id='"+paymentId+"';";
+		String sql = "DELETE FROM payment WHERE payment.payment_id='"+paymentId+"';";
 		try {
 			getConnection().createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
@@ -70,20 +70,20 @@ public class PaymentDao extends Database {
 	}
 
 	public void update(UpdatePaymentRequest request) {
-		String sql = "UPDATE sakila.payment SET ";
+		String sql = "UPDATE payment SET ";
 
 		if (request.getAmount()!=null)
-			sql += "amount = '"+request.getAmount()+"', ";
+			sql += "payment.amount = '"+request.getAmount()+"', ";
 		if (request.getCustomerId()!=null)
-			sql += "customer_id = '"+request.getCustomerId()+"', ";
+			sql += "payment.customer_id = '"+request.getCustomerId()+"', ";
 		if (request.getPaymentDate()!=null)
-			sql += "payment_date = '"+request.getPaymentDate()+"', ";
+			sql += "payment.payment_date = '"+request.getPaymentDate()+"', ";
 		if (request.getRentalId()!=null)
-			sql += "rental_id = '"+request.getRentalId()+"', ";
+			sql += "payment.rental_id = '"+request.getRentalId()+"', ";
 		if (request.getStaffId()!=null)
-			sql += "staff_id = '"+request.getStaffId()+"', ";
+			sql += "payment.staff_id = '"+request.getStaffId()+"', ";
 
-		sql = sql.substring(0,sql.length()-3) + " WHERE payment_id = '"+request.getPaymentId()+"';";
+		sql = sql.substring(0,sql.length()-3) + " WHERE payment.payment_id = '"+request.getPaymentId()+"';";
 
 		try {
 			getConnection().createStatement().executeUpdate(sql);

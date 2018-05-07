@@ -4,41 +4,52 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import soap.database.Database;
 import soap.database.entity.FilmActorEntity;
+import soap.database.entity.FilmEntity;
 import soap.generated.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.*;
 import java.math.BigInteger;
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class FilmDao extends Database {
+public class FilmDao extends Database{
 	@PersistenceContext
 	private EntityManager em;
-	private Connection connection = null;
 	private LanguageDao languageDao;
 	private SummaryDao summaryDao;
 	private FilmActorDao filmActorDao;
 	private FilmCategoryDao filmCategoryDao;
-	private static final String baseQuery = "SELECT " +
-			"film.film_id, " +
-			"film.title, " +
-			"film.description, " +
-			"film.release_year, " +
-			"film.language_id, " +
-			"COALESCE(film.original_language_id, '-1'), " +
-			"film.rental_duration, " +
-			"film.rental_rate, " +
-			"film.length, " +
-			"film.replacement_cost, " +
-			"film.rating, " +
-			"film.special_features, " +
-            "film.last_update " +
-			"FROM film";
+	private CriteriaBuilder criteriaBuilder;
+	private CriteriaBuilder.Coalesce<Long> coalesce;
+	private Root<FilmEntity> from;
+//	private static final String baseQuery = "SELECT " +
+//			"film.film_id, " +
+//			"film.title, " +
+//			"film.description, " +
+//			"film.release_year, " +
+//			"film.language_id, " +
+//			"COALESCE(film.original_language_id, '-1'), " +
+//			"film.rental_duration, " +
+//			"film.rental_rate, " +
+//			"film.length, " +
+//			"film.replacement_cost, " +
+//			"film.rating, " +
+//			"film.special_features, " +
+//          "film.last_update " +
+//			"FROM film";
+
+	public FilmDao(){
+		criteriaBuilder = em.getCriteriaBuilder();
+		coalesce = criteriaBuilder.coalesce();
+		from = criteriaBuilder.createQuery(FilmEntity.class).from(FilmEntity.class);
+
+		coalesce.value(from.get("original_language_id"));
+		coalesce.value(Long.valueOf(-1));
+	}
 
 	@Autowired
 	public void setLanguageDao(LanguageDao languageDao) {
@@ -60,7 +71,7 @@ public class FilmDao extends Database {
 		this.filmActorDao = filmActorDao;
 	}
 
-	public void create(CreateFilmRequest request) throws SQLException {
+	public void create(CreateFilmRequest request) {
 		String sql = "INSERT INTO film " +
 				"(film.title, " +
 				"film.description, " +
@@ -86,64 +97,52 @@ public class FilmDao extends Database {
 				request.getRating()+", "+
 				request.getSpecialFeatures()+");";
 		try {
-			connection = getConnection();
-			connection.createStatement().executeUpdate(sql);
+			getConnection().createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {
-			if (isConnectionOpen(connection))
-				connection.close();
 		}
 	}
 
-	public void update(UpdateFilmRequest request) throws SQLException {
-		String sql = "UPDATE sakila.film SET ";
+	public void update(UpdateFilmRequest request) {
+		String sql = "UPDATE film SET ";
 		if (request.getTitle() != null)
-			sql += "title = '"+request.getTitle()+"', ";
+			sql += "film.title = '"+request.getTitle()+"', ";
 		if (request.getDescription() != null)
-			sql += "description = '"+request.getDescription()+"', ";
+			sql += "film.description = '"+request.getDescription()+"', ";
 		if (request.getLanguage()!=null)
-			sql += "language_id = '"+languageDao.getId(request.getLanguage())+"', ";
+			sql += "film.language_id = '"+languageDao.getId(request.getLanguage())+"', ";
 		if (request.getOriginalLanguage()!=null)
-			sql += "original_language = '"+languageDao.getId(request.getOriginalLanguage())+"', ";
+			sql += "film.original_language = '"+languageDao.getId(request.getOriginalLanguage())+"', ";
 		if (request.getLength()!=null)
-			sql += "length = '"+request.getLength()+"', ";
+			sql += "film.length = '"+request.getLength()+"', ";
 		if (request.getRating()!=null)
-			sql += "rating = '"+request.getRating()+"', ";
+			sql += "film.rating = '"+request.getRating()+"', ";
 		if (request.getReleaseYear()!=null)
-			sql += "release_year = '"+request.getReleaseYear()+"', ";
+			sql += "film.release_year = '"+request.getReleaseYear()+"', ";
 		if (request.getRentalDuration()!=null)
-			sql += "rental_duration ='"+request.getRentalDuration()+"', ";
+			sql += "film.rental_duration ='"+request.getRentalDuration()+"', ";
 		if (request.getRentalRate()!=null)
-			sql += "rental_rate = '"+request.getRentalRate()+"', ";
+			sql += "film.rental_rate = '"+request.getRentalRate()+"', ";
 		if (request.getReplacementCost()!=null)
-			sql += "replacement_cost = '"+request.getReplacementCost()+"', ";
+			sql += "film.replacement_cost = '"+request.getReplacementCost()+"', ";
 		if (request.getSpecialFeatures()!=null)
-			sql += "special_features = '"+request.getSpecialFeatures()+"', ";
+			sql += "film.special_features = '"+request.getSpecialFeatures()+"', ";
 
-		sql += sql.subSequence(0,sql.length()-3) + " WHERE film_id = '"+request.getFilmId()+"';";
+		sql += sql.subSequence(0,sql.length()-3) + " WHERE film.film_id = '"+request.getFilmId()+"';";
 
 		try {
-			connection = getConnection();
-			connection.createStatement().executeUpdate(sql);
+			getConnection().createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			if (isConnectionOpen(connection))
-				connection.close();
 		}
 	}
 
-	public void delete(long filmId) throws SQLException {
-		String sql = "DELETE FROM sakila.film WHERE film_id='"+filmId+"';";
+	public void delete(long filmId) {
+		String sql = "DELETE FROM film WHERE film.film_id='"+filmId+"';";
 		try {
-			connection = getConnection();
-			connection.createStatement().executeUpdate(sql);
+			getConnection().createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {
-			if (isConnectionOpen(connection))
-				connection.close();
 		}
 	}
 
@@ -153,53 +152,39 @@ public class FilmDao extends Database {
 	 ****************************************/
 	public List<Film> getAll() throws SQLException {
 		System.out.println("in get all films");
-		connection = getConnection();
-		List<Film> films = convertListToGenerated(connection.prepareStatement(baseQuery+";").executeQuery(), connection);
-		if (!connection.isClosed())
-			connection.close();
-		return films;
+		return convertListToGenerated(this.em.createQuery(buildBaseQuery(null)).getResultList());
 	}
 
-	public Film getById(long id) throws SQLException {
-		connection = getConnection();
-		Film film =  convertSingleToGenerated(connection.prepareStatement(baseQuery+"WHERE film.film_id = '" + id+"'").executeQuery(), connection);
-		if (isConnectionOpen(connection))
-			connection.close();
-		return film;
+	public Film getById(long id) {
+		return convertSingleToGenerated(this.em.createQuery(buildBaseQuery(buildIdPredicate(id))).getSingleResult());
 	}
 
-	private boolean isConnectionOpen(Connection connection) throws SQLException {
-		return connection!=null && !connection.isClosed();
-	}
-
-	public List<Film> getByRating(String rating) throws SQLException {
-		connection = getConnection();
-		List<Film> films =  convertListToGenerated(connection.prepareStatement(baseQuery+"WHERE film.rating='"+rating+"';").executeQuery(), connection);
-
-		if (isConnectionOpen(connection))
-			connection.close();
+	public List<Film> getByRating(String rating) {
+		List<Film> films =  convertListToGenerated(this.em.createQuery(buildBaseQuery(buildRatingPredicate(rating))).getResultList());
 
 		return films;
 	}
 
-	public List<Film> getByReleaseYear(int year) throws SQLException {
-		connection = getConnection();
-		List<Film> films =  convertListToGenerated(connection.prepareStatement(baseQuery+"WHERE film.release_year='"+year+"';").executeQuery(), connection);
+	private Predicate buildRatingPredicate(String rating) {
+		return criteriaBuilder.equal(from.get("rating"),rating);
+	}
 
-		if (isConnectionOpen(connection))
-			connection.close();
+	public List<Film> getByReleaseYear(int year) {
+		List<Film> films =  convertListToGenerated(this.em.createQuery(buildBaseQuery(buildReleaseYearPredicate(year))).getResultList());
 
 		return films;
 	}
 
-	public List<Film> getByTitle(String title) throws SQLException {
-		connection = getConnection();
-		List<Film> films =  convertListToGenerated(connection.prepareStatement(baseQuery+"WHERE film.title='"+title+"';").executeQuery(), connection);
+	private Predicate buildReleaseYearPredicate(int year) {
+		return criteriaBuilder.equal(from.get("release_year"),year);
+	}
 
-		if (isConnectionOpen(connection))
-			connection.close();
+	public List<Film> getByTitle(String title) {
+		return convertListToGenerated(this.em.createQuery(buildBaseQuery(buildTitlePredicate(title))).getResultList());
+	}
 
-		return films;
+	private Predicate buildTitlePredicate(String title) {
+		return criteriaBuilder.equal(from.get("title"),title);
 	}
 
 	public Summary getSummary(long id){
@@ -209,64 +194,94 @@ public class FilmDao extends Database {
 	/******************************
 			Conversions
 	******************************
-	 * @param resultSet*/
-	private List<Film> convertListToGenerated(ResultSet resultSet, Connection connection) throws SQLException {
+	 * @param entities*/
+	private List<Film> convertListToGenerated(List<FilmEntity> entities) {
 		List<Film> filmList = new ArrayList<>();
 		System.out.println("converting list to generated");
 
-		while (resultSet.next()){
-			filmList.add(convertSingleToGenerated(resultSet, connection));
+		for (FilmEntity entity : entities) {
+			filmList.add(convertSingleToGenerated(entity));
 		}
 
 		return filmList;
 	}
 
-	private Film convertSingleToGenerated(ResultSet resultSet, Connection connection) throws SQLException {
+	private Film convertSingleToGenerated(FilmEntity filmEntity) {
 		Film film = new Film();
 
 		System.out.println("converting single to generated");
 
-		film.setFilmId(BigInteger.valueOf(resultSet.getLong("film_id")));
-		film.setTitle(resultSet.getString("title"));
-		film.setDescription(resultSet.getString("description"));
-		film.setReleaseYear(resultSet.getInt("release_year"));
-		film.setLanguage(languageDao.getLanguage(resultSet.getLong("language_id")));
-		film.setOriginalLanguage(languageDao.getLanguage(resultSet.getLong(5)));
-		film.setRentalDuration(resultSet.getInt("rental_duration"));
-		film.setRentalRate(resultSet.getFloat("rental_rate"));
-		film.setLength(resultSet.getInt("length"));
-		film.setReplacementCost(resultSet.getFloat("replacement_cost"));
-		film.setRating(resultSet.getString("rating"));
-		film.setSpecialFeatures(resultSet.getString("special_features"));
-		film.setLastUpdate(resultSet.getString("last_update"));
-		film.setCategory(filmCategoryDao.getById(resultSet.getLong("film_id"), connection));
-		film.setActors(filmActorDao.getActors(resultSet.getLong("film_id"), connection));
+		film.setFilmId(BigInteger.valueOf(filmEntity.getFilm_id()));
+		film.setTitle(filmEntity.getTitle());
+		film.setDescription(filmEntity.getDescription());
+		film.setReleaseYear(filmEntity.getRelease_year());
+		film.setLanguage(languageDao.getLanguage(filmEntity.getLanguage_id()));
+		film.setOriginalLanguage(languageDao.getLanguage(filmEntity.getOriginal_language_id()));
+		film.setRentalDuration(filmEntity.getRental_duration());
+		film.setRentalRate(filmEntity.getRental_rate());
+		film.setLength(filmEntity.getLength());
+		film.setReplacementCost(filmEntity.getReplacement_cost());
+		film.setRating(filmEntity.getRating());
+		film.setSpecialFeatures(filmEntity.getSpecial_features());
+		film.setLastUpdate(filmEntity.getLast_update());
+		film.setCategory(filmCategoryDao.getById(filmEntity.getFilm_id()));
+		film.setActors(filmActorDao.getActors(filmEntity.getFilm_id()));
 
 		System.out.println("film_id = "+film.getFilmId());
 
 		return film;
 	}
 
-	List<Film> getAllFilms(List<FilmActorEntity> resultList) throws SQLException {
-		StringBuilder query = new StringBuilder(baseQuery + "WHERE film.film_id IN (");
+	List<Film> getAllFilms(List<FilmActorEntity> resultList) {
+		long[] ids = new long[resultList.size()];
 
-		for (FilmActorEntity filmActorEntity : resultList) {
-			query.append("'").append(filmActorEntity.getFilm_id()).append("', ");
+		for (int i = 0; i < resultList.size(); i++) {
+			ids[i] = resultList.get(i).getFilm_id();
 		}
 
-		query.deleteCharAt(query.length()-1).deleteCharAt(query.length()-1).append(");");
-
-		connection = getConnection();
-
-		List<Film> films = convertListToGenerated(connection.prepareStatement(query.toString()).getResultSet(),connection);
-
-		if (isConnectionOpen(connection))
-			connection.close();
+		List<Film> films = convertListToGenerated(this.em.createQuery(buildBaseQuery(buildIdPredicate(ids))).getResultList());
 
 		return films;
 	}
 
-	public List<Actor> getActors(long filmId) throws SQLException {
-		return filmActorDao.getActors(filmId, getConnection());
+	private Predicate buildIdPredicate(long[] ids) {
+		Expression<Long> expression = from.get("film_id");
+		return expression.in(ids);
+	}
+
+	public List<Actor> getActors(long filmId) {
+		return filmActorDao.getActors(filmId);
+	}
+
+	private Predicate buildIdPredicate(long id) {
+		return criteriaBuilder.equal(from.get("film_id"),id);
+	}
+
+	private CriteriaQuery<FilmEntity> buildBaseQuery(Predicate predicate){
+		CriteriaQuery<FilmEntity> query = criteriaBuilder.createQuery(FilmEntity.class);
+
+		List<Selection> selections = new ArrayList<>();
+		selections.add(from.get("film_id"));
+		selections.add(from.get("title"));
+		selections.add(from.get("description"));
+		selections.add(from.get("release_year"));
+		selections.add(from.get("langauge_id"));
+		selections.add(coalesce);
+		selections.add(from.get("rental_duration"));
+		selections.add(from.get("rental_rate"));
+		selections.add(from.get("length"));
+		selections.add(from.get("replacement_cost"));
+		selections.add(from.get("rating"));
+		selections.add(from.get("special_features"));
+		selections.add(from.get("last_update"));
+
+		for (Selection selection : selections){
+			query.select(selection);
+		}
+
+		if (predicate != null)
+				query.where(predicate);
+
+		return query;
 	}
 }

@@ -36,7 +36,7 @@ public class InventoryDao extends Database {
 		return convertEntitiesToGenerated(this.em.createQuery(baseQuery,InventoryEntity.class).getResultList());
 	}
 
-	private Inventory convertEntityToGenerated(InventoryEntity entity) throws SQLException {
+	private Inventory convertEntityToGenerated(InventoryEntity entity) {
 		Inventory inventory = new Inventory();
 
 		inventory.setInventoryId(entity.getInventory_id());
@@ -47,7 +47,7 @@ public class InventoryDao extends Database {
 		return inventory;
 	}
 
-	private List<Inventory> convertEntitiesToGenerated(List<InventoryEntity> entities) throws SQLException {
+	private List<Inventory> convertEntitiesToGenerated(List<InventoryEntity> entities) {
 		List<Inventory> inventories = new ArrayList<>();
 
 		for (InventoryEntity entity : entities) {
@@ -57,16 +57,16 @@ public class InventoryDao extends Database {
 		return inventories;
 	}
 
-	public Inventory getById(long id) throws SQLException {
+	public Inventory getById(long id) {
 		return convertEntityToGenerated(this.em.createQuery(baseQuery+"WHERE i.inventory_id='"+id+"'",InventoryEntity.class).getSingleResult());
 	}
 
-	public List<Inventory> getStoreInventory(long storeId) throws SQLException {
+	public List<Inventory> getStoreInventory(long storeId) {
 		return convertEntitiesToGenerated(this.em.createQuery(baseQuery+"WHERE i.store_id='"+storeId+"'",InventoryEntity.class).getResultList());
 	}
 
 	public void insert(CreateInventoryRequest request) {
-		String sql = "INSERT INTO sakila.inventory (film_id, store_id) VALUES ("+request.getFilmId()+", "+request.getStoreId()+");";
+		String sql = "INSERT INTO inventory (inventory.film_id, inventory.store_id) VALUES ("+request.getFilmId()+", "+request.getStoreId()+");";
 		try {
 			getConnection().createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
@@ -75,7 +75,7 @@ public class InventoryDao extends Database {
 	}
 
 	public void delete(long inventoryId) {
-		String sql = "DELETE FROM sakila.inventory WHERE inventory_id='"+inventoryId+"';";
+		String sql = "DELETE FROM inventory WHERE inventory.inventory_id='"+inventoryId+"';";
 		try {
 			getConnection().createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
@@ -84,14 +84,14 @@ public class InventoryDao extends Database {
 	}
 
 	public void update(UpdateInventoryRequest request) {
-		String sql = "UPDATE sakila.inventory SET ";
+		String sql = "UPDATE inventory SET ";
 
 		if (request.getFilmId()!=null)
-			sql += "film_id = '"+request.getFilmId()+"', ";
+			sql += "inventory.film_id = '"+request.getFilmId()+"', ";
 		if (request.getStoreId() != null)
-			sql += "store_id = '"+request.getStoreId()+"', ";
+			sql += "inventory.store_id = '"+request.getStoreId()+"', ";
 
-		sql += sql.subSequence(0,sql.length()-3) + " WHERE inventory_id = '"+request.getInventoryId()+"';";
+		sql += sql.subSequence(0,sql.length()-3) + " WHERE inventory.inventory_id = '"+request.getInventoryId()+"';";
 
 		try {
 			getConnection().createStatement().executeUpdate(sql);

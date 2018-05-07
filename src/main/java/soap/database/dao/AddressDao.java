@@ -32,7 +32,7 @@ public class AddressDao extends Database {
 	}
 
 	public void insert(CreateAddressRequest request) {
-		String sql = "INSERT INTO sakila.address (addess, address2, district, city_id, postal_code, phone) VALUES " +
+		String sql = "INSERT INTO address (address.address, address.address2, address.district, address.city_id, address.postal_code, address.phone) VALUES " +
 				"('"+request.getAddress()+"', '"+
 				request.getAddress2()+"', '"+
 				request.getDistrict()+"', '"+
@@ -77,7 +77,7 @@ public class AddressDao extends Database {
 	}
 
 	public void delete(long addressId) {
-		String sql = "DELETE FROM sakila.address WHERE address_id='"+addressId+"';";
+		String sql = "DELETE FROM address WHERE address.address_id='"+addressId+"';";
 		try {
 			getConnection().createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
@@ -86,22 +86,22 @@ public class AddressDao extends Database {
 	}
 
 	public void update(UpdateAddressRequest request) {
-		String sql = "UPDATE sakila.address SET ";
+		String sql = "UPDATE address SET ";
 
 		if (request.getAddress()!=null)
-			sql += "address = '"+request.getAddress()+"', ";
+			sql += "address.address = '"+request.getAddress()+"', ";
 		if (request.getAddress2()!=null)
-			sql += "address2 = '"+request.getAddress2()+"', ";
+			sql += "address.address2 = '"+request.getAddress2()+"', ";
 		if (request.getCity()!=null)
-			sql += "city = '"+cityDao.getIdByName(request.getCity())+"', ";
+			sql += "address.city = '"+cityDao.getIdByName(request.getCity())+"', ";
 		if (request.getDistrict()!=null)
-			sql += "district = '"+request.getDistrict()+"', ";
+			sql += "address.district = '"+request.getDistrict()+"', ";
 		if (request.getPhone()!=null)
-			sql += "phone = '"+request.getPhone()+"', ";
+			sql += "address.phone = '"+request.getPhone()+"', ";
 		if (request.getPostalCode()!=null)
-			sql += "postal_code = '"+request.getPostalCode()+"', ";
+			sql += "address.postal_code = '"+request.getPostalCode()+"', ";
 
-		sql = sql.substring(0,sql.length()-3) + " WHERE address_id = '"+request.getAddressId()+"';";
+		sql = sql.substring(0,sql.length()-3) + " WHERE address.address_id = '"+request.getAddressId()+"';";
 
 		try {
 			getConnection().createStatement().executeUpdate(sql);

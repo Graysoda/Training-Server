@@ -2,29 +2,24 @@ package soap.database.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import soap.database.Database;
+import soap.database.entity.FilmCategoryEntity;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 @Repository
-public class FilmCategoryDao extends Database {
+public class FilmCategoryDao {
 	@PersistenceContext
 	private EntityManager em;
 	private CategoryDao categoryDao;
-	private String baseQuery = "SELECT film_category.film_id, film_category.category_id FROM film_category";
+	private String baseQuery = "SELECT fc FROM sakila.film_category ";
 
 	@Autowired
 	public void setCategoryDao(CategoryDao categoryDao) {
 		this.categoryDao = categoryDao;
 	}
 
-    public String getById(long film_id, Connection connection) throws SQLException {
-        ResultSet resultSet = connection.prepareStatement(baseQuery+" WHERE film_category.film_id = '"+film_id+"'").executeQuery();
-        resultSet.next();
-        return categoryDao.getNameById(resultSet.getLong("category_id"));
+    public String getById(long film_id) {
+        return categoryDao.getNameById(this.em.createQuery(baseQuery+"WHERE fc.film_id = "+film_id,FilmCategoryEntity.class).getSingleResult().getCategory_id());
 	}
 }
