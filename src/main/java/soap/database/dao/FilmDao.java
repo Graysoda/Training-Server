@@ -19,30 +19,30 @@ import java.util.List;
 public class FilmDao extends Database{
 	@PersistenceContext
 	private EntityManager em;
-	private LanguageDao languageDao;
-	private SummaryDao summaryDao;
-	private FilmActorDao filmActorDao;
-	private FilmCategoryDao filmCategoryDao;
+	@Autowired private LanguageDao languageDao;
+	@Autowired private SummaryDao summaryDao;
+	@Autowired private FilmActorDao filmActorDao;
+	@Autowired private FilmCategoryDao filmCategoryDao;
 
-	@Autowired
-	public void setLanguageDao(LanguageDao languageDao) {
-		this.languageDao = languageDao;
-	}
-
-	@Autowired
-	public void setSummaryDao(SummaryDao summaryDao) {
-		this.summaryDao = summaryDao;
-	}
-
-	@Autowired
-	public void setFilmCategoryDao(FilmCategoryDao filmCategoryDao) {
-		this.filmCategoryDao = filmCategoryDao;
-	}
-
-	@Autowired
-	public void setFilmActorDao(FilmActorDao filmActorDao) {
-		this.filmActorDao = filmActorDao;
-	}
+//	@Autowired
+//	public void setLanguageDao(LanguageDao languageDao) {
+//		this.languageDao = languageDao;
+//	}
+//
+//	@Autowired
+//	public void setSummaryDao(SummaryDao summaryDao) {
+//		this.summaryDao = summaryDao;
+//	}
+//
+//	@Autowired
+//	public void setFilmCategoryDao(FilmCategoryDao filmCategoryDao) {
+//		this.filmCategoryDao = filmCategoryDao;
+//	}
+//
+//	@Autowired
+//	public void setFilmActorDao(FilmActorDao filmActorDao) {
+//		this.filmActorDao = filmActorDao;
+//	}
 
 	public void create(CreateFilmRequest request) {
 		String sql = "INSERT INTO film " +
