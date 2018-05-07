@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @Repository
@@ -27,6 +28,8 @@ public class FilmCategoryDao {
     }
 
     public String getById(long film_id) throws SQLException {
-        return categoryDao.getNameById(connection.prepareStatement(baseQuery+" WHERE film_category.film_id = '"+film_id+"'").executeQuery().getLong("category_id"));
+        ResultSet resultSet = connection.prepareStatement(baseQuery+" WHERE film_category.film_id = '"+film_id+"'").executeQuery();
+        resultSet.next();
+        return categoryDao.getNameById(resultSet.getLong("category_id"));
 	}
 }
