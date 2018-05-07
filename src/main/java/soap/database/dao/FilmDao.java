@@ -144,6 +144,7 @@ public class FilmDao {
 	 				Queries
 	 ****************************************/
 	public List<Film> getAll() throws SQLException {
+		System.out.println("in get all films");
 		return convertListToGenerated(connection.prepareStatement(baseQuery+";").executeQuery());
 	}
 
@@ -173,6 +174,7 @@ public class FilmDao {
 	 * @param resultSet*/
 	private List<Film> convertListToGenerated(ResultSet resultSet) throws SQLException {
 		List<Film> filmList = new ArrayList<>();
+		System.out.println("converting list to generated");
 
 		while (resultSet.next()){
 			filmList.add(convertSingleToGenerated(resultSet));
@@ -183,6 +185,8 @@ public class FilmDao {
 
 	private Film convertSingleToGenerated(ResultSet resultSet) throws SQLException {
 		Film film = new Film();
+
+		System.out.println("converting single to generated");
 
 		film.setFilmId(BigInteger.valueOf(resultSet.getLong("film_id")));
 		film.setTitle(resultSet.getString("title"));
@@ -199,6 +203,8 @@ public class FilmDao {
 		film.setLastUpdate(resultSet.getString("last_update"));
 		film.setCategory(filmCategoryDao.getById(resultSet.getLong("film_id")));
 		film.setActors(filmActorDao.getActors(resultSet.getLong("film_id")));
+
+		System.out.println("film_id = "+film.getFilmId());
 
 		return film;
 	}

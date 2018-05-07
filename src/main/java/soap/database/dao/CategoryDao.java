@@ -12,7 +12,8 @@ public class CategoryDao {
 	private EntityManager em;
 	private String baseQuery = "SELECT c FROM sakila.category c ";
 
-	public CategoryEntity getById(long category_id) {
-		return this.em.createQuery(baseQuery+"WHERE c.category_id = '"+category_id+"'",CategoryEntity.class).getSingleResult();
+	public String getNameById(long category_id) {
+        System.out.println("category dao get name by id");
+		return this.em.createQuery(baseQuery+"WHERE c.category_id = "+category_id,CategoryEntity.class).getSingleResult().getName();
 	}
 }
