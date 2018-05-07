@@ -1,5 +1,6 @@
 package soap.database.dao;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import soap.database.entity.FilmActorEntity;
 import soap.generated.Actor;
@@ -19,6 +20,11 @@ public class FilmActorDao {
 	private EntityManager em;
 	private Connection connection;
 	private String baseQuery = "SELECT fa from film_actor fa ";
+
+	@Autowired
+	public void setConnection(Connection connection) {
+		this.connection = connection;
+	}
 
 	List<Actor> getActors(long film_id) throws SQLException {
 		ActorDao actorDao = new ActorDao();
