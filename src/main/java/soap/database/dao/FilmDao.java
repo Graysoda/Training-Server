@@ -173,6 +173,7 @@ public class FilmDao extends Database{
 		System.out.println("converting list to generated");
 
 		for (FilmEntity entity : entities) {
+			System.out.println("Inside loop");
 			filmList.add(convertSingleToGenerated(entity));
 		}
 
@@ -180,6 +181,7 @@ public class FilmDao extends Database{
 	}
 
 	private Film convertSingleToGenerated(FilmEntity entity) {
+		System.out.println("Instantiate Film");
 		Film film = new Film();
 
 		System.out.println("converting single to generated");
