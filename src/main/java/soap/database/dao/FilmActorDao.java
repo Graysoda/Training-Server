@@ -22,7 +22,11 @@ public class FilmActorDao {
 
 	List<Actor> getActors(long film_id) throws SQLException {
 		ActorDao actorDao = new ActorDao();
-		return actorDao.getAllActors(parseResultSetToList(connection.prepareStatement("SELECT film_actor.actor_id FROM film_actor WHERE film_actor.film_id = '"+film_id+"'").executeQuery()));
+		return actorDao.getAllActors(parseResultSetToList(connection.prepareStatement(
+		        "SELECT film_actor.actor_id, film_actor.film_id, film_actor.last_update " +
+                "FROM film_actor " +
+                "WHERE film_actor.film_id = '"+film_id+"'")
+                .executeQuery()));
 	}
 
 	private List<FilmActorEntity> parseResultSetToList(ResultSet resultSet) throws SQLException {
