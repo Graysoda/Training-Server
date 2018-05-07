@@ -88,7 +88,7 @@ public class FilmsEndpoint {
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getFilmsActorsRequest")
 	@ResponsePayload
-	public GetFilmsActorsResponse getFilmsActors(@RequestPayload GetFilmsActorsRequest request){
+	public GetFilmsActorsResponse getFilmsActors(@RequestPayload GetFilmsActorsRequest request) throws SQLException {
 		GetFilmsActorsResponse response = new GetFilmsActorsResponse();
 		response.setActors(filmService.getFilmsActors(request.getFilmId()));
 		return response;

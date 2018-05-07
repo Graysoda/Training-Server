@@ -15,5 +15,5 @@ public interface FilmService {
 	public List<Film> getFilmByTitle(String title) throws SQLException;
 	void deleteFilm(long filmId);
 	Summary getFilmSummary(long filmId);
-	List<Actor> getFilmsActors(long filmId);
+	List<Actor> getFilmsActors(long filmId) throws SQLException;
 }

@@ -71,7 +71,7 @@ public class FilmServiceImpl implements FilmService {
 	}
 
 	@Override
-	public List<Actor> getFilmsActors(long filmId) {
+	public List<Actor> getFilmsActors(long filmId) throws SQLException {
 		return filmDao.getActors(filmId);
 	}
 }

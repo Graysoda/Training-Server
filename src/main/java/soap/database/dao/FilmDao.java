@@ -221,7 +221,7 @@ public class FilmDao {
 		return convertListToGenerated(connection.prepareStatement(query.toString()).getResultSet());
 	}
 
-	public List<Actor> getActors(long filmId) {
+	public List<Actor> getActors(long filmId) throws SQLException {
 		return filmActorDao.getActors(filmId);
 	}
 }
