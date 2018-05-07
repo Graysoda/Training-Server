@@ -6,6 +6,7 @@
 package soap.database;
 
 import org.apache.commons.dbcp.BasicDataSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +22,8 @@ import java.sql.SQLException;
 @EnableTransactionManagement
 @EntityScan(basePackages = "soap.database.entity")
 public class Database {
+	@Autowired
+	protected Connection connection;
 
 	@Bean
 	public BasicDataSource dataSource() throws URISyntaxException, SQLException {

@@ -2,6 +2,7 @@ package soap.database.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import soap.database.Database;
 import soap.database.entity.AddressEntity;
 import soap.generated.Address;
 import soap.generated.CreateAddressRequest;
@@ -10,25 +11,16 @@ import soap.generated.UpdateAddressRequest;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 @Transactional
-public class AddressDao {
+public class AddressDao extends Database {
 	@PersistenceContext private EntityManager em;
 	private CityDao cityDao;
-	private Connection connection;
 	private String baseQuery = "SELECT adr FROM sakila.address adr ";
-
-	public AddressDao(){}
-
-	@Autowired
-	public void setConnection(Connection connection){
-		this.connection = connection;
-	}
 
 	@Autowired
 	public void setCityDao(CityDao cityDao) {

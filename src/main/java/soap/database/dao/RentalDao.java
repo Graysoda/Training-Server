@@ -2,6 +2,7 @@ package soap.database.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import soap.database.Database;
 import soap.database.entity.RentalEntity;
 import soap.generated.CreateRentalRequest;
 import soap.generated.Rental;
@@ -9,16 +10,14 @@ import soap.generated.UpdateRentalRequest;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class RentalDao {
+public class RentalDao extends Database {
 	@PersistenceContext
 	private EntityManager em;
-	private Connection connection;
 	private CustomerDao customerDao;
 	private FilmDao filmDao;
 	private StaffDao staffDao;

@@ -7,6 +7,7 @@ package soap.database.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import soap.database.Database;
 import soap.database.entity.ActorEntity;
 import soap.database.entity.FilmActorEntity;
 import soap.generated.*;
@@ -15,7 +16,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -23,21 +23,15 @@ import java.util.List;
 
 @Repository
 @Transactional
-public class ActorDao {
+public class ActorDao extends Database {
 	@PersistenceContext
 	private EntityManager em;
 	private FilmActorDao filmActorDao;
-	private Connection connection;
 	private String baseQuery = "SELECT a FROM sakila.actor a ";
 
 	@Autowired
 	public void setFilmActorDao(FilmActorDao filmActorDao) {
 		this.filmActorDao = filmActorDao;
-	}
-
-	@Autowired
-	public void setConnection(Connection connection) {
-		this.connection = connection;
 	}
 
 	public void insert(CreateActorRequest request){

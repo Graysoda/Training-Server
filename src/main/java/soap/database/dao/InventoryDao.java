@@ -2,6 +2,7 @@ package soap.database.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import soap.database.Database;
 import soap.database.entity.InventoryEntity;
 import soap.generated.CreateInventoryRequest;
 import soap.generated.Inventory;
@@ -9,25 +10,18 @@ import soap.generated.UpdateInventoryRequest;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class InventoryDao {
+public class InventoryDao extends Database {
 	@PersistenceContext
 	private EntityManager em;
-	private Connection connection;
 	private FilmDao filmDao;
 	private StoreDao storeDao;
 	private String baseQuery = "SELECT i FROM sakila.inventory i ";
-
-	@Autowired
-	public void setConnection(Connection connection) {
-		this.connection = connection;
-	}
 
 	@Autowired
 	public void setFilmDao(FilmDao filmDao) {

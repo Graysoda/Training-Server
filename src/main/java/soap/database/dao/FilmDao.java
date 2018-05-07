@@ -2,23 +2,22 @@ package soap.database.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import soap.database.Database;
 import soap.database.entity.FilmActorEntity;
 import soap.generated.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.math.BigInteger;
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class FilmDao {
+public class FilmDao extends Database {
 	@PersistenceContext
 	private EntityManager em;
-	private Connection connection;
 	private LanguageDao languageDao;
 	private SummaryDao summaryDao;
 	private FilmActorDao filmActorDao;
@@ -57,11 +56,6 @@ public class FilmDao {
 	@Autowired
 	public void setFilmActorDao(FilmActorDao filmActorDao) {
 		this.filmActorDao = filmActorDao;
-	}
-
-	@Autowired
-	public void setConnection(Connection connection){
-		this.connection = connection;
 	}
 
 	public void create(CreateFilmRequest request) {

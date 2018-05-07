@@ -1,7 +1,7 @@
 package soap.database.dao;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import soap.database.Database;
 import soap.database.entity.PaymentEntity;
 import soap.generated.CreatePaymentRequest;
 import soap.generated.Payment;
@@ -9,22 +9,15 @@ import soap.generated.UpdatePaymentRequest;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class PaymentDao {
+public class PaymentDao extends Database {
 	@PersistenceContext
 	private EntityManager em;
-	private Connection connection;
 	private String baseQuery = "SELECT p FROM sakila.payment p ";
-
-	@Autowired
-	public void setConnection(Connection connection) {
-		this.connection = connection;
-	}
 
 	public List<Payment> getAll(){
 		return convertEntitiesToGenerated(this.em.createQuery(baseQuery,PaymentEntity.class).getResultList());
