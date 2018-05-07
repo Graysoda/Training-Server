@@ -244,7 +244,7 @@ public class FilmDao extends Database{
 		selections.add(from.get("title"));
 		selections.add(from.get("description"));
 		selections.add(from.get("release_year"));
-		selections.add(from.get("langauge_id"));
+		selections.add(from.get("language_id"));
 		selections.add(coalesce);
 		selections.add(from.get("rental_duration"));
 		selections.add(from.get("rental_rate"));
