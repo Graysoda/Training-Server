@@ -91,7 +91,7 @@ public class RentalDao extends Database {
 				request.getRentalDate()+", "+
 				request.getReturnDate()+");";
 		try {
-			connection.createStatement().executeUpdate(sql);
+			getConnection().createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -100,7 +100,7 @@ public class RentalDao extends Database {
 	public void delete(long rentalId) {
 		String sql = "DELETE FROM sakila.rental WHERE rental_id='"+rentalId+"';";
 		try {
-			connection.createStatement().executeUpdate(sql);
+			getConnection().createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -123,7 +123,7 @@ public class RentalDao extends Database {
 		sql = sql.substring(0,sql.length()-3) + "WHERE rental_id = '"+request.getRentalId()+"';";
 
 		try {
-			connection.createStatement().executeUpdate(sql);
+			getConnection().createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

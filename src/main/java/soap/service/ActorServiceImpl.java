@@ -38,18 +38,18 @@ public class ActorServiceImpl implements ActorService {
 
 	@Override
 	@Transactional
-	public void insertActor(CreateActorRequest request) {
+	public void insertActor(CreateActorRequest request) throws SQLException {
 		actorDao.insert(request);
 	}
 
 	@Override
 	@Transactional
-	public void updateActor(UpdateActorRequest request) {
+	public void updateActor(UpdateActorRequest request) throws SQLException {
 		actorDao.update(request);
 	}
 
 	@Override
-	public void deleteActor(DeleteActorRequest request) {
+	public void deleteActor(DeleteActorRequest request) throws SQLException {
 		actorDao.delete(request);
 	}
 

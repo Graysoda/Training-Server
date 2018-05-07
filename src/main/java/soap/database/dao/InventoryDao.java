@@ -11,7 +11,6 @@ import soap.generated.UpdateInventoryRequest;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,8 +68,7 @@ public class InventoryDao extends Database {
 	public void insert(CreateInventoryRequest request) {
 		String sql = "INSERT INTO sakila.inventory (film_id, store_id) VALUES ("+request.getFilmId()+", "+request.getStoreId()+");";
 		try {
-			Statement statement = connection.createStatement();
-			statement.executeUpdate( sql);
+			getConnection().createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -79,7 +77,7 @@ public class InventoryDao extends Database {
 	public void delete(long inventoryId) {
 		String sql = "DELETE FROM sakila.inventory WHERE inventory_id='"+inventoryId+"';";
 		try {
-			connection.createStatement().executeUpdate(sql);
+			getConnection().createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -96,7 +94,7 @@ public class InventoryDao extends Database {
 		sql += sql.subSequence(0,sql.length()-3) + " WHERE inventory_id = '"+request.getInventoryId()+"';";
 
 		try {
-			connection.createStatement().executeUpdate(sql);
+			getConnection().createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

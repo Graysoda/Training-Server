@@ -9,6 +9,7 @@ import soap.generated.*;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.math.BigInteger;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import java.util.List;
 public class FilmDao extends Database {
 	@PersistenceContext
 	private EntityManager em;
+	private Connection connection = null;
 	private LanguageDao languageDao;
 	private SummaryDao summaryDao;
 	private FilmActorDao filmActorDao;
@@ -58,7 +60,7 @@ public class FilmDao extends Database {
 		this.filmActorDao = filmActorDao;
 	}
 
-	public void create(CreateFilmRequest request) {
+	public void create(CreateFilmRequest request) throws SQLException {
 		String sql = "INSERT INTO film " +
 				"(film.title, " +
 				"film.description, " +
@@ -84,13 +86,17 @@ public class FilmDao extends Database {
 				request.getRating()+", "+
 				request.getSpecialFeatures()+");";
 		try {
+			connection = getConnection();
 			connection.createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			if (isConnectionOpen(connection))
+				connection.close();
 		}
 	}
 
-	public void update(UpdateFilmRequest request) {
+	public void update(UpdateFilmRequest request) throws SQLException {
 		String sql = "UPDATE sakila.film SET ";
 		if (request.getTitle() != null)
 			sql += "title = '"+request.getTitle()+"', ";
@@ -118,18 +124,26 @@ public class FilmDao extends Database {
 		sql += sql.subSequence(0,sql.length()-3) + " WHERE film_id = '"+request.getFilmId()+"';";
 
 		try {
+			connection = getConnection();
 			connection.createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			if (isConnectionOpen(connection))
+				connection.close();
 		}
 	}
 
-	public void delete(long filmId) {
+	public void delete(long filmId) throws SQLException {
 		String sql = "DELETE FROM sakila.film WHERE film_id='"+filmId+"';";
 		try {
+			connection = getConnection();
 			connection.createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			if (isConnectionOpen(connection))
+				connection.close();
 		}
 	}
 
@@ -139,23 +153,53 @@ public class FilmDao extends Database {
 	 ****************************************/
 	public List<Film> getAll() throws SQLException {
 		System.out.println("in get all films");
-		return convertListToGenerated(connection.prepareStatement(baseQuery+";").executeQuery());
+		connection = getConnection();
+		List<Film> films = convertListToGenerated(connection.prepareStatement(baseQuery+";").executeQuery(), connection);
+		if (!connection.isClosed())
+			connection.close();
+		return films;
 	}
 
 	public Film getById(long id) throws SQLException {
-		return convertSingleToGenerated(connection.prepareStatement(baseQuery+"WHERE film.film_id = '" + id+"'").executeQuery());
+		connection = getConnection();
+		Film film =  convertSingleToGenerated(connection.prepareStatement(baseQuery+"WHERE film.film_id = '" + id+"'").executeQuery(), connection);
+		if (isConnectionOpen(connection))
+			connection.close();
+		return film;
+	}
+
+	private boolean isConnectionOpen(Connection connection) throws SQLException {
+		return connection!=null && !connection.isClosed();
 	}
 
 	public List<Film> getByRating(String rating) throws SQLException {
-		return convertListToGenerated(connection.prepareStatement(baseQuery+"WHERE film.rating='"+rating+"';").executeQuery());
+		connection = getConnection();
+		List<Film> films =  convertListToGenerated(connection.prepareStatement(baseQuery+"WHERE film.rating='"+rating+"';").executeQuery(), connection);
+
+		if (isConnectionOpen(connection))
+			connection.close();
+
+		return films;
 	}
 
 	public List<Film> getByReleaseYear(int year) throws SQLException {
-		return convertListToGenerated(connection.prepareStatement(baseQuery+"WHERE film.release_year='"+year+"';").executeQuery());
+		connection = getConnection();
+		List<Film> films =  convertListToGenerated(connection.prepareStatement(baseQuery+"WHERE film.release_year='"+year+"';").executeQuery(), connection);
+
+		if (isConnectionOpen(connection))
+			connection.close();
+
+		return films;
 	}
 
 	public List<Film> getByTitle(String title) throws SQLException {
-		return convertListToGenerated(connection.prepareStatement(baseQuery+"WHERE film.title='"+title+"';").executeQuery());
+		connection = getConnection();
+		List<Film> films =  convertListToGenerated(connection.prepareStatement(baseQuery+"WHERE film.title='"+title+"';").executeQuery(), connection);
+
+		if (isConnectionOpen(connection))
+			connection.close();
+
+		return films;
 	}
 
 	public Summary getSummary(long id){
@@ -166,18 +210,18 @@ public class FilmDao extends Database {
 			Conversions
 	******************************
 	 * @param resultSet*/
-	private List<Film> convertListToGenerated(ResultSet resultSet) throws SQLException {
+	private List<Film> convertListToGenerated(ResultSet resultSet, Connection connection) throws SQLException {
 		List<Film> filmList = new ArrayList<>();
 		System.out.println("converting list to generated");
 
 		while (resultSet.next()){
-			filmList.add(convertSingleToGenerated(resultSet));
+			filmList.add(convertSingleToGenerated(resultSet, connection));
 		}
 
 		return filmList;
 	}
 
-	private Film convertSingleToGenerated(ResultSet resultSet) throws SQLException {
+	private Film convertSingleToGenerated(ResultSet resultSet, Connection connection) throws SQLException {
 		Film film = new Film();
 
 		System.out.println("converting single to generated");
@@ -195,8 +239,8 @@ public class FilmDao extends Database {
 		film.setRating(resultSet.getString("rating"));
 		film.setSpecialFeatures(resultSet.getString("special_features"));
 		film.setLastUpdate(resultSet.getString("last_update"));
-		film.setCategory(filmCategoryDao.getById(resultSet.getLong("film_id")));
-		film.setActors(filmActorDao.getActors(resultSet.getLong("film_id")));
+		film.setCategory(filmCategoryDao.getById(resultSet.getLong("film_id"), connection));
+		film.setActors(filmActorDao.getActors(resultSet.getLong("film_id"), connection));
 
 		System.out.println("film_id = "+film.getFilmId());
 
@@ -212,10 +256,17 @@ public class FilmDao extends Database {
 
 		query.deleteCharAt(query.length()-1).deleteCharAt(query.length()-1).append(");");
 
-		return convertListToGenerated(connection.prepareStatement(query.toString()).getResultSet());
+		connection = getConnection();
+
+		List<Film> films = convertListToGenerated(connection.prepareStatement(query.toString()).getResultSet(),connection);
+
+		if (isConnectionOpen(connection))
+			connection.close();
+
+		return films;
 	}
 
 	public List<Actor> getActors(long filmId) throws SQLException {
-		return filmActorDao.getActors(filmId);
+		return filmActorDao.getActors(filmId, getConnection());
 	}
 }

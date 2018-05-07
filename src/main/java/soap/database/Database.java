@@ -21,11 +21,6 @@ import java.sql.SQLException;
 @EnableTransactionManagement
 @EntityScan(basePackages = "soap.database.entity")
 public class Database {
-	protected Connection connection;
-
-	public Database() throws SQLException {
-		getConnection();
-	}
 
 	@Bean
 	public BasicDataSource dataSource() throws URISyntaxException, SQLException {
@@ -46,7 +41,6 @@ public class Database {
 	@Bean
 	public Connection getConnection() throws SQLException {
 		String dbUrl = System.getenv("JDBC_DATABASE_URL");
-		connection =  DriverManager.getConnection(dbUrl);
-		return connection;
+		return DriverManager.getConnection(dbUrl);
 	}
 }

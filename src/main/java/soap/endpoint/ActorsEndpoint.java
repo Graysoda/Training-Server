@@ -22,17 +22,17 @@ public class ActorsEndpoint {
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "createActorRequest")
-	public void createActor(@RequestPayload CreateActorRequest request){
+	public void createActor(@RequestPayload CreateActorRequest request) throws SQLException {
 		actorService.insertActor(request);
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "updateActorRequest")
-	public void updateActor(@RequestPayload UpdateActorRequest request){
+	public void updateActor(@RequestPayload UpdateActorRequest request) throws SQLException {
 		actorService.updateActor(request);
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "deleteActorRequest")
-	public void deleteActor(@RequestPayload DeleteActorRequest request){
+	public void deleteActor(@RequestPayload DeleteActorRequest request) throws SQLException {
 		actorService.deleteActor(request);
 	}
 

@@ -54,7 +54,7 @@ public class PaymentDao extends Database {
 				request.getAmount()+", " +
 				request.getPaymentDate()+");";
 		try {
-			connection.createStatement().executeUpdate(sql);
+			getConnection().createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -63,7 +63,7 @@ public class PaymentDao extends Database {
 	public void delete(long paymentId) {
 		String sql = "DELETE FROM sakila.payment WHERE payment_id='"+paymentId+"';";
 		try {
-			connection.createStatement().executeUpdate(sql);
+			getConnection().createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -86,7 +86,7 @@ public class PaymentDao extends Database {
 		sql = sql.substring(0,sql.length()-3) + " WHERE payment_id = '"+request.getPaymentId()+"';";
 
 		try {
-			connection.createStatement().executeUpdate(sql);
+			getConnection().createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

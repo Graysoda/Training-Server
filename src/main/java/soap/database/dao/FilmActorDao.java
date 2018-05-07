@@ -8,6 +8,7 @@ import soap.generated.Film;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ public class FilmActorDao extends Database {
 	private EntityManager em;
 	private String baseQuery = "SELECT fa from film_actor fa ";
 
-	List<Actor> getActors(long film_id) throws SQLException {
+	List<Actor> getActors(long film_id, Connection connection) throws SQLException {
 		ActorDao actorDao = new ActorDao();
 		System.out.println("film actor dao get actors");
 		return actorDao.getAllActors(parseResultSetToList(connection.prepareStatement(

@@ -73,7 +73,7 @@ public class StaffDao extends Database {
 				request.getUsername()+", " +
 				request.getPassword()+");";
 		try {
-			connection.createStatement().executeUpdate(sql);
+			getConnection().createStatement().executeUpdate(sql);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -83,7 +83,7 @@ public class StaffDao extends Database {
 	public void delete(long staffId) {
 		String sql = "DELETE FROM sakila.staff WHERE satff_id='"+staffId+"';";
 		try {
-			connection.createStatement().executeUpdate(sql);
+			getConnection().createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -112,7 +112,7 @@ public class StaffDao extends Database {
 		sql = sql.substring(0,sql.length()-3) + " WHERE staff_id = '"+request.getStaffId()+"';";
 
 		try {
-			connection.createStatement().executeUpdate(sql);
+			getConnection().createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

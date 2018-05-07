@@ -19,13 +19,13 @@ public class FilmServiceImpl implements FilmService {
 
 	@Override
 	@Transactional
-	public void createFilm(CreateFilmRequest film) {
+	public void createFilm(CreateFilmRequest film) throws SQLException {
 		this.filmDao.create(film);
 	}
 
 	@Override
 	@Transactional
-	public void updateFilm(UpdateFilmRequest film) {
+	public void updateFilm(UpdateFilmRequest film) throws SQLException {
 		this.filmDao.update(film);
 	}
 
@@ -61,7 +61,7 @@ public class FilmServiceImpl implements FilmService {
 	}
 
 	@Override
-	public void deleteFilm(long filmId) {
+	public void deleteFilm(long filmId) throws SQLException {
 		filmDao.delete(filmId);
 	}
 

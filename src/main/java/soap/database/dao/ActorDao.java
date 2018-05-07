@@ -16,6 +16,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ import java.util.List;
 public class ActorDao extends Database {
 	@PersistenceContext
 	private EntityManager em;
+	private Connection connection;
 	private FilmActorDao filmActorDao;
 	private String baseQuery = "SELECT a FROM sakila.actor a ";
 
@@ -34,13 +36,21 @@ public class ActorDao extends Database {
 		this.filmActorDao = filmActorDao;
 	}
 
-	public void insert(CreateActorRequest request){
+	public void insert(CreateActorRequest request) throws SQLException {
 		String sql = "INSERT INTO actor (actor.first_name, actor.last_name) VALUES ('"+request.getFirstName()+"', '"+request.getLastName()+"');";
 		try {
+			connection = getConnection();
 			connection.createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			if (isConnectionOpen(connection))
+				connection.close();
 		}
+	}
+
+	private boolean isConnectionOpen(Connection connection) throws SQLException {
+		return connection!=null && !connection.isClosed();
 	}
 
 	public List<Actor> getAllActors() {
@@ -83,7 +93,7 @@ public class ActorDao extends Database {
 		return actors;
 	}
 
-	public void update(UpdateActorRequest request) {
+	public void update(UpdateActorRequest request) throws SQLException {
 		String sql = "UPDATE actor SET ";
 
 		 if (request.getNewLastName() != null)
@@ -93,18 +103,26 @@ public class ActorDao extends Database {
 
 		sql = sql.substring(0, sql.length()-3) + " WHERE actor.actor_id='"+request.getActorId()+"';";
 		try{
+			connection = getConnection();
 			connection.createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			if (isConnectionOpen(connection))
+				connection.close();
 		}
 	}
 
-	public void delete(DeleteActorRequest request) {
+	public void delete(DeleteActorRequest request) throws SQLException {
 		String sql = "DELETE FROM actor WHERE actor.actor_id='"+request.getActorId()+"';";
 		try {
+			connection = getConnection();
 			connection.createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			if (isConnectionOpen(connection))
+				connection.close();
 		}
 	}
 
@@ -122,7 +140,13 @@ public class ActorDao extends Database {
 		query.deleteCharAt(query.length()-1).deleteCharAt(query.length()-1).append(")");
 
         System.out.println("query = ["+ query.toString()+"]");
-		return parseResultSetToList(connection.prepareStatement(query.toString()).executeQuery());
+        connection = getConnection();
+		List<Actor> actors =  parseResultSetToList(connection.prepareStatement(query.toString()).executeQuery());
+
+		if (isConnectionOpen(connection))
+			connection.close();
+
+		return actors;
 	}
 
     private List<Actor> parseResultSetToList(ResultSet resultSet) throws SQLException {

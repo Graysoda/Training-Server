@@ -6,6 +6,7 @@ import soap.database.Database;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -21,7 +22,7 @@ public class FilmCategoryDao extends Database {
 		this.categoryDao = categoryDao;
 	}
 
-    public String getById(long film_id) throws SQLException {
+    public String getById(long film_id, Connection connection) throws SQLException {
         ResultSet resultSet = connection.prepareStatement(baseQuery+" WHERE film_category.film_id = '"+film_id+"'").executeQuery();
         resultSet.next();
         return categoryDao.getNameById(resultSet.getLong("category_id"));

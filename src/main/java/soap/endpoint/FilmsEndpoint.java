@@ -22,17 +22,17 @@ public class FilmsEndpoint {
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "createFilmRequest")
-	public void createFilm(@RequestPayload CreateFilmRequest request){
+	public void createFilm(@RequestPayload CreateFilmRequest request) throws SQLException {
 		filmService.createFilm(request);
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "deleteFilmRequest")
-	public void deleteFilm(@RequestPayload DeleteFilmRequest request){
+	public void deleteFilm(@RequestPayload DeleteFilmRequest request) throws SQLException {
 		filmService.deleteFilm(request.getFilmId());
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "updateFilmRequest")
-	public void updateFilm(@RequestPayload UpdateFilmRequest request){
+	public void updateFilm(@RequestPayload UpdateFilmRequest request) throws SQLException {
 		filmService.updateFilm(request);
 	}
 
