@@ -9,6 +9,7 @@ import soap.generated.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import java.math.BigInteger;
 import java.sql.SQLException;
@@ -123,9 +124,11 @@ public class FilmDao extends Database{
 	/****************************************
 	 				Queries
 	 ****************************************/
-	public List<Film> getAll() throws SQLException {
+	public List<Film> getAll() {
 		System.out.println("in get all films");
-		return convertListToGenerated(this.em.createQuery(buildBaseQuery(null)).getResultList());
+		TypedQuery str = this.em.createQuery(buildBaseQuery(null));
+		System.out.println(str.toString());
+		return convertListToGenerated(str.getResultList());
 	}
 
 	public Film getById(long id) {
@@ -261,13 +264,14 @@ public class FilmDao extends Database{
 		selections.add(from.get("special_features"));
 		selections.add(from.get("last_update"));
 
-		for (Selection selection : selections){
+
+		for (Selection selection : selections) {
 			query.select(selection);
 		}
 
+
 		if (predicate != null)
 				query.where(predicate);
-		System.out.println(query.toString());
 		return query;
 	}
 }
