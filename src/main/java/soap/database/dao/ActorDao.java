@@ -16,6 +16,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +41,7 @@ public class ActorDao {
 	}
 
 	public void insert(CreateActorRequest request){
-		String sql = "INSERT INTO sakila.actor (first_name, last_name) VALUES ('"+request.getFirstName()+"', '"+request.getLastName()+"');";
+		String sql = "INSERT INTO actor (actor.first_name, actor.last_name) VALUES ('"+request.getFirstName()+"', '"+request.getLastName()+"');";
 		try {
 			connection.createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
@@ -89,14 +90,14 @@ public class ActorDao {
 	}
 
 	public void update(UpdateActorRequest request) {
-		String sql = "UPDATE sakila.actor SET ";
+		String sql = "UPDATE actor SET ";
 
 		 if (request.getNewLastName() != null)
-			sql += "last_name = '"+request.getNewLastName()+"' ";
+			sql += "actor.last_name = '"+request.getNewLastName()+"' ";
 		 if (request.getNewFirstName() != null)
-			sql += "first_name = '"+request.getNewFirstName()+"' ";
+			sql += "actor.first_name = '"+request.getNewFirstName()+"' ";
 
-		sql = sql.substring(0, sql.length()-3) + " WHERE actor_id='"+request.getActorId()+"';";
+		sql = sql.substring(0, sql.length()-3) + " WHERE actor.actor_id='"+request.getActorId()+"';";
 		try{
 			connection.createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
@@ -105,7 +106,7 @@ public class ActorDao {
 	}
 
 	public void delete(DeleteActorRequest request) {
-		String sql = "DELETE FROM sakila.actor WHERE actor_id='"+request.getActorId()+"';";
+		String sql = "DELETE FROM actor WHERE actor.actor_id='"+request.getActorId()+"';";
 		try {
 			connection.createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
@@ -113,9 +114,8 @@ public class ActorDao {
 		}
 	}
 
-	List<Actor> getAllActors(List<FilmActorEntity> resultList) {
-		StringBuilder query = new StringBuilder(baseQuery);
-		query.append("WHERE a.actor_id IN (");
+	List<Actor> getAllActors(List<FilmActorEntity> resultList) throws SQLException {
+		StringBuilder query = new StringBuilder("SELECT actor.actor_id, actor.first_name, actor.last_name, actor.last_update FROM actor WHERE actor.actor_id IN (");
 
 		for (FilmActorEntity filmActorEntity : resultList) {
 			query.append("'").append(filmActorEntity.getActor_id()).append("', ");
@@ -123,10 +123,27 @@ public class ActorDao {
 
 		query.deleteCharAt(query.length()).deleteCharAt(query.length()).append(")");
 
-		return convertActorEntitiesToGenerated(this.em.createQuery(query.toString(),ActorEntity.class).getResultList());
+		return parseResultSetToList(connection.prepareStatement(query.toString()).executeQuery());
 	}
 
-	public List<Film> getFilms(long actorId) throws SQLException {
+    private List<Actor> parseResultSetToList(ResultSet resultSet) throws SQLException {
+        List<Actor> actors = new ArrayList<>();
+
+        while (resultSet.next()){
+            Actor actor = new Actor();
+
+            actor.setActorId(resultSet.getLong("actor_id"));
+            actor.setFirstName(resultSet.getString("first_name"));
+            actor.setLastName(resultSet.getString("last_name"));
+            actor.setLastUpdate(resultSet.getString("last_update"));
+
+            actors.add(actor);
+        }
+
+        return actors;
+    }
+
+    public List<Film> getFilms(long actorId) throws SQLException {
 		return filmActorDao.getFilms(actorId);
 	}
 }
