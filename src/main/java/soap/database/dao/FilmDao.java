@@ -249,7 +249,7 @@ public class FilmDao extends Database{
 		coalesce.value(from.get("original_language_id"));
 		coalesce.value(Long.valueOf(-1));
 
-		List<Selection<FilmEntity>> selections = new ArrayList<>();
+		List<Selection<?>> selections = new ArrayList<>();
 		selections.add(from.get("film_id"));
 		selections.add(from.get("title"));
 		selections.add(from.get("description"));
@@ -265,7 +265,7 @@ public class FilmDao extends Database{
 		selections.add(from.get("last_update"));
 
 
-		query.multiselect((Selection<FilmEntity>) selections);
+		query.multiselect(selections);
 
 
 		if (predicate != null)
