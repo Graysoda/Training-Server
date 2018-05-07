@@ -23,33 +23,6 @@ public class FilmDao extends Database{
 	private SummaryDao summaryDao;
 	private FilmActorDao filmActorDao;
 	private FilmCategoryDao filmCategoryDao;
-	private CriteriaBuilder criteriaBuilder;
-	private CriteriaBuilder.Coalesce<Long> coalesce;
-	private Root<FilmEntity> from;
-//	private static final String baseQuery = "SELECT " +
-//			"film.film_id, " +
-//			"film.title, " +
-//			"film.description, " +
-//			"film.release_year, " +
-//			"film.language_id, " +
-//			"COALESCE(film.original_language_id, '-1'), " +
-//			"film.rental_duration, " +
-//			"film.rental_rate, " +
-//			"film.length, " +
-//			"film.replacement_cost, " +
-//			"film.rating, " +
-//			"film.special_features, " +
-//          "film.last_update " +
-//			"FROM film";
-
-	public FilmDao(){
-		criteriaBuilder = em.getCriteriaBuilder();
-		coalesce = criteriaBuilder.coalesce();
-		from = criteriaBuilder.createQuery(FilmEntity.class).from(FilmEntity.class);
-
-		coalesce.value(from.get("original_language_id"));
-		coalesce.value(Long.valueOf(-1));
-	}
 
 	@Autowired
 	public void setLanguageDao(LanguageDao languageDao) {
@@ -166,7 +139,7 @@ public class FilmDao extends Database{
 	}
 
 	private Predicate buildRatingPredicate(String rating) {
-		return criteriaBuilder.equal(from.get("rating"),rating);
+		return em.getCriteriaBuilder().equal(em.getCriteriaBuilder().createQuery(FilmEntity.class).from(FilmEntity.class).get("rating"),rating);
 	}
 
 	public List<Film> getByReleaseYear(int year) {
@@ -176,7 +149,7 @@ public class FilmDao extends Database{
 	}
 
 	private Predicate buildReleaseYearPredicate(int year) {
-		return criteriaBuilder.equal(from.get("release_year"),year);
+		return em.getCriteriaBuilder().equal(em.getCriteriaBuilder().createQuery(FilmEntity.class).from(FilmEntity.class).get("release_year"),year);
 	}
 
 	public List<Film> getByTitle(String title) {
@@ -184,7 +157,7 @@ public class FilmDao extends Database{
 	}
 
 	private Predicate buildTitlePredicate(String title) {
-		return criteriaBuilder.equal(from.get("title"),title);
+		return em.getCriteriaBuilder().equal(em.getCriteriaBuilder().createQuery(FilmEntity.class).from(FilmEntity.class).get("title"),title);
 	}
 
 	public Summary getSummary(long id){
@@ -245,7 +218,7 @@ public class FilmDao extends Database{
 	}
 
 	private Predicate buildIdPredicate(long[] ids) {
-		Expression<Long> expression = from.get("film_id");
+		Expression<Long> expression = em.getCriteriaBuilder().createQuery(FilmEntity.class).from(FilmEntity.class).get("film_id");
 		return expression.in(ids);
 	}
 
@@ -254,11 +227,17 @@ public class FilmDao extends Database{
 	}
 
 	private Predicate buildIdPredicate(long id) {
-		return criteriaBuilder.equal(from.get("film_id"),id);
+		return em.getCriteriaBuilder().equal(em.getCriteriaBuilder().createQuery(FilmEntity.class).from(FilmEntity.class).get("film_id"),id);
 	}
 
 	private CriteriaQuery<FilmEntity> buildBaseQuery(Predicate predicate){
+		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+		CriteriaBuilder.Coalesce coalesce = criteriaBuilder.coalesce();
 		CriteriaQuery<FilmEntity> query = criteriaBuilder.createQuery(FilmEntity.class);
+		Root<FilmEntity> from = query.from(FilmEntity.class);
+
+		coalesce.value(from.get("original_language_id"));
+		coalesce.value(Long.valueOf(-1));
 
 		List<Selection> selections = new ArrayList<>();
 		selections.add(from.get("film_id"));
