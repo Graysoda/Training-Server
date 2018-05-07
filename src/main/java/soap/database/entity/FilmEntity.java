@@ -24,6 +24,22 @@ public class FilmEntity{
 	@NotNull private String special_features;
 	@NotNull private String last_update;
 
+	public FilmEntity(long film_id, @NotNull String title, @NotNull String description, @NotNull int release_year, @NotNull long language_id, Long original_language_id, @NotNull int rental_duration, @NotNull float rental_rate, @NotNull int length, @NotNull float replacement_cost, @NotNull String rating, @NotNull String special_features, @NotNull String last_update) {
+		this.film_id = film_id;
+		this.title = title;
+		this.description = description;
+		this.release_year = release_year;
+		this.language_id = language_id;
+		this.original_language_id = original_language_id;
+		this.rental_duration = rental_duration;
+		this.rental_rate = rental_rate;
+		this.length = length;
+		this.replacement_cost = replacement_cost;
+		this.rating = rating;
+		this.special_features = special_features;
+		this.last_update = last_update;
+	}
+
 	public long getFilm_id() {
 		return film_id;
 	}
