@@ -1,6 +1,7 @@
 package soap.database.dao;
 
 import org.springframework.stereotype.Repository;
+import soap.database.entity.CategoryEntity;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -9,5 +10,9 @@ import javax.persistence.PersistenceContext;
 public class CategoryDao {
 	@PersistenceContext
 	private EntityManager em;
+	private String baseQuery = "SELECT c FROM sakila.category c ";
 
+	public CategoryEntity getById(long category_id) {
+		return this.em.createQuery(baseQuery+"WHERE c.category_id = '"+category_id+"'",CategoryEntity.class).getSingleResult();
+	}
 }

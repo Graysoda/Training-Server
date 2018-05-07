@@ -5,7 +5,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity(name = "sakila.category")
 @Table(name = "category")
-public class Category {
+public class CategoryEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long category_id;
