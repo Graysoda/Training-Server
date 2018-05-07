@@ -122,7 +122,7 @@ public class ActorDao {
 			query.append("'").append(filmActorEntity.getActor_id()).append("', ");
 		}
 
-		query.deleteCharAt(query.length()).deleteCharAt(query.length()).append(")");
+		query.deleteCharAt(query.length()-1).deleteCharAt(query.length()-1).append(")");
 
         System.out.println("query = ["+ query.toString()+"]");
 		return parseResultSetToList(connection.prepareStatement(query.toString()).executeQuery());

@@ -216,7 +216,7 @@ public class FilmDao {
 			query.append("'").append(filmActorEntity.getFilm_id()).append("', ");
 		}
 
-		query.deleteCharAt(query.length()).deleteCharAt(query.length()).append(");");
+		query.deleteCharAt(query.length()-1).deleteCharAt(query.length()-1).append(");");
 
 		return convertListToGenerated(connection.prepareStatement(query.toString()).getResultSet());
 	}
