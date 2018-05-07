@@ -267,7 +267,7 @@ public class FilmDao extends Database{
 
 		if (predicate != null)
 				query.where(predicate);
-
+		System.out.println(query.toString());
 		return query;
 	}
 }
