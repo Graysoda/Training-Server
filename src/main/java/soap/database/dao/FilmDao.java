@@ -35,7 +35,7 @@ public class FilmDao {
 			"film.length, " +
 			"film.replacement_cost, " +
 			"film.rating, " +
-			"film.special_features " +
+			"film.special_features, " +
             "film.last_update " +
 			"FROM film";
 
