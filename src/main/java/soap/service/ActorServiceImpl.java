@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import soap.database.dao.ActorDao;
 import soap.generated.*;
 
-import java.sql.SQLException;
 import java.util.List;
 
 @Service
@@ -38,23 +37,23 @@ public class ActorServiceImpl implements ActorService {
 
 	@Override
 	@Transactional
-	public void insertActor(CreateActorRequest request) throws SQLException {
+	public void insertActor(CreateActorRequest request) {
 		actorDao.insert(request);
 	}
 
 	@Override
 	@Transactional
-	public void updateActor(UpdateActorRequest request) throws SQLException {
+	public void updateActor(UpdateActorRequest request) {
 		actorDao.update(request);
 	}
 
 	@Override
-	public void deleteActor(DeleteActorRequest request) throws SQLException {
+	public void deleteActor(DeleteActorRequest request) {
 		actorDao.delete(request);
 	}
 
 	@Override
-	public List<Film> getFilmsWithActor(long actorId) throws SQLException {
+	public List<Summary> getFilmsWithActor(long actorId) {
 		return actorDao.getFilms(actorId);
 	}
 }

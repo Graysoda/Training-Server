@@ -10,6 +10,9 @@ import soap.generated.UpdateCustomerRequest;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +27,40 @@ public class CustomerDao extends Database {
 
 	public CustomerDao(){}
 
+	public List<Customer> getActive() {
+		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+		CriteriaQuery<CustomerEntity> query = criteriaBuilder.createQuery(CustomerEntity.class);
+		Root<CustomerEntity> root = query.from(CustomerEntity.class);
+		query.where(criteriaBuilder.isTrue(root.get("active")));
+
+		return convertEntitystoGenerated(this.em.createQuery(query).getResultList());
+	}
+
+	public Customer getById(long id) {
+		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+		CriteriaQuery<CustomerEntity> query = criteriaBuilder.createQuery(CustomerEntity.class);
+		Root<CustomerEntity> root = query.from(CustomerEntity.class);
+		query.where(criteriaBuilder.equal(root.get("customer_id"),id));
+
+		return convertEntityToGenerated(this.em.createQuery(query).getSingleResult());
+	}
+
+	public List<Customer> getByStore(long id) {
+		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+		CriteriaQuery<CustomerEntity> query = criteriaBuilder.createQuery(CustomerEntity.class);
+		Root<CustomerEntity> root = query.from(CustomerEntity.class);
+		query.where(criteriaBuilder.equal(root.get("store_id"),id));
+
+		return convertEntitystoGenerated(this.em.createQuery(query).getResultList());
+	}
+
+	public List<Customer> getAll() {
+		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+		CriteriaQuery<CustomerEntity> query = criteriaBuilder.createQuery(CustomerEntity.class);
+
+		return convertEntitystoGenerated(this.em.createQuery(query).getResultList());
+	}
+
 	public void insert(CreateCustomerRequest request) {
 		String sql = "INSERT INTO customer (customer.store_id, customer.first_name, customer.last_name, customer.email, customer.address_id, customer.active) VALUES " +
 				"('"+request.getStoreId()+"', '"+
@@ -37,47 +74,6 @@ public class CustomerDao extends Database {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}
-
-	public List<Customer> getActive() {
-		return convertEntitystoGenerated(this.em.createQuery(baseQuery+"WHERE c.active='true'",CustomerEntity.class).getResultList());
-	}
-
-	public Customer getById(long id) {
-		return convertEntityToGenerated(this.em.createQuery(baseQuery+"WHERE c.customer_id='"+id+"'",CustomerEntity.class).getSingleResult());
-	}
-
-	public List<Customer> getByStore(long id) {
-		return convertEntitystoGenerated(this.em.createQuery(baseQuery+"WHERE c.store_id='"+id+"'",CustomerEntity.class).getResultList());
-	}
-
-	private List<Customer> convertEntitystoGenerated(List<CustomerEntity> entities){
-		List<Customer> customers = new ArrayList<>();
-
-		for (CustomerEntity entity : entities){
-			customers.add(convertEntityToGenerated(entity));
-		}
-
-		return customers;
-	}
-
-	public List<Customer> getAll() {
-		return convertEntitystoGenerated(this.em.createQuery(baseQuery,CustomerEntity.class).getResultList());
-	}
-
-	private Customer convertEntityToGenerated(CustomerEntity entity){
-		Customer customer = new Customer();
-
-		customer.setStoreId(entity.getStore_id());
-		customer.setFirstName(entity.getFirst_name());
-		customer.setLastName(entity.getLast_name());
-		customer.setEmail(entity.getEmail());
-		customer.setAddress(addressDao.getById(entity.getAddress_id()));
-		customer.setIsActive(entity.isActive());
-		customer.setCreateDate(entity.getCreate_date());
-		customer.setLastUpdate(entity.getLast_update());
-
-		return customer;
 	}
 
 	public void delete(long customerId) {
@@ -115,5 +111,30 @@ public class CustomerDao extends Database {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private List<Customer> convertEntitystoGenerated(List<CustomerEntity> entities){
+		List<Customer> customers = new ArrayList<>();
+
+		for (CustomerEntity entity : entities){
+			customers.add(convertEntityToGenerated(entity));
+		}
+
+		return customers;
+	}
+
+	private Customer convertEntityToGenerated(CustomerEntity entity){
+		Customer customer = new Customer();
+
+		customer.setStoreId(entity.getStore_id());
+		customer.setFirstName(entity.getFirst_name());
+		customer.setLastName(entity.getLast_name());
+		customer.setEmail(entity.getEmail());
+		customer.setAddress(addressDao.getById(entity.getAddress_id()));
+		customer.setIsActive(entity.isActive());
+		customer.setCreateDate(entity.getCreate_date());
+		customer.setLastUpdate(entity.getLast_update());
+
+		return customer;
 	}
 }

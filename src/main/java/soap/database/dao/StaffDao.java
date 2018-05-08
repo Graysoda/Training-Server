@@ -10,6 +10,9 @@ import soap.generated.UpdateStaffRequest;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,14 +22,19 @@ public class StaffDao extends Database {
 	@PersistenceContext
 	private EntityManager em;
 	@Autowired private AddressDao addressDao;
-	private String baseQuery = "SELECT s FROM sakila.staff s ";
 
 	public Staff getById(long id) {
-		return convertEntityToGenerated(this.em.createQuery(baseQuery+"WHERE s.staff_id='"+id+"'",StaffEntity.class).getSingleResult());
+		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+		CriteriaQuery<StaffEntity> query = criteriaBuilder.createQuery(StaffEntity.class);
+		Root<StaffEntity> root = query.from(StaffEntity.class);
+		query.where(criteriaBuilder.equal(root.get("staff_id"),id));
+		return convertEntityToGenerated(this.em.createQuery(query).getSingleResult());
 	}
 
 	public List<Staff> getAll() {
-		return convertEntitiesToGenerated(this.em.createQuery(baseQuery,StaffEntity.class).getResultList());
+		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+		CriteriaQuery<StaffEntity> query = criteriaBuilder.createQuery(StaffEntity.class);
+		return convertEntitiesToGenerated(this.em.createQuery(query).getResultList());
 	}
 
 	private List<Staff> convertEntitiesToGenerated(List<StaffEntity> entities) {
@@ -58,7 +66,7 @@ public class StaffDao extends Database {
 
 
 	public void insert(CreateStaffRequest request) {
-		String sql = "INSERT INTO (first_name, last_name, address_id, email, store_id, active, username, password) VALUES " +
+		String sql = "INSERT INTO staff (staff.first_name, staff.last_name, staff.address_id, staff.email, staff.store_id, staff.active, staff.username, staff.password) VALUES " +
 				"("+request.getFirstName()+", " +
 				request.getLastName()+", " +
 				request.getAddressId()+", " +
@@ -76,7 +84,7 @@ public class StaffDao extends Database {
 	}
 
 	public void delete(long staffId) {
-		String sql = "DELETE FROM sakila.staff WHERE satff_id='"+staffId+"';";
+		String sql = "DELETE FROM staff WHERE staff.staff_id='"+staffId+"';";
 		try {
 			getConnection().createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
@@ -85,26 +93,26 @@ public class StaffDao extends Database {
 	}
 
 	public void update(UpdateStaffRequest request) {
-		String sql = "UPDATE sakila.staff SET ";
+		String sql = "UPDATE staff SET ";
 
 		if (request.isActive()!=null)
-			sql += "active = '"+request.isActive()+"', ";
+			sql += "staff.active = '"+request.isActive()+"', ";
 		if (request.getAddressId()!=null)
-			sql += "address_id = '"+request.getAddressId()+"', ";
+			sql += "staff.address_id = '"+request.getAddressId()+"', ";
 		if (request.getEmail()!=null)
-			sql += "email = '"+request.getEmail()+"', ";
+			sql += "staff.email = '"+request.getEmail()+"', ";
 		if (request.getFirstName()!=null)
-			sql += "first_name = '"+request.getFirstName()+"', ";
+			sql += "staff.first_name = '"+request.getFirstName()+"', ";
 		if (request.getLastName()!=null)
-			sql += "last_name = '"+request.getLastName()+"', ";
+			sql += "staff.last_name = '"+request.getLastName()+"', ";
 		if (request.getPassword()!=null)
-			sql += "password = '"+request.getPassword()+"', ";
+			sql += "staff.password = '"+request.getPassword()+"', ";
 		if (request.getStoreId()!=null)
-			sql += "store_id  ='"+request.getStoreId()+"', ";
+			sql += "staff.store_id  ='"+request.getStoreId()+"', ";
 		if (request.getUsername()!=null)
-			sql += "username = '"+request.getUsername()+"', ";
+			sql += "staff.username = '"+request.getUsername()+"', ";
 
-		sql = sql.substring(0,sql.length()-3) + " WHERE staff_id = '"+request.getStaffId()+"';";
+		sql = sql.substring(0,sql.length()-3) + " WHERE staff.staff_id = '"+request.getStaffId()+"';";
 
 		try {
 			getConnection().createStatement().executeUpdate(sql);

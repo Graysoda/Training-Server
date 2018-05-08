@@ -10,6 +10,9 @@ import soap.generated.UpdateInventoryRequest;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,39 +23,28 @@ public class InventoryDao extends Database {
 	private EntityManager em;
 	@Autowired private FilmDao filmDao;
 	@Autowired private StoreDao storeDao;
-	private String baseQuery = "SELECT i FROM sakila.inventory i ";
 
-	public List<Inventory> getAll() throws SQLException {
-		return convertEntitiesToGenerated(this.em.createQuery(baseQuery,InventoryEntity.class).getResultList());
-	}
+	public List<Inventory> getAll() {
+		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+		CriteriaQuery<InventoryEntity> query = criteriaBuilder.createQuery(InventoryEntity.class);
 
-	private Inventory convertEntityToGenerated(InventoryEntity entity) {
-		Inventory inventory = new Inventory();
-
-		inventory.setInventoryId(entity.getInventory_id());
-		inventory.setFilm(filmDao.getById(entity.getFilm_id()));
-		inventory.setStore(storeDao.getById(entity.getStore_id()));
-		inventory.setLastUpdate(entity.getLast_update());
-
-		return inventory;
-	}
-
-	private List<Inventory> convertEntitiesToGenerated(List<InventoryEntity> entities) {
-		List<Inventory> inventories = new ArrayList<>();
-
-		for (InventoryEntity entity : entities) {
-			inventories.add(convertEntityToGenerated(entity));
-		}
-
-		return inventories;
+		return convertEntitiesToGenerated(this.em.createQuery(query).getResultList());
 	}
 
 	public Inventory getById(long id) {
-		return convertEntityToGenerated(this.em.createQuery(baseQuery+"WHERE i.inventory_id='"+id+"'",InventoryEntity.class).getSingleResult());
+		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+		CriteriaQuery<InventoryEntity> query = criteriaBuilder.createQuery(InventoryEntity.class);
+		Root<InventoryEntity> root = query.from(InventoryEntity.class);
+		query.where(criteriaBuilder.equal(root.get("inventory_id"),id));
+		return convertEntityToGenerated(this.em.createQuery(query).getSingleResult());
 	}
 
 	public List<Inventory> getStoreInventory(long storeId) {
-		return convertEntitiesToGenerated(this.em.createQuery(baseQuery+"WHERE i.store_id='"+storeId+"'",InventoryEntity.class).getResultList());
+		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+		CriteriaQuery<InventoryEntity> query = criteriaBuilder.createQuery(InventoryEntity.class);
+		Root<InventoryEntity> root = query.from(InventoryEntity.class);
+		query.where(criteriaBuilder.equal(root.get("store_id"),storeId));
+		return convertEntitiesToGenerated(this.em.createQuery(query).getResultList());
 	}
 
 	public void insert(CreateInventoryRequest request) {
@@ -88,5 +80,30 @@ public class InventoryDao extends Database {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private Inventory convertEntityToGenerated(InventoryEntity entity) {
+		Inventory inventory = new Inventory();
+
+		System.out.println("inv id = ["+entity.getInventory_id()+"]");
+		inventory.setInventoryId(entity.getInventory_id());
+		System.out.println("film id = ["+entity.getFilm_id()+"]");
+		inventory.setFilm(filmDao.getById(entity.getFilm_id()));
+		System.out.println("store id = ["+entity.getStore_id()+"]");
+		inventory.setStore(storeDao.getById(entity.getStore_id()));
+		System.out.println("last update = ["+entity.getLast_update()+"]");
+		inventory.setLastUpdate(entity.getLast_update());
+
+		return inventory;
+	}
+
+	private List<Inventory> convertEntitiesToGenerated(List<InventoryEntity> entities) {
+		List<Inventory> inventories = new ArrayList<>();
+
+		for (InventoryEntity entity : entities) {
+			inventories.add(convertEntityToGenerated(entity));
+		}
+
+		return inventories;
 	}
 }

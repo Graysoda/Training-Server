@@ -9,6 +9,8 @@ import soap.generated.UpdatePaymentRequest;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +22,10 @@ public class PaymentDao extends Database {
 	private String baseQuery = "SELECT p FROM sakila.payment p ";
 
 	public List<Payment> getAll(){
-		return convertEntitiesToGenerated(this.em.createQuery(baseQuery,PaymentEntity.class).getResultList());
+		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+		CriteriaQuery<PaymentEntity> query = criteriaBuilder.createQuery(PaymentEntity.class);
+
+		return convertEntitiesToGenerated(this.em.createQuery(query).getResultList());
 	}
 
 	private List<Payment> convertEntitiesToGenerated(List<PaymentEntity> entities){

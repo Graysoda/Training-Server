@@ -3,6 +3,8 @@ package soap.database.dao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import soap.database.Database;
+import soap.database.entity.ActorEntity;
+import soap.database.entity.FilmActorEntity;
 import soap.database.entity.FilmEntity;
 import soap.generated.*;
 
@@ -176,18 +178,26 @@ public class FilmDao extends Database{
 		film.setDescription(entity.getDescription());
 		System.out.println("release year = ["+entity.getRelease_year()+"]");
 		film.setReleaseYear(entity.getRelease_year());
-		System.out.println();
+		System.out.println("language id = ["+entity.getLanguage_id()+"]");
 		film.setLanguage(languageDao.getLanguage(entity.getLanguage_id()));
+		System.out.println("original language id = ["+entity.getOriginal_language_id()+"]");
 		film.setOriginalLanguage(languageDao.getLanguage(entity.getOriginal_language_id()));
+		System.out.println("rental duration = ["+entity.getRental_duration()+"]");
 		film.setRentalDuration(entity.getRental_duration());
+		System.out.println("rental rate = ["+entity.getRental_rate()+"]");
 		film.setRentalRate(entity.getRental_rate());
+		System.out.println("length = ["+entity.getLength()+"]");
 		film.setLength(entity.getLength());
+		System.out.println("replacement cost = ["+entity.getReplacement_cost()+"]");
 		film.setReplacementCost(entity.getReplacement_cost());
+		System.out.println("rating = ["+entity.getRating()+"]");
 		film.setRating(entity.getRating());
+		System.out.println("special features = ["+entity.getSpecial_features()+"]");
 		film.setSpecialFeatures(entity.getSpecial_features());
+		System.out.println("last update = ["+entity.getLast_update()+"]");
 		film.setLastUpdate(entity.getLast_update());
 		film.setCategory(filmCategoryDao.getById(entity.getFilm_id()));
-		film.setActors(filmActorDao.getActors(entity.getFilm_id()));
+		film.setActors(getActors(entity.getFilm_id()));
 
 		System.out.println("film_id = "+film.getFilmId());
 
@@ -197,10 +207,60 @@ public class FilmDao extends Database{
 
 
 	public List<Actor> getActors(long filmId) {
-		return filmActorDao.getActors(filmId);
+		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+		CriteriaQuery<FilmActorEntity> query = criteriaBuilder.createQuery(FilmActorEntity.class);
+		Root<FilmActorEntity> root = query.from(FilmActorEntity.class);
+
+		List<Selection<?>> selections = new ArrayList<>();
+		selections.add(root.get("film_id"));
+		selections.add(root.get("actor_id"));
+
+		query.multiselect(selections);
+		query.where(criteriaBuilder.equal(root.get("film_id"),filmId));
+
+		return getAllActors(this.em.createQuery(query).getResultList());
+	}
+
+	private List<Actor> getAllActors(List<FilmActorEntity> resultList) {
+		if (resultList.size() == 0)
+			return new ArrayList<>();
+		String query = ("SELECT a FROM sakila.actor a WHERE a.actor_id IN (");
+
+		for (FilmActorEntity filmActorEntity : resultList) {
+			System.out.println("actor_id = ["+filmActorEntity.getActor_id()+"]");
+			if (!query.contains(String.valueOf(filmActorEntity.getActor_id())))
+				query += "'"+filmActorEntity.getActor_id()+"', ";
+		}
+
+		query = query.substring(0,query.length()-3);
+		query += "')";
+
+		System.out.println("query = ["+ query+"]");
+
+		return convertActorEntitiesToGenerated(this.em.createQuery(query,ActorEntity.class).getResultList());
+	}
+
+	private List<Actor> convertActorEntitiesToGenerated(List<ActorEntity> actorEntityList) {
+		List<Actor> actors = new ArrayList<>();
+
+		for (ActorEntity actorEntity : actorEntityList){
+			actors.add(convertActorEntityToGenerated(actorEntity));
+		}
+
+		return actors;
+	}
+
+	private Actor convertActorEntityToGenerated(ActorEntity actorEntity) {
+		Actor actor = new Actor();
+		actor.setActorId((int)actorEntity.getActor_id());
+		actor.setFirstName(actorEntity.getFirst_name());
+		actor.setLastName(actorEntity.getLast_name());
+		actor.setLastUpdate(actorEntity.getLast_update());
+		return actor;
 	}
 
 	private Predicate buildIdPredicate(long id) {
+
 		return em.getCriteriaBuilder().equal(em.getCriteriaBuilder().createQuery(FilmEntity.class).from(FilmEntity.class).get("film_id"),id);
 	}
 
@@ -228,12 +288,11 @@ public class FilmDao extends Database{
 		selections.add(from.get("special_features"));
 		selections.add(from.get("last_update"));
 
-
 		query.multiselect(selections);
-
 
 		if (predicate != null)
 				query.where(predicate);
+
 		return query;
 	}
 }

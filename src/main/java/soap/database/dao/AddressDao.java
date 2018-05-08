@@ -10,6 +10,9 @@ import soap.generated.UpdateAddressRequest;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -23,7 +26,11 @@ public class AddressDao extends Database {
 	private String baseQuery = "SELECT adr FROM sakila.address adr ";
 
 	public Address getById(long id){
-		return convertEntityToGenerated(this.em.createQuery(baseQuery+"WHERE adr.address_id='"+id+"'",AddressEntity.class).getSingleResult());
+		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+		CriteriaQuery<AddressEntity> query = criteriaBuilder.createQuery(AddressEntity.class);
+		Root<AddressEntity> root = query.from(AddressEntity.class);
+		query.where(criteriaBuilder.equal(root.get("address_id"),id));
+		return convertEntityToGenerated(this.em.createQuery(query).getSingleResult());
 	}
 
 	public void insert(CreateAddressRequest request) {
@@ -43,7 +50,9 @@ public class AddressDao extends Database {
 	}
 
 	public List<Address> getAll() {
-		return convertEntitiesToGenerate(this.em.createQuery(baseQuery,AddressEntity.class).getResultList());
+		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+		CriteriaQuery<AddressEntity> query = criteriaBuilder.createQuery(AddressEntity.class);
+		return convertEntitiesToGenerate(this.em.createQuery(query).getResultList());
 	}
 
 	private List<Address> convertEntitiesToGenerate(List<AddressEntity> resultList) {

@@ -8,8 +8,6 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 import soap.generated.*;
 import soap.service.ActorServiceImpl;
 
-import java.sql.SQLException;
-
 
 @Endpoint
 public class ActorsEndpoint {
@@ -22,17 +20,17 @@ public class ActorsEndpoint {
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "createActorRequest")
-	public void createActor(@RequestPayload CreateActorRequest request) throws SQLException {
+	public void createActor(@RequestPayload CreateActorRequest request) {
 		actorService.insertActor(request);
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "updateActorRequest")
-	public void updateActor(@RequestPayload UpdateActorRequest request) throws SQLException {
+	public void updateActor(@RequestPayload UpdateActorRequest request) {
 		actorService.updateActor(request);
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "deleteActorRequest")
-	public void deleteActor(@RequestPayload DeleteActorRequest request) throws SQLException {
+	public void deleteActor(@RequestPayload DeleteActorRequest request) {
 		actorService.deleteActor(request);
 	}
 
@@ -64,7 +62,7 @@ public class ActorsEndpoint {
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getFilmsWithActorRequest")
 	@ResponsePayload
-	public GetFilmsWithActorResponse getFilmsWithActor(@RequestPayload GetFilmsWithActorRequest request) throws SQLException {
+	public GetFilmsWithActorResponse getFilmsWithActor(@RequestPayload GetFilmsWithActorRequest request) {
 		GetFilmsWithActorResponse response = new GetFilmsWithActorResponse();
 		response.setFilms(actorService.getFilmsWithActor(request.getActorId()));
 		return response;

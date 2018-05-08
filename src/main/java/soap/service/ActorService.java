@@ -12,5 +12,5 @@ public interface ActorService {
 	public void insertActor(CreateActorRequest request) throws SQLException;
 	void updateActor(UpdateActorRequest request) throws SQLException;
 	void deleteActor(DeleteActorRequest request) throws SQLException;
-	List<Film> getFilmsWithActor(long actorId) throws SQLException;
+	List<Summary> getFilmsWithActor(long actorId) throws SQLException;
 }
