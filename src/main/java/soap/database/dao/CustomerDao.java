@@ -32,7 +32,7 @@ public class CustomerDao extends Database {
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
 		CriteriaQuery<CustomerEntity> query = criteriaBuilder.createQuery(CustomerEntity.class);
 		Root<CustomerEntity> root = query.from(CustomerEntity.class);
-		query.where(criteriaBuilder.isTrue(root.get("active")));
+		query.where(criteriaBuilder.equal(root.get("active"),1));
 		query.multiselect(makeSelection(root));
 
 		return convertEntitystoGenerated(this.em.createQuery(query).getResultList());
