@@ -234,38 +234,50 @@ public class FilmDao extends Database{
 
 	public List<Actor> getActors(long filmId) {
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-		CriteriaQuery<FilmActorEntity> query = criteriaBuilder.createQuery(FilmActorEntity.class);
-		Root<FilmActorEntity> root = query.from(FilmActorEntity.class);
+		CriteriaQuery<FilmActorEntity> filmActorEntityCriteriaQuery = criteriaBuilder.createQuery(FilmActorEntity.class);
+		Root<FilmActorEntity> filmActorEntityRoot = filmActorEntityCriteriaQuery.from(FilmActorEntity.class);
 
-		List<Selection<?>> selections = new ArrayList<>();
-		selections.add(root.get("film_id"));
-		selections.add(root.get("actor_id"));
+		List<Selection<?>> filmActorSelections = new ArrayList<>();
+		filmActorSelections.add(filmActorEntityRoot.get("film_id"));
+		filmActorSelections.add(filmActorEntityRoot.get("actor_id"));
 
-		query.multiselect(selections);
-		query.where(criteriaBuilder.equal(root.get("film_id"),filmId));
+		filmActorEntityCriteriaQuery.multiselect(filmActorSelections);
+		filmActorEntityCriteriaQuery.where(criteriaBuilder.equal(filmActorEntityRoot.get("film_id"),filmId));
 
-		return getAllActors(this.em.createQuery(query).getResultList());
-	}
+		List<FilmActorEntity> filmActorEntities =  this.em.createQuery(filmActorEntityCriteriaQuery).getResultList();
 
-	private List<Actor> getAllActors(List<FilmActorEntity> resultList) {
-		if (resultList.size() == 0)
-			return new ArrayList<>();
-		if (resultList.size() == 1)
-		    return convertActorEntitiesToGenerated(this.em.createQuery("SELECT s FROM sakila.actor a WHERE a.actor_id = '"+resultList.get(0).getActor_id()+"'",ActorEntity.class).getResultList());
-		String query = ("SELECT a FROM sakila.actor a WHERE a.actor_id IN (");
+        if (filmActorEntities.size() == 0){
+            return new ArrayList<>();
+        }
 
-		for (FilmActorEntity filmActorEntity : resultList) {
-			System.out.println("actor_id = ["+filmActorEntity.getActor_id()+"]");
-			if (!query.contains(String.valueOf(filmActorEntity.getActor_id())))
-				query += "'"+filmActorEntity.getActor_id()+"', ";
-		}
+        CriteriaQuery<ActorEntity> actorEntityCriteriaQuery = criteriaBuilder.createQuery(ActorEntity.class);
+        Root<ActorEntity> actorEntityRoot = actorEntityCriteriaQuery.from(ActorEntity.class);
 
-		query = query.substring(0,query.length()-3);
-		query += "')";
+        List<Selection<?>> actorSelections = new ArrayList<>();
+        actorSelections.add(actorEntityRoot.get("actor_id"));
+        actorSelections.add(actorEntityRoot.get("first_name"));
+        actorSelections.add(actorEntityRoot.get("last_name"));
+        actorSelections.add(actorEntityRoot.get("last_update"));
 
-		System.out.println("query = ["+ query+"]");
+        actorEntityCriteriaQuery.multiselect(actorSelections);
 
-		return convertActorEntitiesToGenerated(this.em.createQuery(query,ActorEntity.class).getResultList());
+        if (filmActorEntities.size() == 1){
+		    actorEntityCriteriaQuery.where(criteriaBuilder.equal(actorEntityRoot.get("actor_id"),filmActorEntities.get(0).getActor_id()));
+
+		    return convertActorEntitiesToGenerated(this.em.createQuery(actorEntityCriteriaQuery).getResultList());
+        }
+
+        ArrayList<Long> actorIds = new ArrayList<>();
+
+        for (FilmActorEntity filmActorEntity : filmActorEntities) {
+            actorIds.add(filmActorEntity.getActor_id());
+        }
+
+        Expression<Long> actorIdComparison = actorEntityRoot.get("actor_id");
+        Predicate predicate = actorIdComparison.in(actorIds);
+        actorEntityCriteriaQuery.where(predicate);
+
+        return convertActorEntitiesToGenerated(this.em.createQuery(actorEntityCriteriaQuery).getResultList());
 	}
 
 	private List<Actor> convertActorEntitiesToGenerated(List<ActorEntity> actorEntityList) {
