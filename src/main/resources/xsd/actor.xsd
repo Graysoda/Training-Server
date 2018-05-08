@@ -90,7 +90,7 @@
     <xs:element name="getFilmsWithActorResponse">
         <xs:complexType>
             <xs:sequence maxOccurs="unbounded">
-                <xs:element name="films" type="data:film"/>
+                <xs:element name="films" type="data:summary"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
