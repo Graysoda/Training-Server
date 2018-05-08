@@ -46,12 +46,12 @@ public class FilmActorDao {
 
 		for (FilmActorEntity filmActorEntity : resultList) {
             System.out.println("actor_id = ["+filmActorEntity.getActor_id()+"]");
-			if (!query.toString().contains(String.valueOf(filmActorEntity.getActor_id())))
+			if (!query.contains(String.valueOf(filmActorEntity.getActor_id())))
 				query += "'"+filmActorEntity.getActor_id()+"', ";
 		}
 
 		query = query.substring(0,query.length()-3);
-		query += ")";
+		query += "')";
 
 		System.out.println("query = ["+ query+"]");
 
