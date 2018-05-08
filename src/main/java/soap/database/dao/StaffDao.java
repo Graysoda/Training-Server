@@ -13,6 +13,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Selection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,12 +29,32 @@ public class StaffDao extends Database {
 		CriteriaQuery<StaffEntity> query = criteriaBuilder.createQuery(StaffEntity.class);
 		Root<StaffEntity> root = query.from(StaffEntity.class);
 		query.where(criteriaBuilder.equal(root.get("staff_id"),id));
+		query.multiselect(makeSelection(root));
+
 		return convertEntityToGenerated(this.em.createQuery(query).getSingleResult());
+	}
+
+	private List<Selection<?>> makeSelection(Root<StaffEntity> root) {
+		List<Selection<?>> selections = new ArrayList<>();
+
+		selections.add(root.get("staff_id"));
+		selections.add(root.get("first_name"));
+		selections.add(root.get("last_name"));
+		selections.add(root.get("address_id"));
+		selections.add(root.get("email"));
+		selections.add(root.get("store_id"));
+		selections.add(root.get("active"));
+		selections.add(root.get("username"));
+		selections.add(root.get("password"));
+		selections.add(root.get("last_update"));
+
+		return selections;
 	}
 
 	public List<Staff> getAll() {
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
 		CriteriaQuery<StaffEntity> query = criteriaBuilder.createQuery(StaffEntity.class);
+		query.multiselect(makeSelection(query.from(StaffEntity.class)));
 		return convertEntitiesToGenerated(this.em.createQuery(query).getResultList());
 	}
 
