@@ -1,6 +1,5 @@
 package soap.database.dao;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import soap.database.Database;
 import soap.database.entity.ActorEntity;
@@ -18,7 +17,6 @@ import java.util.List;
 @Transactional
 public class ActorDao extends Database {
 	@PersistenceContext private EntityManager em;
-	@Autowired private FilmActorDao filmActorDao;
 	private String baseQuery = "SELECT a FROM sakila.actor a ";
 
 	public void insert(CreateActorRequest request) {
@@ -105,6 +103,7 @@ public class ActorDao extends Database {
 	}
 
     public List<Film> getFilms(long actorId) {
+        FilmActorDao filmActorDao = new FilmActorDao();
 		return filmActorDao.getFilms(actorId);
 	}
 }

@@ -25,26 +25,6 @@ public class FilmDao extends Database{
 	@Autowired private FilmActorDao filmActorDao;
 	@Autowired private FilmCategoryDao filmCategoryDao;
 
-//	@Autowired
-//	public void setLanguageDao(LanguageDao languageDao) {
-//		this.languageDao = languageDao;
-//	}
-//
-//	@Autowired
-//	public void setSummaryDao(SummaryDao summaryDao) {
-//		this.summaryDao = summaryDao;
-//	}
-//
-//	@Autowired
-//	public void setFilmCategoryDao(FilmCategoryDao filmCategoryDao) {
-//		this.filmCategoryDao = filmCategoryDao;
-//	}
-//
-//	@Autowired
-//	public void setFilmActorDao(FilmActorDao filmActorDao) {
-//		this.filmActorDao = filmActorDao;
-//	}
-
 	public void create(CreateFilmRequest request) {
 		String sql = "INSERT INTO film " +
 				"(film.title, " +
