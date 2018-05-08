@@ -23,22 +23,21 @@ public class FilmDao extends Database{
 	private EntityManager em;
 	@Autowired private LanguageDao languageDao;
 	@Autowired private SummaryDao summaryDao;
-	@Autowired private FilmActorDao filmActorDao;
 	@Autowired private FilmCategoryDao filmCategoryDao;
 
 	public void create(CreateFilmRequest request) {
 		String sql = "INSERT INTO film " +
-				"(film.title, " +
-				"film.description, " +
-				"film.release_year, " +
-				"film.language_id, " +
-				"film.original_language_id, " +
-				"film.rental_duration, " +
-				"film.rental_rate, " +
-				"film.length, " +
-				"film.replacement_cost, " +
-				"film.rating, " +
-				"film.special_features) " +
+				"(title, " +
+				"description, " +
+				"release_year, " +
+				"language_id, " +
+				"original_language_id, " +
+				"rental_duration, " +
+				"rental_rate, " +
+				"length, " +
+				"replacement_cost, " +
+				"rating, " +
+				"special_features) " +
 				"VALUES " +
 				"("+request.getTitle()+", " +
 				request.getDescription()+", " +
@@ -61,29 +60,29 @@ public class FilmDao extends Database{
 	public void update(UpdateFilmRequest request) {
 		String sql = "UPDATE film SET ";
 		if (request.getTitle() != null)
-			sql += "film.title = '"+request.getTitle()+"', ";
+			sql += "title = '"+request.getTitle()+"', ";
 		if (request.getDescription() != null)
-			sql += "film.description = '"+request.getDescription()+"', ";
+			sql += "description = '"+request.getDescription()+"', ";
 		if (request.getLanguage()!=null)
-			sql += "film.language_id = '"+languageDao.getId(request.getLanguage())+"', ";
+			sql += "language_id = '"+languageDao.getId(request.getLanguage())+"', ";
 		if (request.getOriginalLanguage()!=null)
-			sql += "film.original_language = '"+languageDao.getId(request.getOriginalLanguage())+"', ";
+			sql += "original_language = '"+languageDao.getId(request.getOriginalLanguage())+"', ";
 		if (request.getLength()!=null)
-			sql += "film.length = '"+request.getLength()+"', ";
+			sql += "length = '"+request.getLength()+"', ";
 		if (request.getRating()!=null)
-			sql += "film.rating = '"+request.getRating()+"', ";
+			sql += "rating = '"+request.getRating()+"', ";
 		if (request.getReleaseYear()!=null)
-			sql += "film.release_year = '"+request.getReleaseYear()+"', ";
+			sql += "release_year = '"+request.getReleaseYear()+"', ";
 		if (request.getRentalDuration()!=null)
-			sql += "film.rental_duration ='"+request.getRentalDuration()+"', ";
+			sql += "rental_duration ='"+request.getRentalDuration()+"', ";
 		if (request.getRentalRate()!=null)
-			sql += "film.rental_rate = '"+request.getRentalRate()+"', ";
+			sql += "rental_rate = '"+request.getRentalRate()+"', ";
 		if (request.getReplacementCost()!=null)
-			sql += "film.replacement_cost = '"+request.getReplacementCost()+"', ";
+			sql += "replacement_cost = '"+request.getReplacementCost()+"', ";
 		if (request.getSpecialFeatures()!=null)
-			sql += "film.special_features = '"+request.getSpecialFeatures()+"', ";
+			sql += "special_features = '"+request.getSpecialFeatures()+"', ";
 
-		sql += sql.subSequence(0,sql.length()-3) + " WHERE film.film_id = '"+request.getFilmId()+"';";
+		sql += sql.subSequence(0,sql.length()-3) + " WHERE film_id = '"+request.getFilmId()+"';";
 
 		try {
 			getConnection().createStatement().executeUpdate(sql);
@@ -93,7 +92,7 @@ public class FilmDao extends Database{
 	}
 
 	public void delete(long filmId) {
-		String sql = "DELETE FROM film WHERE film.film_id='"+filmId+"';";
+		String sql = "DELETE FROM film WHERE film_id='"+filmId+"';";
 		try {
 			getConnection().createStatement().executeUpdate(sql);
 		} catch (SQLException e) {

@@ -67,7 +67,7 @@ public class PaymentDao extends Database {
 	}
 
 	public void insert(CreatePaymentRequest request) {
-		String sql = "INSERT INTO payment (payment.customer_id, payment.staff_id, payment.rental_id, payment.amount, payment.payment_date) VALUES " +
+		String sql = "INSERT INTO payment (customer_id, staff_id, rental_id, amount, payment_date) VALUES " +
 				"("+request.getCustomerId()+", " +
 				request.getStaffId()+", " +
 				request.getRentalId()+", " +
@@ -81,7 +81,7 @@ public class PaymentDao extends Database {
 	}
 
 	public void delete(long paymentId) {
-		String sql = "DELETE FROM payment WHERE payment.payment_id='"+paymentId+"';";
+		String sql = "DELETE FROM payment WHERE payment_id='"+paymentId+"';";
 		try {
 			getConnection().createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
@@ -93,17 +93,17 @@ public class PaymentDao extends Database {
 		String sql = "UPDATE payment SET ";
 
 		if (request.getAmount()!=null)
-			sql += "payment.amount = '"+request.getAmount()+"', ";
+			sql += "amount = '"+request.getAmount()+"', ";
 		if (request.getCustomerId()!=null)
-			sql += "payment.customer_id = '"+request.getCustomerId()+"', ";
+			sql += "customer_id = '"+request.getCustomerId()+"', ";
 		if (request.getPaymentDate()!=null)
-			sql += "payment.payment_date = '"+request.getPaymentDate()+"', ";
+			sql += "payment_date = '"+request.getPaymentDate()+"', ";
 		if (request.getRentalId()!=null)
-			sql += "payment.rental_id = '"+request.getRentalId()+"', ";
+			sql += "rental_id = '"+request.getRentalId()+"', ";
 		if (request.getStaffId()!=null)
-			sql += "payment.staff_id = '"+request.getStaffId()+"', ";
+			sql += "staff_id = '"+request.getStaffId()+"', ";
 
-		sql = sql.substring(0,sql.length()-3) + " WHERE payment.payment_id = '"+request.getPaymentId()+"';";
+		sql = sql.substring(0,sql.length()-3) + " WHERE payment_id = '"+request.getPaymentId()+"';";
 
 		try {
 			getConnection().createStatement().executeUpdate(sql);

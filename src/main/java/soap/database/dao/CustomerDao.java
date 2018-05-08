@@ -80,7 +80,7 @@ public class CustomerDao extends Database {
 	}
 
 	public void insert(CreateCustomerRequest request) {
-		String sql = "INSERT INTO customer (customer.store_id, customer.first_name, customer.last_name, customer.email, customer.address_id, customer.active) VALUES " +
+		String sql = "INSERT INTO customer (store_id, first_name, last_name, email, address_id, active) VALUES " +
 				"('"+request.getStoreId()+"', '"+
 				request.getFirstName()+"', '"+
 				request.getLastName()+"', '"+
@@ -95,7 +95,7 @@ public class CustomerDao extends Database {
 	}
 
 	public void delete(long customerId) {
-		String sql = "DELETE FROM customer WHERE customer.customer_id='"+customerId+"';";
+		String sql = "DELETE FROM customer WHERE customer_id='"+customerId+"';";
 		try {
 			getConnection().createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
@@ -108,21 +108,21 @@ public class CustomerDao extends Database {
 		String values = "";
 
 		if (request.isActive()!=null)
-			values += "customer.active = '"+request.isActive()+"', ";
+			values += "active = '"+request.isActive()+"', ";
 		if (request.getAddressId()!=null)
-			values += "customer.address_id = '"+request.getAddressId()+"', ";
+			values += "address_id = '"+request.getAddressId()+"', ";
 		if (request.getEmail()!=null)
-			values += "customer.email = '"+request.getEmail()+"', ";
+			values += "email = '"+request.getEmail()+"', ";
 		if (request.getFirstName()!=null)
-			values += "customer.first_name = '"+request.getFirstName()+"', ";
+			values += "first_name = '"+request.getFirstName()+"', ";
 		if (request.getLastName()!=null)
-			values += "customer.last_name = '"+request.getLastName()+"', ";
+			values += "last_name = '"+request.getLastName()+"', ";
 		if (request.getStoreId()!=null)
-			values += "customer.store_id = '"+request.getStoreId()+"', ";
+			values += "store_id = '"+request.getStoreId()+"', ";
 
 		values = (String) values.subSequence(0,values.length()-3);
 
-		sql += values + " WHERE customer.customer_id = '"+request.getCustomerId()+"';";
+		sql += values + " WHERE customer_id = '"+request.getCustomerId()+"';";
 
 		try {
 			getConnection().createStatement().executeUpdate(sql);

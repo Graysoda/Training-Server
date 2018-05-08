@@ -83,7 +83,7 @@ public class RentalDao extends Database {
 	}
 
 	public void insert(CreateRentalRequest request) {
-		String sql = "INSERT INTO rental (rental.customer_id, rental.staff_id, rental.inventory_id, rental.rental_date, rental.return_date) VALUES " +
+		String sql = "INSERT INTO rental (customer_id, staff_id, inventory_id, rental_date, return_date) VALUES " +
 				"("+request.getCustomerId()+", "+
 				request.getStaffId()+", "+
 				request.getInventoryId()+", "+
@@ -97,7 +97,7 @@ public class RentalDao extends Database {
 	}
 
 	public void delete(long rentalId) {
-		String sql = "DELETE FROM rental WHERE rental.rental_id='"+rentalId+"';";
+		String sql = "DELETE FROM rental WHERE rental_id='"+rentalId+"';";
 		try {
 			getConnection().createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
@@ -109,17 +109,17 @@ public class RentalDao extends Database {
 		String sql = "UPDATE rental SET ";
 
 		if (request.getCustomerId()!=null)
-			sql += "rental.customer_id = '"+request.getCustomerId()+"', ";
+			sql += "customer_id = '"+request.getCustomerId()+"', ";
 		if (request.getInventoryId()!=null)
-			sql += "rental.inventory_id = '"+request.getInventoryId()+"', ";
+			sql += "inventory_id = '"+request.getInventoryId()+"', ";
 		if (request.getRentalDate()!=null)
-			sql += "rental.rental_date = '"+request.getRentalDate()+"', ";
+			sql += "rental_date = '"+request.getRentalDate()+"', ";
 		if (request.getReturnDate()!=null)
-			sql += "rental.return_date = '"+request.getReturnDate()+"', ";
+			sql += "return_date = '"+request.getReturnDate()+"', ";
 		if (request.getStaffId()!=null)
-			sql += "rental.staff_id = '"+request.getStaffId()+"', ";
+			sql += "staff_id = '"+request.getStaffId()+"', ";
 
-		sql = sql.substring(0,sql.length()-3) + "WHERE rental.rental_id = '"+request.getRentalId()+"';";
+		sql = sql.substring(0,sql.length()-3) + "WHERE rental_id = '"+request.getRentalId()+"';";
 
 		try {
 			getConnection().createStatement().executeUpdate(sql);

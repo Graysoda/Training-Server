@@ -86,7 +86,7 @@ public class ActorDao extends Database {
 	}
 
 	public void insert(CreateActorRequest request) {
-		String sql = "INSERT INTO sakila.actor (actor.first_name, actor.last_name) VALUES ('"+request.getFirstName()+"', '"+request.getLastName()+"');";
+		String sql = "INSERT INTO actor (first_name, last_name) VALUES ('"+request.getFirstName()+"', '"+request.getLastName()+"');";
 		try {
 			getConnection().createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
@@ -98,11 +98,11 @@ public class ActorDao extends Database {
 		String sql = "UPDATE actor SET ";
 
 		 if (request.getNewLastName() != null)
-			sql += "actor.last_name = '"+request.getNewLastName()+"' ";
+			sql += "last_name = '"+request.getNewLastName()+"' ";
 		 if (request.getNewFirstName() != null)
 			sql += "actor.first_name = '"+request.getNewFirstName()+"' ";
 
-		sql = sql.substring(0, sql.length()-3) + " WHERE actor.actor_id='"+request.getActorId()+"';";
+		sql = sql.substring(0, sql.length()-3) + " WHERE actor_id='"+request.getActorId()+"';";
 		try{
 			getConnection().createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
@@ -111,7 +111,7 @@ public class ActorDao extends Database {
 	}
 
 	public void delete(DeleteActorRequest request) {
-		String sql = "DELETE FROM actor WHERE actor.actor_id='"+request.getActorId()+"';";
+		String sql = "DELETE FROM actor WHERE actor_id='"+request.getActorId()+"';";
 		try {
 			getConnection().createStatement().executeUpdate(sql);
 		} catch (SQLException e) {

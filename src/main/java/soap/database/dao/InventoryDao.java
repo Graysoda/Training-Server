@@ -60,7 +60,7 @@ public class InventoryDao extends Database {
 	}
 
 	public void insert(CreateInventoryRequest request) {
-		String sql = "INSERT INTO inventory (inventory.film_id, inventory.store_id) VALUES ("+request.getFilmId()+", "+request.getStoreId()+");";
+		String sql = "INSERT INTO inventory (film_id, store_id) VALUES ("+request.getFilmId()+", "+request.getStoreId()+");";
 		try {
 			getConnection().createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
@@ -69,7 +69,7 @@ public class InventoryDao extends Database {
 	}
 
 	public void delete(long inventoryId) {
-		String sql = "DELETE FROM inventory WHERE inventory.inventory_id='"+inventoryId+"';";
+		String sql = "DELETE FROM inventory WHERE inventory_id='"+inventoryId+"';";
 		try {
 			getConnection().createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
@@ -81,11 +81,11 @@ public class InventoryDao extends Database {
 		String sql = "UPDATE inventory SET ";
 
 		if (request.getFilmId()!=null)
-			sql += "inventory.film_id = '"+request.getFilmId()+"', ";
+			sql += "film_id = '"+request.getFilmId()+"', ";
 		if (request.getStoreId() != null)
-			sql += "inventory.store_id = '"+request.getStoreId()+"', ";
+			sql += "store_id = '"+request.getStoreId()+"', ";
 
-		sql += sql.subSequence(0,sql.length()-3) + " WHERE inventory.inventory_id = '"+request.getInventoryId()+"';";
+		sql += sql.subSequence(0,sql.length()-3) + " WHERE inventory_id = '"+request.getInventoryId()+"';";
 
 		try {
 			getConnection().createStatement().executeUpdate(sql);

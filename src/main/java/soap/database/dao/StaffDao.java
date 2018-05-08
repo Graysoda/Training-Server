@@ -87,7 +87,7 @@ public class StaffDao extends Database {
 
 
 	public void insert(CreateStaffRequest request) {
-		String sql = "INSERT INTO staff (staff.first_name, staff.last_name, staff.address_id, staff.email, staff.store_id, staff.active, staff.username, staff.password) VALUES " +
+		String sql = "INSERT INTO staff (first_name, last_name, address_id, email, store_id, active, username, password) VALUES " +
 				"("+request.getFirstName()+", " +
 				request.getLastName()+", " +
 				request.getAddressId()+", " +
@@ -105,7 +105,7 @@ public class StaffDao extends Database {
 	}
 
 	public void delete(long staffId) {
-		String sql = "DELETE FROM staff WHERE staff.staff_id='"+staffId+"';";
+		String sql = "DELETE FROM staff WHERE staff_id='"+staffId+"';";
 		try {
 			getConnection().createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
@@ -117,23 +117,23 @@ public class StaffDao extends Database {
 		String sql = "UPDATE staff SET ";
 
 		if (request.isActive()!=null)
-			sql += "staff.active = '"+request.isActive()+"', ";
+			sql += "active = '"+request.isActive()+"', ";
 		if (request.getAddressId()!=null)
-			sql += "staff.address_id = '"+request.getAddressId()+"', ";
+			sql += "address_id = '"+request.getAddressId()+"', ";
 		if (request.getEmail()!=null)
-			sql += "staff.email = '"+request.getEmail()+"', ";
+			sql += "email = '"+request.getEmail()+"', ";
 		if (request.getFirstName()!=null)
-			sql += "staff.first_name = '"+request.getFirstName()+"', ";
+			sql += "first_name = '"+request.getFirstName()+"', ";
 		if (request.getLastName()!=null)
-			sql += "staff.last_name = '"+request.getLastName()+"', ";
+			sql += "last_name = '"+request.getLastName()+"', ";
 		if (request.getPassword()!=null)
-			sql += "staff.password = '"+request.getPassword()+"', ";
+			sql += "password = '"+request.getPassword()+"', ";
 		if (request.getStoreId()!=null)
-			sql += "staff.store_id  ='"+request.getStoreId()+"', ";
+			sql += "store_id  ='"+request.getStoreId()+"', ";
 		if (request.getUsername()!=null)
-			sql += "staff.username = '"+request.getUsername()+"', ";
+			sql += "username = '"+request.getUsername()+"', ";
 
-		sql = sql.substring(0,sql.length()-3) + " WHERE staff.staff_id = '"+request.getStaffId()+"';";
+		sql = sql.substring(0,sql.length()-3) + " WHERE staff_id = '"+request.getStaffId()+"';";
 
 		try {
 			getConnection().createStatement().executeUpdate(sql);
