@@ -19,6 +19,11 @@ public class FilmCategoryEntity {
 	public FilmCategoryEntity() {
 	}
 
+	public FilmCategoryEntity(@NotNull long film_id, @NotNull long category_id) {
+		this.film_id = film_id;
+		this.category_id = category_id;
+	}
+
 	public FilmCategoryEntity(long id, @NotNull long film_id, @NotNull long category_id, @NotNull String last_update) {
 		this.id = id;
 		this.film_id = film_id;
