@@ -11,6 +11,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Selection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +26,21 @@ public class PaymentDao extends Database {
 	public List<Payment> getAll(){
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
 		CriteriaQuery<PaymentEntity> query = criteriaBuilder.createQuery(PaymentEntity.class);
-
+		query.multiselect(makeSelection(query.from(PaymentEntity.class)));
 		return convertEntitiesToGenerated(this.em.createQuery(query).getResultList());
+	}
+
+	private List<Selection<?>> makeSelection(Root<PaymentEntity> from) {
+		List<Selection<?>> selections = new ArrayList<>();
+
+		selections.add(from.get("payment_id"));
+		selections.add(from.get("amount"));
+		selections.add(from.get("customer_id"));
+		selections.add(from.get("payment_date"));
+		selections.add(from.get("rental_id"));
+		selections.add(from.get("staff_id"));
+
+		return selections;
 	}
 
 	private List<Payment> convertEntitiesToGenerated(List<PaymentEntity> entities){
