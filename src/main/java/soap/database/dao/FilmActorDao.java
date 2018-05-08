@@ -75,7 +75,7 @@ public class FilmActorDao {
 	}
 
 	List<Film> getFilms(long actor_id) {
-		FilmDao filmDao = new FilmDao();
-		return filmDao.getAllFilms(this.em.createQuery(baseQuery+"WHERE fa.actor_id = "+actor_id, FilmActorEntity.class).getResultList());
+
+		return null;//filmDao.getAllFilms(this.em.createQuery(baseQuery+"WHERE fa.actor_id = "+actor_id, FilmActorEntity.class).getResultList());
 	}
 }

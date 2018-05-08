@@ -1,9 +1,9 @@
 package soap.database.dao;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import soap.database.Database;
 import soap.database.entity.ActorEntity;
-import soap.database.entity.FilmActorEntity;
 import soap.generated.*;
 
 import javax.persistence.EntityManager;
@@ -17,6 +17,7 @@ import java.util.List;
 @Transactional
 public class ActorDao extends Database {
 	@PersistenceContext private EntityManager em;
+	@Autowired FilmActorDao filmActorDao;
 	private String baseQuery = "SELECT a FROM sakila.actor a ";
 
 	public void insert(CreateActorRequest request) {
@@ -84,27 +85,7 @@ public class ActorDao extends Database {
 		}
 	}
 
-	List<Actor> getAllActors(List<FilmActorEntity> resultList) {
-        System.out.println("actor dao get all actors");
-        if (resultList.size()==0)
-            return new ArrayList<Actor>();
-
-		StringBuilder query = new StringBuilder(baseQuery+"WHERE a.actor_id IN (");
-
-		for (FilmActorEntity filmActorEntity : resultList) {
-			if (!query.toString().contains(String.valueOf(filmActorEntity.getActor_id())))
-				query.append("'").append(filmActorEntity.getActor_id()).append("', ");
-		}
-
-		query.deleteCharAt(query.length()-1).deleteCharAt(query.length()-1).append(")");
-
-        System.out.println("query = ["+ query.toString()+"]");
-
-		return convertActorEntitiesToGenerated(this.em.createQuery(query.toString(),ActorEntity.class).getResultList());
-	}
-
     public List<Film> getFilms(long actorId) {
-        FilmActorDao filmActorDao = new FilmActorDao();
 		return filmActorDao.getFilms(actorId);
 	}
 }
