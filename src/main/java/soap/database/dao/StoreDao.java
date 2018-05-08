@@ -25,7 +25,12 @@ public class StoreDao {
 		Root<StoreEntity> root = query.from(StoreEntity.class);
 		query.where(criteriaBuilder.equal(root.get("store_id"),id));
 
-		return convertEntityToGenerated(this.em.createQuery(query).getSingleResult());
+		try{
+			return convertEntityToGenerated(this.em.createQuery(query).getSingleResult());
+		} catch (javax.persistence.NoResultException e){
+			e.printStackTrace();
+			return new Store();
+		}
 	}
 
 	private Store convertEntityToGenerated(StoreEntity entity){

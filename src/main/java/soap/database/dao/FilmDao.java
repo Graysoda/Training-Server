@@ -299,11 +299,6 @@ public class FilmDao extends Database{
 		return actor;
 	}
 
-	private Predicate buildIdPredicate(long id) {
-
-		return em.getCriteriaBuilder().equal(em.getCriteriaBuilder().createQuery(FilmEntity.class).from(FilmEntity.class).get("film_id"),id);
-	}
-
 	private CriteriaQuery<FilmEntity> buildBaseQuery(Predicate predicate){
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
 		CriteriaBuilder.Coalesce coalesce = criteriaBuilder.coalesce();
