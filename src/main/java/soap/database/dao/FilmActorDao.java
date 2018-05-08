@@ -13,7 +13,7 @@ import java.util.List;
 public class FilmActorDao {
 	@PersistenceContext
 	private EntityManager em;
-	private String baseQuery = "SELECT fa from film_actor fa ";
+	private String baseQuery = "SELECT fa from sakila.film_actor fa ";
 
 	List<Actor> getActors(long film_id) {
 		ActorDao actorDao = new ActorDao();
