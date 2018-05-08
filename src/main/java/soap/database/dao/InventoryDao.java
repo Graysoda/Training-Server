@@ -13,6 +13,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Selection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +28,19 @@ public class InventoryDao extends Database {
 	public List<Inventory> getAll() {
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
 		CriteriaQuery<InventoryEntity> query = criteriaBuilder.createQuery(InventoryEntity.class);
+		query.multiselect(makeSelection(query.from(InventoryEntity.class)));
 
 		return convertEntitiesToGenerated(this.em.createQuery(query).getResultList());
+	}
+
+	private List<Selection<?>> makeSelection(Root<InventoryEntity> from) {
+		List<Selection<?>> selections = new ArrayList<>();
+		selections.add(from.get("inventory_id"));
+		selections.add(from.get("store_id"));
+		selections.add(from.get("film_id"));
+		selections.add(from.get("last_update"));
+
+		return selections;
 	}
 
 	public Inventory getById(long id) {
