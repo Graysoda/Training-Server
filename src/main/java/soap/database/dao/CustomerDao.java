@@ -47,6 +47,8 @@ public class CustomerDao extends Database {
 		selections.add(root.get("first_name"));
 		selections.add(root.get("last_name"));
 		selections.add(root.get("store_id"));
+		selections.add(root.get("create_date"));
+		selections.add(root.get("last_update"));
 
 		return selections;
 	}
