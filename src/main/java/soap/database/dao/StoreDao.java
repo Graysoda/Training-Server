@@ -28,7 +28,7 @@ public class StoreDao {
 		try{
 			return convertEntityToGenerated(this.em.createQuery(query).getSingleResult());
 		} catch (javax.persistence.NoResultException e){
-			e.printStackTrace();
+			//e.printStackTrace();
 			return new Store();
 		}
 	}
