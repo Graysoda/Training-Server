@@ -89,7 +89,7 @@ public class ActorDao extends Database {
         if (resultList.size()==0)
             return new ArrayList<Actor>();
 
-		StringBuilder query = new StringBuilder("WHERE a.actor_id IN (");
+		StringBuilder query = new StringBuilder(baseQuery+"WHERE a.actor_id IN (");
 
 		for (FilmActorEntity filmActorEntity : resultList) {
 			if (!query.toString().contains(String.valueOf(filmActorEntity.getActor_id())))
