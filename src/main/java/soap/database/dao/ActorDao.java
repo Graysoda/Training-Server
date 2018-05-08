@@ -81,7 +81,7 @@ public class ActorDao extends Database {
 		}
 
 		List<Summary> films = summaryDao.getByIds(ids);
-		////
+
 		return films;
 	}
 
