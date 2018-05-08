@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import soap.database.entity.*;
 
 import javax.sql.DataSource;
 import java.net.URI;
@@ -20,7 +21,23 @@ import java.sql.SQLException;
 
 @Configuration
 @EnableTransactionManagement
-@EntityScan(basePackages = "soap.database.entity")
+@EntityScan(basePackageClasses ={
+		ActorEntity.class,
+		AddressEntity.class,
+		CategoryEntity.class,
+		CityEntity.class,
+		CustomerEntity.class,
+		FilmActorEntity.class,
+		FilmCategoryEntity.class,
+		FilmEntity.class,
+		InventoryEntity.class,
+		LanguageEntity.class,
+		PaymentEntity.class,
+		RentalEntity.class,
+		StaffEntity.class,
+		StoreEntity.class,
+		SummaryEntity.class
+})
 public class Database {
 
 	@Bean
