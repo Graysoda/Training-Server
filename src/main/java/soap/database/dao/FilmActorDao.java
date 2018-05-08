@@ -48,7 +48,7 @@ public class FilmActorDao {
 				query.append("'").append(filmActorEntity.getActor_id()).append("', ");
 		}
 
-		String sql = query.toString().substring(0,query.length()-2)+")";
+		String sql = query.toString().substring(0,query.toString().length()-3)+")";
 
 		System.out.println("query = ["+ query.toString()+"]");
 
