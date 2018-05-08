@@ -16,6 +16,16 @@ public class FilmActorEntity {
 	@NotNull
 	private String last_update;
 
+	public FilmActorEntity() {
+	}
+
+	public FilmActorEntity(long id, @NotNull long actor_id, @NotNull long film_id, @NotNull String last_update) {
+		this.id = id;
+		this.actor_id = actor_id;
+		this.film_id = film_id;
+		this.last_update = last_update;
+	}
+
 	public long getActor_id() {
 		return actor_id;
 	}

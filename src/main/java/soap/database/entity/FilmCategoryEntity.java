@@ -16,6 +16,16 @@ public class FilmCategoryEntity {
 	@NotNull
 	private String last_update;
 
+	public FilmCategoryEntity() {
+	}
+
+	public FilmCategoryEntity(long id, @NotNull long film_id, @NotNull long category_id, @NotNull String last_update) {
+		this.id = id;
+		this.film_id = film_id;
+		this.category_id = category_id;
+		this.last_update = last_update;
+	}
+
 	public long getFilm_id() {
 		return film_id;
 	}
