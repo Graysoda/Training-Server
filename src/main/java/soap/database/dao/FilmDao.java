@@ -3,7 +3,6 @@ package soap.database.dao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import soap.database.Database;
-import soap.database.entity.FilmActorEntity;
 import soap.database.entity.FilmEntity;
 import soap.generated.*;
 
@@ -195,22 +194,7 @@ public class FilmDao extends Database{
 		return film;
 	}
 
-	List<Film> getAllFilms(List<FilmActorEntity> resultList) {
-		long[] ids = new long[resultList.size()];
 
-		for (int i = 0; i < resultList.size(); i++) {
-			ids[i] = resultList.get(i).getFilm_id();
-		}
-
-		List<Film> films = convertListToGenerated(this.em.createQuery(buildBaseQuery(buildIdPredicate(ids))).getResultList());
-
-		return films;
-	}
-
-	private Predicate buildIdPredicate(long[] ids) {
-		Expression<Long> expression = em.getCriteriaBuilder().createQuery(FilmEntity.class).from(FilmEntity.class).get("film_id");
-		return expression.in(ids);
-	}
 
 	public List<Actor> getActors(long filmId) {
 		return filmActorDao.getActors(filmId);
