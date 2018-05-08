@@ -41,12 +41,12 @@ public class CustomerDao extends Database {
 	private List<Selection<?>> makeSelection(Root<CustomerEntity> root) {
 		List<Selection<?>> selections = new ArrayList<>();
 		selections.add(root.get("customer_id"));
-		selections.add(root.get("active"));
-		selections.add(root.get("address_id"));
-		selections.add(root.get("email"));
+		selections.add(root.get("store_id"));
 		selections.add(root.get("first_name"));
 		selections.add(root.get("last_name"));
-		selections.add(root.get("store_id"));
+		selections.add(root.get("email"));
+		selections.add(root.get("address_id"));
+		selections.add(root.get("active"));
 		selections.add(root.get("create_date"));
 		selections.add(root.get("last_update"));
 
