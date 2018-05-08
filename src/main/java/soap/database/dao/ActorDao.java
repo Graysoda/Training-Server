@@ -86,7 +86,7 @@ public class ActorDao extends Database {
 	}
 
 	public void insert(CreateActorRequest request) {
-		String sql = "INSERT INTO actor (actor.first_name, actor.last_name) VALUES ('"+request.getFirstName()+"', '"+request.getLastName()+"');";
+		String sql = "INSERT INTO sakila.actor (actor.first_name, actor.last_name) VALUES ('"+request.getFirstName()+"', '"+request.getLastName()+"');";
 		try {
 			getConnection().createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
