@@ -1,6 +1,7 @@
 package soap.database.dao;
 
 import org.springframework.stereotype.Repository;
+import soap.database.entity.ActorEntity;
 import soap.database.entity.FilmActorEntity;
 import soap.generated.Actor;
 import soap.generated.Film;
@@ -22,7 +23,7 @@ public class FilmActorDao {
 
 	List<Actor> getActors(long film_id) {
 		System.out.println("film actor dao get actors");
-		ActorDao actorDao = new ActorDao();
+		//ActorDao actorDao = new ActorDao();
 
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
 		CriteriaQuery<FilmActorEntity> query = criteriaBuilder.createQuery(FilmActorEntity.class);
@@ -35,7 +36,41 @@ public class FilmActorDao {
 		query.multiselect(selections);
 		query.where(criteriaBuilder.equal(root.get("film_id"),film_id));
 
-		return actorDao.getAllActors(this.em.createQuery(query).getResultList());
+		return getAllActors(this.em.createQuery(query).getResultList());
+	}
+
+	private List<Actor> getAllActors(List<FilmActorEntity> resultList) {
+		StringBuilder query = new StringBuilder("SELECT a FROM sakila.actor a WHERE a.actor_id IN (");
+
+		for (FilmActorEntity filmActorEntity : resultList) {
+			if (!query.toString().contains(String.valueOf(filmActorEntity.getActor_id())))
+				query.append("'").append(filmActorEntity.getActor_id()).append("', ");
+		}
+
+		query.deleteCharAt(query.length()-1).deleteCharAt(query.length()-1).append(")");
+
+		System.out.println("query = ["+ query.toString()+"]");
+
+		return convertActorEntitiesToGenerated(this.em.createQuery(query.toString(),ActorEntity.class).getResultList());
+	}
+
+	private List<Actor> convertActorEntitiesToGenerated(List<ActorEntity> actorEntityList) {
+		List<Actor> actors = new ArrayList<>();
+
+		for (ActorEntity actorEntity : actorEntityList){
+			actors.add(convertActorEntityToGenerated(actorEntity));
+		}
+
+		return actors;
+	}
+
+	private Actor convertActorEntityToGenerated(ActorEntity actorEntity) {
+		Actor actor = new Actor();
+		actor.setActorId((int)actorEntity.getActor_id());
+		actor.setFirstName(actorEntity.getFirst_name());
+		actor.setLastName(actorEntity.getLast_name());
+		actor.setLastUpdate(actorEntity.getLast_update());
+		return actor;
 	}
 
 	List<Film> getFilms(long actor_id) {
