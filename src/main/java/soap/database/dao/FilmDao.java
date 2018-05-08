@@ -250,6 +250,8 @@ public class FilmDao extends Database{
 	private List<Actor> getAllActors(List<FilmActorEntity> resultList) {
 		if (resultList.size() == 0)
 			return new ArrayList<>();
+		if (resultList.size() == 1)
+		    return convertActorEntitiesToGenerated(this.em.createQuery("SELECT s FROM sakila.actor a WHERE a.actor_id = '"+resultList.get(0).getActor_id()+"'",ActorEntity.class).getResultList());
 		String query = ("SELECT a FROM sakila.actor a WHERE a.actor_id IN (");
 
 		for (FilmActorEntity filmActorEntity : resultList) {
