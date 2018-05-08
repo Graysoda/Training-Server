@@ -92,7 +92,8 @@ public class ActorDao extends Database {
 		StringBuilder query = new StringBuilder("WHERE a.actor_id IN (");
 
 		for (FilmActorEntity filmActorEntity : resultList) {
-			query.append("'").append(filmActorEntity.getActor_id()).append("', ");
+			if (!query.toString().contains(String.valueOf(filmActorEntity.getActor_id())))
+				query.append("'").append(filmActorEntity.getActor_id()).append("', ");
 		}
 
 		query.deleteCharAt(query.length()-1).deleteCharAt(query.length()-1).append(")");
