@@ -12,19 +12,9 @@ import javax.persistence.PersistenceContext;
 public class StoreDao {
 	@PersistenceContext
 	private EntityManager em;
-	private AddressDao addressDao;
-	private StaffDao staffDao;
+	@Autowired private AddressDao addressDao;
+	@Autowired private StaffDao staffDao;
 	private String baseQuery = "SELECT s FROM sakila.store s ";
-
-	@Autowired
-	public void setAddressDao(AddressDao addressDao) {
-		this.addressDao = addressDao;
-	}
-
-	@Autowired
-	public void setStaffDao(StaffDao staffDao) {
-		this.staffDao = staffDao;
-	}
 
 	public Store getById(long id){
 		return convertEntityToGenerated(this.em

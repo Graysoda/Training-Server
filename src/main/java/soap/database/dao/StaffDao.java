@@ -18,13 +18,8 @@ import java.util.List;
 public class StaffDao extends Database {
 	@PersistenceContext
 	private EntityManager em;
-	private AddressDao addressDao;
+	@Autowired private AddressDao addressDao;
 	private String baseQuery = "SELECT s FROM sakila.staff s ";
-
-	@Autowired
-	public void setAddressDao(AddressDao addressDao) {
-		this.addressDao = addressDao;
-	}
 
 	public Staff getById(long id) {
 		return convertEntityToGenerated(this.em.createQuery(baseQuery+"WHERE s.staff_id='"+id+"'",StaffEntity.class).getSingleResult());

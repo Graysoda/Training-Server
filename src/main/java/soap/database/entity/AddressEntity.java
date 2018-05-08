@@ -24,6 +24,20 @@ public class AddressEntity {
 	@NotNull
 	private String last_update;
 
+	public AddressEntity() {
+	}
+
+	public AddressEntity(long address_id, @NotNull String address, @NotNull String address2, @NotNull String district, @NotNull long city_id, @NotNull String postal_code, @NotNull String phone, @NotNull String last_update) {
+		this.address_id = address_id;
+		this.address = address;
+		this.address2 = address2;
+		this.district = district;
+		this.city_id = city_id;
+		this.postal_code = postal_code;
+		this.phone = phone;
+		this.last_update = last_update;
+	}
+
 	public long getAddress_id() {
 		return address_id;
 	}

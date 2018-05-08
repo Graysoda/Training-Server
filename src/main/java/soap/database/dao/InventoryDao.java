@@ -18,19 +18,9 @@ import java.util.List;
 public class InventoryDao extends Database {
 	@PersistenceContext
 	private EntityManager em;
-	private FilmDao filmDao;
-	private StoreDao storeDao;
+	@Autowired private FilmDao filmDao;
+	@Autowired private StoreDao storeDao;
 	private String baseQuery = "SELECT i FROM sakila.inventory i ";
-
-	@Autowired
-	public void setFilmDao(FilmDao filmDao) {
-		this.filmDao = filmDao;
-	}
-
-	@Autowired
-	public void setStoreDao(StoreDao storeDao) {
-		this.storeDao = storeDao;
-	}
 
 	public List<Inventory> getAll() throws SQLException {
 		return convertEntitiesToGenerated(this.em.createQuery(baseQuery,InventoryEntity.class).getResultList());

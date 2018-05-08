@@ -16,6 +16,16 @@ public class StoreEntity {
 	@NotNull
 	private String last_update;
 
+	public StoreEntity() {
+	}
+
+	public StoreEntity(long store_id, @NotNull long manager_staff_id, @NotNull long address_id, @NotNull String last_update) {
+		this.store_id = store_id;
+		this.manager_staff_id = manager_staff_id;
+		this.address_id = address_id;
+		this.last_update = last_update;
+	}
+
 	public long getStore_id() {
 		return store_id;
 	}

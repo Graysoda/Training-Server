@@ -19,13 +19,8 @@ import java.util.List;
 @Transactional
 public class AddressDao extends Database {
 	@PersistenceContext private EntityManager em;
-	private CityDao cityDao;
+	@Autowired private CityDao cityDao;
 	private String baseQuery = "SELECT adr FROM sakila.address adr ";
-
-	@Autowired
-	public void setCityDao(CityDao cityDao) {
-		this.cityDao = cityDao;
-	}
 
 	public Address getById(long id){
 		return convertEntityToGenerated(this.em.createQuery(baseQuery+"WHERE adr.address_id='"+id+"'",AddressEntity.class).getSingleResult());

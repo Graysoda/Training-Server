@@ -18,25 +18,10 @@ import java.util.List;
 public class RentalDao extends Database {
 	@PersistenceContext
 	private EntityManager em;
-	private CustomerDao customerDao;
-	private FilmDao filmDao;
-	private StaffDao staffDao;
+	@Autowired private CustomerDao customerDao;
+	@Autowired private FilmDao filmDao;
+	@Autowired private StaffDao staffDao;
 	private String baseQuery = "SELECT r FROM sakila.rental r ";
-
-	@Autowired
-	public void setStaffDao(StaffDao staffDao) {
-		this.staffDao = staffDao;
-	}
-
-	@Autowired
-	public void setFilmDao(FilmDao filmDao) {
-		this.filmDao = filmDao;
-	}
-
-	@Autowired
-	public void setCustomerDao(CustomerDao customerDao) {
-		this.customerDao = customerDao;
-	}
 
 	private Rental convertEntityToGenerated(RentalEntity entity) throws SQLException {
 		Rental rental = new Rental();

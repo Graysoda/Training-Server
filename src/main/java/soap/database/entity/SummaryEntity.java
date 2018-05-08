@@ -16,6 +16,16 @@ public class SummaryEntity {
 	@NotNull
 	private String description;
 
+	public SummaryEntity() {
+	}
+
+	public SummaryEntity(long id, @NotNull long film_id, @NotNull String title, @NotNull String description) {
+		this.id = id;
+		this.film_id = film_id;
+		this.title = title;
+		this.description = description;
+	}
+
 	public long getFilm_id() {
 		return film_id;
 	}

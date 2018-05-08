@@ -11,13 +11,8 @@ import javax.persistence.PersistenceContext;
 public class FilmCategoryDao {
 	@PersistenceContext
 	private EntityManager em;
-	private CategoryDao categoryDao;
+	@Autowired private CategoryDao categoryDao;
 	private String baseQuery = "SELECT fc FROM sakila.film_category ";
-
-	@Autowired
-	public void setCategoryDao(CategoryDao categoryDao) {
-		this.categoryDao = categoryDao;
-	}
 
     public String getById(long film_id) {
         return categoryDao.getNameById(this.em.createQuery(baseQuery+"WHERE fc.film_id = "+film_id,FilmCategoryEntity.class).getSingleResult().getCategory_id());

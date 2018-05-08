@@ -22,6 +22,19 @@ public class RentalEntity {
 	@NotNull
 	private String last_update;
 
+	public RentalEntity() {
+	}
+
+	public RentalEntity(long rental_id, @NotNull long customer_id, @NotNull long staff_id, @NotNull long inventory_id, @NotNull String rental_date, @NotNull String return_date, @NotNull String last_update) {
+		this.rental_id = rental_id;
+		this.customer_id = customer_id;
+		this.staff_id = staff_id;
+		this.inventory_id = inventory_id;
+		this.rental_date = rental_date;
+		this.return_date = return_date;
+		this.last_update = last_update;
+	}
+
 	public long getRental_id() {
 		return rental_id;
 	}

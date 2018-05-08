@@ -14,6 +14,15 @@ public class CategoryEntity {
 	@NotNull
 	private String last_update;
 
+	public CategoryEntity() {
+	}
+
+	public CategoryEntity(long category_id, @NotNull String name, @NotNull String last_update) {
+		this.category_id = category_id;
+		this.name = name;
+		this.last_update = last_update;
+	}
+
 	public long getCategory_id() {
 		return category_id;
 	}

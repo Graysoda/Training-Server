@@ -20,6 +20,18 @@ public class PaymentEntity {
 	@NotNull
 	private long staff_id;
 
+	public PaymentEntity() {
+	}
+
+	public PaymentEntity(long payment_id, @NotNull float amount, @NotNull long customer_id, @NotNull String payment_date, @NotNull long rental_id, @NotNull long staff_id) {
+		this.payment_id = payment_id;
+		this.amount = amount;
+		this.customer_id = customer_id;
+		this.payment_date = payment_date;
+		this.rental_id = rental_id;
+		this.staff_id = staff_id;
+	}
+
 	public long getPayment_id() {
 		return payment_id;
 	}

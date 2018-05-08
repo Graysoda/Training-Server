@@ -17,15 +17,9 @@ import java.util.List;
 @Repository
 @Transactional
 public class ActorDao extends Database {
-	@PersistenceContext
-	private EntityManager em;
+	@PersistenceContext private EntityManager em;
 	@Autowired private FilmActorDao filmActorDao;
 	private String baseQuery = "SELECT a FROM sakila.actor a ";
-
-//	@Autowired
-//	public void setFilmActorDao(FilmActorDao filmActorDao) {
-//		this.filmActorDao = filmActorDao;
-//	}
 
 	public void insert(CreateActorRequest request) {
 		String sql = "INSERT INTO actor (actor.first_name, actor.last_name) VALUES ('"+request.getFirstName()+"', '"+request.getLastName()+"');";

@@ -27,6 +27,21 @@ public class CustomerEntity {
 	@NotNull
 	private String last_update;
 
+	public CustomerEntity() {
+	}
+
+	public CustomerEntity(long customer_id, @NotNull long store_id, @NotNull String first_name, @NotNull String last_name, @NotNull String email, @NotNull long address_id, @NotNull boolean active, @NotNull String create_date, @NotNull String last_update) {
+		this.customer_id = customer_id;
+		this.store_id = store_id;
+		this.first_name = first_name;
+		this.last_name = last_name;
+		this.email = email;
+		this.address_id = address_id;
+		this.active = active;
+		this.create_date = create_date;
+		this.last_update = last_update;
+	}
+
 	public String getLast_update() {
 		return last_update;
 	}

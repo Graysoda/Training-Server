@@ -16,6 +16,16 @@ public class CityEntity {
 	@NotNull
 	private String last_update;
 
+	public CityEntity() {
+	}
+
+	public CityEntity(long city_id, @NotNull String city, @NotNull long country_id, @NotNull String last_update) {
+		this.city_id = city_id;
+		this.city = city;
+		this.country_id = country_id;
+		this.last_update = last_update;
+	}
+
 	public long getCity_id() {
 		return city_id;
 	}

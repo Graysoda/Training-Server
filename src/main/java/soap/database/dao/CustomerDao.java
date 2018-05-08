@@ -19,15 +19,10 @@ import java.util.List;
 public class CustomerDao extends Database {
 	@PersistenceContext
 	private EntityManager em;
-	private AddressDao addressDao;
+	@Autowired private AddressDao addressDao;
 	private String baseQuery = "SELECT c from sakila.customer c ";
 
 	public CustomerDao(){}
-
-	@Autowired
-	public void setAddressDao(AddressDao addressDao) {
-		this.addressDao = addressDao;
-	}
 
 	public void insert(CreateCustomerRequest request) {
 		String sql = "INSERT INTO customer (customer.store_id, customer.first_name, customer.last_name, customer.email, customer.address_id, customer.active) VALUES " +

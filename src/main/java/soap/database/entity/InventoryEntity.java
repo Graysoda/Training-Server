@@ -16,6 +16,16 @@ public class InventoryEntity {
 	@NotNull
 	private String last_update;
 
+	public InventoryEntity() {
+	}
+
+	public InventoryEntity(long inventory_id, @NotNull long film_id, @NotNull long store_id, @NotNull String last_update) {
+		this.inventory_id = inventory_id;
+		this.film_id = film_id;
+		this.store_id = store_id;
+		this.last_update = last_update;
+	}
+
 	public long getInventory_id() {
 		return inventory_id;
 	}
