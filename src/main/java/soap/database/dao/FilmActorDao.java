@@ -43,15 +43,16 @@ public class FilmActorDao {
 		StringBuilder query = new StringBuilder("SELECT a FROM sakila.actor a WHERE a.actor_id IN (");
 
 		for (FilmActorEntity filmActorEntity : resultList) {
+            System.out.println("actor_id = ["+filmActorEntity.getActor_id()+"]");
 			if (!query.toString().contains(String.valueOf(filmActorEntity.getActor_id())))
 				query.append("'").append(filmActorEntity.getActor_id()).append("', ");
 		}
 
-		query.deleteCharAt(query.length()-1).deleteCharAt(query.length()-1).append(")");
+		String sql = query.toString().substring(0,query.length()-3)+")";
 
 		System.out.println("query = ["+ query.toString()+"]");
 
-		return convertActorEntitiesToGenerated(this.em.createQuery(query.toString(),ActorEntity.class).getResultList());
+		return convertActorEntitiesToGenerated(this.em.createQuery(sql,ActorEntity.class).getResultList());
 	}
 
 	private List<Actor> convertActorEntitiesToGenerated(List<ActorEntity> actorEntityList) {
