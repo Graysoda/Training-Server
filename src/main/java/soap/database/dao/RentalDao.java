@@ -13,6 +13,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Selection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +32,22 @@ public class RentalDao extends Database {
 		CriteriaQuery<RentalEntity> query = criteriaBuilder.createQuery(RentalEntity.class);
 		Root<RentalEntity> root = query.from(RentalEntity.class);
 		query.where(criteriaBuilder.equal(root.get("rental_id"),id));
+		query.multiselect(makeSelection(root));
 		return convertEntityToGenerated(this.em.createQuery(query).getSingleResult());
+	}
+
+	private List<Selection<?>> makeSelection(Root<RentalEntity> root) {
+		List<Selection<?>> selections = new ArrayList<>();
+
+		selections.add(root.get("rental_id"));
+		selections.add(root.get("customer_id"));
+		selections.add(root.get("staff_id"));
+		selections.add(root.get("inventory_id"));
+		selections.add(root.get("rental_date"));
+		selections.add(root.get("return_date"));
+		selections.add(root.get("last_update"));
+
+		return selections;
 	}
 
 	public List<Rental> getByCustomerId(long id) {
