@@ -34,12 +34,11 @@ public class StaffEntity {
 	public StaffEntity() {
 	}
 
-	public StaffEntity(long staff_id, @NotNull String first_name, @NotNull String last_name, @NotNull long address_id, Blob picture, @NotNull String email, @NotNull long store_id, @NotNull boolean active, @NotNull String username, @NotNull String password, @NotNull String last_update) {
+	public StaffEntity(long staff_id, @NotNull String first_name, @NotNull String last_name, @NotNull long address_id, @NotNull String email, @NotNull long store_id, @NotNull boolean active, @NotNull String username, @NotNull String password, @NotNull String last_update) {
 		this.staff_id = staff_id;
 		this.first_name = first_name;
 		this.last_name = last_name;
 		this.address_id = address_id;
-		this.picture = picture;
 		this.email = email;
 		this.store_id = store_id;
 		this.active = active;
