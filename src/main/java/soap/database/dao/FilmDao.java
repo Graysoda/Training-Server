@@ -114,8 +114,30 @@ public class FilmDao extends Database{
 
 	public Film getById(long id) {
 		CriteriaBuilder criteriaBuilder = this.em.getCriteriaBuilder();
+		CriteriaBuilder.Coalesce coalesce = criteriaBuilder.coalesce();
 		CriteriaQuery<FilmEntity> query = criteriaBuilder.createQuery(FilmEntity.class);
 		Root<FilmEntity> from = query.from(FilmEntity.class);
+
+		coalesce.value(from.get("original_language_id"));
+		coalesce.value(Long.valueOf(-1));
+
+		List<Selection<?>> selections = new ArrayList<>();
+		selections.add(from.get("film_id"));
+		selections.add(from.get("title"));
+		selections.add(from.get("description"));
+		selections.add(from.get("release_year"));
+		selections.add(from.get("language_id"));
+		selections.add(coalesce);
+		selections.add(from.get("rental_duration"));
+		selections.add(from.get("rental_rate"));
+		selections.add(from.get("length"));
+		selections.add(from.get("replacement_cost"));
+		selections.add(from.get("rating"));
+		selections.add(from.get("special_features"));
+		selections.add(from.get("last_update"));
+
+		query.multiselect(selections);
+
 		query.where(criteriaBuilder.equal(from.get("film_id"),id));
 		return convertSingleToGenerated(this.em.createQuery(query).getSingleResult());
 	}
