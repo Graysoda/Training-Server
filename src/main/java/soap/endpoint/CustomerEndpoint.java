@@ -11,12 +11,7 @@ import soap.service.CustomerServiceImpl;
 @Endpoint
 public class CustomerEndpoint {
 	private static final String NAMESPACE_URI = Constants.NAMESPACE_URI;
-	private CustomerServiceImpl customerService;
-
-	@Autowired
-	public void setCustomerService(CustomerServiceImpl customerService){
-		this.customerService = customerService;
-	}
+	@Autowired private CustomerServiceImpl customerService;
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "createCustomerRequest")
 	public void insertCustomer(@RequestPayload CreateCustomerRequest request){

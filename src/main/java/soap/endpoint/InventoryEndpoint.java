@@ -13,12 +13,7 @@ import java.sql.SQLException;
 @Endpoint
 public class InventoryEndpoint {
 	private static final String NAMESPACE_URI = Constants.NAMESPACE_URI;
-	private InventoryServiceImpl inventoryService;
-
-	@Autowired
-	public void setInventoryService(InventoryServiceImpl inventoryService){
-		this.inventoryService = inventoryService;
-	}
+	@Autowired private InventoryServiceImpl inventoryService;
 
 	@PayloadRoot(namespace = NAMESPACE_URI,localPart = "getAllInventoryRequest")
 	@ResponsePayload

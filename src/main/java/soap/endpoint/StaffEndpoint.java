@@ -11,12 +11,7 @@ import soap.service.StaffServiceImpl;
 @Endpoint
 public class StaffEndpoint {
 	private static final String NAMESPACE_URI = Constants.NAMESPACE_URI;
-	private StaffServiceImpl staffService;
-
-	@Autowired
-	public void setStaffService(StaffServiceImpl staffService) {
-		this.staffService = staffService;
-	}
+	@Autowired private StaffServiceImpl staffService;
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getAllStaffRequest")
 	@ResponsePayload

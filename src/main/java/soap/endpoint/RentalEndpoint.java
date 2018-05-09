@@ -13,12 +13,7 @@ import java.sql.SQLException;
 @Endpoint
 public class RentalEndpoint {
 	private static final String NAMESPACE_URI = Constants.NAMESPACE_URI;
-	private RentalServiceImpl rentalService;
-
-	@Autowired
-	public void setRentalService(RentalServiceImpl rentalService) {
-		this.rentalService = rentalService;
-	}
+	@Autowired private RentalServiceImpl rentalService;
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getRentalByCustomerIdRequest")
 	@ResponsePayload

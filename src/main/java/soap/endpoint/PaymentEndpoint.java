@@ -11,12 +11,7 @@ import soap.service.PaymentServiceImpl;
 @Endpoint
 public class PaymentEndpoint {
 	private static final String NAMESPACE_URI = Constants.NAMESPACE_URI;
-	private PaymentServiceImpl paymentService;
-
-	@Autowired
-	public void setPaymentService(PaymentServiceImpl paymentService) {
-		this.paymentService = paymentService;
-	}
+	@Autowired private PaymentServiceImpl paymentService;
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getAllPaymentsRequest")
 	@ResponsePayload

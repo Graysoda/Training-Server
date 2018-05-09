@@ -14,12 +14,7 @@ import java.sql.SQLException;
 @Endpoint
 public class FilmsEndpoint {
 	private static final String NAMESPACE_URI = Constants.NAMESPACE_URI;
-	private FilmServiceImpl filmService;
-
-	@Autowired
-	public void setFilmService(FilmServiceImpl filmService){
-		this.filmService = filmService;
-	}
+	@Autowired private FilmServiceImpl filmService;
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "createFilmRequest")
 	public void createFilm(@RequestPayload CreateFilmRequest request) throws SQLException {

@@ -12,12 +12,7 @@ import soap.service.ActorServiceImpl;
 @Endpoint
 public class ActorsEndpoint {
 	private static final String NAMESPACE_URI = Constants.NAMESPACE_URI;
-	private ActorServiceImpl actorService;
-
-	@Autowired
-	public ActorsEndpoint(ActorServiceImpl actorService) {
-		this.actorService = actorService;
-	}
+	@Autowired private ActorServiceImpl actorService;
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "createActorRequest")
 	public void createActor(@RequestPayload CreateActorRequest request) {

@@ -11,12 +11,7 @@ import soap.service.AddressServiceImpl;
 @Endpoint
 public class AddressEndpoint {
 	private static final String NAMESPACE_URI = Constants.NAMESPACE_URI;
-	private AddressServiceImpl addressService;
-
-	@Autowired
-	public AddressEndpoint(AddressServiceImpl addressService){
-		this.addressService = addressService;
-	}
+	@Autowired private AddressServiceImpl addressService;
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "createAddressRequest")
 	public void insertAddress(@RequestPayload CreateAddressRequest request){
