@@ -35,9 +35,7 @@ public class FilmEntity{
 	@NotNull private float rental_rate;
 	@NotNull private int length;
 	@NotNull private float replacement_cost;
-	@Column(name="rating")
-	@Enumerated(EnumType.STRING)
-	@NotNull private FilmEntity.mpaa_rating rating;
+	@NotNull private String rating;
 	@NotNull private String special_features;
 	@NotNull private String last_update;
 
@@ -49,7 +47,7 @@ public class FilmEntity{
 		this.description = description;
 	}
 
-	public FilmEntity(long film_id, @NotNull String title, @NotNull String description, @NotNull int release_year, @NotNull long language_id, Long original_language_id, @NotNull int rental_duration, @NotNull float rental_rate, @NotNull int length, @NotNull float replacement_cost, @NotNull mpaa_rating rating, @NotNull String special_features, @NotNull String last_update) {
+	public FilmEntity(long film_id, @NotNull String title, @NotNull String description, @NotNull int release_year, @NotNull long language_id, Long original_language_id, @NotNull int rental_duration, @NotNull float rental_rate, @NotNull int length, @NotNull float replacement_cost, @NotNull String rating, @NotNull String special_features, @NotNull String last_update) {
 		this.film_id = film_id;
 		this.title = title;
 		this.description = description;
@@ -147,10 +145,10 @@ public class FilmEntity{
 	}
 
 	public String getRating() {
-		return rating.getRating();
+		return rating;//.getRating();
 	}
 
-	public void setRating(@NotNull mpaa_rating rating) {
+	public void setRating(@NotNull String rating) {
 		this.rating = rating;
 	}
 

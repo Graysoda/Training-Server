@@ -9,7 +9,6 @@ import soap.generated.CreateInventoryRequest;
 import soap.generated.Inventory;
 import soap.generated.UpdateInventoryRequest;
 
-import java.sql.SQLException;
 import java.util.List;
 
 @Service
@@ -23,19 +22,19 @@ public class InventoryServiceImpl implements InventoryService{
 
 	@Override
 	@Transactional
-	public List<Inventory> getAllInventory() throws SQLException {
+	public List<Inventory> getAllInventory() {
 		return inventoryDao.getAll();
 	}
 
 	@Override
 	@Transactional
-	public Inventory getInventoryById(long inventoryId) throws SQLException {
+	public Inventory getInventoryById(long inventoryId) {
 		return inventoryDao.getById(inventoryId);
 	}
 
 	@Override
 	@Transactional
-	public List<Inventory> getStoreInventory(long storeId) throws SQLException {
+	public List<Inventory> getStoreInventory(long storeId) {
 		return inventoryDao.getStoreInventory(storeId);
 	}
 
