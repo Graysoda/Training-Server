@@ -10,7 +10,10 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Selection;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 @Transactional
@@ -30,16 +33,29 @@ public class LanguageDao {
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
 		CriteriaQuery<LanguageEntity> query = criteriaBuilder.createQuery(LanguageEntity.class);
 		Root<LanguageEntity> root = query.from(LanguageEntity.class);
+
 		query.where(criteriaBuilder.equal(root.get("language_id"),id));
+		query.multiselect(makeSelections(root));
 
 		return this.em.createQuery(query).getSingleResult().getName();
+	}
+
+	private List<Selection<?>> makeSelections(Root<LanguageEntity> root) {
+		List<Selection<?>> selections = new ArrayList<>();
+
+		selections.add(root.get("language_id"));
+		selections.add(root.get("name"));
+
+		return selections;
 	}
 
 	long getId(String language){
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
 		CriteriaQuery<LanguageEntity> query = criteriaBuilder.createQuery(LanguageEntity.class);
 		Root<LanguageEntity> root = query.from(LanguageEntity.class);
+
 		query.where(criteriaBuilder.equal(root.get("name"),language));
+		query.multiselect(makeSelections(root));
 
 		return this.em.createQuery(query).getSingleResult().getLanguage_id();
 	}

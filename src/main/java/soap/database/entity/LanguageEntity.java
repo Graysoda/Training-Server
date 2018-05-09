@@ -14,6 +14,11 @@ public class LanguageEntity {
 	public LanguageEntity() {
 	}
 
+	public LanguageEntity(long language_id, String name) {
+		this.language_id = language_id;
+		this.name = name;
+	}
+
 	public LanguageEntity(long language_id, String name, String last_update) {
 		this.language_id = language_id;
 		this.name = name;
