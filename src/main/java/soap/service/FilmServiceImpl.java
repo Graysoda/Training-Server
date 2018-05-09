@@ -75,6 +75,6 @@ public class FilmServiceImpl implements FilmService {
 	@Override
 	@Transactional
 	public List<Actor> getFilmsActors(long filmId) {
-		return filmDao.getActors(filmId);
+		return filmDao.getFilmsActors(filmId);
 	}
 }

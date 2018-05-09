@@ -1,7 +1,6 @@
 package soap.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import soap.database.dao.AddressDao;
@@ -13,12 +12,12 @@ import java.util.List;
 
 @Service
 public class AddressServiceImpl implements AddressService{
-	private AddressDao addressDao;
+	@Autowired private AddressDao addressDao;
 
-	@Autowired
-	public void setAddressDao(@Lazy AddressDao addressDao) {
-		this.addressDao = addressDao;
-	}
+//	@Autowired
+//	public void setAddressDao(@Lazy AddressDao addressDao) {
+//		this.addressDao = addressDao;
+//	}
 
 	@Override
 	@Transactional

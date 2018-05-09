@@ -1,11 +1,9 @@
 package soap.database.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import soap.database.Database;
 import soap.database.entity.ActorEntity;
-import soap.database.entity.FilmActorEntity;
 import soap.generated.*;
 
 import javax.persistence.EntityManager;
@@ -23,17 +21,18 @@ import java.util.List;
 @Transactional
 public class ActorDao extends Database {
 	@PersistenceContext private EntityManager em;
-	private FilmDao filmDao;
+//	@Autowired private FilmDao filmDao;
+	@Autowired private FilmActorDao filmActorDao;
 
-	@Autowired
-	public void setEm(@Lazy EntityManager em) {
-		this.em = em;
-	}
+//	@Autowired
+//	public void setEm(@Lazy EntityManager em) {
+//		this.em = em;
+//	}
 
-	@Autowired
-    public void setFilmDao(@Lazy FilmDao filmDao) {
-        this.filmDao = filmDao;
-    }
+//	@Autowired
+//    public void setFilmDao(@Lazy FilmDao filmDao) {
+//        this.filmDao = filmDao;
+//    }
 
     public List<Actor> getAllActors() {
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
@@ -60,28 +59,19 @@ public class ActorDao extends Database {
 		return convertActorEntitiesToGenerated(this.em.createQuery(query).getResultList());
 	}
 
-	public List<Summary> getFilms(long actorId) {
-		return getAllFilms(actorId);
+	public List<Actor> getActorsById(List<Long> actorIds) {
+		CriteriaBuilder criteriaBuilder = this.em.getCriteriaBuilder();
+		CriteriaQuery<ActorEntity> query = criteriaBuilder.createQuery(ActorEntity.class);
+		Root<ActorEntity> from = query.from(ActorEntity.class);
+
+		query.multiselect(makeSelection(from));
+		query.where(from.get("actor_id").in(actorIds));
+
+		return convertActorEntitiesToGenerated(this.em.createQuery(query).getResultList());
 	}
 
-	private List<Summary> getAllFilms(long actorId) {
-		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-		CriteriaQuery<FilmActorEntity> query = criteriaBuilder.createQuery(FilmActorEntity.class);
-		Root<FilmActorEntity> root = query.from(FilmActorEntity.class);
-
-		query.where(criteriaBuilder.equal(root.get("actor_id"),actorId));
-
-		List<FilmActorEntity> resultList = this.em.createQuery(query).getResultList();
-
-		long[] ids = new long[resultList.size()];
-
-		for (int i = 0; i < resultList.size(); i++) {
-			ids[i] = resultList.get(i).getFilm_id();
-		}
-
-		List<Summary> films = filmDao.getSummaryByIds(ids);
-
-		return films;
+	public List<Summary> getFilms(long actorId) {
+		return filmActorDao.getFilmsWithActor(actorId);
 	}
 
 	public void insert(CreateActorRequest request) {

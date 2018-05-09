@@ -1,7 +1,6 @@
 package soap.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import soap.database.dao.StaffDao;
@@ -13,12 +12,12 @@ import java.util.List;
 
 @Service
 public class StaffServiceImpl implements StaffService {
-	private StaffDao staffDao;
+	@Autowired private StaffDao staffDao;
 
-	@Autowired
-	public void setStaffDao(@Lazy StaffDao staffDao) {
-		this.staffDao = staffDao;
-	}
+//	@Autowired
+//	public void setStaffDao(@Lazy StaffDao staffDao) {
+//		this.staffDao = staffDao;
+//	}
 
 	@Override
 	@Transactional

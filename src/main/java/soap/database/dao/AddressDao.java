@@ -1,7 +1,6 @@
 package soap.database.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import soap.database.Database;
 import soap.database.entity.AddressEntity;
@@ -24,17 +23,17 @@ import java.util.List;
 public class AddressDao extends Database {
 	@PersistenceContext
 	private EntityManager em;
-	private CityDao cityDao;
+	@Autowired private CityDao cityDao;
 
-	@Autowired
-	public void setEm(@Lazy EntityManager em) {
-		this.em = em;
-	}
-
-	@Autowired
-	public void setCityDao(@Lazy CityDao cityDao) {
-		this.cityDao = cityDao;
-	}
+//	@Autowired
+//	public void setEm(@Lazy EntityManager em) {
+//		this.em = em;
+//	}
+//
+//	@Autowired
+//	public void setCityDao(@Lazy CityDao cityDao) {
+//		this.cityDao = cityDao;
+//	}
 
 	public Address getById(long id){
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();

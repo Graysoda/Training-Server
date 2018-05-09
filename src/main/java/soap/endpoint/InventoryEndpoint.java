@@ -1,7 +1,6 @@
 package soap.endpoint;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
@@ -14,12 +13,12 @@ import java.sql.SQLException;
 @Endpoint
 public class InventoryEndpoint {
 	private static final String NAMESPACE_URI = Constants.NAMESPACE_URI;
-	private InventoryServiceImpl inventoryService;
+	@Autowired private InventoryServiceImpl inventoryService;
 
-	@Autowired
-	public void setInventoryService(@Lazy InventoryServiceImpl inventoryService) {
-		this.inventoryService = inventoryService;
-	}
+//	@Autowired
+//	public void setInventoryService(@Lazy InventoryServiceImpl inventoryService) {
+//		this.inventoryService = inventoryService;
+//	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI,localPart = "getAllInventoryRequest")
 	@ResponsePayload

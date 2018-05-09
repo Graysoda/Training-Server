@@ -1,7 +1,6 @@
 package soap.database.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import soap.database.Database;
 import soap.database.entity.StaffEntity;
@@ -23,17 +22,17 @@ import java.util.List;
 public class StaffDao extends Database {
 	@PersistenceContext
 	private EntityManager em;
-	private AddressDao addressDao;
+	@Autowired private AddressDao addressDao;
 
-	@Autowired
-	public void setEm(@Lazy EntityManager em) {
-		this.em = em;
-	}
-
-	@Autowired
-	public void setAddressDao(@Lazy AddressDao addressDao) {
-		this.addressDao = addressDao;
-	}
+//	@Autowired
+//	public void setEm(@Lazy EntityManager em) {
+//		this.em = em;
+//	}
+//
+//	@Autowired
+//	public void setAddressDao(@Lazy AddressDao addressDao) {
+//		this.addressDao = addressDao;
+//	}
 
 	public Staff getById(long id) {
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();

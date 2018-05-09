@@ -1,7 +1,6 @@
 package soap.endpoint;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
@@ -12,12 +11,12 @@ import soap.service.PaymentServiceImpl;
 @Endpoint
 public class PaymentEndpoint {
 	private static final String NAMESPACE_URI = Constants.NAMESPACE_URI;
-	private PaymentServiceImpl paymentService;
+	@Autowired private PaymentServiceImpl paymentService;
 
-	@Autowired
-	public void setPaymentService(@Lazy PaymentServiceImpl paymentService) {
-		this.paymentService = paymentService;
-	}
+//	@Autowired
+//	public void setPaymentService(@Lazy PaymentServiceImpl paymentService) {
+//		this.paymentService = paymentService;
+//	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getAllPaymentsRequest")
 	@ResponsePayload

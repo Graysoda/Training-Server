@@ -1,7 +1,6 @@
 package soap.database.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import soap.database.entity.StoreEntity;
 import soap.generated.Store;
@@ -16,23 +15,23 @@ import javax.persistence.criteria.Root;
 public class StoreDao {
 	@PersistenceContext
 	private EntityManager em;
-	private AddressDao addressDao;
-	private StaffDao staffDao;
+	@Autowired private AddressDao addressDao;
+	@Autowired private StaffDao staffDao;
 
-	@Autowired
-	public void setEm(@Lazy EntityManager em) {
-		this.em = em;
-	}
-
-	@Autowired
-	public void setStaffDao(@Lazy StaffDao staffDao) {
-		this.staffDao = staffDao;
-	}
-
-	@Autowired
-	public void setAddressDao(@Lazy AddressDao addressDao) {
-		this.addressDao = addressDao;
-	}
+//	@Autowired
+//	public void setEm(@Lazy EntityManager em) {
+//		this.em = em;
+//	}
+//
+//	@Autowired
+//	public void setStaffDao(@Lazy StaffDao staffDao) {
+//		this.staffDao = staffDao;
+//	}
+//
+//	@Autowired
+//	public void setAddressDao(@Lazy AddressDao addressDao) {
+//		this.addressDao = addressDao;
+//	}
 
 	public Store getById(long id){
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();

@@ -1,7 +1,6 @@
 package soap.database.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import soap.database.Database;
 import soap.database.entity.CustomerEntity;
@@ -23,18 +22,18 @@ import java.util.List;
 @Repository
 public class CustomerDao extends Database {
 	@PersistenceContext
-	@Lazy private EntityManager em;
-	private AddressDao addressDao;
+	private EntityManager em;
+	@Autowired private AddressDao addressDao;
 
-	@Autowired
-	public void setEm(@Lazy EntityManager em) {
-		this.em = em;
-	}
-
-	@Autowired
-	public void setAddressDao(@Lazy AddressDao addressDao) {
-		this.addressDao = addressDao;
-	}
+//	@Autowired
+//	public void setEm(@Lazy EntityManager em) {
+//		this.em = em;
+//	}
+//
+//	@Autowired
+//	public void setAddressDao(@Lazy AddressDao addressDao) {
+//		this.addressDao = addressDao;
+//	}
 
 	public List<Customer> getActive() {
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();

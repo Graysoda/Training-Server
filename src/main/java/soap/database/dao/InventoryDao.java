@@ -1,7 +1,6 @@
 package soap.database.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import soap.database.Database;
 import soap.database.entity.InventoryEntity;
@@ -23,23 +22,23 @@ import java.util.List;
 public class InventoryDao extends Database {
 	@PersistenceContext
 	private EntityManager em;
-	private FilmDao filmDao;
-	private StoreDao storeDao;
+	@Autowired private FilmDao filmDao;
+	@Autowired private StoreDao storeDao;
 
-	@Autowired
-	public void setEm(@Lazy EntityManager em) {
-		this.em = em;
-	}
-
-	@Autowired
-	public void setStoreDao(@Lazy StoreDao storeDao) {
-		this.storeDao = storeDao;
-	}
-
-	@Autowired
-	public void setFilmDao(@Lazy FilmDao filmDao) {
-		this.filmDao = filmDao;
-	}
+//	@Autowired
+//	public void setEm(@Lazy EntityManager em) {
+//		this.em = em;
+//	}
+//
+//	@Autowired
+//	public void setStoreDao(@Lazy StoreDao storeDao) {
+//		this.storeDao = storeDao;
+//	}
+//
+//	@Autowired
+//	public void setFilmDao(@Lazy FilmDao filmDao) {
+//		this.filmDao = filmDao;
+//	}
 
 	public List<Inventory> getAll() {
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();

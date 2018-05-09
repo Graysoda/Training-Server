@@ -1,7 +1,6 @@
 package soap.database.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import soap.database.entity.FilmCategoryEntity;
 
@@ -16,18 +15,18 @@ import java.util.List;
 @Repository
 public class FilmCategoryDao {
 	@PersistenceContext
-	private EntityManager em;
-	private CategoryDao categoryDao;
+	@Autowired private EntityManager em;
+	@Autowired private CategoryDao categoryDao;
 
-    @Autowired
-    public void setEm(@Lazy EntityManager em) {
-        this.em = em;
-    }
-
-	@Autowired
-    public void setCategoryDao(@Lazy CategoryDao categoryDao) {
-        this.categoryDao = categoryDao;
-    }
+//    @Autowired
+//    public void setEm(@Lazy EntityManager em) {
+//        this.em = em;
+//    }
+//
+//	@Autowired
+//    public void setCategoryDao(@Lazy CategoryDao categoryDao) {
+//        this.categoryDao = categoryDao;
+//    }
 
     public String getById(long film_id) {
         CriteriaQuery<FilmCategoryEntity> query = em.getCriteriaBuilder().createQuery(FilmCategoryEntity.class);
