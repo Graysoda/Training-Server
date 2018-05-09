@@ -12,8 +12,7 @@ import soap.service.PaymentServiceImpl;
 @Endpoint
 public class PaymentEndpoint {
 	private static final String NAMESPACE_URI = Constants.NAMESPACE_URI;
-	@Autowired @Lazy
-	private PaymentServiceImpl paymentService;
+	@Autowired @Lazy private PaymentServiceImpl paymentService;
 
 //	@Autowired
 //	public void setPaymentService(@Lazy PaymentServiceImpl paymentService) {
