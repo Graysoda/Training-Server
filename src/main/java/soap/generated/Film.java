@@ -314,7 +314,7 @@ public class Film {
 
     /**
      * Sets the value of the rating property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }

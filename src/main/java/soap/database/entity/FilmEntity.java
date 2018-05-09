@@ -8,6 +8,21 @@ import javax.validation.constraints.NotNull;
 @Entity(name = "sakila.film")
 @Table(name = "film")
 public class FilmEntity{
+
+	public enum mpaa_rating {
+		G("G"),PG("PG"),PG13("PG-13"),R("R"),NC17("NC-17");
+
+		private String rating;
+
+		mpaa_rating(final String rating){
+			this.rating = rating;
+		}
+
+		public String getRating() {
+			return rating;
+		}
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long film_id;
@@ -20,7 +35,9 @@ public class FilmEntity{
 	@NotNull private float rental_rate;
 	@NotNull private int length;
 	@NotNull private float replacement_cost;
-	@NotNull private String rating;
+	@Column(name="rating")
+	@Enumerated(EnumType.STRING)
+	@NotNull private FilmEntity.mpaa_rating rating;
 	@NotNull private String special_features;
 	@NotNull private String last_update;
 
@@ -43,9 +60,16 @@ public class FilmEntity{
 		this.rental_rate = rental_rate;
 		this.length = length;
 		this.replacement_cost = replacement_cost;
-		this.rating = rating;
 		this.special_features = special_features;
 		this.last_update = last_update;
+
+		switch (rating){
+			case "G": this.rating = mpaa_rating.G;
+			case "PG": this.rating = mpaa_rating.PG;
+			case "PG-13": this.rating = mpaa_rating.PG13;
+			case "R": this.rating = mpaa_rating.R;
+			case "NC-17": this.rating = mpaa_rating.NC17;
+		}
 	}
 
 	public long getFilm_id() {
@@ -129,10 +153,10 @@ public class FilmEntity{
 	}
 
 	public String getRating() {
-		return rating;
+		return rating.getRating();
 	}
 
-	public void setRating(String rating) {
+	public void setRating(@NotNull mpaa_rating rating) {
 		this.rating = rating;
 	}
 
