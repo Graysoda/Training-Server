@@ -23,9 +23,9 @@ import java.util.List;
 public class FilmDao extends Database{
 	@PersistenceContext @Lazy
 	private EntityManager em;
-	@Autowired private LanguageDao languageDao;
-	@Autowired private FilmCategoryDao filmCategoryDao;
-	@Autowired private FilmActorDao filmActorDao;
+	@Autowired @Lazy private LanguageDao languageDao;
+	@Autowired @Lazy private FilmCategoryDao filmCategoryDao;
+	@Autowired @Lazy private FilmActorDao filmActorDao;
 
 //	@Autowired
 //	public void setEm(@Lazy EntityManager em) {

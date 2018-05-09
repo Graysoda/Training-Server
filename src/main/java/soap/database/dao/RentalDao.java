@@ -1,6 +1,7 @@
 package soap.database.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import soap.database.Database;
 import soap.database.entity.RentalEntity;
@@ -20,11 +21,11 @@ import java.util.List;
 
 @Repository
 public class RentalDao extends Database {
-	@PersistenceContext
+	@PersistenceContext @Lazy
 	private EntityManager em;
-	@Autowired private CustomerDao customerDao;
-	@Autowired private FilmDao filmDao;
-	@Autowired private StaffDao staffDao;
+	@Autowired @Lazy private CustomerDao customerDao;
+	@Autowired @Lazy private FilmDao filmDao;
+	@Autowired @Lazy private StaffDao staffDao;
 
 //	@Autowired
 //	public void setEm(@Lazy EntityManager em) {
