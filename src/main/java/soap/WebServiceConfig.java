@@ -33,6 +33,7 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 		return new ServletRegistrationBean(servlet, "/ws/*");
 	}
 
+	@Lazy
 	@Bean(name = "operations")
 	public DefaultWsdl11Definition defaultWsdl11Definition(XsdSchema operationsSchema){
 		DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
