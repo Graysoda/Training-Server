@@ -1,6 +1,7 @@
 package soap.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import soap.database.dao.PaymentDao;
@@ -12,7 +13,8 @@ import java.util.List;
 
 @Service
 public class PaymentServiceImpl implements PaymentService{
-	@Autowired private PaymentDao paymentDao;
+	@Autowired @Lazy
+	private PaymentDao paymentDao;
 
 //	@Autowired
 //	public void setPaymentDao(@Lazy PaymentDao paymentDao) {
