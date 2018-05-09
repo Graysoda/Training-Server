@@ -31,7 +31,7 @@ public class InventoryDao extends Database {
 		query.multiselect(makeSelection(query.from(InventoryEntity.class)));
 
 
-		return convertEntitiesToGenerated(this.em.createQuery(query).setMaxResults(50).getResultList());
+		return convertEntitiesToGenerated(this.em.createQuery(query).setMaxResults(20).getResultList());
 	}
 
 	private List<Selection<?>> makeSelection(Root<InventoryEntity> from) {
