@@ -106,7 +106,7 @@ public class FilmDao extends Database{
 	 ****************************************/
 	public List<Film> getAll() {
 		System.out.println("in get all films");
-		TypedQuery str = this.em.createQuery(buildBaseQuery(null));
+		TypedQuery<FilmEntity> str = this.em.createQuery(buildBaseQuery(null)).setMaxResults(100);
 		System.out.println(str.toString());
 		return convertListToGenerated(str.getResultList());
 	}

@@ -55,7 +55,7 @@ public class RentalDao extends Database {
 		CriteriaQuery<RentalEntity> query = criteriaBuilder.createQuery(RentalEntity.class);
 		Root<RentalEntity> root = query.from(RentalEntity.class);
 		query.where(criteriaBuilder.equal(root.get("customer_id"),id));
-		return convertEntitiesToGenerated(this.em.createQuery(query).getResultList());
+		return convertEntitiesToGenerated(this.em.createQuery(query).setMaxResults(100).getResultList());
 	}
 
 	public List<Rental> getByStaffId(long id) {
@@ -63,7 +63,7 @@ public class RentalDao extends Database {
 		CriteriaQuery<RentalEntity> query = criteriaBuilder.createQuery(RentalEntity.class);
 		Root<RentalEntity> root = query.from(RentalEntity.class);
 		query.where(criteriaBuilder.equal(root.get("staff_id"),id));
-		return convertEntitiesToGenerated(this.em.createQuery(query).getResultList());
+		return convertEntitiesToGenerated(this.em.createQuery(query).setMaxResults(100).getResultList());
 	}
 
 	public List<Rental> getByStartDate(String date) {

@@ -30,7 +30,8 @@ public class InventoryDao extends Database {
 		CriteriaQuery<InventoryEntity> query = criteriaBuilder.createQuery(InventoryEntity.class);
 		query.multiselect(makeSelection(query.from(InventoryEntity.class)));
 
-		return convertEntitiesToGenerated(this.em.createQuery(query).getResultList());
+
+		return convertEntitiesToGenerated(this.em.createQuery(query).setMaxResults(100).getResultList());
 	}
 
 	private List<Selection<?>> makeSelection(Root<InventoryEntity> from) {
@@ -56,7 +57,7 @@ public class InventoryDao extends Database {
 		CriteriaQuery<InventoryEntity> query = criteriaBuilder.createQuery(InventoryEntity.class);
 		Root<InventoryEntity> root = query.from(InventoryEntity.class);
 		query.where(criteriaBuilder.equal(root.get("store_id"),storeId));
-		return convertEntitiesToGenerated(this.em.createQuery(query).getResultList());
+		return convertEntitiesToGenerated(this.em.createQuery(query).setMaxResults(100).getResultList());
 	}
 
 	public void insert(CreateInventoryRequest request) {
