@@ -62,7 +62,7 @@ public class FilmDao extends Database{
 		Root<FilmEntity> from = query.from(FilmEntity.class);
 
 		//query.distinct(true);
-		//query.multiselect(makeSelections(query));
+		query.multiselect(makeSelections(query));
 		query.where(this.em.getCriteriaBuilder().equal(from.get("film_id"),id));
 
 		return convertSingleToGenerated(this.em.createQuery(query).getSingleResult());
@@ -289,7 +289,7 @@ public class FilmDao extends Database{
 		Root<FilmEntity> from = query.from(FilmEntity.class);
 
 		coalesce.value(from.get("original_language_id"));
-		coalesce.value(Long.valueOf(-1));
+		coalesce.value((long) -1);
 
 		List<Selection<?>> selections = new ArrayList<>();
 
