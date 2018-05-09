@@ -49,7 +49,7 @@ public class FilmEntity{
 		this.description = description;
 	}
 
-	public FilmEntity(long film_id, @NotNull String title, @NotNull String description, @NotNull int release_year, @NotNull long language_id, Long original_language_id, @NotNull int rental_duration, @NotNull float rental_rate, @NotNull int length, @NotNull float replacement_cost, @NotNull String rating, @NotNull String special_features, @NotNull String last_update) {
+	public FilmEntity(long film_id, @NotNull String title, @NotNull String description, @NotNull int release_year, @NotNull long language_id, Long original_language_id, @NotNull int rental_duration, @NotNull float rental_rate, @NotNull int length, @NotNull float replacement_cost, @NotNull mpaa_rating rating, @NotNull String special_features, @NotNull String last_update) {
 		this.film_id = film_id;
 		this.title = title;
 		this.description = description;
@@ -60,16 +60,10 @@ public class FilmEntity{
 		this.rental_rate = rental_rate;
 		this.length = length;
 		this.replacement_cost = replacement_cost;
+		this.rating = rating;
 		this.special_features = special_features;
 		this.last_update = last_update;
 
-		switch (rating){
-			case "G": this.rating = mpaa_rating.G;
-			case "PG": this.rating = mpaa_rating.PG;
-			case "PG-13": this.rating = mpaa_rating.PG13;
-			case "R": this.rating = mpaa_rating.R;
-			case "NC-17": this.rating = mpaa_rating.NC17;
-		}
 	}
 
 	public long getFilm_id() {
