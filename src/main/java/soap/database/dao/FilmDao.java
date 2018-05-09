@@ -117,6 +117,23 @@ public class FilmDao extends Database{
 		return convertEntitiesToSummary(this.em.createQuery(query).setMaxResults(50).getResultList());
 	}
 
+	public Summary getSummary(long filmId) {
+		CriteriaBuilder criteriaBuilder = this.em.getCriteriaBuilder();
+		CriteriaQuery<FilmEntity> query = criteriaBuilder.createQuery(FilmEntity.class);
+		Root<FilmEntity> from = query.from(FilmEntity.class);
+		List<Selection<?>> selections = new ArrayList<>();
+
+
+		selections.add(from.get("film_id"));
+		selections.add(from.get("title"));
+		selections.add(from.get("description"));
+
+		query.multiselect(selections);
+		query.where(criteriaBuilder.equal(from.get("film_id"),filmId));
+
+		return convertEntityToSummary(this.em.createQuery(query).getSingleResult());
+	}
+
 	public void create(CreateFilmRequest request) {
 		String sql = "INSERT INTO film " +
 				"(title, " +
