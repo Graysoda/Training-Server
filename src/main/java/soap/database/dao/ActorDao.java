@@ -60,6 +60,8 @@ public class ActorDao extends Database {
 	}
 
 	public List<Actor> getActorsById(List<Long> actorIds) {
+    	if (actorIds.size()==0)
+    		return new ArrayList<>();
 		CriteriaBuilder criteriaBuilder = this.em.getCriteriaBuilder();
 		CriteriaQuery<ActorEntity> query = criteriaBuilder.createQuery(ActorEntity.class);
 		Root<ActorEntity> from = query.from(ActorEntity.class);
