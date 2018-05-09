@@ -10,10 +10,7 @@ import soap.generated.*;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-import javax.persistence.criteria.Selection;
+import javax.persistence.criteria.*;
 import java.math.BigInteger;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -65,16 +62,17 @@ public class FilmDao extends Database{
 		query.multiselect(makeSelections(query));
 		query.where(this.em.getCriteriaBuilder().equal(from.get("film_id"),id));
 
-		return convertSingleToGenerated(this.em.createQuery(query).getSingleResult());
+		return convertSingleToGenerated(this.em.createQuery(query).setMaxResults(1).getSingleResult());
 	}
 
 	public List<Film> getByRating(String rating) {
 		CriteriaQuery<FilmEntity> query = this.em.getCriteriaBuilder().createQuery(FilmEntity.class);
 		Root<FilmEntity> from = query.from(FilmEntity.class);
+		Expression<String> ratingField = from.get("rating");
 
 		query.distinct(true);
 		query.multiselect(makeSelections(query));
-		query.where(this.em.getCriteriaBuilder().equal(from.get("rating"),rating));
+		query.where(this.em.getCriteriaBuilder().equal(ratingField,rating));
 
 		return convertListToGenerated(this.em.createQuery(query).setMaxResults(50).getResultList());
 	}
