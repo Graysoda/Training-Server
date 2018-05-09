@@ -1,6 +1,7 @@
 package soap.endpoint;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
@@ -13,7 +14,12 @@ import java.sql.SQLException;
 @Endpoint
 public class RentalEndpoint {
 	private static final String NAMESPACE_URI = Constants.NAMESPACE_URI;
-	@Autowired private RentalServiceImpl rentalService;
+	private RentalServiceImpl rentalService;
+
+	@Autowired
+	public void setRentalService(@Lazy RentalServiceImpl rentalService) {
+		this.rentalService = rentalService;
+	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getRentalByCustomerIdRequest")
 	@ResponsePayload

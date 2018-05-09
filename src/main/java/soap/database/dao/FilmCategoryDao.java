@@ -1,6 +1,7 @@
 package soap.database.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import soap.database.entity.FilmCategoryEntity;
 
@@ -14,10 +15,14 @@ import java.util.List;
 
 @Repository
 public class FilmCategoryDao {
-	@PersistenceContext
+	@PersistenceContext @Lazy
 	private EntityManager em;
-	@Autowired private CategoryDao categoryDao;
-	private String baseQuery = "SELECT fc FROM sakila.film_category ";
+	private CategoryDao categoryDao;
+
+	@Autowired
+    public void setCategoryDao(@Lazy CategoryDao categoryDao) {
+        this.categoryDao = categoryDao;
+    }
 
     public String getById(long film_id) {
         CriteriaQuery<FilmCategoryEntity> query = em.getCriteriaBuilder().createQuery(FilmCategoryEntity.class);

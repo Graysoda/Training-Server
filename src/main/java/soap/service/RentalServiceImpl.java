@@ -1,6 +1,7 @@
 package soap.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import soap.database.dao.RentalDao;
@@ -13,7 +14,12 @@ import java.util.List;
 
 @Service
 public class RentalServiceImpl implements RentalService{
-	@Autowired private RentalDao rentalDao;
+	private RentalDao rentalDao;
+
+	@Autowired
+	public void setRentalDao(@Lazy RentalDao rentalDao) {
+		this.rentalDao = rentalDao;
+	}
 
 	@Override
 	@Transactional

@@ -1,6 +1,7 @@
 package soap.endpoint;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
@@ -11,7 +12,12 @@ import soap.service.CustomerServiceImpl;
 @Endpoint
 public class CustomerEndpoint {
 	private static final String NAMESPACE_URI = Constants.NAMESPACE_URI;
-	@Autowired private CustomerServiceImpl customerService;
+	private CustomerServiceImpl customerService;
+
+	@Autowired
+	public void setCustomerService(@Lazy CustomerServiceImpl customerService) {
+		this.customerService = customerService;
+	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "createCustomerRequest")
 	public void insertCustomer(@RequestPayload CreateCustomerRequest request){

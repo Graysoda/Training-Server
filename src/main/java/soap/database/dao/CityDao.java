@@ -1,5 +1,6 @@
 package soap.database.dao;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import soap.database.entity.CityEntity;
@@ -10,7 +11,7 @@ import javax.persistence.PersistenceContext;
 @Transactional
 @Repository
 public class CityDao {
-	@PersistenceContext
+	@PersistenceContext @Lazy
 	private EntityManager em;
 	private String baseQuery = "SELECT c FROM sakila.city c ";
 

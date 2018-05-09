@@ -1,6 +1,7 @@
 package soap.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import soap.database.dao.ActorDao;
@@ -10,9 +11,14 @@ import java.util.List;
 
 @Service
 public class ActorServiceImpl implements ActorService {
-	@Autowired private ActorDao actorDao;
+	private ActorDao actorDao;
 
-	@Override
+	@Autowired
+    public void setActorDao(@Lazy ActorDao actorDao) {
+        this.actorDao = actorDao;
+    }
+
+    @Override
 	@Transactional
 	public List<Actor> getAllActors() {
 		return actorDao.getAllActors();

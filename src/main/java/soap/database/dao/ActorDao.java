@@ -1,6 +1,7 @@
 package soap.database.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import soap.database.Database;
 import soap.database.entity.ActorEntity;
@@ -21,10 +22,15 @@ import java.util.List;
 @Repository
 @Transactional
 public class ActorDao extends Database {
-	@PersistenceContext private EntityManager em;
-	@Autowired private FilmDao filmDao;
+	@PersistenceContext @Lazy private EntityManager em;
+	private FilmDao filmDao;
 
-	public List<Actor> getAllActors() {
+    @Autowired
+    public void setFilmDao(@Lazy FilmDao filmDao) {
+        this.filmDao = filmDao;
+    }
+
+    public List<Actor> getAllActors() {
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
 		CriteriaQuery<ActorEntity> query = criteriaBuilder.createQuery(ActorEntity.class);
 		query.multiselect(makeSelection(query.from(ActorEntity.class)));

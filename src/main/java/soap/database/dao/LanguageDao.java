@@ -1,5 +1,6 @@
 package soap.database.dao;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import soap.database.entity.LanguageEntity;
 
@@ -13,11 +14,8 @@ import javax.transaction.Transactional;
 @Repository
 @Transactional
 public class LanguageDao {
-	@PersistenceContext
+	@PersistenceContext @Lazy
 	private EntityManager em;
-	private String baseQuery = "SELECT l FROM sakila.language l ";
-
-	public LanguageDao() {}
 
 	String getLanguage(long id){
 		if (id == -1)
