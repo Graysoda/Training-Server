@@ -1,6 +1,7 @@
 package soap.database.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import soap.database.Database;
 import soap.database.entity.AddressEntity;
@@ -21,7 +22,7 @@ import java.util.List;
 @Repository
 @Transactional
 public class AddressDao extends Database {
-	@PersistenceContext
+	@PersistenceContext @Lazy
 	private EntityManager em;
 	@Autowired private CityDao cityDao;
 
