@@ -1,5 +1,6 @@
 package soap.database.dao;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import soap.database.Database;
 import soap.database.entity.PaymentEntity;
@@ -19,7 +20,7 @@ import java.util.List;
 
 @Repository
 public class PaymentDao extends Database {
-	@PersistenceContext
+	@PersistenceContext @Lazy
 	private EntityManager em;
 
 //	@Autowired
