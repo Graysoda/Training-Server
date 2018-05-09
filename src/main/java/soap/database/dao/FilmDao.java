@@ -72,7 +72,7 @@ public class FilmDao extends Database{
 
 		query.distinct(true);
 		query.multiselect(makeSelections(query));
-		query.where(this.em.getCriteriaBuilder().equal(ratingField.as(String.class),FilmEntity.mpaa_rating.valueOf(rating)));
+		query.where(this.em.getCriteriaBuilder().equal(ratingField.as(String.class),rating));
 
 		return convertListToGenerated(this.em.createQuery(query).setMaxResults(50).getResultList());
 	}
