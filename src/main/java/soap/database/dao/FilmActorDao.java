@@ -1,6 +1,7 @@
 package soap.database.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import soap.database.entity.FilmActorEntity;
@@ -21,8 +22,8 @@ import java.util.List;
 public class FilmActorDao {
     @PersistenceContext
     private EntityManager em;
-    @Autowired private FilmDao filmDao;
-    @Autowired private ActorDao actorDao;
+    @Autowired @Lazy private FilmDao filmDao;
+    @Autowired @Lazy private ActorDao actorDao;
 
     public List<Actor> getActorsFromFilm(long filmId){
         CriteriaBuilder criteriaBuilder = this.em.getCriteriaBuilder();
