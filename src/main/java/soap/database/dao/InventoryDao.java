@@ -30,7 +30,6 @@ public class InventoryDao extends Database {
 		CriteriaQuery<InventoryEntity> query = criteriaBuilder.createQuery(InventoryEntity.class);
 		query.multiselect(makeSelection(query.from(InventoryEntity.class)));
 
-
 		return convertEntitiesToGenerated(this.em.createQuery(query).setMaxResults(20).getResultList());
 	}
 
