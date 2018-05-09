@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 import soap.database.dao.FilmDao;
 import soap.generated.*;
 
-import java.sql.SQLException;
 import java.util.List;
 @Service
 public class FilmServiceImpl implements FilmService {
@@ -20,50 +19,50 @@ public class FilmServiceImpl implements FilmService {
 
 	@Override
 	@Transactional
-	public void createFilm(CreateFilmRequest film) throws SQLException {
+	public void createFilm(CreateFilmRequest film) {
 		this.filmDao.create(film);
 	}
 
 	@Override
 	@Transactional
-	public void updateFilm(UpdateFilmRequest film) throws SQLException {
+	public void updateFilm(UpdateFilmRequest film) {
 		this.filmDao.update(film);
 	}
 
 	@Override
 	@Transactional
-	public Film getFilmById(long id) throws SQLException {
+	public Film getFilmById(long id) {
 		return this.filmDao.getById(id);
 	}
 
 	@Override
 	@Transactional
-	public List<Film> listFilms() throws SQLException {
+	public List<Film> listFilms() {
 		return this.filmDao.getAll();
 	}
 
 
 	@Override
 	@Transactional
-	public List<Film> getFilmByRating(String rating) throws SQLException {
+	public List<Film> getFilmByRating(String rating) {
 		return this.filmDao.getByRating(rating);
 	}
 
 	@Override
 	@Transactional
-	public List<Film> getFilmByReleaseYear(int year) throws SQLException {
+	public List<Film> getFilmByReleaseYear(int year) {
 		return this.filmDao.getByReleaseYear(year);
 	}
 
 	@Override
 	@Transactional
-	public List<Film> getFilmByTitle(String title) throws SQLException {
+	public List<Film> getFilmByTitle(String title) {
 		return this.filmDao.getByTitle(title);
 	}
 
 	@Override
 	@Transactional
-	public void deleteFilm(long filmId) throws SQLException {
+	public void deleteFilm(long filmId) {
 		filmDao.delete(filmId);
 	}
 
@@ -75,7 +74,7 @@ public class FilmServiceImpl implements FilmService {
 
 	@Override
 	@Transactional
-	public List<Actor> getFilmsActors(long filmId) throws SQLException {
+	public List<Actor> getFilmsActors(long filmId) {
 		return filmDao.getActors(filmId);
 	}
 }

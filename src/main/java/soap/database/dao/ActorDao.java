@@ -56,7 +56,7 @@ public class ActorDao extends Database {
 		CriteriaQuery<ActorEntity> query = criteriaBuilder.createQuery(ActorEntity.class);
 		Root<ActorEntity> root = query.from(ActorEntity.class);
 		query.multiselect(makeSelection(root));
-		query.where(criteriaBuilder.equal(root.get("first_name"),actorFirstName));
+		query.where(criteriaBuilder.equal(root.get("first_name"),actorFirstName.toUpperCase()));
 		return convertActorEntitiesToGenerated(this.em.createQuery(query).getResultList());
 	}
 
