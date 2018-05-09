@@ -1,5 +1,6 @@
 package soap.database.dao;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import soap.database.entity.LanguageEntity;
@@ -14,8 +15,13 @@ import javax.transaction.Transactional;
 @Repository
 @Transactional
 public class LanguageDao {
-	@PersistenceContext @Lazy
+	@PersistenceContext
 	private EntityManager em;
+
+	@Autowired
+	public void setEm(@Lazy EntityManager em) {
+		this.em = em;
+	}
 
 	String getLanguage(long id){
 		if (id == -1)

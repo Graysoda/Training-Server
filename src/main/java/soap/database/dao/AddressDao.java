@@ -22,8 +22,14 @@ import java.util.List;
 @Repository
 @Transactional
 public class AddressDao extends Database {
-	@PersistenceContext @Lazy private EntityManager em;
+	@PersistenceContext
+	private EntityManager em;
 	private CityDao cityDao;
+
+	@Autowired
+	public void setEm(@Lazy EntityManager em) {
+		this.em = em;
+	}
 
 	@Autowired
 	public void setCityDao(@Lazy CityDao cityDao) {

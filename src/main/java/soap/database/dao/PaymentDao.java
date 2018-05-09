@@ -1,5 +1,6 @@
 package soap.database.dao;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import soap.database.Database;
@@ -20,8 +21,13 @@ import java.util.List;
 
 @Repository
 public class PaymentDao extends Database {
-	@PersistenceContext @Lazy
+	@PersistenceContext
 	private EntityManager em;
+
+	@Autowired
+	public void setEm(@Lazy EntityManager em) {
+		this.em = em;
+	}
 
 	public List<Payment> getAll(){
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();

@@ -15,9 +15,14 @@ import java.util.List;
 
 @Repository
 public class FilmCategoryDao {
-	@PersistenceContext @Lazy
+	@PersistenceContext
 	private EntityManager em;
 	private CategoryDao categoryDao;
+
+    @Autowired
+    public void setEm(@Lazy EntityManager em) {
+        this.em = em;
+    }
 
 	@Autowired
     public void setCategoryDao(@Lazy CategoryDao categoryDao) {

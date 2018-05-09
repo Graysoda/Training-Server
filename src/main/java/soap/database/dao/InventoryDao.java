@@ -21,10 +21,15 @@ import java.util.List;
 
 @Repository
 public class InventoryDao extends Database {
-	@PersistenceContext @Lazy
+	@PersistenceContext
 	private EntityManager em;
 	private FilmDao filmDao;
 	private StoreDao storeDao;
+
+	@Autowired
+	public void setEm(@Lazy EntityManager em) {
+		this.em = em;
+	}
 
 	@Autowired
 	public void setStoreDao(@Lazy StoreDao storeDao) {

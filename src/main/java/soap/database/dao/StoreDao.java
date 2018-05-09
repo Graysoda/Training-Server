@@ -14,10 +14,15 @@ import javax.persistence.criteria.Root;
 
 @Repository
 public class StoreDao {
-	@PersistenceContext @Lazy
+	@PersistenceContext
 	private EntityManager em;
 	private AddressDao addressDao;
 	private StaffDao staffDao;
+
+	@Autowired
+	public void setEm(@Lazy EntityManager em) {
+		this.em = em;
+	}
 
 	@Autowired
 	public void setStaffDao(@Lazy StaffDao staffDao) {

@@ -21,11 +21,16 @@ import java.util.List;
 
 @Repository
 public class RentalDao extends Database {
-	@PersistenceContext @Lazy
+	@PersistenceContext
 	private EntityManager em;
 	private CustomerDao customerDao;
 	private FilmDao filmDao;
 	private StaffDao staffDao;
+
+	@Autowired
+	public void setEm(@Lazy EntityManager em) {
+		this.em = em;
+	}
 
 	@Autowired
 	public void setStaffDao(@Lazy StaffDao staffDao) {

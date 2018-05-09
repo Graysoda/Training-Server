@@ -22,10 +22,15 @@ import java.util.List;
 @Repository
 @Transactional
 public class ActorDao extends Database {
-	@PersistenceContext @Lazy private EntityManager em;
+	@PersistenceContext private EntityManager em;
 	private FilmDao filmDao;
 
-    @Autowired
+	@Autowired
+	public void setEm(@Lazy EntityManager em) {
+		this.em = em;
+	}
+
+	@Autowired
     public void setFilmDao(@Lazy FilmDao filmDao) {
         this.filmDao = filmDao;
     }

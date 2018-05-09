@@ -1,5 +1,6 @@
 package soap.database.dao;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,9 +12,14 @@ import javax.persistence.PersistenceContext;
 @Transactional
 @Repository
 public class CityDao {
-	@PersistenceContext @Lazy
+	@PersistenceContext
 	private EntityManager em;
 	private String baseQuery = "SELECT c FROM sakila.city c ";
+
+	@Autowired
+	public void setEm(@Lazy EntityManager em) {
+		this.em = em;
+	}
 
 	String getNameById(long id){
 		return this.em.createQuery(baseQuery+"WHERE c.city_id='"+id+"'",CityEntity.class).getSingleResult().getCity();

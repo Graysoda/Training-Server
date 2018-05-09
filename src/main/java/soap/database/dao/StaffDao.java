@@ -21,9 +21,14 @@ import java.util.List;
 
 @Repository
 public class StaffDao extends Database {
-	@PersistenceContext @Lazy
+	@PersistenceContext
 	private EntityManager em;
 	private AddressDao addressDao;
+
+	@Autowired
+	public void setEm(@Lazy EntityManager em) {
+		this.em = em;
+	}
 
 	@Autowired
 	public void setAddressDao(@Lazy AddressDao addressDao) {
