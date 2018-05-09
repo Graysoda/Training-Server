@@ -29,7 +29,7 @@ public class ActorDao extends Database {
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
 		CriteriaQuery<ActorEntity> query = criteriaBuilder.createQuery(ActorEntity.class);
 		query.multiselect(makeSelection(query.from(ActorEntity.class)));
-		return convertActorEntitiesToGenerated(this.em.createQuery(query).getResultList());
+		return convertActorEntitiesToGenerated(this.em.createQuery(query).setMaxResults(50).getResultList());
 	}
 
 	private List<Selection<?>> makeSelection(Root<ActorEntity> from) {

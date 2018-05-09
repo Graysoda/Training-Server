@@ -17,7 +17,6 @@ public class StoreDao {
 	private EntityManager em;
 	@Autowired private AddressDao addressDao;
 	@Autowired private StaffDao staffDao;
-	//private String baseQuery = "SELECT s FROM sakila.store s ";
 
 	public Store getById(long id){
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();

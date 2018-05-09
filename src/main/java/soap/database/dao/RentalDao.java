@@ -25,7 +25,6 @@ public class RentalDao extends Database {
 	@Autowired private CustomerDao customerDao;
 	@Autowired private FilmDao filmDao;
 	@Autowired private StaffDao staffDao;
-	private String baseQuery = "SELECT r FROM sakila.rental r ";
 
 	public Rental getById(long id) {
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
@@ -55,7 +54,7 @@ public class RentalDao extends Database {
 		CriteriaQuery<RentalEntity> query = criteriaBuilder.createQuery(RentalEntity.class);
 		Root<RentalEntity> root = query.from(RentalEntity.class);
 		query.where(criteriaBuilder.equal(root.get("customer_id"),id));
-		return convertEntitiesToGenerated(this.em.createQuery(query).setMaxResults(100).getResultList());
+		return convertEntitiesToGenerated(this.em.createQuery(query).setMaxResults(50).getResultList());
 	}
 
 	public List<Rental> getByStaffId(long id) {
@@ -63,7 +62,7 @@ public class RentalDao extends Database {
 		CriteriaQuery<RentalEntity> query = criteriaBuilder.createQuery(RentalEntity.class);
 		Root<RentalEntity> root = query.from(RentalEntity.class);
 		query.where(criteriaBuilder.equal(root.get("staff_id"),id));
-		return convertEntitiesToGenerated(this.em.createQuery(query).setMaxResults(100).getResultList());
+		return convertEntitiesToGenerated(this.em.createQuery(query).setMaxResults(50).getResultList());
 	}
 
 	public List<Rental> getByStartDate(String date) {

@@ -27,7 +27,7 @@ public class PaymentDao extends Database {
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
 		CriteriaQuery<PaymentEntity> query = criteriaBuilder.createQuery(PaymentEntity.class);
 		query.multiselect(makeSelection(query.from(PaymentEntity.class)));
-		return convertEntitiesToGenerated(this.em.createQuery(query).setMaxResults(100).getResultList());
+		return convertEntitiesToGenerated(this.em.createQuery(query).setMaxResults(50).getResultList());
 	}
 
 	private List<Selection<?>> makeSelection(Root<PaymentEntity> from) {

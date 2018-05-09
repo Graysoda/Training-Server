@@ -23,7 +23,6 @@ import java.util.List;
 public class AddressDao extends Database {
 	@PersistenceContext private EntityManager em;
 	@Autowired private CityDao cityDao;
-	private String baseQuery = "SELECT adr FROM sakila.address adr ";
 
 	public Address getById(long id){
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();

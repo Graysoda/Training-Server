@@ -106,7 +106,7 @@ public class FilmDao extends Database{
 	 ****************************************/
 	public List<Film> getAll() {
 		System.out.println("in get all films");
-		TypedQuery<FilmEntity> str = this.em.createQuery(buildBaseQuery(null)).setMaxResults(100);
+		TypedQuery<FilmEntity> str = this.em.createQuery(buildBaseQuery(null)).setMaxResults(50);
 		System.out.println(str.toString());
 		return convertListToGenerated(str.getResultList());
 	}
@@ -142,7 +142,7 @@ public class FilmDao extends Database{
 	}
 
 	public List<Film> getByRating(String rating) {
-		List<Film> films =  convertListToGenerated(this.em.createQuery(buildBaseQuery(buildRatingPredicate(rating))).getResultList());
+		List<Film> films =  convertListToGenerated(this.em.createQuery(buildBaseQuery(buildRatingPredicate(rating))).setMaxResults(50).getResultList());
 
 		return films;
 	}
@@ -152,7 +152,7 @@ public class FilmDao extends Database{
 	}
 
 	public List<Film> getByReleaseYear(int year) {
-		List<Film> films =  convertListToGenerated(this.em.createQuery(buildBaseQuery(buildReleaseYearPredicate(year))).getResultList());
+		List<Film> films =  convertListToGenerated(this.em.createQuery(buildBaseQuery(buildReleaseYearPredicate(year))).setMaxResults(50).getResultList());
 
 		return films;
 	}

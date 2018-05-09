@@ -24,7 +24,6 @@ public class CustomerDao extends Database {
 	@PersistenceContext
 	private EntityManager em;
 	@Autowired private AddressDao addressDao;
-	private String baseQuery = "SELECT c from sakila.customer c ";
 
 	public CustomerDao(){}
 
@@ -35,7 +34,7 @@ public class CustomerDao extends Database {
 		query.where(criteriaBuilder.equal(root.get("active"),1));
 		query.multiselect(makeSelection(root));
 
-		return convertEntitystoGenerated(this.em.createQuery(query).setMaxResults(100).getResultList());
+		return convertEntitystoGenerated(this.em.createQuery(query).setMaxResults(50).getResultList());
 	}
 
 	private List<Selection<?>> makeSelection(Root<CustomerEntity> root) {
@@ -68,7 +67,7 @@ public class CustomerDao extends Database {
 		Root<CustomerEntity> root = query.from(CustomerEntity.class);
 		query.where(criteriaBuilder.equal(root.get("store_id"),id));
 
-		return convertEntitystoGenerated(this.em.createQuery(query).setMaxResults(100).getResultList());
+		return convertEntitystoGenerated(this.em.createQuery(query).setMaxResults(50).getResultList());
 	}
 
 	public List<Customer> getAll() {
@@ -76,7 +75,7 @@ public class CustomerDao extends Database {
 		CriteriaQuery<CustomerEntity> query = criteriaBuilder.createQuery(CustomerEntity.class);
 		query.multiselect(makeSelection(query.from(CustomerEntity.class)));
 
-		return convertEntitystoGenerated(this.em.createQuery(query).setMaxResults(100).getResultList());
+		return convertEntitystoGenerated(this.em.createQuery(query).setMaxResults(50).getResultList());
 	}
 
 	public void insert(CreateCustomerRequest request) {
