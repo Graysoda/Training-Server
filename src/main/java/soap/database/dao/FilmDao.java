@@ -61,7 +61,7 @@ public class FilmDao extends Database{
 		CriteriaQuery<FilmEntity> query = this.em.getCriteriaBuilder().createQuery(FilmEntity.class);
 		Root<FilmEntity> from = query.from(FilmEntity.class);
 
-		query.distinct(true);
+		//query.distinct(true);
 		query.multiselect(makeSelections(query));
 		query.where(this.em.getCriteriaBuilder().equal(from.get("film_id"),id));
 
