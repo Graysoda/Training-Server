@@ -3,14 +3,16 @@ package soap.database.dao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import soap.database.Database;
-import soap.database.entity.ActorEntity;
 import soap.database.entity.FilmEntity;
 import soap.generated.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Selection;
 import java.math.BigInteger;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -44,29 +46,69 @@ public class FilmDao extends Database{
 	 ****************************************/
 	public List<Film> getAll() {
 		//System.out.println("in get all films");
-		TypedQuery<FilmEntity> str = this.em.createQuery(buildBaseQuery(null)).setMaxResults(50);
+		CriteriaQuery<FilmEntity> query = this.em.getCriteriaBuilder().createQuery(FilmEntity.class);
+
+		query.distinct(true);
+		query.multiselect(makeSelections(query));
+
+		TypedQuery<FilmEntity> str = this.em.createQuery(query).setMaxResults(50);
 		//System.out.println(str.toString());
 		return convertListToGenerated(str.getResultList());
 	}
 
 	public Film getById(long id) {
-		return convertSingleToGenerated(this.em.createQuery(buildBaseQuery(buildIdPredicate(id))).getSingleResult());
+		CriteriaQuery<FilmEntity> query = this.em.getCriteriaBuilder().createQuery(FilmEntity.class);
+		Root<FilmEntity> from = query.from(FilmEntity.class);
+
+		query.distinct(true);
+		query.multiselect(makeSelections(query));
+		query.where(this.em.getCriteriaBuilder().equal(from.get("film_id"),id));
+
+		return convertSingleToGenerated(this.em.createQuery(query).getSingleResult());
 	}
 
 	public List<Film> getByRating(String rating) {
-		return convertListToGenerated(this.em.createQuery(buildBaseQuery(buildRatingPredicate(rating))).setMaxResults(50).getResultList());
+		CriteriaQuery<FilmEntity> query = this.em.getCriteriaBuilder().createQuery(FilmEntity.class);
+		Root<FilmEntity> from = query.from(FilmEntity.class);
+
+		query.distinct(true);
+		query.multiselect(makeSelections(query));
+		query.where(this.em.getCriteriaBuilder().equal(from.get("rating"),rating));
+
+		return convertListToGenerated(this.em.createQuery(query).setMaxResults(50).getResultList());
 	}
 
 	public List<Film> getByReleaseYear(int year) {
-		return convertListToGenerated(this.em.createQuery(buildBaseQuery(buildReleaseYearPredicate(year))).setMaxResults(50).getResultList());
+		CriteriaQuery<FilmEntity> query = em.getCriteriaBuilder().createQuery(FilmEntity.class);
+		Root<FilmEntity> from  = query.from(FilmEntity.class);
+
+		query.distinct(true);
+		query.multiselect(makeSelections(query));
+		query.where(this.em.getCriteriaBuilder().equal(from.get("release_year"),year));
+
+		return convertListToGenerated(this.em.createQuery(query).setMaxResults(50).getResultList());
 	}
 
 	public List<Film> getByTitle(String title) {
-		return convertListToGenerated(this.em.createQuery(buildBaseQuery(buildTitlePredicate(title))).getResultList());
+		CriteriaQuery<FilmEntity> query = em.getCriteriaBuilder().createQuery(FilmEntity.class);
+		Root<FilmEntity> from  = query.from(FilmEntity.class);
+
+		query.distinct(true);
+		query.multiselect(makeSelections(query));
+		query.where(this.em.getCriteriaBuilder().equal(from.get("title"),title.toUpperCase()));
+
+		return convertListToGenerated(this.em.createQuery(query).getResultList());
 	}
 
 	public List<Summary> getFilmsById(List<Long> filmIds) {
-		return convertEntitiesToSummary(this.em.createQuery(buildBaseQuery(buildIdsPredicate(filmIds))).setMaxResults(50).getResultList());
+		CriteriaQuery<FilmEntity> query = em.getCriteriaBuilder().createQuery(FilmEntity.class);
+		Root<FilmEntity> from  = query.from(FilmEntity.class);
+
+		query.distinct(true);
+		query.multiselect(makeSelections(query));
+		query.where(this.em.getCriteriaBuilder().in(from.get("film_id").in(filmIds)));
+
+		return convertEntitiesToSummary(this.em.createQuery(query).setMaxResults(50).getResultList());
 	}
 
 	public List<Actor> getFilmsActors(long filmId) {
@@ -221,15 +263,6 @@ public class FilmDao extends Database{
 		return film;
 	}
 
-	private Actor convertActorEntityToGenerated(ActorEntity actorEntity) {
-		Actor actor = new Actor();
-		actor.setActorId((int)actorEntity.getActor_id());
-		actor.setFirstName(actorEntity.getFirst_name());
-		actor.setLastName(actorEntity.getLast_name());
-		actor.setLastUpdate(actorEntity.getLast_update());
-		return actor;
-	}
-
 	private List<Summary> convertEntitiesToSummary(List<FilmEntity> resultList) {
 		List<Summary> summaries = new ArrayList<>();
 
@@ -248,17 +281,6 @@ public class FilmDao extends Database{
 		summary.setDescription(filmEntity.getDescription());
 
 		return summary;
-	}
-
-	private CriteriaQuery<FilmEntity> buildBaseQuery(Predicate predicate){
-		CriteriaQuery<FilmEntity> query = em.getCriteriaBuilder().createQuery(FilmEntity.class);
-
-		query.multiselect(makeSelections(query));
-
-		if (predicate != null)
-				query.where(predicate);
-
-		return query;
 	}
 
 	private List<Selection<?>> makeSelections(CriteriaQuery<FilmEntity> query){
@@ -285,25 +307,5 @@ public class FilmDao extends Database{
 		selections.add(from.get("last_update"));
 
 		return selections;
-	}
-
-	private Predicate buildReleaseYearPredicate(int year) {
-		return em.getCriteriaBuilder().equal(em.getCriteriaBuilder().createQuery(FilmEntity.class).from(FilmEntity.class).get("release_year"),year);
-	}
-
-	private Predicate buildTitlePredicate(String title) {
-		return em.getCriteriaBuilder().equal(em.getCriteriaBuilder().createQuery(FilmEntity.class).from(FilmEntity.class).get("title"),title);
-	}
-
-	private Predicate buildRatingPredicate(String rating) {
-		return em.getCriteriaBuilder().equal(em.getCriteriaBuilder().createQuery(FilmEntity.class).from(FilmEntity.class).get("rating"),rating);
-	}
-
-	private Predicate buildIdPredicate(long id) {
-		return em.getCriteriaBuilder().equal(em.getCriteriaBuilder().createQuery(FilmEntity.class).from(FilmEntity.class).get("film_id"),id);
-	}
-
-	private Predicate buildIdsPredicate(List<Long> filmIds) {
-		return em.getCriteriaBuilder().in(em.getCriteriaBuilder().createQuery(FilmEntity.class).from(FilmEntity.class).get("film_id").in(filmIds));
 	}
 }
