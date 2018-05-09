@@ -26,6 +26,12 @@ public class FilmEntity{
 
 	public FilmEntity(){}
 
+	public FilmEntity(long film_id, @NotNull String title, @NotNull String description) {
+		this.film_id = film_id;
+		this.title = title;
+		this.description = description;
+	}
+
 	public FilmEntity(long film_id, @NotNull String title, @NotNull String description, @NotNull int release_year, @NotNull long language_id, Long original_language_id, @NotNull int rental_duration, @NotNull float rental_rate, @NotNull int length, @NotNull float replacement_cost, @NotNull String rating, @NotNull String special_features, @NotNull String last_update) {
 		this.film_id = film_id;
 		this.title = title;

@@ -36,7 +36,6 @@ import java.sql.SQLException;
 		RentalEntity.class,
 		StaffEntity.class,
 		StoreEntity.class,
-		SummaryEntity.class
 })
 public class Database {
 

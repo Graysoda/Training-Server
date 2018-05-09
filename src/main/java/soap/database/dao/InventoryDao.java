@@ -33,21 +33,13 @@ public class InventoryDao extends Database {
 		return convertEntitiesToGenerated(this.em.createQuery(query).setMaxResults(20).getResultList());
 	}
 
-	private List<Selection<?>> makeSelection(Root<InventoryEntity> from) {
-		List<Selection<?>> selections = new ArrayList<>();
-		selections.add(from.get("inventory_id"));
-		selections.add(from.get("store_id"));
-		selections.add(from.get("film_id"));
-		selections.add(from.get("last_update"));
-
-		return selections;
-	}
-
 	public Inventory getById(long id) {
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
 		CriteriaQuery<InventoryEntity> query = criteriaBuilder.createQuery(InventoryEntity.class);
 		Root<InventoryEntity> root = query.from(InventoryEntity.class);
 		query.where(criteriaBuilder.equal(root.get("inventory_id"),id));
+		query.multiselect(makeSelection(root));
+
 		return convertEntityToGenerated(this.em.createQuery(query).getSingleResult());
 	}
 
@@ -56,6 +48,8 @@ public class InventoryDao extends Database {
 		CriteriaQuery<InventoryEntity> query = criteriaBuilder.createQuery(InventoryEntity.class);
 		Root<InventoryEntity> root = query.from(InventoryEntity.class);
 		query.where(criteriaBuilder.equal(root.get("store_id"),storeId));
+		query.multiselect(makeSelection(root));
+
 		return convertEntitiesToGenerated(this.em.createQuery(query).setMaxResults(50).getResultList());
 	}
 
@@ -97,13 +91,13 @@ public class InventoryDao extends Database {
 	private Inventory convertEntityToGenerated(InventoryEntity entity) {
 		Inventory inventory = new Inventory();
 
-		System.out.println("inv id = ["+entity.getInventory_id()+"]");
+		//System.out.println("inv id = ["+entity.getInventory_id()+"]");
 		inventory.setInventoryId(entity.getInventory_id());
-		System.out.println("film id = ["+entity.getFilm_id()+"]");
+		//System.out.println("film id = ["+entity.getFilm_id()+"]");
 		inventory.setFilm(filmDao.getById(entity.getFilm_id()));
-		System.out.println("store id = ["+entity.getStore_id()+"]");
+		//System.out.println("store id = ["+entity.getStore_id()+"]");
 		inventory.setStore(storeDao.getById(entity.getStore_id()));
-		System.out.println("last update = ["+entity.getLast_update()+"]");
+		//System.out.println("last update = ["+entity.getLast_update()+"]");
 		inventory.setLastUpdate(entity.getLast_update());
 
 		return inventory;
@@ -117,5 +111,15 @@ public class InventoryDao extends Database {
 		}
 
 		return inventories;
+	}
+
+	private List<Selection<?>> makeSelection(Root<InventoryEntity> from) {
+		List<Selection<?>> selections = new ArrayList<>();
+		selections.add(from.get("inventory_id"));
+		selections.add(from.get("store_id"));
+		selections.add(from.get("film_id"));
+		selections.add(from.get("last_update"));
+
+		return selections;
 	}
 }

@@ -32,51 +32,10 @@ public class AddressDao extends Database {
 		return convertEntityToGenerated(this.em.createQuery(query).getSingleResult());
 	}
 
-	public void insert(CreateAddressRequest request) {
-		String sql = "INSERT INTO address (address, address2, district, city_id, postal_code, phone) VALUES " +
-				"('"+request.getAddress()+"', '"+
-				request.getAddress2()+"', '"+
-				request.getDistrict()+"', '"+
-				cityDao.getIdByName(request.getCity())+"', '"+
-				request.getPostalCode()+"', '"+
-				request.getPhone()+"');";
-		try {
-			getConnection().createStatement().executeUpdate(sql);
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
 	public List<Address> getAll() {
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
 		CriteriaQuery<AddressEntity> query = criteriaBuilder.createQuery(AddressEntity.class);
 		return convertEntitiesToGenerate(this.em.createQuery(query).getResultList());
-	}
-
-	private List<Address> convertEntitiesToGenerate(List<AddressEntity> resultList) {
-		List<Address> addresses = new ArrayList<>();
-
-		for (AddressEntity addressEntity : resultList) {
-			addresses.add(convertEntityToGenerated(addressEntity));
-		}
-
-		return addresses;
-	}
-
-	private Address convertEntityToGenerated(AddressEntity entity) {
-		Address address = new Address();
-
-		address.setAddress(entity.getAddress());
-		address.setAddress2(entity.getAddress2());
-		address.setAddressId(entity.getAddress_id());
-		address.setCity(cityDao.getNameById(entity.getCity_id()));
-		address.setDistrict(entity.getDistrict());
-		address.setPostalCode(entity.getPostal_code());
-		address.setPhone(entity.getPhone());
-		address.setLastUpdate(entity.getLast_update());
-
-		return address;
 	}
 
 	public void delete(long addressId) {
@@ -111,5 +70,46 @@ public class AddressDao extends Database {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void insert(CreateAddressRequest request) {
+		String sql = "INSERT INTO address (address, address2, district, city_id, postal_code, phone) VALUES " +
+				"('"+request.getAddress()+"', '"+
+				request.getAddress2()+"', '"+
+				request.getDistrict()+"', '"+
+				cityDao.getIdByName(request.getCity())+"', '"+
+				request.getPostalCode()+"', '"+
+				request.getPhone()+"');";
+		try {
+			getConnection().createStatement().executeUpdate(sql);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private List<Address> convertEntitiesToGenerate(List<AddressEntity> resultList) {
+		List<Address> addresses = new ArrayList<>();
+
+		for (AddressEntity addressEntity : resultList) {
+			addresses.add(convertEntityToGenerated(addressEntity));
+		}
+
+		return addresses;
+	}
+
+	private Address convertEntityToGenerated(AddressEntity entity) {
+		Address address = new Address();
+
+		address.setAddress(entity.getAddress());
+		address.setAddress2(entity.getAddress2());
+		address.setAddressId(entity.getAddress_id());
+		address.setCity(cityDao.getNameById(entity.getCity_id()));
+		address.setDistrict(entity.getDistrict());
+		address.setPostalCode(entity.getPostal_code());
+		address.setPhone(entity.getPhone());
+		address.setLastUpdate(entity.getLast_update());
+
+		return address;
 	}
 }

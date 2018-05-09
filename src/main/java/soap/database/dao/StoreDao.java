@@ -35,13 +35,13 @@ public class StoreDao {
 	private Store convertEntityToGenerated(StoreEntity entity){
 		Store store = new Store();
 
-		System.out.println("store id = ["+entity.getStore_id()+"]");
+		//System.out.println("store id = ["+entity.getStore_id()+"]");
 		store.setStoreId(entity.getStore_id());
-		System.out.println("address id = ["+entity.getAddress_id()+"]");
+		//System.out.println("address id = ["+entity.getAddress_id()+"]");
 		store.setAddress(addressDao.getById(entity.getAddress_id()));
-		System.out.println("staff id = ["+entity.getStore_id()+"]");
+		//System.out.println("staff id = ["+entity.getStore_id()+"]");
 		store.setManager(staffDao.getById(entity.getManager_staff_id()));
-		System.out.println("last update = ["+entity.getLast_update()+"]");
+		//System.out.println("last update = ["+entity.getLast_update()+"]");
 		store.setLastUpdate(entity.getLast_update());
 
 		return store;

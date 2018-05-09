@@ -21,49 +21,13 @@ import java.util.List;
 public class PaymentDao extends Database {
 	@PersistenceContext
 	private EntityManager em;
-	private String baseQuery = "SELECT p FROM sakila.payment p ";
 
 	public List<Payment> getAll(){
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
 		CriteriaQuery<PaymentEntity> query = criteriaBuilder.createQuery(PaymentEntity.class);
 		query.multiselect(makeSelection(query.from(PaymentEntity.class)));
+
 		return convertEntitiesToGenerated(this.em.createQuery(query).setMaxResults(50).getResultList());
-	}
-
-	private List<Selection<?>> makeSelection(Root<PaymentEntity> from) {
-		List<Selection<?>> selections = new ArrayList<>();
-
-		selections.add(from.get("payment_id"));
-		selections.add(from.get("amount"));
-		selections.add(from.get("customer_id"));
-		selections.add(from.get("payment_date"));
-		selections.add(from.get("rental_id"));
-		selections.add(from.get("staff_id"));
-
-		return selections;
-	}
-
-	private List<Payment> convertEntitiesToGenerated(List<PaymentEntity> entities){
-		List<Payment> payments = new ArrayList<>(entities.size());
-
-		for (PaymentEntity entity : entities) {
-			payments.add(convertEntityToGenerated(entity));
-		}
-
-		return payments;
-	}
-
-	private Payment convertEntityToGenerated(PaymentEntity entity){
-		Payment payment = new Payment();
-
-		payment.setPaymentId(entity.getPayment_id());
-		payment.setAmount(entity.getAmount());
-		payment.setCustomerId(entity.getCustomer_id());
-		payment.setPaymentDate(entity.getPayment_date());
-		payment.setRentalId(entity.getRental_id());
-		payment.setStaffId(entity.getStaff_id());
-
-		return payment;
 	}
 
 	public void insert(CreatePaymentRequest request) {
@@ -110,5 +74,41 @@ public class PaymentDao extends Database {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private List<Payment> convertEntitiesToGenerated(List<PaymentEntity> entities){
+		List<Payment> payments = new ArrayList<>(entities.size());
+
+		for (PaymentEntity entity : entities) {
+			payments.add(convertEntityToGenerated(entity));
+		}
+
+		return payments;
+	}
+
+	private Payment convertEntityToGenerated(PaymentEntity entity){
+		Payment payment = new Payment();
+
+		payment.setPaymentId(entity.getPayment_id());
+		payment.setAmount(entity.getAmount());
+		payment.setCustomerId(entity.getCustomer_id());
+		payment.setPaymentDate(entity.getPayment_date());
+		payment.setRentalId(entity.getRental_id());
+		payment.setStaffId(entity.getStaff_id());
+
+		return payment;
+	}
+
+	private List<Selection<?>> makeSelection(Root<PaymentEntity> from) {
+		List<Selection<?>> selections = new ArrayList<>();
+
+		selections.add(from.get("payment_id"));
+		selections.add(from.get("amount"));
+		selections.add(from.get("customer_id"));
+		selections.add(from.get("payment_date"));
+		selections.add(from.get("rental_id"));
+		selections.add(from.get("staff_id"));
+
+		return selections;
 	}
 }

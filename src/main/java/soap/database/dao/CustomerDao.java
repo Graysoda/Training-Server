@@ -37,26 +37,12 @@ public class CustomerDao extends Database {
 		return convertEntitystoGenerated(this.em.createQuery(query).setMaxResults(50).getResultList());
 	}
 
-	private List<Selection<?>> makeSelection(Root<CustomerEntity> root) {
-		List<Selection<?>> selections = new ArrayList<>();
-		selections.add(root.get("customer_id"));
-		selections.add(root.get("store_id"));
-		selections.add(root.get("first_name"));
-		selections.add(root.get("last_name"));
-		selections.add(root.get("email"));
-		selections.add(root.get("address_id"));
-		selections.add(root.get("active"));
-		selections.add(root.get("create_date"));
-		selections.add(root.get("last_update"));
-
-		return selections;
-	}
-
 	public Customer getById(long id) {
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
 		CriteriaQuery<CustomerEntity> query = criteriaBuilder.createQuery(CustomerEntity.class);
 		Root<CustomerEntity> root = query.from(CustomerEntity.class);
 		query.where(criteriaBuilder.equal(root.get("customer_id"),id));
+		query.multiselect(makeSelection(root));
 
 		return convertEntityToGenerated(this.em.createQuery(query).getSingleResult());
 	}
@@ -66,6 +52,7 @@ public class CustomerDao extends Database {
 		CriteriaQuery<CustomerEntity> query = criteriaBuilder.createQuery(CustomerEntity.class);
 		Root<CustomerEntity> root = query.from(CustomerEntity.class);
 		query.where(criteriaBuilder.equal(root.get("store_id"),id));
+		query.multiselect(makeSelection(root));
 
 		return convertEntitystoGenerated(this.em.createQuery(query).setMaxResults(50).getResultList());
 	}
@@ -153,5 +140,20 @@ public class CustomerDao extends Database {
 		customer.setLastUpdate(entity.getLast_update());
 
 		return customer;
+	}
+
+	private List<Selection<?>> makeSelection(Root<CustomerEntity> root) {
+		List<Selection<?>> selections = new ArrayList<>();
+		selections.add(root.get("customer_id"));
+		selections.add(root.get("store_id"));
+		selections.add(root.get("first_name"));
+		selections.add(root.get("last_name"));
+		selections.add(root.get("email"));
+		selections.add(root.get("address_id"));
+		selections.add(root.get("active"));
+		selections.add(root.get("create_date"));
+		selections.add(root.get("last_update"));
+
+		return selections;
 	}
 }

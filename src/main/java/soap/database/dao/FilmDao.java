@@ -22,8 +22,100 @@ public class FilmDao extends Database{
 	@PersistenceContext
 	private EntityManager em;
 	@Autowired private LanguageDao languageDao;
-	@Autowired private SummaryDao summaryDao;
 	@Autowired private FilmCategoryDao filmCategoryDao;
+
+	/****************************************
+	 				Queries
+	 ****************************************/
+	public List<Film> getAll() {
+		//System.out.println("in get all films");
+		TypedQuery<FilmEntity> str = this.em.createQuery(buildBaseQuery(null)).setMaxResults(50);
+		//System.out.println(str.toString());
+		return convertListToGenerated(str.getResultList());
+	}
+
+	public Film getById(long id) {
+		return convertSingleToGenerated(this.em.createQuery(buildBaseQuery(buildIdPredicate(id))).getSingleResult());
+	}
+
+	public List<Film> getByRating(String rating) {
+		return convertListToGenerated(this.em.createQuery(buildBaseQuery(buildRatingPredicate(rating))).setMaxResults(50).getResultList());
+	}
+
+	public List<Film> getByReleaseYear(int year) {
+		return convertListToGenerated(this.em.createQuery(buildBaseQuery(buildReleaseYearPredicate(year))).setMaxResults(50).getResultList());
+	}
+
+	public List<Film> getByTitle(String title) {
+		return convertListToGenerated(this.em.createQuery(buildBaseQuery(buildTitlePredicate(title))).getResultList());
+	}
+
+	public List<Actor> getActors(long filmId) {
+		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+		CriteriaQuery<FilmActorEntity> filmActorEntityCriteriaQuery = criteriaBuilder.createQuery(FilmActorEntity.class);
+		Root<FilmActorEntity> filmActorEntityRoot = filmActorEntityCriteriaQuery.from(FilmActorEntity.class);
+
+		List<Selection<?>> filmActorSelections = new ArrayList<>();
+		filmActorSelections.add(filmActorEntityRoot.get("film_id"));
+		filmActorSelections.add(filmActorEntityRoot.get("actor_id"));
+
+		filmActorEntityCriteriaQuery.multiselect(filmActorSelections);
+		filmActorEntityCriteriaQuery.where(criteriaBuilder.equal(filmActorEntityRoot.get("film_id"),filmId));
+
+		List<FilmActorEntity> filmActorEntities =  this.em.createQuery(filmActorEntityCriteriaQuery).getResultList();
+
+		if (filmActorEntities.size() == 0){
+			return new ArrayList<>();
+		}
+
+		CriteriaQuery<ActorEntity> actorEntityCriteriaQuery = criteriaBuilder.createQuery(ActorEntity.class);
+		Root<ActorEntity> actorEntityRoot = actorEntityCriteriaQuery.from(ActorEntity.class);
+
+		List<Selection<?>> actorSelections = new ArrayList<>();
+		actorSelections.add(actorEntityRoot.get("actor_id"));
+		actorSelections.add(actorEntityRoot.get("first_name"));
+		actorSelections.add(actorEntityRoot.get("last_name"));
+		actorSelections.add(actorEntityRoot.get("last_update"));
+
+		actorEntityCriteriaQuery.multiselect(actorSelections);
+
+		if (filmActorEntities.size() == 1){
+			actorEntityCriteriaQuery.where(criteriaBuilder.equal(actorEntityRoot.get("actor_id"),filmActorEntities.get(0).getActor_id()));
+
+			return convertActorEntitiesToGenerated(this.em.createQuery(actorEntityCriteriaQuery).getResultList());
+		}
+
+		ArrayList<Long> actorIds = new ArrayList<>();
+
+		for (FilmActorEntity filmActorEntity : filmActorEntities) {
+			actorIds.add(filmActorEntity.getActor_id());
+		}
+
+		Expression<Long> actorIdComparison = actorEntityRoot.get("actor_id");
+		Predicate predicate = actorIdComparison.in(actorIds);
+		actorEntityCriteriaQuery.where(predicate);
+
+		return convertActorEntitiesToGenerated(this.em.createQuery(actorEntityCriteriaQuery).getResultList());
+	}
+
+	public List<Summary> getSummaryByIds(long[] ids) {
+		CriteriaBuilder criteriaBuilder = this.em.getCriteriaBuilder();
+		CriteriaQuery<FilmEntity> query = criteriaBuilder.createQuery(FilmEntity.class);
+		Root<FilmEntity> from = query.from(FilmEntity.class);
+		List<Selection<?>> selections = new ArrayList<>();
+		Expression<Long> in = from.get("film_id");
+		Predicate where = in.in(ids);
+
+
+		selections.add(from.get("film_id"));
+		selections.add(from.get("title"));
+		selections.add(from.get("description"));
+
+		query.multiselect(selections);
+		query.where(where);
+
+		return convertEntitiesToSummary(this.em.createQuery(query).setMaxResults(50).getResultList());
+	}
 
 	public void create(CreateFilmRequest request) {
 		String sql = "INSERT INTO film " +
@@ -100,89 +192,16 @@ public class FilmDao extends Database{
 		}
 	}
 
-
-	/****************************************
-	 				Queries
-	 ****************************************/
-	public List<Film> getAll() {
-		System.out.println("in get all films");
-		TypedQuery<FilmEntity> str = this.em.createQuery(buildBaseQuery(null)).setMaxResults(50);
-		System.out.println(str.toString());
-		return convertListToGenerated(str.getResultList());
-	}
-
-	public Film getById(long id) {
-		CriteriaBuilder criteriaBuilder = this.em.getCriteriaBuilder();
-		CriteriaBuilder.Coalesce coalesce = criteriaBuilder.coalesce();
-		CriteriaQuery<FilmEntity> query = criteriaBuilder.createQuery(FilmEntity.class);
-		Root<FilmEntity> from = query.from(FilmEntity.class);
-
-		coalesce.value(from.get("original_language_id"));
-		coalesce.value(Long.valueOf(-1));
-
-		List<Selection<?>> selections = new ArrayList<>();
-		selections.add(from.get("film_id"));
-		selections.add(from.get("title"));
-		selections.add(from.get("description"));
-		selections.add(from.get("release_year"));
-		selections.add(from.get("language_id"));
-		selections.add(coalesce);
-		selections.add(from.get("rental_duration"));
-		selections.add(from.get("rental_rate"));
-		selections.add(from.get("length"));
-		selections.add(from.get("replacement_cost"));
-		selections.add(from.get("rating"));
-		selections.add(from.get("special_features"));
-		selections.add(from.get("last_update"));
-
-		query.multiselect(selections);
-
-		query.where(criteriaBuilder.equal(from.get("film_id"),id));
-		return convertSingleToGenerated(this.em.createQuery(query).getSingleResult());
-	}
-
-	public List<Film> getByRating(String rating) {
-		List<Film> films =  convertListToGenerated(this.em.createQuery(buildBaseQuery(buildRatingPredicate(rating))).setMaxResults(50).getResultList());
-
-		return films;
-	}
-
-	private Predicate buildRatingPredicate(String rating) {
-		return em.getCriteriaBuilder().equal(em.getCriteriaBuilder().createQuery(FilmEntity.class).from(FilmEntity.class).get("rating"),rating);
-	}
-
-	public List<Film> getByReleaseYear(int year) {
-		List<Film> films =  convertListToGenerated(this.em.createQuery(buildBaseQuery(buildReleaseYearPredicate(year))).setMaxResults(50).getResultList());
-
-		return films;
-	}
-
-	private Predicate buildReleaseYearPredicate(int year) {
-		return em.getCriteriaBuilder().equal(em.getCriteriaBuilder().createQuery(FilmEntity.class).from(FilmEntity.class).get("release_year"),year);
-	}
-
-	public List<Film> getByTitle(String title) {
-		return convertListToGenerated(this.em.createQuery(buildBaseQuery(buildTitlePredicate(title))).getResultList());
-	}
-
-	private Predicate buildTitlePredicate(String title) {
-		return em.getCriteriaBuilder().equal(em.getCriteriaBuilder().createQuery(FilmEntity.class).from(FilmEntity.class).get("title"),title);
-	}
-
-	public Summary getSummary(long id){
-		return summaryDao.getById(id);
-	}
-
 	/******************************
 			Conversions
 	******************************
 	 * @param entities*/
 	private List<Film> convertListToGenerated(List<FilmEntity> entities) {
 		List<Film> filmList = new ArrayList<>();
-		System.out.println("converting list to generated");
+		//System.out.println("converting list to generated");
 
 		for (FilmEntity entity : entities) {
-			System.out.println("Inside loop");
+			//System.out.println("Inside loop");
 			filmList.add(convertSingleToGenerated(entity));
 		}
 
@@ -190,93 +209,43 @@ public class FilmDao extends Database{
 	}
 
 	private Film convertSingleToGenerated(FilmEntity entity) {
-		System.out.println("Instantiate Film");
+		//System.out.println("Instantiate Film");
 		Film film = new Film();
 
-		System.out.println("converting single to generated");
+		//System.out.println("converting single to generated");
 
-		System.out.println("film_id = ["+entity.getFilm_id()+"]");
+		//System.out.println("film_id = ["+entity.getFilm_id()+"]");
 		film.setFilmId(BigInteger.valueOf(entity.getFilm_id()));
-		System.out.println("title = ["+entity.getTitle()+"]");
+		//System.out.println("title = ["+entity.getTitle()+"]");
 		film.setTitle(entity.getTitle());
-		System.out.println("description = ["+entity.getDescription()+"]");
+		//System.out.println("description = ["+entity.getDescription()+"]");
 		film.setDescription(entity.getDescription());
-		System.out.println("release year = ["+entity.getRelease_year()+"]");
+		//System.out.println("release year = ["+entity.getRelease_year()+"]");
 		film.setReleaseYear(entity.getRelease_year());
-		System.out.println("language id = ["+entity.getLanguage_id()+"]");
+		//System.out.println("language id = ["+entity.getLanguage_id()+"]");
 		film.setLanguage(languageDao.getLanguage(entity.getLanguage_id()));
-		System.out.println("original language id = ["+entity.getOriginal_language_id()+"]");
+		//System.out.println("original language id = ["+entity.getOriginal_language_id()+"]");
 		film.setOriginalLanguage(languageDao.getLanguage(entity.getOriginal_language_id()));
-		System.out.println("rental duration = ["+entity.getRental_duration()+"]");
+		//System.out.println("rental duration = ["+entity.getRental_duration()+"]");
 		film.setRentalDuration(entity.getRental_duration());
-		System.out.println("rental rate = ["+entity.getRental_rate()+"]");
+		//System.out.println("rental rate = ["+entity.getRental_rate()+"]");
 		film.setRentalRate(entity.getRental_rate());
-		System.out.println("length = ["+entity.getLength()+"]");
+		//System.out.println("length = ["+entity.getLength()+"]");
 		film.setLength(entity.getLength());
-		System.out.println("replacement cost = ["+entity.getReplacement_cost()+"]");
+		//System.out.println("replacement cost = ["+entity.getReplacement_cost()+"]");
 		film.setReplacementCost(entity.getReplacement_cost());
-		System.out.println("rating = ["+entity.getRating()+"]");
+		//System.out.println("rating = ["+entity.getRating()+"]");
 		film.setRating(entity.getRating());
-		System.out.println("special features = ["+entity.getSpecial_features()+"]");
+		//System.out.println("special features = ["+entity.getSpecial_features()+"]");
 		film.setSpecialFeatures(entity.getSpecial_features());
-		System.out.println("last update = ["+entity.getLast_update()+"]");
+		//System.out.println("last update = ["+entity.getLast_update()+"]");
 		film.setLastUpdate(entity.getLast_update());
 		film.setCategory(filmCategoryDao.getById(entity.getFilm_id()));
 		film.setActors(getActors(entity.getFilm_id()));
 
-		System.out.println("film_id = "+film.getFilmId());
+		//System.out.println("film_id = "+film.getFilmId());
 
 		return film;
-	}
-
-
-
-	public List<Actor> getActors(long filmId) {
-		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-		CriteriaQuery<FilmActorEntity> filmActorEntityCriteriaQuery = criteriaBuilder.createQuery(FilmActorEntity.class);
-		Root<FilmActorEntity> filmActorEntityRoot = filmActorEntityCriteriaQuery.from(FilmActorEntity.class);
-
-		List<Selection<?>> filmActorSelections = new ArrayList<>();
-		filmActorSelections.add(filmActorEntityRoot.get("film_id"));
-		filmActorSelections.add(filmActorEntityRoot.get("actor_id"));
-
-		filmActorEntityCriteriaQuery.multiselect(filmActorSelections);
-		filmActorEntityCriteriaQuery.where(criteriaBuilder.equal(filmActorEntityRoot.get("film_id"),filmId));
-
-		List<FilmActorEntity> filmActorEntities =  this.em.createQuery(filmActorEntityCriteriaQuery).getResultList();
-
-        if (filmActorEntities.size() == 0){
-            return new ArrayList<>();
-        }
-
-        CriteriaQuery<ActorEntity> actorEntityCriteriaQuery = criteriaBuilder.createQuery(ActorEntity.class);
-        Root<ActorEntity> actorEntityRoot = actorEntityCriteriaQuery.from(ActorEntity.class);
-
-        List<Selection<?>> actorSelections = new ArrayList<>();
-        actorSelections.add(actorEntityRoot.get("actor_id"));
-        actorSelections.add(actorEntityRoot.get("first_name"));
-        actorSelections.add(actorEntityRoot.get("last_name"));
-        actorSelections.add(actorEntityRoot.get("last_update"));
-
-        actorEntityCriteriaQuery.multiselect(actorSelections);
-
-        if (filmActorEntities.size() == 1){
-		    actorEntityCriteriaQuery.where(criteriaBuilder.equal(actorEntityRoot.get("actor_id"),filmActorEntities.get(0).getActor_id()));
-
-		    return convertActorEntitiesToGenerated(this.em.createQuery(actorEntityCriteriaQuery).getResultList());
-        }
-
-        ArrayList<Long> actorIds = new ArrayList<>();
-
-        for (FilmActorEntity filmActorEntity : filmActorEntities) {
-            actorIds.add(filmActorEntity.getActor_id());
-        }
-
-        Expression<Long> actorIdComparison = actorEntityRoot.get("actor_id");
-        Predicate predicate = actorIdComparison.in(actorIds);
-        actorEntityCriteriaQuery.where(predicate);
-
-        return convertActorEntitiesToGenerated(this.em.createQuery(actorEntityCriteriaQuery).getResultList());
 	}
 
 	private List<Actor> convertActorEntitiesToGenerated(List<ActorEntity> actorEntityList) {
@@ -298,16 +267,46 @@ public class FilmDao extends Database{
 		return actor;
 	}
 
+	private List<Summary> convertEntitiesToSummary(List<FilmEntity> resultList) {
+		List<Summary> summaries = new ArrayList<>();
+
+		for (FilmEntity filmEntity : resultList) {
+			summaries.add(convertEntityToSummary(filmEntity));
+		}
+
+		return summaries;
+	}
+
+	private Summary convertEntityToSummary(FilmEntity filmEntity) {
+		Summary summary = new Summary();
+
+		summary.setFilmId(filmEntity.getFilm_id());
+		summary.setTitle(filmEntity.getTitle());
+		summary.setDescription(filmEntity.getDescription());
+
+		return summary;
+	}
+
 	private CriteriaQuery<FilmEntity> buildBaseQuery(Predicate predicate){
-		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-		CriteriaBuilder.Coalesce coalesce = criteriaBuilder.coalesce();
-		CriteriaQuery<FilmEntity> query = criteriaBuilder.createQuery(FilmEntity.class);
+		CriteriaQuery<FilmEntity> query = em.getCriteriaBuilder().createQuery(FilmEntity.class);
+
+		query.multiselect(makeSelections(query));
+
+		if (predicate != null)
+				query.where(predicate);
+
+		return query;
+	}
+
+	private List<Selection<?>> makeSelections(CriteriaQuery<FilmEntity> query){
+		CriteriaBuilder.Coalesce coalesce = em.getCriteriaBuilder().coalesce();
 		Root<FilmEntity> from = query.from(FilmEntity.class);
 
 		coalesce.value(from.get("original_language_id"));
 		coalesce.value(Long.valueOf(-1));
 
 		List<Selection<?>> selections = new ArrayList<>();
+
 		selections.add(from.get("film_id"));
 		selections.add(from.get("title"));
 		selections.add(from.get("description"));
@@ -322,11 +321,22 @@ public class FilmDao extends Database{
 		selections.add(from.get("special_features"));
 		selections.add(from.get("last_update"));
 
-		query.multiselect(selections);
+		return selections;
+	}
 
-		if (predicate != null)
-				query.where(predicate);
+	private Predicate buildReleaseYearPredicate(int year) {
+		return em.getCriteriaBuilder().equal(em.getCriteriaBuilder().createQuery(FilmEntity.class).from(FilmEntity.class).get("release_year"),year);
+	}
 
-		return query;
+	private Predicate buildTitlePredicate(String title) {
+		return em.getCriteriaBuilder().equal(em.getCriteriaBuilder().createQuery(FilmEntity.class).from(FilmEntity.class).get("title"),title);
+	}
+
+	private Predicate buildRatingPredicate(String rating) {
+		return em.getCriteriaBuilder().equal(em.getCriteriaBuilder().createQuery(FilmEntity.class).from(FilmEntity.class).get("rating"),rating);
+	}
+
+	private Predicate buildIdPredicate(long id) {
+		return em.getCriteriaBuilder().equal(em.getCriteriaBuilder().createQuery(FilmEntity.class).from(FilmEntity.class).get("film_id"),id);
 	}
 }

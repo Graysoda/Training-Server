@@ -34,57 +34,12 @@ public class StaffDao extends Database {
 		return convertEntityToGenerated(this.em.createQuery(query).getSingleResult());
 	}
 
-	private List<Selection<?>> makeSelection(Root<StaffEntity> root) {
-		List<Selection<?>> selections = new ArrayList<>();
-
-		selections.add(root.get("staff_id"));
-		selections.add(root.get("first_name"));
-		selections.add(root.get("last_name"));
-		selections.add(root.get("address_id"));
-		selections.add(root.get("email"));
-		selections.add(root.get("store_id"));
-		selections.add(root.get("active"));
-		selections.add(root.get("username"));
-		selections.add(root.get("password"));
-		selections.add(root.get("last_update"));
-
-		return selections;
-	}
-
 	public List<Staff> getAll() {
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
 		CriteriaQuery<StaffEntity> query = criteriaBuilder.createQuery(StaffEntity.class);
 		query.multiselect(makeSelection(query.from(StaffEntity.class)));
 		return convertEntitiesToGenerated(this.em.createQuery(query).getResultList());
 	}
-
-	private List<Staff> convertEntitiesToGenerated(List<StaffEntity> entities) {
-		List<Staff> staff = new ArrayList<>(entities.size());
-
-		for (StaffEntity entity : entities) {
-			staff.add(convertEntityToGenerated(entity));
-		}
-
-		return staff;
-	}
-
-	private Staff convertEntityToGenerated(StaffEntity entity){
-		Staff staff = new Staff();
-
-		staff.setStaffId(entity.getStaff_id());
-		staff.setFirstName(entity.getFirst_name());
-		staff.setLastName(entity.getLast_name());
-		staff.setEmail(entity.getEmail());
-		staff.setAddress(addressDao.getById(entity.getAddress_id()));
-		staff.setStoreId(entity.getStore_id());
-		staff.setIsActive(entity.isActive());
-		staff.setUsername(entity.getUsername());
-		staff.setPassword(entity.getPassword());
-		staff.setLastUpdate(entity.getLast_update());
-
-		return staff;
-	}
-
 
 	public void insert(CreateStaffRequest request) {
 		String sql = "INSERT INTO staff (first_name, last_name, address_id, email, store_id, active, username, password) VALUES " +
@@ -140,5 +95,49 @@ public class StaffDao extends Database {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private List<Staff> convertEntitiesToGenerated(List<StaffEntity> entities) {
+		List<Staff> staff = new ArrayList<>(entities.size());
+
+		for (StaffEntity entity : entities) {
+			staff.add(convertEntityToGenerated(entity));
+		}
+
+		return staff;
+	}
+
+	private Staff convertEntityToGenerated(StaffEntity entity){
+		Staff staff = new Staff();
+
+		staff.setStaffId(entity.getStaff_id());
+		staff.setFirstName(entity.getFirst_name());
+		staff.setLastName(entity.getLast_name());
+		staff.setEmail(entity.getEmail());
+		staff.setAddress(addressDao.getById(entity.getAddress_id()));
+		staff.setStoreId(entity.getStore_id());
+		staff.setIsActive(entity.isActive());
+		staff.setUsername(entity.getUsername());
+		staff.setPassword(entity.getPassword());
+		staff.setLastUpdate(entity.getLast_update());
+
+		return staff;
+	}
+
+	private List<Selection<?>> makeSelection(Root<StaffEntity> root) {
+		List<Selection<?>> selections = new ArrayList<>();
+
+		selections.add(root.get("staff_id"));
+		selections.add(root.get("first_name"));
+		selections.add(root.get("last_name"));
+		selections.add(root.get("address_id"));
+		selections.add(root.get("email"));
+		selections.add(root.get("store_id"));
+		selections.add(root.get("active"));
+		selections.add(root.get("username"));
+		selections.add(root.get("password"));
+		selections.add(root.get("last_update"));
+
+		return selections;
 	}
 }

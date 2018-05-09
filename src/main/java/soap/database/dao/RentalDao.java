@@ -32,21 +32,8 @@ public class RentalDao extends Database {
 		Root<RentalEntity> root = query.from(RentalEntity.class);
 		query.where(criteriaBuilder.equal(root.get("rental_id"),id));
 		query.multiselect(makeSelection(root));
+
 		return convertEntityToGenerated(this.em.createQuery(query).getSingleResult());
-	}
-
-	private List<Selection<?>> makeSelection(Root<RentalEntity> root) {
-		List<Selection<?>> selections = new ArrayList<>();
-
-		selections.add(root.get("rental_id"));
-		selections.add(root.get("customer_id"));
-		selections.add(root.get("staff_id"));
-		selections.add(root.get("inventory_id"));
-		selections.add(root.get("rental_date"));
-		selections.add(root.get("return_date"));
-		selections.add(root.get("last_update"));
-
-		return selections;
 	}
 
 	public List<Rental> getByCustomerId(long id) {
@@ -54,6 +41,8 @@ public class RentalDao extends Database {
 		CriteriaQuery<RentalEntity> query = criteriaBuilder.createQuery(RentalEntity.class);
 		Root<RentalEntity> root = query.from(RentalEntity.class);
 		query.where(criteriaBuilder.equal(root.get("customer_id"),id));
+		query.multiselect(makeSelection(root));
+
 		return convertEntitiesToGenerated(this.em.createQuery(query).setMaxResults(50).getResultList());
 	}
 
@@ -62,6 +51,8 @@ public class RentalDao extends Database {
 		CriteriaQuery<RentalEntity> query = criteriaBuilder.createQuery(RentalEntity.class);
 		Root<RentalEntity> root = query.from(RentalEntity.class);
 		query.where(criteriaBuilder.equal(root.get("staff_id"),id));
+		query.multiselect(makeSelection(root));
+
 		return convertEntitiesToGenerated(this.em.createQuery(query).setMaxResults(50).getResultList());
 	}
 
@@ -78,6 +69,8 @@ public class RentalDao extends Database {
 		CriteriaQuery<RentalEntity> query = criteriaBuilder.createQuery(RentalEntity.class);
 		Root<RentalEntity> root = query.from(RentalEntity.class);
 		query.where(criteriaBuilder.equal(root.get("return_date"),date));
+		query.multiselect(makeSelection(root));
+
 		return convertEntitiesToGenerated(this.em.createQuery(query).getResultList());
 	}
 
@@ -148,5 +141,19 @@ public class RentalDao extends Database {
 		}
 
 		return rentals;
+	}
+
+	private List<Selection<?>> makeSelection(Root<RentalEntity> root) {
+		List<Selection<?>> selections = new ArrayList<>();
+
+		selections.add(root.get("rental_id"));
+		selections.add(root.get("customer_id"));
+		selections.add(root.get("staff_id"));
+		selections.add(root.get("inventory_id"));
+		selections.add(root.get("rental_date"));
+		selections.add(root.get("return_date"));
+		selections.add(root.get("last_update"));
+
+		return selections;
 	}
 }

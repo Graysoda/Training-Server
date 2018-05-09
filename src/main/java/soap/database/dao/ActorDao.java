@@ -22,25 +22,13 @@ import java.util.List;
 @Transactional
 public class ActorDao extends Database {
 	@PersistenceContext private EntityManager em;
-	private String baseQuery = "SELECT a FROM sakila.actor a ";
-	@Autowired private SummaryDao summaryDao;
+	@Autowired private FilmDao filmDao;
 
 	public List<Actor> getAllActors() {
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
 		CriteriaQuery<ActorEntity> query = criteriaBuilder.createQuery(ActorEntity.class);
 		query.multiselect(makeSelection(query.from(ActorEntity.class)));
 		return convertActorEntitiesToGenerated(this.em.createQuery(query).setMaxResults(50).getResultList());
-	}
-
-	private List<Selection<?>> makeSelection(Root<ActorEntity> from) {
-		List<Selection<?>> selections = new ArrayList<>();
-
-		selections.add(from.get("actor_id"));
-		selections.add(from.get("first_name"));
-		selections.add(from.get("last_name"));
-		selections.add(from.get("last_update"));
-
-		return selections;
 	}
 
 	public Actor findById(long id) {
@@ -80,7 +68,7 @@ public class ActorDao extends Database {
 			ids[i] = resultList.get(i).getFilm_id();
 		}
 
-		List<Summary> films = summaryDao.getByIds(ids);
+		List<Summary> films = filmDao.getSummaryByIds(ids);
 
 		return films;
 	}
@@ -136,5 +124,16 @@ public class ActorDao extends Database {
 		actor.setLastName(actorEntity.getLast_name());
 		actor.setLastUpdate(actorEntity.getLast_update());
 		return actor;
+	}
+
+	private List<Selection<?>> makeSelection(Root<ActorEntity> from) {
+		List<Selection<?>> selections = new ArrayList<>();
+
+		selections.add(from.get("actor_id"));
+		selections.add(from.get("first_name"));
+		selections.add(from.get("last_name"));
+		selections.add(from.get("last_update"));
+
+		return selections;
 	}
 }
