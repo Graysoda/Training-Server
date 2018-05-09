@@ -12,12 +12,7 @@ import java.util.List;
 
 @Service
 public class CustomerServiceImpl implements CustomerService{
-	private CustomerDao customerDao;
-
-	@Autowired
-	void setCustomerDao(CustomerDao customerDao){
-		this.customerDao = customerDao;
-	}
+	@Autowired private CustomerDao customerDao;
 
 	@Override
 	@Transactional
@@ -50,11 +45,13 @@ public class CustomerServiceImpl implements CustomerService{
 	}
 
 	@Override
+	@Transactional
 	public void deleteCustomer(long customerId) {
 		customerDao.delete(customerId);
 	}
 
 	@Override
+	@Transactional
 	public void updateCustomer(UpdateCustomerRequest request) {
 		customerDao.update(request);
 	}

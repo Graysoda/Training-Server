@@ -13,12 +13,7 @@ import java.util.List;
 
 @Service
 public class RentalServiceImpl implements RentalService{
-	private RentalDao rentalDao;
-
-	@Autowired
-	public void setRentalDao(RentalDao rentalDao) {
-		this.rentalDao = rentalDao;
-	}
+	@Autowired private RentalDao rentalDao;
 
 	@Override
 	@Transactional
@@ -51,16 +46,19 @@ public class RentalServiceImpl implements RentalService{
 	}
 
 	@Override
+	@Transactional
 	public void insertRental(CreateRentalRequest request) {
 		rentalDao.insert(request);
 	}
 
 	@Override
+	@Transactional
 	public void deleteRental(long rentalId) {
 		rentalDao.delete(rentalId);
 	}
 
 	@Override
+	@Transactional
 	public void updateRental(UpdateRentalRequest request) {
 		rentalDao.update(request);
 	}

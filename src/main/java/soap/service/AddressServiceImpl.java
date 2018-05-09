@@ -12,12 +12,7 @@ import java.util.List;
 
 @Service
 public class AddressServiceImpl implements AddressService{
-	private AddressDao addressDao;
-
-	@Autowired
-	public void setAddressDao(AddressDao addressDao){
-		this.addressDao = addressDao;
-	}
+	@Autowired private AddressDao addressDao;
 
 	@Override
 	@Transactional
@@ -32,11 +27,13 @@ public class AddressServiceImpl implements AddressService{
 	}
 
 	@Override
+	@Transactional
 	public void deleteAddress(long addressId) {
 		addressDao.delete(addressId);
 	}
 
 	@Override
+	@Transactional
 	public void updateAddress(UpdateAddressRequest request) {
 		addressDao.update(request);
 	}

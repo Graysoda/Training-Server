@@ -12,12 +12,7 @@ import java.util.List;
 
 @Service
 public class StaffServiceImpl implements StaffService {
-	private StaffDao staffDao;
-
-	@Autowired
-	public void setStaffDao(StaffDao staffDao) {
-		this.staffDao = staffDao;
-	}
+	@Autowired private StaffDao staffDao;
 
 	@Override
 	@Transactional
@@ -38,11 +33,13 @@ public class StaffServiceImpl implements StaffService {
 	}
 
 	@Override
+	@Transactional
 	public void deleteStaff(long staffId) {
 		staffDao.delete(staffId);
 	}
 
 	@Override
+	@Transactional
 	public void updateStaff(UpdateStaffRequest request) {
 		staffDao.update(request);
 	}

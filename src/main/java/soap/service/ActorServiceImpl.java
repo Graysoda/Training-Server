@@ -12,11 +12,6 @@ import java.util.List;
 public class ActorServiceImpl implements ActorService {
 	@Autowired private ActorDao actorDao;
 
-//	@Autowired
-//	public void setActorDao(ActorDao actorDao){
-//		this.actorDao = actorDao;
-//	}
-
 	@Override
 	@Transactional
 	public List<Actor> getAllActors() {
@@ -48,11 +43,13 @@ public class ActorServiceImpl implements ActorService {
 	}
 
 	@Override
+	@Transactional
 	public void deleteActor(DeleteActorRequest request) {
 		actorDao.delete(request);
 	}
 
 	@Override
+	@Transactional
 	public List<Summary> getFilmsWithActor(long actorId) {
 		return actorDao.getFilms(actorId);
 	}

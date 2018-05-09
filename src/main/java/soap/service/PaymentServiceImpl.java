@@ -12,12 +12,7 @@ import java.util.List;
 
 @Service
 public class PaymentServiceImpl implements PaymentService{
-	private PaymentDao paymentDao;
-
-	@Autowired
-	public void setPaymentDao(PaymentDao paymentDao) {
-		this.paymentDao = paymentDao;
-	}
+	@Autowired private PaymentDao paymentDao;
 
 	@Override
 	@Transactional
@@ -32,11 +27,13 @@ public class PaymentServiceImpl implements PaymentService{
 	}
 
 	@Override
+	@Transactional
 	public void deletePayment(long paymentId) {
 		paymentDao.delete(paymentId);
 	}
 
 	@Override
+	@Transactional
 	public void updatePayment(UpdatePaymentRequest request) {
 		paymentDao.update(request);
 	}

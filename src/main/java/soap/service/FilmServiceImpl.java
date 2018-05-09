@@ -10,12 +10,7 @@ import java.sql.SQLException;
 import java.util.List;
 @Service
 public class FilmServiceImpl implements FilmService {
-	private FilmDao filmDao;
-
-	@Autowired
-	public void setFilmDao(FilmDao filmDao) {
-		this.filmDao = filmDao;
-	}
+	@Autowired private FilmDao filmDao;
 
 	@Override
 	@Transactional
@@ -61,16 +56,19 @@ public class FilmServiceImpl implements FilmService {
 	}
 
 	@Override
+	@Transactional
 	public void deleteFilm(long filmId) throws SQLException {
 		filmDao.delete(filmId);
 	}
 
 	@Override
+	@Transactional
 	public Summary getFilmSummary(long filmId) {
 		return filmDao.getSummary(filmId);
 	}
 
 	@Override
+	@Transactional
 	public List<Actor> getFilmsActors(long filmId) throws SQLException {
 		return filmDao.getActors(filmId);
 	}
