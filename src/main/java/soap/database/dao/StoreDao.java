@@ -14,7 +14,7 @@ import javax.persistence.criteria.Root;
 
 @Repository
 public class StoreDao {
-	@PersistenceContext
+	@PersistenceContext @Lazy
 	private EntityManager em;
 	@Autowired @Lazy private AddressDao addressDao;
 	@Autowired @Lazy private StaffDao staffDao;

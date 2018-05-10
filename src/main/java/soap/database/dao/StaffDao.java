@@ -21,7 +21,7 @@ import java.util.List;
 
 @Repository
 public class StaffDao extends Database {
-	@PersistenceContext
+	@PersistenceContext @Lazy
 	private EntityManager em;
 	@Autowired @Lazy private AddressDao addressDao;
 

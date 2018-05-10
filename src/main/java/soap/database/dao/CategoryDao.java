@@ -1,5 +1,6 @@
 package soap.database.dao;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import soap.database.entity.CategoryEntity;
 
@@ -8,7 +9,7 @@ import javax.persistence.PersistenceContext;
 
 @Repository
 public class CategoryDao {
-	@PersistenceContext
+	@PersistenceContext @Lazy
 	private EntityManager em;
 	private String baseQuery = "SELECT c FROM sakila.category c ";
 

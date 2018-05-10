@@ -13,8 +13,7 @@ import java.util.List;
 
 @Service
 public class CustomerServiceImpl implements CustomerService{
-	@Autowired @Lazy
-	private CustomerDao customerDao;
+	@Autowired @Lazy private CustomerDao customerDao;
 
 //	@Autowired
 //	public void setCustomerDao(@Lazy CustomerDao customerDao) {

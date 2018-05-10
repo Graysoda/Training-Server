@@ -18,7 +18,7 @@ import java.util.List;
 @Repository
 @Transactional
 public class LanguageDao {
-	@PersistenceContext
+	@PersistenceContext @Lazy
 	private EntityManager em;
 
 	@Autowired

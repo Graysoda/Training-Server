@@ -13,8 +13,7 @@ import java.util.List;
 
 @Service
 public class PaymentServiceImpl implements PaymentService{
-	@Autowired @Lazy
-	private PaymentDao paymentDao;
+	@Autowired @Lazy private PaymentDao paymentDao;
 
 //	@Autowired
 //	public void setPaymentDao(@Lazy PaymentDao paymentDao) {
