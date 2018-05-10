@@ -36,7 +36,8 @@ public class RentalDao extends Database {
 	}
 
 	public List<Rental> getByStartDate(String date) {
-		return convertEntitiesToGenerated(this.em.createQuery(baseQuery+" WHERE r.start_date LIKE '"+date+"%'",RentalEntity.class).getResultList());
+	    String query = baseQuery + " WHERE r.rental_id IN (SELECT r.rental_id FROM sakila.rental r WHERE DATE_TRUNC('day', r.return_date) >= CAST('"+date+"' AS DATE) AND DATE_TRUNC('day', r.return_date) < CAST('"+date+"' AS DATE) + CAST('1 DAY' AS INTERVAL)";
+		return convertEntitiesToGenerated(this.em.createQuery(query,RentalEntity.class).getResultList());
 	}
 
 	public List<Rental> getByReturnDate(String date) {
