@@ -52,13 +52,13 @@ public class FilmsEndpoint {
 		return response;
 	}
 
-//	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getFilmByRatingRequest")
-//	@ResponsePayload
-//	public GetFilmByRatingResponse getFilmByRating(@RequestPayload GetFilmByRatingRequest request) {
-//		GetFilmByRatingResponse response = new GetFilmByRatingResponse();
-//		response.setFilm(filmService.getFilmByRating(request.getRating()));
-//		return response;
-//	}
+	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getFilmByRatingRequest")
+	@ResponsePayload
+	public GetFilmByRatingResponse getFilmByRating(@RequestPayload GetFilmByRatingRequest request) {
+		GetFilmByRatingResponse response = new GetFilmByRatingResponse();
+		response.setFilm(filmService.getFilmByRating(request.getRating()));
+		return response;
+	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getFilmByReleaseYearRequest")
 	@ResponsePayload

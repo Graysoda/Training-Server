@@ -67,21 +67,21 @@
         </xs:complexType>
     </xs:element>
 
-    <!--<xs:element name="getFilmByRatingRequest">-->
-        <!--<xs:complexType>-->
-            <!--<xs:sequence>-->
-                <!--<xs:element name="rating" type="xs:string"/>-->
-            <!--</xs:sequence>-->
-        <!--</xs:complexType>-->
-    <!--</xs:element>-->
+    <xs:element name="getFilmByRatingRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="rating" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
 
-    <!--<xs:element name="getFilmByRatingResponse">-->
-        <!--<xs:complexType>-->
-            <!--<xs:sequence maxOccurs="unbounded">-->
-                <!--<xs:element name="film" type="data:film"/>-->
-            <!--</xs:sequence>-->
-        <!--</xs:complexType>-->
-    <!--</xs:element>-->
+    <xs:element name="getFilmByRatingResponse">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded">
+                <xs:element name="film" type="data:film"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
 
     <xs:element name="getFilmTextRequest">
         <xs:complexType>

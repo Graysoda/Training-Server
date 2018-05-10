@@ -85,7 +85,7 @@ public class FilmDao extends Database{
 		query.multiselect(makeSelections(query));
 		query.where(this.em.getCriteriaBuilder().equal(from.get("release_year"),year));
 
-		return convertListToGenerated(this.em.createQuery(baseFilmQuery+" WHERE f.release_year = '"+year+"'").getResultList());
+		return convertListToGenerated(this.em.createQuery(baseFilmQuery+" WHERE f.release_year = '"+year+"'").setMaxResults(100).getResultList());
 	}
 
 	public List<Film> getByTitle(String title) {
