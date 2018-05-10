@@ -1,14 +1,15 @@
 package soap.database.entity;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity(name = "sakila.film_category")
 @Table(name = "film_category")
 public class FilmCategoryEntity {
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+//	@Id
+//	@GeneratedValue(strategy = GenerationType.AUTO)
+//	private long id;
 	@NotNull
 	private long film_id;
 	@NotNull
@@ -24,8 +25,8 @@ public class FilmCategoryEntity {
 		this.category_id = category_id;
 	}
 
-	public FilmCategoryEntity(long id, @NotNull long film_id, @NotNull long category_id, @NotNull String last_update) {
-		this.id = id;
+	public FilmCategoryEntity(@NotNull long film_id, @NotNull long category_id, @NotNull String last_update) {
+//		this.id = id;
 		this.film_id = film_id;
 		this.category_id = category_id;
 		this.last_update = last_update;

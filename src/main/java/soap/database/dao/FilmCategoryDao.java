@@ -36,7 +36,7 @@ public class FilmCategoryDao {
 //        query.multiselect(selections);
 //        query.where(em.getCriteriaBuilder().equal(filmCategoryEntityRoot.get("film_id"),film_id));
 //
-        FilmCategoryEntity fce = this.em.createQuery(baseQuery+" WHERE fc.film_id = '"+film_id+"'",FilmCategoryEntity.class).getSingleResult();
+        FilmCategoryEntity fce = this.em.createQuery(baseQuery+" WHERE fc.film_id = '"+film_id+"'", FilmCategoryEntity.class).getSingleResult();
 
         return categoryDao.getNameById(fce.getCategory_id());
 	}
