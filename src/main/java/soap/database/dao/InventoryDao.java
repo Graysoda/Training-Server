@@ -21,8 +21,7 @@ import java.util.List;
 
 @Repository
 public class InventoryDao extends Database {
-	@PersistenceContext @Lazy
-	private EntityManager em;
+	@PersistenceContext @Lazy private EntityManager em;
 	@Autowired @Lazy private FilmDao filmDao;
 	@Autowired @Lazy private StoreDao storeDao;
 
