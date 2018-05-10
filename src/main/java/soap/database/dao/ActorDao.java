@@ -90,9 +90,9 @@ public class ActorDao extends Database {
 		String sql = "UPDATE actor SET ";
 
 		 if (request.getNewLastName() != null)
-			sql += "last_name = '"+request.getNewLastName()+"' ";
+			sql += "last_name = '"+request.getNewLastName()+"', ";
 		 if (request.getNewFirstName() != null)
-			sql += "first_name = '"+request.getNewFirstName()+"' ";
+			sql += "first_name = '"+request.getNewFirstName()+"', ";
 
 		sql = sql.substring(0, sql.length()-2) + " WHERE actor_id='"+request.getActorId()+"';";
 		try{
