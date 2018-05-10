@@ -24,7 +24,7 @@ import java.util.List;
 public class AddressDao extends Database {
 	@PersistenceContext @Lazy
 	private EntityManager em;
-	@Autowired private CityDao cityDao;
+	@Autowired @Lazy private CityDao cityDao;
 
 //	@Autowired
 //	public void setEm(@Lazy EntityManager em) {
