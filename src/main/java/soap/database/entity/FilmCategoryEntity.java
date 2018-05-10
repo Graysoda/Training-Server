@@ -1,7 +1,6 @@
 package soap.database.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity(name = "sakila.film_category")
@@ -10,7 +9,8 @@ public class FilmCategoryEntity {
 //	@Id
 //	@GeneratedValue(strategy = GenerationType.AUTO)
 //	private long id;
-	@NotNull
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long film_id;
 	@NotNull
 	private long category_id;
