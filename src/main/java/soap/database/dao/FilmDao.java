@@ -65,6 +65,11 @@ public class FilmDao extends Database{
 	}
 
 	public List<Summary> getFilmsById(List<Long> filmIds) {
+		if (filmIds.size()==0)
+			return new ArrayList<>();
+		if (filmIds.size() == 1)
+			return convertEntitiesToSummary(this.em.createQuery(baseFilmQuery+" WHERE f.film_id = '"+filmIds.get(0)+"'",FilmEntity.class).getResultList());
+
 		String where = " WHERE IN (";
 
 		for (Long filmId : filmIds) {
