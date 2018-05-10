@@ -68,7 +68,7 @@ public class FilmDao extends Database{
 	public List<Film> getByRating(String rating) {
 		CriteriaQuery<FilmEntity> query = this.em.getCriteriaBuilder().createQuery(FilmEntity.class);
 		Root<FilmEntity> from = query.from(FilmEntity.class);
-		Expression<String> ratingField = from.get("rating");
+		Expression<String> ratingField = from.get("rating").as(String.class);
 
 		query.distinct(true);
 		query.multiselect(makeSelections(query));
