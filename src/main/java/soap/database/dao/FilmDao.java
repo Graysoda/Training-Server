@@ -22,7 +22,7 @@ public class FilmDao extends Database{
 	@Autowired @Lazy private LanguageDao languageDao;
 	@Autowired @Lazy private FilmCategoryDao filmCategoryDao;
 	@Autowired @Lazy private FilmActorDao filmActorDao;
-	private static final String baseFilmQuery = "SELECT f FROM film f";
+	private static final String baseFilmQuery = "SELECT f FROM sakila.film f";
 
 //	@Autowired
 //	public void setEm(@Lazy EntityManager em) {
