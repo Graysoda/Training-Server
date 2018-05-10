@@ -22,7 +22,8 @@ import java.util.List;
 @Repository
 @Transactional
 public class AddressDao extends Database {
-	@PersistenceContext @Lazy private EntityManager em;
+	@PersistenceContext @Lazy
+	private EntityManager em;
 	@Autowired @Lazy private CityDao cityDao;
 
 //	@Autowired
