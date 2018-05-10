@@ -88,6 +88,7 @@ public class FilmDao extends Database{
 	}
 
 	public List<Film> getByTitle(String title) {
+
 		CriteriaQuery<FilmEntity> query = em.getCriteriaBuilder().createQuery(FilmEntity.class);
 		Root<FilmEntity> from  = query.from(FilmEntity.class);
 
@@ -95,7 +96,7 @@ public class FilmDao extends Database{
 		query.multiselect(makeSelections(query));
 		query.where(this.em.getCriteriaBuilder().equal(from.get("title"),title.toUpperCase()));
 
-		return convertListToGenerated(this.em.createQuery(query).setMaxResults(50).getResultList());
+		return convertListToGenerated(this.em.createNativeQuery("select * from film where title = '"+title+"';",FilmEntity.class).setMaxResults(50).getResultList());//this.em.createQuery(query).setMaxResults(50).getResultList());
 	}
 
 	public List<Summary> getFilmsById(List<Long> filmIds) {
