@@ -24,6 +24,7 @@ public class InventoryDao extends Database {
 	@PersistenceContext @Lazy private EntityManager em;
 	@Autowired @Lazy private FilmDao filmDao;
 	@Autowired @Lazy private StoreDao storeDao;
+	private static final String baseQuery = "SELECT inv FROM sakila.inventory inv";
 
 //	@Autowired
 //	public void setEm(@Lazy EntityManager em) {
@@ -45,7 +46,7 @@ public class InventoryDao extends Database {
 		CriteriaQuery<InventoryEntity> query = criteriaBuilder.createQuery(InventoryEntity.class);
 		query.multiselect(makeSelection(query.from(InventoryEntity.class)));
 
-		return convertEntitiesToGenerated(this.em.createQuery(query).setMaxResults(20).getResultList());
+		return convertEntitiesToGenerated(this.em.createQuery(baseQuery,InventoryEntity.class).getResultList());
 	}
 
 	public Inventory getById(long id) {
@@ -55,7 +56,7 @@ public class InventoryDao extends Database {
 		query.where(criteriaBuilder.equal(root.get("inventory_id"),id));
 		query.multiselect(makeSelection(root));
 
-		return convertEntityToGenerated(this.em.createQuery(query).getSingleResult());
+		return convertEntityToGenerated(this.em.createQuery(baseQuery+" WHERE inv.inventory_id = '"+id+"'", InventoryEntity.class).getSingleResult());
 	}
 
 	public List<Inventory> getStoreInventory(long storeId) {
@@ -65,7 +66,7 @@ public class InventoryDao extends Database {
 		query.where(criteriaBuilder.equal(root.get("store_id"),storeId));
 		query.multiselect(makeSelection(root));
 
-		return convertEntitiesToGenerated(this.em.createQuery(query).setMaxResults(50).getResultList());
+		return convertEntitiesToGenerated(this.em.createQuery(baseQuery+" WHERE inv.store_id = '"+storeId+"'",InventoryEntity.class).getResultList());
 	}
 
 	public void insert(CreateInventoryRequest request) {
@@ -94,7 +95,7 @@ public class InventoryDao extends Database {
 		if (request.getStoreId() != null)
 			sql += "store_id = '"+request.getStoreId()+"', ";
 
-		sql += sql.subSequence(0,sql.length()-3) + " WHERE inventory_id = '"+request.getInventoryId()+"';";
+		sql += sql.subSequence(0,sql.length()-2) + " WHERE inventory_id = '"+request.getInventoryId()+"';";
 
 		try {
 			getConnection().createStatement().executeUpdate(sql);

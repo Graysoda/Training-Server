@@ -24,6 +24,7 @@ public class FilmActorDao {
     private EntityManager em;
     @Autowired @Lazy private FilmDao filmDao;
     @Autowired @Lazy private ActorDao actorDao;
+    private static final String baseQuery = "SELECT fa FROM sakila.film_actor fa";
 
     public List<Actor> getActorsFromFilm(long filmId){
         CriteriaBuilder criteriaBuilder = this.em.getCriteriaBuilder();
@@ -34,7 +35,7 @@ public class FilmActorDao {
 
         query.where(criteriaBuilder.equal(from.get("film_id"),filmId));
 
-        return actorDao.getActorsById(getActorIds(this.em.createQuery(query).getResultList()));
+        return actorDao.getActorsById(getActorIds(this.em.createQuery(baseQuery+" WHERE fa.film_id = '"+filmId+"'",FilmActorEntity.class).getResultList()));
     }
 
     public List<Summary> getFilmsWithActor(long actorId){
@@ -46,7 +47,7 @@ public class FilmActorDao {
 
         query.where(criteriaBuilder.equal(from.get("actor_id"),actorId));
 
-        return filmDao.getFilmsById(getFilmIds(this.em.createQuery(query).getResultList()));
+        return filmDao.getFilmsById(getFilmIds(this.em.createQuery(baseQuery+" WHERE fa.actor_id = '"+actorId+"'",FilmActorEntity.class).getResultList()));
     }
 
     private List<Long> getFilmIds(List<FilmActorEntity> resultList) {

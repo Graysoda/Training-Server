@@ -21,6 +21,7 @@ import java.util.List;
 @Repository
 public class PaymentDao extends Database {
 	@PersistenceContext @Lazy private EntityManager em;
+	private static final String baseQuery = "SELECT p FROM sakila.payment p";
 
 //	@Autowired
 //	public void setEm(@Lazy EntityManager em) {
@@ -32,7 +33,7 @@ public class PaymentDao extends Database {
 		CriteriaQuery<PaymentEntity> query = criteriaBuilder.createQuery(PaymentEntity.class);
 		query.multiselect(makeSelection(query.from(PaymentEntity.class)));
 
-		return convertEntitiesToGenerated(this.em.createQuery(query).setMaxResults(50).getResultList());
+		return convertEntitiesToGenerated(this.em.createQuery(baseQuery, PaymentEntity.class).getResultList());
 	}
 
 	public void insert(CreatePaymentRequest request) {
@@ -72,7 +73,7 @@ public class PaymentDao extends Database {
 		if (request.getStaffId()!=null)
 			sql += "staff_id = '"+request.getStaffId()+"', ";
 
-		sql = sql.substring(0,sql.length()-3) + " WHERE payment_id = '"+request.getPaymentId()+"';";
+		sql = sql.substring(0,sql.length()-2) + " WHERE payment_id = '"+request.getPaymentId()+"';";
 
 		try {
 			getConnection().createStatement().executeUpdate(sql);

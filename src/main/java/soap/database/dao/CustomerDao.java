@@ -24,6 +24,7 @@ import java.util.List;
 public class CustomerDao extends Database {
 	@PersistenceContext @Lazy private EntityManager em;
 	@Autowired @Lazy private AddressDao addressDao;
+	private static final String baseQuery = "SELECT c FROM sakila.customer c";
 
 //	@Autowired
 //	public void setEm(@Lazy EntityManager em) {
@@ -42,7 +43,7 @@ public class CustomerDao extends Database {
 		query.where(criteriaBuilder.equal(root.get("active"),1));
 		query.multiselect(makeSelection(root));
 
-		return convertEntitystoGenerated(this.em.createQuery(query).setMaxResults(50).getResultList());
+		return convertEntitystoGenerated(this.em.createQuery(baseQuery+" WHERE c.active = '1'",CustomerEntity.class).getResultList());
 	}
 
 	public Customer getById(long id) {
@@ -52,7 +53,7 @@ public class CustomerDao extends Database {
 		query.where(criteriaBuilder.equal(root.get("customer_id"),id));
 		query.multiselect(makeSelection(root));
 
-		return convertEntityToGenerated(this.em.createQuery(query).getSingleResult());
+		return convertEntityToGenerated(this.em.createQuery(baseQuery+" WHERE c.customer_id = '"+id+"'", CustomerEntity.class).getSingleResult());
 	}
 
 	public List<Customer> getByStore(long id) {
@@ -62,7 +63,7 @@ public class CustomerDao extends Database {
 		query.where(criteriaBuilder.equal(root.get("store_id"),id));
 		query.multiselect(makeSelection(root));
 
-		return convertEntitystoGenerated(this.em.createQuery(query).setMaxResults(50).getResultList());
+		return convertEntitystoGenerated(this.em.createQuery(baseQuery+" WHERE c.store_id = '"+id+"'",CustomerEntity.class).getResultList());
 	}
 
 	public List<Customer> getAll() {
@@ -70,7 +71,7 @@ public class CustomerDao extends Database {
 		CriteriaQuery<CustomerEntity> query = criteriaBuilder.createQuery(CustomerEntity.class);
 		query.multiselect(makeSelection(query.from(CustomerEntity.class)));
 
-		return convertEntitystoGenerated(this.em.createQuery(query).setMaxResults(50).getResultList());
+		return convertEntitystoGenerated(this.em.createQuery(baseQuery, CustomerEntity.class).getResultList());
 	}
 
 	public void insert(CreateCustomerRequest request) {
@@ -99,24 +100,21 @@ public class CustomerDao extends Database {
 
 	public void update(UpdateCustomerRequest request) {
 		String sql = "UPDATE customer SET ";
-		String values = "";
 
 		if (request.isActive()!=null)
-			values += "active = '"+request.isActive()+"', ";
+			sql += "active = '"+request.isActive()+"', ";
 		if (request.getAddressId()!=null)
-			values += "address_id = '"+request.getAddressId()+"', ";
+			sql += "address_id = '"+request.getAddressId()+"', ";
 		if (request.getEmail()!=null)
-			values += "email = '"+request.getEmail()+"', ";
+			sql += "email = '"+request.getEmail()+"', ";
 		if (request.getFirstName()!=null)
-			values += "first_name = '"+request.getFirstName()+"', ";
+			sql += "first_name = '"+request.getFirstName()+"', ";
 		if (request.getLastName()!=null)
-			values += "last_name = '"+request.getLastName()+"', ";
+			sql += "last_name = '"+request.getLastName()+"', ";
 		if (request.getStoreId()!=null)
-			values += "store_id = '"+request.getStoreId()+"', ";
+			sql += "store_id = '"+request.getStoreId()+"', ";
 
-		values = (String) values.subSequence(0,values.length()-3);
-
-		sql += values + " WHERE customer_id = '"+request.getCustomerId()+"';";
+		sql = sql.subSequence(0,sql.length()-2) + " WHERE customer_id = '"+request.getCustomerId()+"';";
 
 		try {
 			getConnection().createStatement().executeUpdate(sql);

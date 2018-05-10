@@ -24,6 +24,7 @@ public class StaffDao extends Database {
 	@PersistenceContext @Lazy
 	private EntityManager em;
 	@Autowired @Lazy private AddressDao addressDao;
+	private static final String baseQuery = "SELECT s FROM sakila.satff s";
 
 //	@Autowired
 //	public void setEm(@Lazy EntityManager em) {
@@ -42,14 +43,15 @@ public class StaffDao extends Database {
 		query.where(criteriaBuilder.equal(root.get("staff_id"),id));
 		query.multiselect(makeSelection(root));
 
-		return convertEntityToGenerated(this.em.createQuery(query).getSingleResult());
+		return convertEntityToGenerated(this.em.createQuery(baseQuery+" WHERE s.staff_id = '"+id+"'",StaffEntity.class).getSingleResult());
 	}
 
 	public List<Staff> getAll() {
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
 		CriteriaQuery<StaffEntity> query = criteriaBuilder.createQuery(StaffEntity.class);
 		query.multiselect(makeSelection(query.from(StaffEntity.class)));
-		return convertEntitiesToGenerated(this.em.createQuery(query).getResultList());
+
+		return convertEntitiesToGenerated(this.em.createQuery(baseQuery, StaffEntity.class).getResultList());
 	}
 
 	public void insert(CreateStaffRequest request) {
@@ -99,7 +101,7 @@ public class StaffDao extends Database {
 		if (request.getUsername()!=null)
 			sql += "username = '"+request.getUsername()+"', ";
 
-		sql = sql.substring(0,sql.length()-3) + " WHERE staff_id = '"+request.getStaffId()+"';";
+		sql = sql.substring(0,sql.length()-2) + " WHERE staff_id = '"+request.getStaffId()+"';";
 
 		try {
 			getConnection().createStatement().executeUpdate(sql);

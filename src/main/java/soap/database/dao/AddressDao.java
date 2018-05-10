@@ -25,6 +25,7 @@ public class AddressDao extends Database {
 	@PersistenceContext @Lazy
 	private EntityManager em;
 	@Autowired @Lazy private CityDao cityDao;
+	private static final String baseQuery = "SELECT adr from sakila.address adr";
 
 //	@Autowired
 //	public void setEm(@Lazy EntityManager em) {
@@ -41,13 +42,13 @@ public class AddressDao extends Database {
 		CriteriaQuery<AddressEntity> query = criteriaBuilder.createQuery(AddressEntity.class);
 		Root<AddressEntity> root = query.from(AddressEntity.class);
 		query.where(criteriaBuilder.equal(root.get("address_id"),id));
-		return convertEntityToGenerated(this.em.createQuery(query).getSingleResult());
+		return convertEntityToGenerated(this.em.createQuery(baseQuery+" WHERE adr.address_id = '"+id+"'",AddressEntity.class).getSingleResult());
 	}
 
 	public List<Address> getAll() {
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
 		CriteriaQuery<AddressEntity> query = criteriaBuilder.createQuery(AddressEntity.class);
-		return convertEntitiesToGenerate(this.em.createQuery(query).getResultList());
+		return convertEntitiesToGenerate(this.em.createQuery(baseQuery,AddressEntity.class).getResultList());
 	}
 
 	public void delete(long addressId) {
@@ -75,7 +76,7 @@ public class AddressDao extends Database {
 		if (request.getPostalCode()!=null)
 			sql += "postal_code = '"+request.getPostalCode()+"', ";
 
-		sql = sql.substring(0,sql.length()-3) + " WHERE address_id = '"+request.getAddressId()+"';";
+		sql = sql.substring(0,sql.length()-2) + " WHERE address_id = '"+request.getAddressId()+"';";
 
 		try {
 			getConnection().createStatement().executeUpdate(sql);

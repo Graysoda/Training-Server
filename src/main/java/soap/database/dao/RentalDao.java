@@ -25,6 +25,7 @@ public class RentalDao extends Database {
 	@Autowired @Lazy private CustomerDao customerDao;
 	@Autowired @Lazy private FilmDao filmDao;
 	@Autowired @Lazy private StaffDao staffDao;
+	private static final String baseQuery = "SELECT r FROM sakila.rental r";
 
 //	@Autowired
 //	public void setEm(@Lazy EntityManager em) {
@@ -53,7 +54,7 @@ public class RentalDao extends Database {
 		query.where(criteriaBuilder.equal(root.get("rental_id"),id));
 		query.multiselect(makeSelection(root));
 
-		return convertEntityToGenerated(this.em.createQuery(query).getSingleResult());
+		return convertEntityToGenerated(this.em.createQuery(baseQuery+" WHERE r.rental_id = '"+id+"'",RentalEntity.class).getSingleResult());
 	}
 
 	public List<Rental> getByCustomerId(long id) {
@@ -63,7 +64,7 @@ public class RentalDao extends Database {
 		query.where(criteriaBuilder.equal(root.get("customer_id"),id));
 		query.multiselect(makeSelection(root));
 
-		return convertEntitiesToGenerated(this.em.createQuery(query).setMaxResults(50).getResultList());
+		return convertEntitiesToGenerated(this.em.createQuery(baseQuery+" WHERE r.customer_id = '"+id+"'",RentalEntity.class).getResultList());
 	}
 
 	public List<Rental> getByStaffId(long id) {
@@ -73,7 +74,7 @@ public class RentalDao extends Database {
 		query.where(criteriaBuilder.equal(root.get("staff_id"),id));
 		query.multiselect(makeSelection(root));
 
-		return convertEntitiesToGenerated(this.em.createQuery(query).setMaxResults(50).getResultList());
+		return convertEntitiesToGenerated(this.em.createQuery(baseQuery+" WHERE r.staff_id = '"+id+"'", RentalEntity.class).getResultList());
 	}
 
 	public List<Rental> getByStartDate(String date) {
@@ -81,7 +82,7 @@ public class RentalDao extends Database {
 		CriteriaQuery<RentalEntity> query = criteriaBuilder.createQuery(RentalEntity.class);
 		Root<RentalEntity> root = query.from(RentalEntity.class);
 		query.where(criteriaBuilder.equal(root.get("rental_date"),date));
-		return convertEntitiesToGenerated(this.em.createQuery(query).getResultList());
+		return convertEntitiesToGenerated(this.em.createQuery(baseQuery+" WHERE r.start_date = '"+date+"'",RentalEntity.class).getResultList());
 	}
 
 	public List<Rental> getByReturnDate(String date) {
@@ -91,7 +92,7 @@ public class RentalDao extends Database {
 		query.where(criteriaBuilder.equal(root.get("return_date"),date));
 		query.multiselect(makeSelection(root));
 
-		return convertEntitiesToGenerated(this.em.createQuery(query).getResultList());
+		return convertEntitiesToGenerated(this.em.createQuery(baseQuery+" WHERE r.return_date = '"+date+"'", RentalEntity.class).getResultList());
 	}
 
 	public void insert(CreateRentalRequest request) {
@@ -131,7 +132,7 @@ public class RentalDao extends Database {
 		if (request.getStaffId()!=null)
 			sql += "staff_id = '"+request.getStaffId()+"', ";
 
-		sql = sql.substring(0,sql.length()-3) + "WHERE rental_id = '"+request.getRentalId()+"';";
+		sql = sql.substring(0,sql.length()-2) + " WHERE rental_id = '"+request.getRentalId()+"';";
 
 		try {
 			getConnection().createStatement().executeUpdate(sql);

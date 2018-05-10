@@ -160,7 +160,7 @@ public class FilmDao extends Database{
 		if (request.getSpecialFeatures()!=null)
 			sql += "special_features = '"+request.getSpecialFeatures()+"', ";
 
-		sql += sql.subSequence(0,sql.length()-3) + " WHERE film_id = '"+request.getFilmId()+"';";
+		sql += sql.subSequence(0,sql.length()-2) + " WHERE film_id = '"+request.getFilmId()+"';";
 
 		try {
 			getConnection().createStatement().executeUpdate(sql);

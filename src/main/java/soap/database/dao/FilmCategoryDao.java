@@ -18,6 +18,7 @@ public class FilmCategoryDao {
 	@PersistenceContext @Lazy
 	@Autowired private EntityManager em;
 	@Autowired @Lazy private CategoryDao categoryDao;
+	private static final String baseQuery = "SELECT fc FROM sakila.film_category fc";
 
 //    @Autowired
 //    public void setEm(@Lazy EntityManager em) {
@@ -41,6 +42,6 @@ public class FilmCategoryDao {
         query.where(em.getCriteriaBuilder().equal(filmCategoryEntityRoot.get("film_id"),film_id));
 
         FilmCategoryEntity fce = this.em.createQuery(query).getSingleResult();
-        return categoryDao.getNameById(fce.getCategory_id());
+        return categoryDao.getNameById(this.em.createQuery(baseQuery+" WHERE fc.film_id = '"+film_id+"'",FilmCategoryEntity.class).getSingleResult().getCategory_id());
 	}
 }

@@ -20,6 +20,7 @@ import java.util.List;
 public class LanguageDao {
 	@PersistenceContext @Lazy
 	private EntityManager em;
+	private static final String baseQuery = "SELECT l FROM sakila.langauge l";
 
 	@Autowired
 	public void setEm(@Lazy EntityManager em) {
@@ -37,7 +38,7 @@ public class LanguageDao {
 		query.where(criteriaBuilder.equal(root.get("language_id"),id));
 		query.multiselect(makeSelections(root));
 
-		return this.em.createQuery(query).getSingleResult().getName();
+		return this.em.createQuery(baseQuery+" WHERE l.langauge_id = '"+id+"'",LanguageEntity.class).getSingleResult().getName();
 	}
 
 	private List<Selection<?>> makeSelections(Root<LanguageEntity> root) {
@@ -57,6 +58,6 @@ public class LanguageDao {
 		query.where(criteriaBuilder.equal(root.get("name"),language));
 		query.multiselect(makeSelections(root));
 
-		return this.em.createQuery(query).getSingleResult().getLanguage_id();
+		return this.em.createQuery(baseQuery+" WHERE l.name = '"+language+"'", LanguageEntity.class).getSingleResult().getLanguage_id();
 	}
 }

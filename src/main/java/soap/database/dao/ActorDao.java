@@ -9,13 +9,12 @@ import soap.generated.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
 import javax.transaction.Transactional;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Repository
@@ -24,6 +23,7 @@ public class ActorDao extends Database {
 	@PersistenceContext @Lazy private EntityManager em;
 //	@Autowired private FilmDao filmDao;
 	@Autowired @Lazy private FilmActorDao filmActorDao;
+	private static final String baseQuery = "SELECT a FROM sakila.actor a";
 
 //	@Autowired
 //	public void setEm(@Lazy EntityManager em) {
@@ -36,41 +36,51 @@ public class ActorDao extends Database {
 //    }
 
     public List<Actor> getAllActors() {
-		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-		CriteriaQuery<ActorEntity> query = criteriaBuilder.createQuery(ActorEntity.class);
-		query.multiselect(makeSelection(query.from(ActorEntity.class)));
-		return convertActorEntitiesToGenerated(this.em.createQuery(query).setMaxResults(50).getResultList());
+//		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+//		CriteriaQuery<ActorEntity> query = criteriaBuilder.createQuery(ActorEntity.class);
+//		query.multiselect(makeSelection(query.from(ActorEntity.class)));
+		return convertActorEntitiesToGenerated(this.em.createQuery(baseQuery,ActorEntity.class).getResultList());
 	}
 
 	public Actor findById(long id) {
-		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-		CriteriaQuery<ActorEntity> query = criteriaBuilder.createQuery(ActorEntity.class);
-		Root<ActorEntity> root = query.from(ActorEntity.class);
-		query.multiselect(makeSelection(root));
-		query.where(criteriaBuilder.equal(root.get("actor_id"),id));
-		return this.convertActorEntityToGenerated(this.em.createQuery(query).getSingleResult());
+//		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+//		CriteriaQuery<ActorEntity> query = criteriaBuilder.createQuery(ActorEntity.class);
+//		Root<ActorEntity> root = query.from(ActorEntity.class);
+//		query.multiselect(makeSelection(root));
+//		query.where(criteriaBuilder.equal(root.get("actor_id"),id));
+		return this.convertActorEntityToGenerated(this.em.createQuery(baseQuery+" WHERE a.actor_id = '"+id+"'", ActorEntity.class).getSingleResult());
 	}
 
 	public List<Actor> findByFirstName(String actorFirstName) {
-		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-		CriteriaQuery<ActorEntity> query = criteriaBuilder.createQuery(ActorEntity.class);
-		Root<ActorEntity> root = query.from(ActorEntity.class);
-		query.multiselect(makeSelection(root));
-		query.where(criteriaBuilder.equal(root.get("first_name"),actorFirstName.toUpperCase()));
-		return convertActorEntitiesToGenerated(this.em.createQuery(query).getResultList());
+//		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+//		CriteriaQuery<ActorEntity> query = criteriaBuilder.createQuery(ActorEntity.class);
+//		Root<ActorEntity> root = query.from(ActorEntity.class);
+//		query.multiselect(makeSelection(root));
+//		query.where(criteriaBuilder.equal(root.get("first_name"),actorFirstName.toUpperCase()));
+		return convertActorEntitiesToGenerated(this.em.createQuery(baseQuery+" WHERE a.first_name = '"+actorFirstName+"'",ActorEntity.class).getResultList());
 	}
 
 	public List<Actor> getActorsById(List<Long> actorIds) {
     	if (actorIds.size()==0)
     		return new ArrayList<>();
-		CriteriaBuilder criteriaBuilder = this.em.getCriteriaBuilder();
-		CriteriaQuery<ActorEntity> query = criteriaBuilder.createQuery(ActorEntity.class);
-		Root<ActorEntity> from = query.from(ActorEntity.class);
+    	if (actorIds.size()==1)
+    		return Collections.singletonList(findById(actorIds.get(0)));
+//		CriteriaBuilder criteriaBuilder = this.em.getCriteriaBuilder();
+//		CriteriaQuery<ActorEntity> query = criteriaBuilder.createQuery(ActorEntity.class);
+//		Root<ActorEntity> from = query.from(ActorEntity.class);
+//
+//		query.multiselect(makeSelection(from));
+//		query.where(from.get("actor_id").in(actorIds));
 
-		query.multiselect(makeSelection(from));
-		query.where(from.get("actor_id").in(actorIds));
+		StringBuilder where = new StringBuilder(" WHERE a.actor_id IN (");
 
-		return convertActorEntitiesToGenerated(this.em.createQuery(query).getResultList());
+		for (Long actorId : actorIds) {
+			where.append("'").append(actorId).append("', ");
+		}
+
+		where = new StringBuilder(where.substring(0, where.length() - 2) + ")");
+
+		return convertActorEntitiesToGenerated(this.em.createQuery(baseQuery+where.toString(),ActorEntity.class).getResultList());
 	}
 
 	public List<Summary> getFilms(long actorId) {

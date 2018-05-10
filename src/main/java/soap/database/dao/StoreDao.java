@@ -18,6 +18,7 @@ public class StoreDao {
 	private EntityManager em;
 	@Autowired @Lazy private AddressDao addressDao;
 	@Autowired @Lazy private StaffDao staffDao;
+	private static final String baseQuery = "SELECT s FROM sakila.store s";
 
 //	@Autowired
 //	public void setEm(@Lazy EntityManager em) {
@@ -41,7 +42,7 @@ public class StoreDao {
 		query.where(criteriaBuilder.equal(root.get("store_id"),id));
 
 		try{
-			return convertEntityToGenerated(this.em.createQuery(query).getSingleResult());
+			return convertEntityToGenerated(this.em.createQuery(baseQuery+" WHERE s.store_id = '"+id+"'", StoreEntity.class).getSingleResult());
 		} catch (javax.persistence.NoResultException e){
 			//e.printStackTrace();
 			return new Store();
