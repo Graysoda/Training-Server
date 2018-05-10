@@ -24,7 +24,7 @@ public class StaffDao extends Database {
 	@PersistenceContext @Lazy
 	private EntityManager em;
 	@Autowired @Lazy private AddressDao addressDao;
-	private static final String baseQuery = "SELECT s FROM sakila.satff s";
+	private static final String baseQuery = "SELECT s FROM sakila.staff s";
 
 //	@Autowired
 //	public void setEm(@Lazy EntityManager em) {
