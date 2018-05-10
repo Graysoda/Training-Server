@@ -20,8 +20,7 @@ import java.util.List;
 
 @Repository
 public class PaymentDao extends Database {
-	@PersistenceContext @Lazy
-	private EntityManager em;
+	@PersistenceContext @Lazy private EntityManager em;
 
 //	@Autowired
 //	public void setEm(@Lazy EntityManager em) {
