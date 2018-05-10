@@ -70,7 +70,7 @@ public class FilmDao extends Database{
 		if (filmIds.size() == 1)
 			return convertEntitiesToSummary(this.em.createQuery(baseFilmQuery+" WHERE f.film_id = '"+filmIds.get(0)+"'",FilmEntity.class).getResultList());
 
-		String where = " WHERE IN (";
+		String where = " WHERE f.film_id IN (";
 
 		for (Long filmId : filmIds) {
 			if (!where.contains(filmId.toString()))
