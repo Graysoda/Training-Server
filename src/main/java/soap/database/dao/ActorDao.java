@@ -57,7 +57,7 @@ public class ActorDao extends Database {
 //		Root<ActorEntity> root = query.from(ActorEntity.class);
 //		query.multiselect(makeSelection(root));
 //		query.where(criteriaBuilder.equal(root.get("first_name"),actorFirstName.toUpperCase()));
-		return convertActorEntitiesToGenerated(this.em.createQuery(baseQuery+" WHERE a.first_name = '"+actorFirstName+"'",ActorEntity.class).getResultList());
+		return convertActorEntitiesToGenerated(this.em.createQuery(baseQuery+" WHERE a.first_name = '"+actorFirstName.toUpperCase()+"'",ActorEntity.class).getResultList());
 	}
 
 	public List<Actor> getActorsById(List<Long> actorIds) {
