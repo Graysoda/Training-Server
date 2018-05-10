@@ -1,6 +1,7 @@
 package soap.database.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import soap.database.Database;
 import soap.database.entity.ActorEntity;
@@ -20,9 +21,9 @@ import java.util.List;
 @Repository
 @Transactional
 public class ActorDao extends Database {
-	@PersistenceContext private EntityManager em;
+	@PersistenceContext @Lazy private EntityManager em;
 //	@Autowired private FilmDao filmDao;
-	@Autowired private FilmActorDao filmActorDao;
+	@Autowired @Lazy private FilmActorDao filmActorDao;
 
 //	@Autowired
 //	public void setEm(@Lazy EntityManager em) {
