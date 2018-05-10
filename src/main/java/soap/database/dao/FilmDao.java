@@ -62,7 +62,7 @@ public class FilmDao extends Database{
 		query.multiselect(makeSelections(query));
 		query.where(this.em.getCriteriaBuilder().equal(from.get("film_id"),id));
 
-		return convertSingleToGenerated(this.em.createQuery(baseFilmQuery+" WHERE f.film_id='"+id+"'",FilmEntity.class).getSingleResult());
+		return convertSingleToGenerated(this.em.createQuery(baseFilmQuery+" WHERE f.film_id='"+id+"';",FilmEntity.class).getSingleResult());
 	}
 
 	public List<Film> getByRating(String rating) {
