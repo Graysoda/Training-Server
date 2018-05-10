@@ -22,8 +22,7 @@ import java.util.List;
 
 @Repository
 public class CustomerDao extends Database {
-	@PersistenceContext @Lazy
-	private EntityManager em;
+	@PersistenceContext @Lazy private EntityManager em;
 	@Autowired @Lazy private AddressDao addressDao;
 
 //	@Autowired
