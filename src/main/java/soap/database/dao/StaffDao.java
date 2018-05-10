@@ -17,8 +17,7 @@ import java.util.List;
 
 @Repository
 public class StaffDao extends Database {
-	@PersistenceContext @Lazy
-	private EntityManager em;
+	@PersistenceContext @Lazy private EntityManager em;
 	@Autowired @Lazy private AddressDao addressDao;
 	private static final String baseQuery = "SELECT s FROM sakila.staff s";
 
