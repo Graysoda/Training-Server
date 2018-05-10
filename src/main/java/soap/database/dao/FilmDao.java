@@ -45,7 +45,7 @@ public class FilmDao extends Database{
 	 				Queries
 	 ****************************************/
 	public List<Film> getAll() {
-		return convertListToGenerated(this.em.createQuery(baseFilmQuery,FilmEntity.class).getResultList());
+		return convertListToGenerated(this.em.createQuery(baseFilmQuery,FilmEntity.class).setMaxResults(100).getResultList());
 	}
 
 	public Film getById(long id) {
