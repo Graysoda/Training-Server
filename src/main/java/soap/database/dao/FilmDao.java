@@ -9,8 +9,10 @@ import soap.generated.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Selection;
 import java.math.BigInteger;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -43,71 +45,26 @@ public class FilmDao extends Database{
 	 				Queries
 	 ****************************************/
 	public List<Film> getAll() {
-		//System.out.println("in get all films");
-		CriteriaQuery<FilmEntity> query = this.em.getCriteriaBuilder().createQuery(FilmEntity.class);
-
-		query.distinct(true);
-		query.multiselect(makeSelections(query));
-
-		TypedQuery<FilmEntity> str = this.em.createQuery(query).setMaxResults(50);
-		//System.out.println(str.toString());
 		return convertListToGenerated(this.em.createQuery(baseFilmQuery,FilmEntity.class).getResultList());
 	}
 
 	public Film getById(long id) {
-		CriteriaQuery<FilmEntity> query = this.em.getCriteriaBuilder().createQuery(FilmEntity.class);
-		Root<FilmEntity> from = query.from(FilmEntity.class);
-
-		//query.distinct(true);
-		query.multiselect(makeSelections(query));
-		query.where(this.em.getCriteriaBuilder().equal(from.get("film_id"),id));
-
 		return convertSingleToGenerated(this.em.createQuery(baseFilmQuery+" WHERE f.film_id='"+id+"'",FilmEntity.class).getSingleResult());
 	}
 
 	public List<Film> getByRating(String rating) {
-		CriteriaQuery<FilmEntity> query = this.em.getCriteriaBuilder().createQuery(FilmEntity.class);
-		Root<FilmEntity> from = query.from(FilmEntity.class);
-		Expression<String> ratingField = from.get("rating").as(String.class);
-
-		query.distinct(true);
-		query.multiselect(makeSelections(query));
-		query.where(this.em.getCriteriaBuilder().equal(ratingField.as(String.class),rating));
-
 		return convertListToGenerated(this.em.createQuery(baseFilmQuery+" WHERE f.rating = '"+rating+"'",FilmEntity.class).getResultList());
 	}
 
 	public List<Film> getByReleaseYear(int year) {
-		CriteriaQuery<FilmEntity> query = em.getCriteriaBuilder().createQuery(FilmEntity.class);
-		Root<FilmEntity> from  = query.from(FilmEntity.class);
-
-		query.distinct(true);
-		query.multiselect(makeSelections(query));
-		query.where(this.em.getCriteriaBuilder().equal(from.get("release_year"),year));
-
-		return convertListToGenerated(this.em.createQuery(baseFilmQuery+" WHERE f.release_year = '"+year+"'").setMaxResults(100).getResultList());
+		return convertListToGenerated(this.em.createQuery(baseFilmQuery+" WHERE f.release_year = '"+year+"'",FilmEntity.class).setMaxResults(100).getResultList());
 	}
 
 	public List<Film> getByTitle(String title) {
-
-		CriteriaQuery<FilmEntity> query = em.getCriteriaBuilder().createQuery(FilmEntity.class);
-		Root<FilmEntity> from  = query.from(FilmEntity.class);
-
-		query.distinct(true);
-		query.multiselect(makeSelections(query));
-		query.where(this.em.getCriteriaBuilder().equal(from.get("title"),title.toUpperCase()));
-
-		return convertListToGenerated(this.em.createQuery(baseFilmQuery+" where f.title = '"+title.toUpperCase()+"'",FilmEntity.class).getResultList());//this.em.createQuery(query).setMaxResults(50).getResultList());
+		return convertListToGenerated(this.em.createQuery(baseFilmQuery+" where f.title = '"+title.toUpperCase()+"'",FilmEntity.class).getResultList());
 	}
 
 	public List<Summary> getFilmsById(List<Long> filmIds) {
-		CriteriaQuery<FilmEntity> query = em.getCriteriaBuilder().createQuery(FilmEntity.class);
-		Root<FilmEntity> from  = query.from(FilmEntity.class);
-
-		query.distinct(true);
-		query.multiselect(makeSelections(query));
-		query.where(this.em.getCriteriaBuilder().in(from.get("film_id").in(filmIds)));
-
 		String where = " WHERE IN (";
 
 		for (Long filmId : filmIds) {
@@ -115,7 +72,7 @@ public class FilmDao extends Database{
 				where += "'"+filmId+"', ";
 		}
 
-		where = where.substring(0,where.length()-3)+")";
+		where = where.substring(0,where.length()-2)+")";
 
 		return convertEntitiesToSummary(this.em.createQuery(baseFilmQuery+where,FilmEntity.class).getResultList());
 	}
