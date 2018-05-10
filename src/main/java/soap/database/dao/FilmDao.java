@@ -93,7 +93,7 @@ public class FilmDao extends Database{
 
 		query.distinct(true);
 		query.multiselect(makeSelections(query));
-		query.where(this.em.getCriteriaBuilder().equal(from.get("title"),title.toUpperCase()));
+		query.where(this.em.getCriteriaBuilder().equal(from.get("title").as(String.class),title.toUpperCase()));
 
 		return convertListToGenerated(this.em.createQuery(query).setMaxResults(50).getResultList());
 	}
