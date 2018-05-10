@@ -38,7 +38,7 @@ public class LanguageDao {
 		query.where(criteriaBuilder.equal(root.get("language_id"),id));
 		query.multiselect(makeSelections(root));
 
-		return this.em.createQuery(baseQuery+" WHERE l.langauge_id = '"+id+"'",LanguageEntity.class).getSingleResult().getName();
+		return this.em.createQuery(baseQuery+" WHERE l.language_id = '"+id+"'",LanguageEntity.class).getSingleResult().getName();
 	}
 
 	private List<Selection<?>> makeSelections(Root<LanguageEntity> root) {
