@@ -10,10 +10,6 @@ import soap.generated.Summary;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-import javax.persistence.criteria.Selection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,26 +23,10 @@ public class FilmActorDao {
     private static final String baseQuery = "SELECT fa FROM sakila.film_actor fa";
 
     public List<Actor> getActorsFromFilm(long filmId){
-        CriteriaBuilder criteriaBuilder = this.em.getCriteriaBuilder();
-        CriteriaQuery<FilmActorEntity> query = criteriaBuilder.createQuery(FilmActorEntity.class);
-        Root<FilmActorEntity> from = query.from(FilmActorEntity.class);
-
-        query.multiselect(makeSelections(from));
-
-        query.where(criteriaBuilder.equal(from.get("film_id"),filmId));
-
         return actorDao.getActorsById(getActorIds(this.em.createQuery(baseQuery+" WHERE fa.film_id = '"+filmId+"'",FilmActorEntity.class).getResultList()));
     }
 
     public List<Summary> getFilmsWithActor(long actorId){
-        CriteriaBuilder criteriaBuilder = this.em.getCriteriaBuilder();
-        CriteriaQuery<FilmActorEntity> query = criteriaBuilder.createQuery(FilmActorEntity.class);
-        Root<FilmActorEntity> from = query.from(FilmActorEntity.class);
-
-        query.multiselect(makeSelections(from));
-
-        query.where(criteriaBuilder.equal(from.get("actor_id"),actorId));
-
         return filmDao.getFilmsById(getFilmIds(this.em.createQuery(baseQuery+" WHERE fa.actor_id = '"+actorId+"'",FilmActorEntity.class).getResultList()));
     }
 
@@ -68,14 +48,5 @@ public class FilmActorDao {
         }
 
         return actorIds;
-    }
-
-    private List<Selection<?>> makeSelections(Root<FilmActorEntity> from) {
-        List<Selection<?>> selections = new ArrayList<>();
-
-        selections.add(from.get("film_id"));
-        selections.add(from.get("actor_id"));
-
-        return selections;
     }
 }

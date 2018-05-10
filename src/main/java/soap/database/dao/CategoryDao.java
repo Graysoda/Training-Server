@@ -13,15 +13,7 @@ public class CategoryDao {
 	private EntityManager em;
 	private String baseQuery = "SELECT c FROM sakila.category c ";
 
-//	@Autowired
-//	public void setEm(@Lazy EntityManager em) {
-//		this.em = em;
-//	}
-
 	public String getNameById(long category_id) {
-        //System.out.println("category dao get name by id");
-        String name = this.em.createQuery(baseQuery+"WHERE c.category_id = '"+category_id+"'", CategoryEntity.class).getSingleResult().getName();
-		//System.out.println("category = ["+name+"]");
-		return name;
+		return this.em.createQuery(baseQuery+"WHERE c.category_id = '"+category_id+"'", CategoryEntity.class).getSingleResult().getName();
 	}
 }

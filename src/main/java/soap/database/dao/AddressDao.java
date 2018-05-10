@@ -11,9 +11,6 @@ import soap.generated.UpdateAddressRequest;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -27,27 +24,11 @@ public class AddressDao extends Database {
 	@Autowired @Lazy private CityDao cityDao;
 	private static final String baseQuery = "SELECT adr from sakila.address adr";
 
-//	@Autowired
-//	public void setEm(@Lazy EntityManager em) {
-//		this.em = em;
-//	}
-//
-//	@Autowired
-//	public void setCityDao(@Lazy CityDao cityDao) {
-//		this.cityDao = cityDao;
-//	}
-
 	public Address getById(long id){
-		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-		CriteriaQuery<AddressEntity> query = criteriaBuilder.createQuery(AddressEntity.class);
-		Root<AddressEntity> root = query.from(AddressEntity.class);
-		query.where(criteriaBuilder.equal(root.get("address_id"),id));
 		return convertEntityToGenerated(this.em.createQuery(baseQuery+" WHERE adr.address_id = '"+id+"'",AddressEntity.class).getSingleResult());
 	}
 
 	public List<Address> getAll() {
-		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-		CriteriaQuery<AddressEntity> query = criteriaBuilder.createQuery(AddressEntity.class);
 		return convertEntitiesToGenerate(this.em.createQuery(baseQuery,AddressEntity.class).getResultList());
 	}
 

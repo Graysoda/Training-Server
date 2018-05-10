@@ -11,10 +11,6 @@ import soap.generated.UpdateCustomerRequest;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-import javax.persistence.criteria.Selection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,51 +22,19 @@ public class CustomerDao extends Database {
 	@Autowired @Lazy private AddressDao addressDao;
 	private static final String baseQuery = "SELECT c FROM sakila.customer c";
 
-//	@Autowired
-//	public void setEm(@Lazy EntityManager em) {
-//		this.em = em;
-//	}
-//
-//	@Autowired
-//	public void setAddressDao(@Lazy AddressDao addressDao) {
-//		this.addressDao = addressDao;
-//	}
-
 	public List<Customer> getActive() {
-		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-		CriteriaQuery<CustomerEntity> query = criteriaBuilder.createQuery(CustomerEntity.class);
-		Root<CustomerEntity> root = query.from(CustomerEntity.class);
-		query.where(criteriaBuilder.equal(root.get("active"),1));
-		query.multiselect(makeSelection(root));
-
 		return convertEntitystoGenerated(this.em.createQuery(baseQuery+" WHERE c.active = '1'",CustomerEntity.class).getResultList());
 	}
 
 	public Customer getById(long id) {
-		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-		CriteriaQuery<CustomerEntity> query = criteriaBuilder.createQuery(CustomerEntity.class);
-		Root<CustomerEntity> root = query.from(CustomerEntity.class);
-		query.where(criteriaBuilder.equal(root.get("customer_id"),id));
-		query.multiselect(makeSelection(root));
-
 		return convertEntityToGenerated(this.em.createQuery(baseQuery+" WHERE c.customer_id = '"+id+"'", CustomerEntity.class).getSingleResult());
 	}
 
 	public List<Customer> getByStore(long id) {
-		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-		CriteriaQuery<CustomerEntity> query = criteriaBuilder.createQuery(CustomerEntity.class);
-		Root<CustomerEntity> root = query.from(CustomerEntity.class);
-		query.where(criteriaBuilder.equal(root.get("store_id"),id));
-		query.multiselect(makeSelection(root));
-
 		return convertEntitystoGenerated(this.em.createQuery(baseQuery+" WHERE c.store_id = '"+id+"'",CustomerEntity.class).getResultList());
 	}
 
 	public List<Customer> getAll() {
-		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-		CriteriaQuery<CustomerEntity> query = criteriaBuilder.createQuery(CustomerEntity.class);
-		query.multiselect(makeSelection(query.from(CustomerEntity.class)));
-
 		return convertEntitystoGenerated(this.em.createQuery(baseQuery, CustomerEntity.class).getResultList());
 	}
 
@@ -146,20 +110,5 @@ public class CustomerDao extends Database {
 		customer.setLastUpdate(entity.getLast_update());
 
 		return customer;
-	}
-
-	private List<Selection<?>> makeSelection(Root<CustomerEntity> root) {
-		List<Selection<?>> selections = new ArrayList<>();
-		selections.add(root.get("customer_id"));
-		selections.add(root.get("store_id"));
-		selections.add(root.get("first_name"));
-		selections.add(root.get("last_name"));
-		selections.add(root.get("email"));
-		selections.add(root.get("address_id"));
-		selections.add(root.get("active"));
-		selections.add(root.get("create_date"));
-		selections.add(root.get("last_update"));
-
-		return selections;
 	}
 }

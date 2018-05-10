@@ -26,21 +26,6 @@ public class FilmDao extends Database{
 	@Autowired @Lazy private FilmActorDao filmActorDao;
 	private static final String baseFilmQuery = "SELECT f FROM sakila.film f";
 
-//	@Autowired
-//	public void setEm(@Lazy EntityManager em) {
-//		this.em = em;
-//	}
-//
-//	@Autowired
-//	public void setFilmCategoryDao(@Lazy FilmCategoryDao filmCategoryDao) {
-//		this.filmCategoryDao = filmCategoryDao;
-//	}
-//
-//	@Autowired
-//	public void setLanguageDao(@Lazy LanguageDao languageDao) {
-//		this.languageDao = languageDao;
-//	}
-
 	/****************************************
 	 				Queries
 	 ****************************************/
@@ -200,34 +185,34 @@ public class FilmDao extends Database{
 
 		//System.out.println("converting single to generated");
 
-		System.out.println("film_id = ["+entity.getFilm_id()+"]");
+		//System.out.println("film_id = ["+entity.getFilm_id()+"]");
 		film.setFilmId(BigInteger.valueOf(entity.getFilm_id()));
-		System.out.println("title = ["+entity.getTitle()+"]");
+		//System.out.println("title = ["+entity.getTitle()+"]");
 		film.setTitle(entity.getTitle());
-		System.out.println("description = ["+entity.getDescription()+"]");
+		//System.out.println("description = ["+entity.getDescription()+"]");
 		film.setDescription(entity.getDescription());
-		System.out.println("release year = ["+entity.getRelease_year()+"]");
+		//System.out.println("release year = ["+entity.getRelease_year()+"]");
 		film.setReleaseYear(entity.getRelease_year());
-		System.out.println("language id = ["+entity.getLanguage_id()+"]");
+		//System.out.println("language id = ["+entity.getLanguage_id()+"]");
 		film.setLanguage(languageDao.getLanguage(entity.getLanguage_id()));
-		System.out.println("original language id is null = ["+(entity.getOriginal_language_id() == null)+"]");
+		//System.out.println("original language id is null = ["+(entity.getOriginal_language_id() == null)+"]");
 		if (entity.getOriginal_language_id() == null)
 			film.setOriginalLanguage("");
 		else
 			film.setOriginalLanguage(languageDao.getLanguage(entity.getOriginal_language_id()));
-		System.out.println("rental duration = ["+entity.getRental_duration()+"]");
+		//System.out.println("rental duration = ["+entity.getRental_duration()+"]");
 		film.setRentalDuration(entity.getRental_duration());
-		System.out.println("rental rate = ["+entity.getRental_rate()+"]");
+		//System.out.println("rental rate = ["+entity.getRental_rate()+"]");
 		film.setRentalRate(entity.getRental_rate());
-		System.out.println("length = ["+entity.getLength()+"]");
+		//System.out.println("length = ["+entity.getLength()+"]");
 		film.setLength(entity.getLength());
-		System.out.println("replacement cost = ["+entity.getReplacement_cost()+"]");
+		//System.out.println("replacement cost = ["+entity.getReplacement_cost()+"]");
 		film.setReplacementCost(entity.getReplacement_cost());
-		System.out.println("rating = ["+entity.getRating()+"]");
+		//System.out.println("rating = ["+entity.getRating()+"]");
 		film.setRating(entity.getRating());
-		System.out.println("special features = ["+entity.getSpecial_features()+"]");
+		//System.out.println("special features = ["+entity.getSpecial_features()+"]");
 		film.setSpecialFeatures(entity.getSpecial_features());
-		System.out.println("last update = ["+entity.getLast_update()+"]");
+		//System.out.println("last update = ["+entity.getLast_update()+"]");
 		film.setLastUpdate(entity.getLast_update());
 		film.setCategory(filmCategoryDao.getById(entity.getFilm_id()));
 		film.setActors(filmActorDao.getActorsFromFilm(entity.getFilm_id()));
@@ -255,31 +240,5 @@ public class FilmDao extends Database{
 		summary.setDescription(filmEntity.getDescription());
 
 		return summary;
-	}
-
-	private List<Selection<?>> makeSelections(CriteriaQuery<FilmEntity> query){
-		CriteriaBuilder.Coalesce coalesce = em.getCriteriaBuilder().coalesce();
-		Root<FilmEntity> from = query.from(FilmEntity.class);
-
-		coalesce.value(from.get("original_language_id"));
-		coalesce.value((long) -1);
-
-		List<Selection<?>> selections = new ArrayList<>();
-
-		selections.add(from.get("film_id"));
-		selections.add(from.get("title"));
-		selections.add(from.get("description"));
-		selections.add(from.get("release_year"));
-		selections.add(from.get("language_id"));
-		selections.add(coalesce);
-		selections.add(from.get("rental_duration"));
-		selections.add(from.get("rental_rate"));
-		selections.add(from.get("length"));
-		selections.add(from.get("replacement_cost"));
-		selections.add(from.get("rating"));
-		selections.add(from.get("special_features"));
-		selections.add(from.get("last_update"));
-
-		return selections;
 	}
 }

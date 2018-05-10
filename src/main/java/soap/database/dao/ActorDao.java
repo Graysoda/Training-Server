@@ -9,8 +9,6 @@ import soap.generated.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.Root;
-import javax.persistence.criteria.Selection;
 import javax.transaction.Transactional;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -21,42 +19,19 @@ import java.util.List;
 @Transactional
 public class ActorDao extends Database {
 	@PersistenceContext @Lazy private EntityManager em;
-//	@Autowired private FilmDao filmDao;
 	@Autowired @Lazy private FilmActorDao filmActorDao;
 	private static final String baseQuery = "SELECT a FROM sakila.actor a";
 
-//	@Autowired
-//	public void setEm(@Lazy EntityManager em) {
-//		this.em = em;
-//	}
-
-//	@Autowired
-//    public void setFilmDao(@Lazy FilmDao filmDao) {
-//        this.filmDao = filmDao;
-//    }
 
     public List<Actor> getAllActors() {
-//		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-//		CriteriaQuery<ActorEntity> query = criteriaBuilder.createQuery(ActorEntity.class);
-//		query.multiselect(makeSelection(query.from(ActorEntity.class)));
 		return convertActorEntitiesToGenerated(this.em.createQuery(baseQuery,ActorEntity.class).getResultList());
 	}
 
 	public Actor findById(long id) {
-//		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-//		CriteriaQuery<ActorEntity> query = criteriaBuilder.createQuery(ActorEntity.class);
-//		Root<ActorEntity> root = query.from(ActorEntity.class);
-//		query.multiselect(makeSelection(root));
-//		query.where(criteriaBuilder.equal(root.get("actor_id"),id));
 		return this.convertActorEntityToGenerated(this.em.createQuery(baseQuery+" WHERE a.actor_id = '"+id+"'", ActorEntity.class).getSingleResult());
 	}
 
 	public List<Actor> findByFirstName(String actorFirstName) {
-//		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-//		CriteriaQuery<ActorEntity> query = criteriaBuilder.createQuery(ActorEntity.class);
-//		Root<ActorEntity> root = query.from(ActorEntity.class);
-//		query.multiselect(makeSelection(root));
-//		query.where(criteriaBuilder.equal(root.get("first_name"),actorFirstName.toUpperCase()));
 		return convertActorEntitiesToGenerated(this.em.createQuery(baseQuery+" WHERE a.first_name = '"+actorFirstName.toUpperCase()+"'",ActorEntity.class).getResultList());
 	}
 
@@ -65,12 +40,6 @@ public class ActorDao extends Database {
     		return new ArrayList<>();
     	if (actorIds.size()==1)
     		return Collections.singletonList(findById(actorIds.get(0)));
-//		CriteriaBuilder criteriaBuilder = this.em.getCriteriaBuilder();
-//		CriteriaQuery<ActorEntity> query = criteriaBuilder.createQuery(ActorEntity.class);
-//		Root<ActorEntity> from = query.from(ActorEntity.class);
-//
-//		query.multiselect(makeSelection(from));
-//		query.where(from.get("actor_id").in(actorIds));
 
 		StringBuilder where = new StringBuilder(" WHERE a.actor_id IN (");
 
@@ -138,16 +107,5 @@ public class ActorDao extends Database {
 		actor.setLastName(actorEntity.getLast_name());
 		actor.setLastUpdate(actorEntity.getLast_update());
 		return actor;
-	}
-
-	private List<Selection<?>> makeSelection(Root<ActorEntity> from) {
-		List<Selection<?>> selections = new ArrayList<>();
-
-		selections.add(from.get("actor_id"));
-		selections.add(from.get("first_name"));
-		selections.add(from.get("last_name"));
-		selections.add(from.get("last_update"));
-
-		return selections;
 	}
 }

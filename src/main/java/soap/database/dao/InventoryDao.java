@@ -11,10 +11,6 @@ import soap.generated.UpdateInventoryRequest;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-import javax.persistence.criteria.Selection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,46 +22,15 @@ public class InventoryDao extends Database {
 	@Autowired @Lazy private StoreDao storeDao;
 	private static final String baseQuery = "SELECT inv FROM sakila.inventory inv";
 
-//	@Autowired
-//	public void setEm(@Lazy EntityManager em) {
-//		this.em = em;
-//	}
-//
-//	@Autowired
-//	public void setStoreDao(@Lazy StoreDao storeDao) {
-//		this.storeDao = storeDao;
-//	}
-//
-//	@Autowired
-//	public void setFilmDao(@Lazy FilmDao filmDao) {
-//		this.filmDao = filmDao;
-//	}
-
 	public List<Inventory> getAll() {
-		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-		CriteriaQuery<InventoryEntity> query = criteriaBuilder.createQuery(InventoryEntity.class);
-		query.multiselect(makeSelection(query.from(InventoryEntity.class)));
-
 		return convertEntitiesToGenerated(this.em.createQuery(baseQuery,InventoryEntity.class).setMaxResults(100).getResultList());
 	}
 
 	public Inventory getById(long id) {
-		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-		CriteriaQuery<InventoryEntity> query = criteriaBuilder.createQuery(InventoryEntity.class);
-		Root<InventoryEntity> root = query.from(InventoryEntity.class);
-		query.where(criteriaBuilder.equal(root.get("inventory_id"),id));
-		query.multiselect(makeSelection(root));
-
 		return convertEntityToGenerated(this.em.createQuery(baseQuery+" WHERE inv.inventory_id = '"+id+"'", InventoryEntity.class).getSingleResult());
 	}
 
 	public List<Inventory> getStoreInventory(long storeId) {
-		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-		CriteriaQuery<InventoryEntity> query = criteriaBuilder.createQuery(InventoryEntity.class);
-		Root<InventoryEntity> root = query.from(InventoryEntity.class);
-		query.where(criteriaBuilder.equal(root.get("store_id"),storeId));
-		query.multiselect(makeSelection(root));
-
 		return convertEntitiesToGenerated(this.em.createQuery(baseQuery+" WHERE inv.store_id = '"+storeId+"'",InventoryEntity.class).getResultList());
 	}
 
@@ -127,15 +92,5 @@ public class InventoryDao extends Database {
 		}
 
 		return inventories;
-	}
-
-	private List<Selection<?>> makeSelection(Root<InventoryEntity> from) {
-		List<Selection<?>> selections = new ArrayList<>();
-		selections.add(from.get("inventory_id"));
-		selections.add(from.get("store_id"));
-		selections.add(from.get("film_id"));
-		selections.add(from.get("last_update"));
-
-		return selections;
 	}
 }

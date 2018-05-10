@@ -8,9 +8,6 @@ import soap.generated.Store;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 
 @Repository
 public class StoreDao {
@@ -20,27 +17,7 @@ public class StoreDao {
 	@Autowired @Lazy private StaffDao staffDao;
 	private static final String baseQuery = "SELECT s FROM sakila.store s";
 
-//	@Autowired
-//	public void setEm(@Lazy EntityManager em) {
-//		this.em = em;
-//	}
-//
-//	@Autowired
-//	public void setStaffDao(@Lazy StaffDao staffDao) {
-//		this.staffDao = staffDao;
-//	}
-//
-//	@Autowired
-//	public void setAddressDao(@Lazy AddressDao addressDao) {
-//		this.addressDao = addressDao;
-//	}
-
 	public Store getById(long id){
-		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-		CriteriaQuery<StoreEntity> query = criteriaBuilder.createQuery(StoreEntity.class);
-		Root<StoreEntity> root = query.from(StoreEntity.class);
-		query.where(criteriaBuilder.equal(root.get("store_id"),id));
-
 		try{
 			return convertEntityToGenerated(this.em.createQuery(baseQuery+" WHERE s.store_id = '"+id+"'", StoreEntity.class).getSingleResult());
 		} catch (javax.persistence.NoResultException e){
