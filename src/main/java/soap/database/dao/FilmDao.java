@@ -51,7 +51,7 @@ public class FilmDao extends Database{
 
 		TypedQuery<FilmEntity> str = this.em.createQuery(query).setMaxResults(50);
 		//System.out.println(str.toString());
-		return convertListToGenerated(this.em.createNativeQuery(baseFilmQuery,FilmEntity.class).getResultList());
+		return convertListToGenerated(this.em.createNativeQuery(baseFilmQuery+";",FilmEntity.class).getResultList());
 	}
 
 	public Film getById(long id) {
