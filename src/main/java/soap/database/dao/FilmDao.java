@@ -22,6 +22,7 @@ public class FilmDao extends Database{
 	@Autowired @Lazy private LanguageDao languageDao;
 	@Autowired @Lazy private FilmCategoryDao filmCategoryDao;
 	@Autowired @Lazy private FilmActorDao filmActorDao;
+	private static final String baseFilmQuery = "SELECT * FROM film";
 
 //	@Autowired
 //	public void setEm(@Lazy EntityManager em) {
@@ -50,7 +51,7 @@ public class FilmDao extends Database{
 
 		TypedQuery<FilmEntity> str = this.em.createQuery(query).setMaxResults(50);
 		//System.out.println(str.toString());
-		return convertListToGenerated(str.getResultList());
+		return convertListToGenerated(this.em.createNativeQuery(baseFilmQuery,FilmEntity.class).getResultList());
 	}
 
 	public Film getById(long id) {
@@ -61,7 +62,7 @@ public class FilmDao extends Database{
 		query.multiselect(makeSelections(query));
 		query.where(this.em.getCriteriaBuilder().equal(from.get("film_id"),id));
 
-		return convertSingleToGenerated(this.em.createQuery(query).setMaxResults(1).getSingleResult());
+		return convertSingleToGenerated(this.em.createQuery(baseFilmQuery+" WHERE film_id='"+id+"'",FilmEntity.class).getSingleResult());
 	}
 
 	public List<Film> getByRating(String rating) {
