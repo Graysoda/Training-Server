@@ -96,7 +96,7 @@ public class FilmDao extends Database{
 		query.multiselect(makeSelections(query));
 		query.where(this.em.getCriteriaBuilder().equal(from.get("title"),title.toUpperCase()));
 
-		return convertListToGenerated(this.em.createQuery(query).getResultList());
+		return convertListToGenerated(this.em.createQuery(query).setMaxResults(50).getResultList());
 	}
 
 	public List<Summary> getFilmsById(List<Long> filmIds) {
