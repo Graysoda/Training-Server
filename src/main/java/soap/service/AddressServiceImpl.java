@@ -13,8 +13,7 @@ import java.util.List;
 
 @Service
 public class AddressServiceImpl implements AddressService{
-	@Autowired @Lazy
-	private AddressDao addressDao;
+	@Autowired @Lazy private AddressDao addressDao;
 
 //	@Autowired
 //	public void setAddressDao(@Lazy AddressDao addressDao) {
