@@ -239,7 +239,10 @@ public class FilmDao extends Database{
 		System.out.println("language id = ["+entity.getLanguage_id()+"]");
 		film.setLanguage(languageDao.getLanguage(entity.getLanguage_id()));
 		System.out.println("original language id is null = ["+(entity.getOriginal_language_id() == null)+"]");
-		film.setOriginalLanguage(languageDao.getLanguage(entity.getOriginal_language_id()));
+		if (entity.getOriginal_language_id() == null)
+			film.setOriginalLanguage("");
+		else
+			film.setOriginalLanguage(languageDao.getLanguage(entity.getOriginal_language_id()));
 		System.out.println("rental duration = ["+entity.getRental_duration()+"]");
 		film.setRentalDuration(entity.getRental_duration());
 		System.out.println("rental rate = ["+entity.getRental_rate()+"]");
