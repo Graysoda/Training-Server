@@ -92,7 +92,7 @@ public class ActorDao extends Database {
 		 if (request.getNewLastName() != null)
 			sql += "last_name = '"+request.getNewLastName()+"' ";
 		 if (request.getNewFirstName() != null)
-			sql += "actor.first_name = '"+request.getNewFirstName()+"' ";
+			sql += "first_name = '"+request.getNewFirstName()+"' ";
 
 		sql = sql.substring(0, sql.length()-3) + " WHERE actor_id='"+request.getActorId()+"';";
 		try{
