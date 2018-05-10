@@ -20,7 +20,7 @@ import java.util.List;
 public class LanguageDao {
 	@PersistenceContext @Lazy
 	private EntityManager em;
-	private static final String baseQuery = "SELECT l FROM sakila.langauge l";
+	private static final String baseQuery = "SELECT l FROM sakila.language l";
 
 	@Autowired
 	public void setEm(@Lazy EntityManager em) {
