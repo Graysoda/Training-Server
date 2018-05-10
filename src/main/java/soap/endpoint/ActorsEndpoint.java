@@ -1,6 +1,7 @@
 package soap.endpoint;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
@@ -12,7 +13,7 @@ import soap.service.ActorServiceImpl;
 @Endpoint
 public class ActorsEndpoint {
 	private static final String NAMESPACE_URI = Constants.NAMESPACE_URI;
-	@Autowired private ActorServiceImpl actorService;
+	@Autowired @Lazy private ActorServiceImpl actorService;
 
 //	@Autowired
 //	public void setActorService(@Lazy ActorServiceImpl actorService) {
