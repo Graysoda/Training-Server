@@ -7,11 +7,6 @@ import soap.database.entity.FilmCategoryEntity;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-import javax.persistence.criteria.Selection;
-import java.util.ArrayList;
-import java.util.List;
 
 @Repository
 public class FilmCategoryDao {
@@ -31,17 +26,17 @@ public class FilmCategoryDao {
 //    }
 
     public String getById(long film_id) {
-        CriteriaQuery<FilmCategoryEntity> query = em.getCriteriaBuilder().createQuery(FilmCategoryEntity.class);
-        Root<FilmCategoryEntity> filmCategoryEntityRoot = query.from(FilmCategoryEntity.class);
-
-        List<Selection<?>> selections = new ArrayList<>();
-        selections.add(filmCategoryEntityRoot.get("film_id"));
-        selections.add(filmCategoryEntityRoot.get("category_id"));
-
-        query.multiselect(selections);
-        query.where(em.getCriteriaBuilder().equal(filmCategoryEntityRoot.get("film_id"),film_id));
-
-        FilmCategoryEntity fce = this.em.createQuery(query).getSingleResult();
+//        CriteriaQuery<FilmCategoryEntity> query = em.getCriteriaBuilder().createQuery(FilmCategoryEntity.class);
+//        Root<FilmCategoryEntity> filmCategoryEntityRoot = query.from(FilmCategoryEntity.class);
+//
+//        List<Selection<?>> selections = new ArrayList<>();
+//        selections.add(filmCategoryEntityRoot.get("film_id"));
+//        selections.add(filmCategoryEntityRoot.get("category_id"));
+//
+//        query.multiselect(selections);
+//        query.where(em.getCriteriaBuilder().equal(filmCategoryEntityRoot.get("film_id"),film_id));
+//
+//        FilmCategoryEntity fce = this.em.createQuery(query).getSingleResult();
         return categoryDao.getNameById(this.em.createQuery(baseQuery+" WHERE fc.film_id = '"+film_id+"'",FilmCategoryEntity.class).getSingleResult().getCategory_id());
 	}
 }
