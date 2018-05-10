@@ -8,7 +8,6 @@ import javax.validation.constraints.NotNull;
 public class FilmActorEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
 	@NotNull
 	private long actor_id;
 	@NotNull
@@ -24,8 +23,7 @@ public class FilmActorEntity {
 		this.film_id = film_id;
 	}
 
-	public FilmActorEntity(long id, @NotNull long actor_id, @NotNull long film_id, @NotNull String last_update) {
-		this.id = id;
+	public FilmActorEntity(@NotNull long actor_id, @NotNull long film_id, @NotNull String last_update) {
 		this.actor_id = actor_id;
 		this.film_id = film_id;
 		this.last_update = last_update;
