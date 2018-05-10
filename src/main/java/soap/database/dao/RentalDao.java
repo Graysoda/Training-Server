@@ -36,11 +36,11 @@ public class RentalDao extends Database {
 	}
 
 	public List<Rental> getByStartDate(String date) {
-		return convertEntitiesToGenerated(this.em.createQuery(baseQuery+" WHERE r.start_date::text LIKE '"+date+"%'",RentalEntity.class).getResultList());
+		return convertEntitiesToGenerated(this.em.createQuery(baseQuery+" WHERE r.start_date LIKE '"+date+"%'",RentalEntity.class).getResultList());
 	}
 
 	public List<Rental> getByReturnDate(String date) {
-		return convertEntitiesToGenerated(this.em.createQuery(baseQuery+" WHERE r.return_date::text LIKE '"+date+"%'", RentalEntity.class).getResultList());
+		return convertEntitiesToGenerated(this.em.createQuery(baseQuery+" WHERE r.return_date LIKE '"+date+"%'", RentalEntity.class).getResultList());
 	}
 
 	public void insert(CreateRentalRequest request) {
