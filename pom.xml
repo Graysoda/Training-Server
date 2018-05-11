@@ -89,10 +89,9 @@
                             <version>1.11.1</version>
                         </plugin>
                     </plugins>
-                    <!--<bindingDirectory>src/main/resources/xsd</bindingDirectory>-->
                     <schemaDirectory>src/main/resources/xsd</schemaDirectory>
                     <generateDirectory>src/main/java</generateDirectory>
-                    <generatePackage>soap.generated</generatePackage>
+                    <generatePackage>training.generated</generatePackage>
                 </configuration>
             </plugin>
         </plugins>
