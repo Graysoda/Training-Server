@@ -12,7 +12,10 @@ import soap.generated.UpdateRentalRequest;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 @Repository
@@ -37,12 +40,20 @@ public class RentalDao extends Database {
 	}
 
 	public List<Rental> getByStartDate(String date) {
-	    String query = baseQuery + " WHERE r.rental_id " +
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Calendar calendar = Calendar.getInstance();
+		try {
+			calendar.setTime(sdf.parse(date));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		calendar.add(Calendar.DATE,1);
+		String query = baseQuery + " WHERE r.rental_id " +
                 "IN " +
 				"(SELECT r.rental_id " +
                 "FROM sakila.rental r " +
                 "WHERE DATE_TRUNC('day', r.return_date) >= TO_DATE('"+date+"', 'YYYY-MM-DD') " +
-                "AND DATE_TRUNC('day', r.return_date) < (TO_DATE('"+date+"', 'YYYY-MM-DD') + MAKE_INTERVAL(DAYS := 1)))";
+                "AND DATE_TRUNC('day', r.return_date) < (TO_DATE('"+sdf.format(calendar.getTime())+"', 'YYYY-MM-DD')))";
 		return convertEntitiesToGenerated(this.em.createQuery(query,RentalEntity.class).getResultList());
 	}
 
