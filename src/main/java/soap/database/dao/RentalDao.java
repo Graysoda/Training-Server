@@ -46,6 +46,7 @@ public class RentalDao extends Database {
 			calendar.setTime(sdf.parse(date));
 		} catch (ParseException e) {
 			e.printStackTrace();
+			throw new java.lang.Error("wrong date format, should be 'yyyy-MM-dd'");
 		}
 		calendar.add(Calendar.DATE,1);
 		String query = baseQuery + " WHERE r.rental_id " +
@@ -58,12 +59,21 @@ public class RentalDao extends Database {
 	}
 
 	public List<Rental> getByReturnDate(String date) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Calendar calendar = Calendar.getInstance();
+		try {
+			calendar.setTime(sdf.parse(date));
+		} catch (ParseException e) {
+			e.printStackTrace();
+			throw new java.lang.Error("wrong date format, should be 'yyyy-MM-dd'");
+		}
+		calendar.add(Calendar.DATE,1);
         String query = baseQuery + " WHERE r.rental_id " +
 				"IN " +
 				"(SELECT r.rental_id " +
 				"FROM sakila.rental r " +
 				"WHERE DATE_TRUNC('day', r.return_date) >= TO_DATE('"+date+"', 'YYYY-MM-DD') " +
-				"AND DATE_TRUNC('day', r.return_date) < (TO_DATE('"+date+"', 'YYYY-MM-DD') + CAST('1 DAY' AS INTERVAL)))";
+				"AND DATE_TRUNC('day', r.return_date) < (TO_DATE('"+sdf.format(calendar.getTime())+"', 'YYYY-MM-DD')))";
         return convertEntitiesToGenerated(this.em.createQuery(query, RentalEntity.class).getResultList());
 	}
 
