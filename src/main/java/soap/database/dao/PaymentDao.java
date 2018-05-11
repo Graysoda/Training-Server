@@ -16,7 +16,8 @@ import java.util.List;
 
 @Repository
 public class PaymentDao extends Database {
-	@PersistenceContext @Lazy private EntityManager em;
+	@PersistenceContext @Lazy
+	private EntityManager em;
 	private static final String baseQuery = "SELECT p FROM sakila.payment p";
 
 	public List<Payment> getAll(){
