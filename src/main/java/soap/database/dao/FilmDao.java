@@ -20,7 +20,8 @@ import java.util.List;
 
 @Repository
 public class FilmDao extends Database{
-	@PersistenceContext @Lazy private EntityManager em;
+	@PersistenceContext @Lazy
+    private EntityManager em;
 	@Autowired @Lazy private LanguageDao languageDao;
 	@Autowired @Lazy private FilmCategoryDao filmCategoryDao;
 	@Autowired @Lazy private FilmActorDao filmActorDao;
