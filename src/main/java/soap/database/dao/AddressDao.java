@@ -21,7 +21,8 @@ import java.util.List;
 public class AddressDao extends Database {
 	@PersistenceContext @Lazy
 	private EntityManager em;
-	@Autowired @Lazy private CityDao cityDao;
+	@Autowired @Lazy
+	private CityDao cityDao;
 	private static final String baseQuery = "SELECT adr from sakila.address adr";
 
 	public Address getById(long id){
