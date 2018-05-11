@@ -41,7 +41,7 @@ public class RentalDao extends Database {
 				"(SELECT r.rental_id " +
                 "FROM sakila.rental r " +
                 "WHERE DATE_TRUNC('day', r.return_date) >= TO_DATE('"+date+"', 'YYYY-MM-DD') " +
-                "AND DATE_TRUNC('day', r.return_date) < (TO_DATE('"+date+"', 'YYYY-MM-DD') + CAST('1 DAY' AS INTERVAL)))";
+                "AND DATE_TRUNC('day', r.return_date) < (TO_DATE('"+date+"', 'YYYY-MM-DD') + INTERVAL '1 DAY'))";
 		return convertEntitiesToGenerated(this.em.createQuery(query,RentalEntity.class).getResultList());
 	}
 
