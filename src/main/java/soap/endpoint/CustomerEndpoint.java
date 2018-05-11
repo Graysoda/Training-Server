@@ -14,11 +14,6 @@ public class CustomerEndpoint {
 	private static final String NAMESPACE_URI = Constants.NAMESPACE_URI;
 	@Autowired @Lazy private CustomerServiceImpl customerService;
 
-//	@Autowired
-//	public void setCustomerService(@Lazy CustomerServiceImpl customerService) {
-//		this.customerService = customerService;
-//	}
-
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "createCustomerRequest")
 	public void insertCustomer(@RequestPayload CreateCustomerRequest request){
 		customerService.insertCustomer(request);

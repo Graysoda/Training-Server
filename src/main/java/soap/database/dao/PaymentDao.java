@@ -83,11 +83,22 @@ public class PaymentDao extends Database {
 	private Payment convertEntityToGenerated(PaymentEntity entity){
 		Payment payment = new Payment();
 
+		//System.out.println("payment id = ["+entity.getPayment_id()+"]");
 		payment.setPaymentId(entity.getPayment_id());
+
+		//System.out.println("amount = ["+entity.getAmount()+"]");
 		payment.setAmount(entity.getAmount());
+
+		//System.out.println("custoemr id = ["+entity.getCustomer_id()+"]");
 		payment.setCustomerId(entity.getCustomer_id());
+
+		//System.out.println("payment date = ["+entity.getPayment_date()+"]");
 		payment.setPaymentDate(entity.getPayment_date());
+
+		//System.out.println("rental id = ["+entity.getRental_id()+"]");
 		payment.setRentalId(entity.getRental_id());
+
+		//System.out.println("staff id = ["+entity.getStaff_id()+"]");
 		payment.setStaffId(entity.getStaff_id());
 
 		return payment;

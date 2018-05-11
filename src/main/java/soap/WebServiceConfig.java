@@ -54,46 +54,6 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 		return new SimpleXsdSchema(new ClassPathResource("xsd/data_elements.xsd"));
 	}
 
-	@Bean(name = "actor")
-	public SimpleXsdSchema actorSchema(){
-		return new SimpleXsdSchema(new ClassPathResource("xsd/actor.xsd"));
-	}
-
-	@Bean(name = "address")
-	public SimpleXsdSchema addressSchema(){
-		return new SimpleXsdSchema(new ClassPathResource("xsd/address.xsd"));
-	}
-
-	@Bean(name = "customer")
-	public SimpleXsdSchema customerSchema(){
-		return new SimpleXsdSchema(new ClassPathResource("xsd/customer.xsd"));
-	}
-
-	@Bean(name = "films")
-	public SimpleXsdSchema filmSchema(){
-		return new SimpleXsdSchema(new ClassPathResource("xsd/films.xsd"));
-	}
-
-	@Bean(name = "inventory")
-	public SimpleXsdSchema inventorySchema(){
-		return new SimpleXsdSchema(new ClassPathResource("xsd/inventory.xsd"));
-	}
-
-	@Bean(name = "payments")
-	public SimpleXsdSchema paymentsSchema(){
-		return new SimpleXsdSchema(new ClassPathResource("xsd/payments.xsd"));
-	}
-
-	@Bean(name = "rental")
-	public SimpleXsdSchema rentalSchema(){
-		return new SimpleXsdSchema(new ClassPathResource("xsd/rental.xsd"));
-	}
-
-	@Bean(name = "staff")
-	public SimpleXsdSchema staffSchema(){
-		return new SimpleXsdSchema(new ClassPathResource("xsd/staff.xsd"));
-	}
-
 	private void combineSchemas() {
 		StringBuilder sb = new StringBuilder();
 		String header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +

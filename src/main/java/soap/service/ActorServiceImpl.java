@@ -13,11 +13,6 @@ import java.util.List;
 public class ActorServiceImpl implements ActorService {
 	@Autowired @Lazy private ActorDao actorDao;
 
-//	@Autowired
-//    public void setActorDao(@Lazy ActorDao actorDao) {
-//        this.actorDao = actorDao;
-//    }
-
     @Override
 	@Transactional
 	public List<Actor> getAllActors() {

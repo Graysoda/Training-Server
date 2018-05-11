@@ -14,11 +14,6 @@ public class FilmsEndpoint {
 	private static final String NAMESPACE_URI = Constants.NAMESPACE_URI;
 	@Autowired private FilmServiceImpl filmService;
 
-//	@Autowired
-//	public void setFilmService(@Lazy FilmServiceImpl filmService) {
-//		this.filmService = filmService;
-//	}
-
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "createFilmRequest")
 	public void createFilm(@RequestPayload CreateFilmRequest request) {
 		filmService.createFilm(request);

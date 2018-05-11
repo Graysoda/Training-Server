@@ -16,11 +16,6 @@ import java.util.List;
 public class RentalServiceImpl implements RentalService{
 	@Autowired @Lazy private RentalDao rentalDao;
 
-//	@Autowired
-//	public void setRentalDao(@Lazy RentalDao rentalDao) {
-//		this.rentalDao = rentalDao;
-//	}
-
 	@Override
 	@Transactional
 	public List<Rental> getRentalsByCustomerId(long id) throws SQLException {

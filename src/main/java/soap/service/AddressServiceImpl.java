@@ -15,11 +15,6 @@ import java.util.List;
 public class AddressServiceImpl implements AddressService{
 	@Autowired @Lazy private AddressDao addressDao;
 
-//	@Autowired
-//	public void setAddressDao(@Lazy AddressDao addressDao) {
-//		this.addressDao = addressDao;
-//	}
-
 	@Override
 	@Transactional
 	public void insertAddress(CreateAddressRequest request) {

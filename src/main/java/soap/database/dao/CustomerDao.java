@@ -100,13 +100,31 @@ public class CustomerDao extends Database {
 	private Customer convertEntityToGenerated(CustomerEntity entity){
 		Customer customer = new Customer();
 
+		//System.out.println("customer id = ["+entity.getCustomer_id()+"]");
+		customer.setCustomerId(entity.getCustomer_id());
+
+		//System.out.println("store id = ["+entity.getStore_id()+"]");
 		customer.setStoreId(entity.getStore_id());
+
+		//System.out.println("first name = ["+entity.getFirst_name()+"]");
 		customer.setFirstName(entity.getFirst_name());
+
+		//System.out.println("last name = ["+entity.getLast_name()+"]");
 		customer.setLastName(entity.getLast_name());
+
+		//System.out.println("email = ["+entity.getEmail()+"]");
 		customer.setEmail(entity.getEmail());
+
+		//System.out.println("address id = ["+entity.getAddress_id()+"]");
 		customer.setAddress(addressDao.getById(entity.getAddress_id()));
+
+		//System.out.println("active = ["+entity.isActive()+"]");
 		customer.setIsActive(entity.isActive());
+
+		//System.out.println("create date = ["+entity.getCreate_date()+"]");
 		customer.setCreateDate(entity.getCreate_date());
+
+		//System.out.println("last update = ["+entity.getLast_update()+"]");
 		customer.setLastUpdate(entity.getLast_update());
 
 		return customer;

@@ -126,11 +126,22 @@ public class RentalDao extends Database {
 	private Rental convertEntityToGenerated(RentalEntity entity) {
 		Rental rental = new Rental();
 
+		//System.out.println("rental id = ["+entity.getRental_id()+"]");
 		rental.setRentalId(entity.getRental_id());
+
+		//System.out.println("customer id = ["+entity.getCustomer_id()+"]");
 		rental.setCustomer(customerDao.getById(entity.getCustomer_id()));
+
+		//System.out.println("staff id = ["+entity.getStaff_id()+"]");
 		rental.setStaff(staffDao.getById(entity.getStaff_id()));
+
+		//System.out.println("inventory id = ["+entity.getInventory_id()+"]");
 		rental.setItem(filmDao.getById(entity.getInventory_id()));
+
+		//System.out.println("rental date = ["+entity.getRental_date()+"]");
 		rental.setRentalDate(entity.getRental_date());
+
+		//System.out.println("return date = ["+entity.getReturn_date()+"]");
 		rental.setReturnDate(entity.getReturn_date());
 
 		return rental;

@@ -96,13 +96,28 @@ public class AddressDao extends Database {
 	private Address convertEntityToGenerated(AddressEntity entity) {
 		Address address = new Address();
 
+		//System.out.println("address = ["+entity.getAddress()+"]");
 		address.setAddress(entity.getAddress());
+
+		//System.out.println("address2 = ["+entity.getAddress2()+"]");
 		address.setAddress2(entity.getAddress2());
+
+		//System.out.println("address id = ["+entity.getAddress_id()+"]");
 		address.setAddressId(entity.getAddress_id());
+
+		//System.out.println("city id = ["+entity.getCity_id()+"]");
 		address.setCity(cityDao.getNameById(entity.getCity_id()));
+
+		//System.out.println("district = ["+entity.getDistrict()+"]");
 		address.setDistrict(entity.getDistrict());
+
+		//System.out.println("postal code = ["+entity.getPostal_code()+"]");
 		address.setPostalCode(entity.getPostal_code());
+
+		//System.out.println("phone = ["+entity.getPhone()+"]");
 		address.setPhone(entity.getPhone());
+
+		//System.out.println("last update = ["+entity.getLast_update()+"]");
 		address.setLastUpdate(entity.getLast_update());
 
 		return address;

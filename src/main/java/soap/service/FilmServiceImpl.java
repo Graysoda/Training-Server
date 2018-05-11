@@ -12,11 +12,6 @@ import java.util.List;
 public class FilmServiceImpl implements FilmService {
 	@Autowired @Lazy private FilmDao filmDao;
 
-//	@Autowired
-//	public void setFilmDao(@Lazy FilmDao filmDao) {
-//		this.filmDao = filmDao;
-//	}
-
 	@Override
 	@Transactional
 	public void createFilm(CreateFilmRequest film) {

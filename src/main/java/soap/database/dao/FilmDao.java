@@ -188,33 +188,46 @@ public class FilmDao extends Database{
 
 		//System.out.println("film_id = ["+entity.getFilm_id()+"]");
 		film.setFilmId(BigInteger.valueOf(entity.getFilm_id()));
+
 		//System.out.println("title = ["+entity.getTitle()+"]");
 		film.setTitle(entity.getTitle());
+
 		//System.out.println("description = ["+entity.getDescription()+"]");
 		film.setDescription(entity.getDescription());
+
 		//System.out.println("release year = ["+entity.getRelease_year()+"]");
 		film.setReleaseYear(entity.getRelease_year());
+
 		//System.out.println("language id = ["+entity.getLanguage_id()+"]");
 		film.setLanguage(languageDao.getLanguage(entity.getLanguage_id()));
+
 		//System.out.println("original language id is null = ["+(entity.getOriginal_language_id() == null)+"]");
 		if (entity.getOriginal_language_id() == null)
 			film.setOriginalLanguage("");
 		else
 			film.setOriginalLanguage(languageDao.getLanguage(entity.getOriginal_language_id()));
+
 		//System.out.println("rental duration = ["+entity.getRental_duration()+"]");
 		film.setRentalDuration(entity.getRental_duration());
+
 		//System.out.println("rental rate = ["+entity.getRental_rate()+"]");
 		film.setRentalRate(entity.getRental_rate());
+
 		//System.out.println("length = ["+entity.getLength()+"]");
 		film.setLength(entity.getLength());
+
 		//System.out.println("replacement cost = ["+entity.getReplacement_cost()+"]");
 		film.setReplacementCost(entity.getReplacement_cost());
+
 		//System.out.println("rating = ["+entity.getRating()+"]");
 		film.setRating(entity.getRating());
+
 		//System.out.println("special features = ["+entity.getSpecial_features()+"]");
 		film.setSpecialFeatures(entity.getSpecial_features());
+
 		//System.out.println("last update = ["+entity.getLast_update()+"]");
 		film.setLastUpdate(entity.getLast_update());
+
 		film.setCategory(filmCategoryDao.getById(entity.getFilm_id()));
 		film.setActors(filmActorDao.getActorsFromFilm(entity.getFilm_id()));
 

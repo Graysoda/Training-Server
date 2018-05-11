@@ -15,11 +15,6 @@ import java.util.List;
 public class CustomerServiceImpl implements CustomerService{
 	@Autowired @Lazy private CustomerDao customerDao;
 
-//	@Autowired
-//	public void setCustomerDao(@Lazy CustomerDao customerDao) {
-//		this.customerDao = customerDao;
-//	}
-
 	@Override
 	@Transactional
 	public void insertCustomer(CreateCustomerRequest request) {

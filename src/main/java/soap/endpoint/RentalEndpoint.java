@@ -16,11 +16,6 @@ public class RentalEndpoint {
 	private static final String NAMESPACE_URI = Constants.NAMESPACE_URI;
 	@Autowired @Lazy private RentalServiceImpl rentalService;
 
-//	@Autowired
-//	public void setRentalService(@Lazy RentalServiceImpl rentalService) {
-//		this.rentalService = rentalService;
-//	}
-
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getRentalByCustomerIdRequest")
 	@ResponsePayload
 	public GetRentalByCustomerIdResponse getRentalByCustomerId(@RequestPayload GetRentalByCustomerIdRequest request) throws SQLException {

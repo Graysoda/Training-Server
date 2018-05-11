@@ -98,15 +98,34 @@ public class StaffDao extends Database {
 	private Staff convertEntityToGenerated(StaffEntity entity){
 		Staff staff = new Staff();
 
+		//System.out.println("staff id = ["+entity.getStaff_id()+"]");
 		staff.setStaffId(entity.getStaff_id());
+
+		//System.out.println("first name = ["+entity.getFirst_name()+"]");
 		staff.setFirstName(entity.getFirst_name());
+
+		//System.out.println("last name = ["+entity.getLast_name()+"]");
 		staff.setLastName(entity.getLast_name());
+
+		//System.out.println("email  =["+entity.getEmail()+"]");
 		staff.setEmail(entity.getEmail());
+
+		//System.out.println("address id = ["+entity.getAddress_id()+"]");
 		staff.setAddress(addressDao.getById(entity.getAddress_id()));
+
+		//System.out.println("store id = ["+entity.getStore_id()+"]");
 		staff.setStoreId(entity.getStore_id());
+
+		//System.out.println("active = ["+entity.isActive()+"]");
 		staff.setIsActive(entity.isActive());
+
+		//System.out.println("username = ["+entity.getUsername()+"]");
 		staff.setUsername(entity.getUsername());
+
+		//System.out.println("password = ["+entity.getPassword()+"]");
 		staff.setPassword(entity.getPassword());
+
+		//System.out.println("last update = ["+entity.getLast_update()+"]");
 		staff.setLastUpdate(entity.getLast_update());
 
 		return staff;

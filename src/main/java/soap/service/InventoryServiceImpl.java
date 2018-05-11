@@ -15,11 +15,6 @@ import java.util.List;
 public class InventoryServiceImpl implements InventoryService{
 	@Autowired @Lazy private InventoryDao inventoryDao;
 
-//	@Autowired
-//	public void setInventoryDao(@Lazy InventoryDao inventoryDao) {
-//		this.inventoryDao = inventoryDao;
-//	}
-
 	@Override
 	@Transactional
 	public List<Inventory> getAllInventory() {

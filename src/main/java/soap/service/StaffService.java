@@ -7,7 +7,7 @@ import soap.generated.UpdateStaffRequest;
 import java.util.List;
 
 public interface StaffService {
-	public List<Staff> getAllStaff();
+	List<Staff> getAllStaff();
 	Staff getStaffById(int id);
 	void insertStaff(CreateStaffRequest request);
 	void deleteStaff(long staffId);

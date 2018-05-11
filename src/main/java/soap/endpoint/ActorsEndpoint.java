@@ -15,11 +15,6 @@ public class ActorsEndpoint {
 	private static final String NAMESPACE_URI = Constants.NAMESPACE_URI;
 	@Autowired @Lazy private ActorServiceImpl actorService;
 
-//	@Autowired
-//	public void setActorService(@Lazy ActorServiceImpl actorService) {
-//		this.actorService = actorService;
-//	}
-
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "createActorRequest")
 	public void createActor(@RequestPayload CreateActorRequest request) {
 		actorService.insertActor(request);

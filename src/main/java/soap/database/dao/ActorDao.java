@@ -100,12 +100,21 @@ public class ActorDao extends Database {
 		return actors;
 	}
 
-	private Actor convertActorEntityToGenerated(ActorEntity actorEntity) {
+	private Actor convertActorEntityToGenerated(ActorEntity entity) {
 		Actor actor = new Actor();
-		actor.setActorId((int)actorEntity.getActor_id());
-		actor.setFirstName(actorEntity.getFirst_name());
-		actor.setLastName(actorEntity.getLast_name());
-		actor.setLastUpdate(actorEntity.getLast_update());
+
+		//System.out.println("actor id = ["+entity.getActor_id()+"]");
+		actor.setActorId((int)entity.getActor_id());
+
+		//System.out.println("first name = ["+entity.getFirst_name()+"]");
+		actor.setFirstName(entity.getFirst_name());
+
+		//System.out.println("last name = ["+entity.getLast_name()+"]");
+		actor.setLastName(entity.getLast_name());
+
+		//System.out.println("last_update = ["+entity.getLast_update()+"]");
+		actor.setLastUpdate(entity.getLast_update());
+
 		return actor;
 	}
 }

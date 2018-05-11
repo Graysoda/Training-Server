@@ -14,11 +14,6 @@ public class StaffEndpoint {
 	private static final String NAMESPACE_URI = Constants.NAMESPACE_URI;
 	@Autowired @Lazy private StaffServiceImpl staffService;
 
-//	@Autowired
-//	public void setStaffService(@Lazy StaffServiceImpl staffService) {
-//		this.staffService = staffService;
-//	}
-
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getAllStaffRequest")
 	@ResponsePayload
 	public GetAllStaffResponse getAllStaff(@RequestPayload GetAllStaffRequest request){

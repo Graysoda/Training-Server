@@ -7,7 +7,7 @@ import soap.generated.UpdatePaymentRequest;
 import java.util.List;
 
 public interface PaymentService {
-	public List<Payment> getAllPayments();
+	List<Payment> getAllPayments();
 	void insertPayment(CreatePaymentRequest request);
 	void deletePayment(long paymentId);
 	void updatePayment(UpdatePaymentRequest request);

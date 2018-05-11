@@ -15,11 +15,6 @@ import java.util.List;
 public class StaffServiceImpl implements StaffService {
 	@Autowired @Lazy private StaffDao staffDao;
 
-//	@Autowired
-//	public void setStaffDao(@Lazy StaffDao staffDao) {
-//		this.staffDao = staffDao;
-//	}
-
 	@Override
 	@Transactional
 	public List<Staff> getAllStaff() {

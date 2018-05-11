@@ -15,11 +15,6 @@ public class InventoryEndpoint {
 	private static final String NAMESPACE_URI = Constants.NAMESPACE_URI;
 	@Autowired private InventoryServiceImpl inventoryService;
 
-//	@Autowired
-//	public void setInventoryService(@Lazy InventoryServiceImpl inventoryService) {
-//		this.inventoryService = inventoryService;
-//	}
-
 	@PayloadRoot(namespace = NAMESPACE_URI,localPart = "getAllInventoryRequest")
 	@ResponsePayload
 	public GetAllInventoryResponse getAllInventory(@RequestPayload GetAllInventoryRequest request) throws SQLException {

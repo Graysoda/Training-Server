@@ -14,11 +14,6 @@ public class AddressEndpoint {
 	private static final String NAMESPACE_URI = Constants.NAMESPACE_URI;
 	@Autowired @Lazy private AddressServiceImpl addressService;
 
-//	@Autowired
-//	public void setAddressService(@Lazy AddressServiceImpl addressService) {
-//		this.addressService = addressService;
-//	}
-
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "createAddressRequest")
 	public void insertAddress(@RequestPayload CreateAddressRequest request){
 		addressService.insertAddress(request);

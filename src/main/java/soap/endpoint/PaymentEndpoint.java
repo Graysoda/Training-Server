@@ -14,11 +14,6 @@ public class PaymentEndpoint {
 	private static final String NAMESPACE_URI = Constants.NAMESPACE_URI;
 	@Autowired @Lazy private PaymentServiceImpl paymentService;
 
-//	@Autowired
-//	public void setPaymentService(@Lazy PaymentServiceImpl paymentService) {
-//		this.paymentService = paymentService;
-//	}
-
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getAllPaymentsRequest")
 	@ResponsePayload
 	public GetAllPaymentsResponse getAllPayments(@RequestPayload GetAllPaymentsRequest request){

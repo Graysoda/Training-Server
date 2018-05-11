@@ -15,11 +15,6 @@ import java.util.List;
 public class PaymentServiceImpl implements PaymentService{
 	@Autowired @Lazy private PaymentDao paymentDao;
 
-//	@Autowired
-//	public void setPaymentDao(@Lazy PaymentDao paymentDao) {
-//		this.paymentDao = paymentDao;
-//	}
-
 	@Override
 	@Transactional
 	public List<Payment> getAllPayments() {
