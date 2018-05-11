@@ -17,7 +17,8 @@ import java.util.List;
 
 @Repository
 public class RentalDao extends Database {
-	@PersistenceContext @Lazy private EntityManager em;
+	@PersistenceContext @Lazy
+	private EntityManager em;
 	@Autowired @Lazy private CustomerDao customerDao;
 	@Autowired @Lazy private FilmDao filmDao;
 	@Autowired @Lazy private StaffDao staffDao;
