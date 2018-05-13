@@ -32,7 +32,7 @@ public class FilmServiceImpl implements FilmService {
 
 	@Override
 	@Transactional
-	public List<Film> listFilms() {
+	public List<Film> getAllFilms() {
 		return this.filmDao.getAll();
 	}
 

@@ -9,7 +9,7 @@ public interface FilmService {
 	void createFilm(CreateFilmRequest film) throws SQLException;
 	void updateFilm(UpdateFilmRequest film) throws SQLException;
 	Film getFilmById(long id) throws SQLException;
-	List<Film> listFilms() throws SQLException;
+	List<Film> getAllFilms() throws SQLException;
 	List<Film> getFilmByRating(String rating) throws SQLException;
 	List<Film> getFilmByReleaseYear(int year) throws SQLException;
 	List<Film> getFilmByTitle(String title) throws SQLException;

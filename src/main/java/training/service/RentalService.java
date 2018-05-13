@@ -16,4 +16,5 @@ public interface RentalService {
 	void insertRental(CreateRentalRequest request);
 	void deleteRental(long rentalId);
 	void updateRental(UpdateRentalRequest request);
+    List<Rental> getAllRentals();
 }

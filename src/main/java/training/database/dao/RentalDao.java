@@ -27,6 +27,10 @@ public class RentalDao extends Database {
 	@Autowired @Lazy private StaffDao staffDao;
 	private static final String baseQuery = "SELECT r FROM sakila.rental r";
 
+	public List<Rental> getAll() {
+		return convertEntitiesToGenerated(this.em.createQuery(baseQuery,RentalEntity.class).getResultList());
+	}
+
 	public Rental getById(long id) {
 		return convertEntityToGenerated(this.em.createQuery(baseQuery+" WHERE r.rental_id = '"+id+"'",RentalEntity.class).getSingleResult());
 	}

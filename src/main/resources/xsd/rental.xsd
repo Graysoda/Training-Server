@@ -38,6 +38,20 @@
         </xs:complexType>
     </xs:element>
 
+    <xs:element name="getAllRentalsRequest">
+        <xs:complexType>
+            <xs:sequence maxOccurs="1" minOccurs="1"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getAllRentalsResponse">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded">
+                <xs:element name="rental" type="data:rental"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
     <xs:element name="getRentalByCustomerIdRequest">
         <xs:complexType>
             <xs:sequence>

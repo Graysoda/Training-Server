@@ -34,7 +34,7 @@ public class FilmsEndpoint {
 	public GetAllFilmsResponse getAllFilms(@RequestPayload GetAllFilmsRequest request) {
 		System.out.println("get all films");
 		GetAllFilmsResponse response = new GetAllFilmsResponse();
-		response.setFilm(filmService.listFilms());
+		response.setFilm(filmService.getAllFilms());
 		return response;
 	}
 
