@@ -2,54 +2,51 @@ package training.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import training.generated.Actor;
-import training.generated.Film;
-import training.generated.Summary;
 import training.service.FilmServiceImpl;
-
-import java.util.List;
 
 @RestController
 public class FilmsController {
     @Autowired @Lazy private FilmServiceImpl filmService;
 
     @RequestMapping(value = "/films/", method = RequestMethod.GET)
-    public List<Film> getAllFilms(){
-        return filmService.getAllFilms();
+    public ResponseEntity<?> getAllFilms(){
+        return new ResponseEntity<>(filmService.getAllFilms(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/film/{filmId}", method = RequestMethod.GET)
-    public Film getFilmById(@RequestParam(name = "filmId")long filmId){
-        return filmService.getFilmById(filmId);
+    public ResponseEntity<?> getFilmById(@PathVariable(name = "filmId")long filmId){
+        return new ResponseEntity<>(filmService.getFilmById(filmId), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/films/{rating}", method = RequestMethod.GET)
-    public List<Film> getFilmsByRating(@RequestParam(name = "rating")String rating){
-        return filmService.getFilmByRating(rating);
+    @RequestMapping(value = "/films/rating/{rating}", method = RequestMethod.GET)
+    public ResponseEntity<?> getFilmsByRating(@PathVariable(name = "rating")String rating){
+        return new ResponseEntity<>(filmService.getFilmByRating(rating), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/films/{release_year}", method = RequestMethod.GET)
-    public List<Film> getFilmsByReleaseYear(@RequestParam(name = "release_year")int releaseYear){
-        return filmService.getFilmByReleaseYear(releaseYear);
+    @RequestMapping(value = "/films/release_year/{release_year}", method = RequestMethod.GET)
+    public ResponseEntity<?> getFilmsByReleaseYear(@PathVariable(name = "release_year")int releaseYear){
+        return new ResponseEntity<>(filmService.getFilmByReleaseYear(releaseYear), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/films/{title}", method = RequestMethod.GET)
-    public List<Film> getFilmsByTitle(@RequestParam(name = "title")String title){
-        return filmService.getFilmByTitle(title);
+    @RequestMapping(value = "/films/title/{title}", method = RequestMethod.GET)
+    public ResponseEntity<?> getFilmsByTitle(@PathVariable(name = "title")String title){
+        return new ResponseEntity<>(filmService.getFilmByTitle(title), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/summary/{filmId}", method = RequestMethod.GET)
-    public Summary getSummary(@RequestParam(name = "filmId")long filmId){
-        return filmService.getFilmSummary(filmId);
+    @RequestMapping(value = "/film/{filmId}/summary", method = RequestMethod.GET)
+    public ResponseEntity<?> getSummary(@PathVariable(name = "filmId")long filmId){
+        return new ResponseEntity<>(filmService.getFilmSummary(filmId), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/film/{filmId}/actors/", method = RequestMethod.GET)
-    public List<Actor> getFilmsActors(@RequestParam(name = "filmId")long filmId){
-        return filmService.getFilmsActors(filmId);
+    public ResponseEntity<?> getFilmsActors(@PathVariable(name = "filmId")long filmId){
+        return new ResponseEntity<>(filmService.getFilmsActors(filmId), HttpStatus.OK);
     }
 
 
