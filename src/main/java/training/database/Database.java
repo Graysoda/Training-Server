@@ -8,7 +8,6 @@ package training.database;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import training.database.entity.*;
@@ -20,7 +19,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-@Lazy
 @Configuration
 @EnableTransactionManagement
 @EntityScan(basePackageClasses ={
@@ -41,7 +39,6 @@ import java.sql.SQLException;
 })
 public class Database {
 
-	@Lazy
 	@Bean
 	public DataSource dataSource() throws URISyntaxException {
 		URI dbUri = new URI(System.getenv("DATABASE_URL"));
@@ -59,10 +56,14 @@ public class Database {
 		return dataSource;
 	}
 
-	@Lazy
 	@Bean
-	public Connection getConnection() throws SQLException {
-		String dbUrl = System.getenv("JDBC_DATABASE_URL");
+	public Connection getConnection() throws SQLException, URISyntaxException {
+		URI dbUri = new URI(System.getenv("DATABASE_URL"));
+
+		String username = dbUri.getUserInfo().split(":")[0];
+		String password = dbUri.getUserInfo().split(":")[1];
+		String dbUrl = "jdbc:postgresql://"+dbUri.getHost()+":"+dbUri.getPort()+dbUri.getPath()+"?ssl=true";
+
 		return DriverManager.getConnection(dbUrl);
 	}
 }

@@ -16,7 +16,6 @@ import org.springframework.xml.xsd.XsdSchema;
 
 import java.io.*;
 
-@Lazy
 @EnableWs
 @Configuration
 public class WebServiceConfig extends WsConfigurerAdapter {
