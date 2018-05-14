@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -Dserver.port=$PORT -jar target/pro_soap_serv-0.0.1.jar
+web: java -Dserver.port=$PORT -jar target/pro_soap_serv-0.0.1.jar
