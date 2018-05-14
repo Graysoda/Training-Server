@@ -32,3 +32,4 @@ target/classes/xsd/
 target/generated-sources/
 /src/main/java/training/generated/
 /src/main/java/META-INF/
+/.env
