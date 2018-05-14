@@ -20,17 +20,17 @@ public class ActorController {
         return new ResponseEntity<>(actorService.getAllActors(),HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/actor/{actorId}", method = RequestMethod.GET, produces = "text/json")
+    @RequestMapping(value = "/actors/{actorId}", method = RequestMethod.GET, produces = "text/json")
     public ResponseEntity<?> getActorById(@RequestParam(value = "actorId", defaultValue = "1") long actorId) {
         return new ResponseEntity<>(actorService.getActorById(actorId),HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/actor/{firstName}", method = RequestMethod.GET, produces = "text/json")
+    @RequestMapping(value = "/actors/{firstName}", method = RequestMethod.GET, produces = "text/json")
     public ResponseEntity<?> getActorsByFirstName(@RequestParam(value = "firstName")String firstName){
         return new ResponseEntity<>(actorService.getActorsByFirstName(firstName), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/actor/{actorId}/films", method = RequestMethod.GET, produces = "text/json")
+    @RequestMapping(value = "/actors/{actorId}/films", method = RequestMethod.GET, produces = "text/json")
     public ResponseEntity<?> getFilmsWithActor(@RequestParam(value = "actorId")long actorId){
         return new ResponseEntity<>(actorService.getFilmsWithActor(actorId), HttpStatus.OK);
     }

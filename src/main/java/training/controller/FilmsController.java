@@ -19,7 +19,7 @@ public class FilmsController {
         return new ResponseEntity<>(filmService.getAllFilms(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/film/{filmId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/films/{filmId}", method = RequestMethod.GET)
     public ResponseEntity<?> getFilmById(@PathVariable(name = "filmId")long filmId){
         return new ResponseEntity<>(filmService.getFilmById(filmId), HttpStatus.OK);
     }
@@ -39,12 +39,12 @@ public class FilmsController {
         return new ResponseEntity<>(filmService.getFilmByTitle(title), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/film/{filmId}/summary", method = RequestMethod.GET)
+    @RequestMapping(value = "/films/{filmId}/summary", method = RequestMethod.GET)
     public ResponseEntity<?> getSummary(@PathVariable(name = "filmId")long filmId){
         return new ResponseEntity<>(filmService.getFilmSummary(filmId), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/film/{filmId}/actors/", method = RequestMethod.GET)
+    @RequestMapping(value = "/films/{filmId}/actors/", method = RequestMethod.GET)
     public ResponseEntity<?> getFilmsActors(@PathVariable(name = "filmId")long filmId){
         return new ResponseEntity<>(filmService.getFilmsActors(filmId), HttpStatus.OK);
     }

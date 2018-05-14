@@ -18,7 +18,7 @@ public class CustomerController {
         return new ResponseEntity<>(customerService.getAllCustomers(), HttpStatus.OK);
     }
 
-    @RequestMapping("/customer/{customerId}/")
+    @RequestMapping("/customers/{customerId}/")
     public ResponseEntity<?> getCustomerById(@PathVariable(name = "customerId") long customerId){
         return new ResponseEntity<>(customerService.getCustomerById(customerId), HttpStatus.OK);
     }
