@@ -20,32 +20,32 @@ public class FilmsController {
     }
 
     @RequestMapping(value = "/films/{filmId}", method = RequestMethod.GET)
-    public ResponseEntity<?> getFilmById(@PathVariable(name = "filmId")long filmId){
+    public ResponseEntity<?> getFilmById(@PathVariable long filmId){
         return new ResponseEntity<>(filmService.getFilmById(filmId), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/films/rating/{rating}", method = RequestMethod.GET)
-    public ResponseEntity<?> getFilmsByRating(@PathVariable(name = "rating")String rating){
+    public ResponseEntity<?> getFilmsByRating(@PathVariable String rating){
         return new ResponseEntity<>(filmService.getFilmByRating(rating), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/films/release_year/{release_year}", method = RequestMethod.GET)
-    public ResponseEntity<?> getFilmsByReleaseYear(@PathVariable(name = "release_year")int releaseYear){
+    public ResponseEntity<?> getFilmsByReleaseYear(@PathVariable int releaseYear){
         return new ResponseEntity<>(filmService.getFilmByReleaseYear(releaseYear), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/films/title/{title}", method = RequestMethod.GET)
-    public ResponseEntity<?> getFilmsByTitle(@PathVariable(name = "title")String title){
+    public ResponseEntity<?> getFilmsByTitle(@PathVariable String title){
         return new ResponseEntity<>(filmService.getFilmByTitle(title), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/films/{filmId}/summary", method = RequestMethod.GET)
-    public ResponseEntity<?> getSummary(@PathVariable(name = "filmId")long filmId){
+    public ResponseEntity<?> getSummary(@PathVariable long filmId){
         return new ResponseEntity<>(filmService.getFilmSummary(filmId), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/films/{filmId}/actors/", method = RequestMethod.GET)
-    public ResponseEntity<?> getFilmsActors(@PathVariable(name = "filmId")long filmId){
+    public ResponseEntity<?> getFilmsActors(@PathVariable long filmId){
         return new ResponseEntity<>(filmService.getFilmsActors(filmId), HttpStatus.OK);
     }
 

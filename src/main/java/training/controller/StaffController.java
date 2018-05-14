@@ -20,7 +20,7 @@ public class StaffController {
     }
 
     @RequestMapping(value = "/staff/{staffId}/", method = RequestMethod.GET)
-    public ResponseEntity<?> getStaffById(@PathVariable("staffId")long staffId){
+    public ResponseEntity<?> getStaffById(@PathVariable long staffId){
         return new ResponseEntity<>(staffService.getStaffById((int) staffId), HttpStatus.OK);
     }
 }

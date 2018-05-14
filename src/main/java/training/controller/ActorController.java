@@ -21,17 +21,17 @@ public class ActorController {
     }
 
     @RequestMapping(value = "/actors/{actorId}", method = RequestMethod.GET, produces = "text/json")
-    public ResponseEntity<?> getActorById(@PathVariable(value = "actorId") long actorId) {
+    public ResponseEntity<?> getActorById(@PathVariable long actorId) {
         return new ResponseEntity<>(actorService.getActorById(actorId),HttpStatus.OK);
     }
 
     @RequestMapping(value = "/actors/{firstName}", method = RequestMethod.GET, produces = "text/json")
-    public ResponseEntity<?> getActorsByFirstName(@PathVariable(value = "firstName")String firstName){
+    public ResponseEntity<?> getActorsByFirstName(@PathVariable String firstName){
         return new ResponseEntity<>(actorService.getActorsByFirstName(firstName), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/actors/{actorId}/films", method = RequestMethod.GET, produces = "text/json")
-    public ResponseEntity<?> getFilmsWithActor(@PathVariable(value = "actorId")long actorId){
+    public ResponseEntity<?> getFilmsWithActor(@PathVariable long actorId){
         return new ResponseEntity<>(actorService.getFilmsWithActor(actorId), HttpStatus.OK);
     }
 

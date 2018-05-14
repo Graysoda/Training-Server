@@ -20,22 +20,22 @@ public class RentalController {
     }
 
     @RequestMapping(value = "/customer/{customerId}/rentals/", method = RequestMethod.GET)
-    public ResponseEntity<?> getRentalsByCustomerId(@PathVariable("customerId") long customerId){
+    public ResponseEntity<?> getRentalsByCustomerId(@PathVariable long customerId){
         return new ResponseEntity<>(rentalService.getRentalsByCustomerId(customerId),HttpStatus.OK);
     }
 
     @RequestMapping(value = "/rentals/return/{date}", method = RequestMethod.GET)
-    public ResponseEntity<?> getRentalsByReturnDate(@PathVariable("date") String date){
+    public ResponseEntity<?> getRentalsByReturnDate(@PathVariable String date){
         return new ResponseEntity<>(rentalService.getRentalsByReturnDate(date), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/rentals/start/{date}",method = RequestMethod.GET)
-    public ResponseEntity<?> getRentalsByStartDate(@PathVariable("date")String date){
+    public ResponseEntity<?> getRentalsByStartDate(@PathVariable String date){
         return new ResponseEntity<>(rentalService.getRentalByStartDate(date), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/staff/{staffId}/rentals")
-    public ResponseEntity<?> getRentalsByStaffId(@PathVariable("staffId")long staffId){
+    public ResponseEntity<?> getRentalsByStaffId(@PathVariable long staffId){
         return new ResponseEntity<>(rentalService.getRentalByStaffId(staffId), HttpStatus.OK);
     }
 }

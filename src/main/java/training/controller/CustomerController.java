@@ -19,12 +19,12 @@ public class CustomerController {
     }
 
     @RequestMapping("/customers/{customerId}/")
-    public ResponseEntity<?> getCustomerById(@PathVariable(name = "customerId") long customerId){
+    public ResponseEntity<?> getCustomerById(@PathVariable long customerId){
         return new ResponseEntity<>(customerService.getCustomerById(customerId), HttpStatus.OK);
     }
 
     @RequestMapping("/store/{storeId}/customers/")
-    public ResponseEntity<?> getCustomersbyStore(@PathVariable(name = "storeId")long storeId){
+    public ResponseEntity<?> getCustomersbyStore(@PathVariable long storeId){
         return new ResponseEntity<>(customerService.getCustomersByStore(storeId), HttpStatus.OK);
     }
 

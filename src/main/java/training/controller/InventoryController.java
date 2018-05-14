@@ -20,12 +20,12 @@ public class InventoryController {
     }
 
     @RequestMapping(value = "/inventory/{inventoryId}", method = RequestMethod.GET)
-    public ResponseEntity<?> getInventoryById(@PathVariable(name = "inventoryId")long inventoryId){
+    public ResponseEntity<?> getInventoryById(@PathVariable long inventoryId){
         return new ResponseEntity<>(inventoryService.getInventoryById(inventoryId), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/inventory/{storeId}", method = RequestMethod.GET)
-    public ResponseEntity<?> getStoreInventory(@PathVariable(name = "storeId")long storeId){
+    public ResponseEntity<?> getStoreInventory(@PathVariable long storeId){
         return new ResponseEntity<>(inventoryService.getStoreInventory(storeId), HttpStatus.OK);
     }
 }
