@@ -82,7 +82,7 @@ public class ActorDaoImpl implements ActorDao{
 	}
 
 	public ResponseEntity<?> update(UpdateActorRequest request) {
-		if (request == null || request.getActorId() < 0 || (request.getNewFirstName() == null || request.getNewFirstName().isEmpty() && request.getNewLastName() == null || request.getNewLastName().isEmpty()))
+		if (request == null || request.getActorId() < 0 || ((request.getNewFirstName() == null || request.getNewFirstName().isEmpty()) && (request.getNewLastName() == null || request.getNewLastName().isEmpty())))
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("a parameter was invalid, please make sure at least one field is filled and that the id is valid");
 
 		String sql = "UPDATE actor SET ";

@@ -65,7 +65,7 @@ public class ActorController {
 
     @RequestMapping(value = "/actors/{actorId}/update/", method = RequestMethod.POST)
     public ResponseEntity<?> updateActor(@PathVariable long actorId, @RequestParam String firstName, @RequestParam String lastName){
-        if (firstName == null || firstName.isEmpty() && lastName == null || lastName.isEmpty())
+        if ((firstName == null || firstName.isEmpty()) && (lastName == null || lastName.isEmpty()))
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please provide a first or last name to update!");
 
         UpdateActorRequest request = new UpdateActorRequest();
