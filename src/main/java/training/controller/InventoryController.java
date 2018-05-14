@@ -8,24 +8,27 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import training.generated.Inventory;
 import training.service.InventoryServiceImpl;
+
+import java.util.List;
 
 @RestController
 public class InventoryController {
     @Autowired @Lazy private InventoryServiceImpl inventoryService;
 
     @RequestMapping(value = "/inventory/", method = RequestMethod.GET)
-    public ResponseEntity<?> getAllInventory(){
+    public ResponseEntity<List<Inventory>> getAllInventory(){
         return new ResponseEntity<>(inventoryService.getAllInventory(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/inventory/{inventoryId}", method = RequestMethod.GET)
-    public ResponseEntity<?> getInventoryById(@PathVariable long inventoryId){
+    public ResponseEntity<Inventory> getInventoryById(@PathVariable long inventoryId){
         return new ResponseEntity<>(inventoryService.getInventoryById(inventoryId), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/inventory/{storeId}", method = RequestMethod.GET)
-    public ResponseEntity<?> getStoreInventory(@PathVariable long storeId){
+    public ResponseEntity<List<Inventory>> getStoreInventory(@PathVariable long storeId){
         return new ResponseEntity<>(inventoryService.getStoreInventory(storeId), HttpStatus.OK);
     }
 }
