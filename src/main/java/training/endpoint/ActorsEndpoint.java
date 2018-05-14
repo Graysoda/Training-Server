@@ -13,7 +13,7 @@ import training.service.ActorServiceImpl;
 @Endpoint
 public class ActorsEndpoint {
 	private static final String NAMESPACE_URI = Constants.NAMESPACE_URI;
-	@Autowired @Lazy
+	@Lazy @Autowired
 	private ActorServiceImpl actorService;
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "createActorRequest")
