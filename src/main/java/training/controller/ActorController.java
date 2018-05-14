@@ -4,10 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import training.generated.Actor;
 import training.generated.CreateActorRequest;
 import training.generated.Summary;
@@ -54,16 +51,34 @@ public class ActorController {
     }
 
     @RequestMapping(value = "/actors/create/",method = RequestMethod.PUT)
-    public ResponseEntity<?> createActor(CreateActorRequest request){
+    public ResponseEntity<?> createActor(@RequestParam String firstName, @RequestParam String lastName){
+        if (firstName == null || firstName.isEmpty() || lastName == null || lastName.isEmpty())
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("first and last name must not be null or empty!");
+
+        CreateActorRequest request = new CreateActorRequest();
+
+        request.setFirstName(firstName);
+        request.setLastName(lastName);
+
         return actorService.insertActor(request);
     }
 
-    @RequestMapping(value = "actors/{actorId}/update", method = RequestMethod.POST)
-    public ResponseEntity<?> updateActor(@PathVariable long actorId, UpdateActorRequest request){
-        if (request == null)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please provide a non-null Actor value!");
-//        UpdateActorRequest request = new UpdateActorRequest();
+    @RequestMapping(value = "/actors/{actorId}/update/", method = RequestMethod.POST)
+    public ResponseEntity<?> updateActor(@PathVariable long actorId, @RequestParam String firstName, @RequestParam String lastName){
+        if (firstName == null || firstName.isEmpty() && lastName == null || lastName.isEmpty())
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please provide a first or last name to update!");
+
+        UpdateActorRequest request = new UpdateActorRequest();
+
+        request.setActorId(actorId);
+        request.setNewFirstName(firstName);
+        request.setNewLastName(lastName);
 
         return actorService.updateActor(request);
+    }
+
+    @RequestMapping(value = "/actors/{actorId}/delete/", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteActor(@PathVariable long actorId){
+        return actorService.deleteActor(actorId);
     }
 }

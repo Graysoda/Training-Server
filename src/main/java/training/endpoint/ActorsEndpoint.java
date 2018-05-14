@@ -23,13 +23,13 @@ public class ActorsEndpoint {
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "updateActorRequest")
-	public void updateActor(@RequestPayload UpdateActorRequest request) {
-		actorService.updateActor(request);
+	public ResponseEntity<?> updateActor(@RequestPayload UpdateActorRequest request) {
+		return actorService.updateActor(request);
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "deleteActorRequest")
-	public void deleteActor(@RequestPayload DeleteActorRequest request) {
-		actorService.deleteActor(request);
+	public ResponseEntity<?> deleteActor(@RequestPayload DeleteActorRequest request) {
+		return actorService.deleteActor(request.getActorId());
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getAllActorsRequest")

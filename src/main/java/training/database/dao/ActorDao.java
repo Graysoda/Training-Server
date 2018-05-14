@@ -1,7 +1,10 @@
 package training.database.dao;
 
 import org.springframework.http.ResponseEntity;
-import training.generated.*;
+import training.generated.Actor;
+import training.generated.CreateActorRequest;
+import training.generated.Summary;
+import training.generated.UpdateActorRequest;
 
 import java.util.List;
 
@@ -13,5 +16,5 @@ public interface ActorDao {
     List<Summary> getFilms(long actorId);
     ResponseEntity<?> insert(CreateActorRequest request);
     ResponseEntity<?> update(UpdateActorRequest request);
-    ResponseEntity<?> delete(DeleteActorRequest request);
+    ResponseEntity<?> delete(long actorId);
 }

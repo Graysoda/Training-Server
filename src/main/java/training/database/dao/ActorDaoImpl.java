@@ -6,7 +6,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import training.database.entity.ActorEntity;
-import training.generated.*;
+import training.generated.Actor;
+import training.generated.CreateActorRequest;
+import training.generated.Summary;
+import training.generated.UpdateActorRequest;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -71,10 +74,10 @@ public class ActorDaoImpl implements ActorDao{
 		String sql = "INSERT INTO actor (first_name, last_name) VALUES ('"+request.getFirstName()+"', '"+request.getLastName()+"');";
 		try {
 			connection.createStatement().executeUpdate(sql);
-			return ResponseEntity.status(HttpStatus.CREATED).body("Actor was created.");
+			return ResponseEntity.status(HttpStatus.CREATED).body("Actor was created successfully.");
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getLocalizedMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Actor was not create.\n"+e.getLocalizedMessage());
 		}
 	}
 
@@ -92,21 +95,21 @@ public class ActorDaoImpl implements ActorDao{
 		sql = sql.substring(0, sql.length()-2) + " WHERE actor_id='"+request.getActorId()+"';";
 		try{
 			connection.createStatement().executeUpdate(sql);
-			return ResponseEntity.status(HttpStatus.OK).build();
+			return ResponseEntity.status(HttpStatus.OK).body("Actor ["+request.getActorId()+"] was updated successfully.");
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getLocalizedMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Actor ["+request.getActorId()+"] was not updated.\n"+e.getLocalizedMessage());
 		}
 	}
 
-	public ResponseEntity<?> delete(DeleteActorRequest request) {
-		String sql = "DELETE FROM actor WHERE actor_id='"+request.getActorId()+"';";
+	public ResponseEntity<?> delete(long actorId) {
+		String sql = "DELETE FROM actor WHERE actor_id='"+actorId+"';";
 		try {
 			connection.createStatement().executeUpdate(sql);
-			return ResponseEntity.status(HttpStatus.OK).body("Actor ["+request.getActorId()+"] was deleted");
+			return ResponseEntity.status(HttpStatus.OK).body("Actor ["+actorId+"] was deleted successfully.");
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Actor ["+request.getActorId()+"] was not deleted.\n"+e.getLocalizedMessage());
+			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Actor ["+actorId+"] was not deleted.\n"+e.getLocalizedMessage());
 		}
 	}
 

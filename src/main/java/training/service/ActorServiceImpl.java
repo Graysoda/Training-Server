@@ -6,7 +6,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import training.database.dao.ActorDaoImpl;
-import training.generated.*;
+import training.generated.Actor;
+import training.generated.CreateActorRequest;
+import training.generated.Summary;
+import training.generated.UpdateActorRequest;
 
 import java.util.List;
 
@@ -47,8 +50,8 @@ public class ActorServiceImpl implements ActorService {
 
 	@Override
 	@Transactional
-	public ResponseEntity<?> deleteActor(DeleteActorRequest request) {
-		return actorDaoImpl.delete(request);
+	public ResponseEntity<?> deleteActor(long actorId) {
+		return actorDaoImpl.delete(actorId);
 	}
 
 	@Override
