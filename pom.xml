@@ -60,7 +60,7 @@
                 <version>2.0.4</version>
                 <configuration>
                     <processTypes>
-                        <web>java $JAVA_OPTS -cp target/classes:target/dependency/* training.Application</web>
+                        <web>java $JAVA_OPTS -Dserver.port=$PORT -cp target/classes:target/dependency/* training.Application</web>
                     </processTypes>
                 </configuration>
             </plugin>
