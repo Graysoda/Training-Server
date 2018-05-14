@@ -1,1 +1,1 @@
-web: java -jar target/pro_soap_serv-0.0.1.jar
+web: java $JAVA_OPTS -jar target/pro_soap_serv-0.0.1.jar
