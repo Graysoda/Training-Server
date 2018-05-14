@@ -19,22 +19,22 @@ public class ActorController {
     @Autowired @Lazy
     private ActorServiceImpl actorService;
 
-    @RequestMapping(value = "/actor/", method = RequestMethod.GET, produces = "text/json")
+    @RequestMapping(value = "/actors/", method = RequestMethod.GET)
     public ResponseEntity<List<Actor>> getAllActors(){
         return new ResponseEntity<>(actorService.getAllActors(),HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/actors/{actorId}", method = RequestMethod.GET, produces = "text/json")
+    @RequestMapping(value = "/actors/{actorId}", method = RequestMethod.GET)
     public ResponseEntity<Actor> getActorById(@PathVariable long actorId) {
         return new ResponseEntity<>(actorService.getActorById(actorId),HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/actors/{firstName}", method = RequestMethod.GET, produces = "text/json")
+    @RequestMapping(value = "/actors/{firstName}", method = RequestMethod.GET)
     public ResponseEntity<List<Actor>> getActorsByFirstName(@PathVariable String firstName){
         return new ResponseEntity<>(actorService.getActorsByFirstName(firstName), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/actors/{actorId}/films", method = RequestMethod.GET, produces = "text/json")
+    @RequestMapping(value = "/actors/{actorId}/films", method = RequestMethod.GET)
     public ResponseEntity<List<Summary>> getFilmsWithActor(@PathVariable long actorId){
         return new ResponseEntity<>(actorService.getFilmsWithActor(actorId), HttpStatus.OK);
     }
