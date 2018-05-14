@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import training.service.InventoryServiceImpl;
 
@@ -20,12 +20,12 @@ public class InventoryController {
     }
 
     @RequestMapping(value = "/inventory/{inventoryId}", method = RequestMethod.GET)
-    public ResponseEntity<?> getInventoryById(@RequestParam(name = "inventoryId")long inventoryId){
+    public ResponseEntity<?> getInventoryById(@PathVariable(name = "inventoryId")long inventoryId){
         return new ResponseEntity<>(inventoryService.getInventoryById(inventoryId), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/inventory/{storeId}", method = RequestMethod.GET)
-    public ResponseEntity<?> getStoreInventory(@RequestParam(name = "storeId")long storeId){
+    public ResponseEntity<?> getStoreInventory(@PathVariable(name = "storeId")long storeId){
         return new ResponseEntity<>(inventoryService.getStoreInventory(storeId), HttpStatus.OK);
     }
 }
