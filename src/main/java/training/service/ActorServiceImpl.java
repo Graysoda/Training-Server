@@ -11,7 +11,8 @@ import java.util.List;
 
 @Service
 public class ActorServiceImpl implements ActorService {
-	@Autowired @Lazy private ActorDao actorDao;
+	@Autowired @Lazy
+	private ActorDao actorDao;
 
     @Override
 	@Transactional

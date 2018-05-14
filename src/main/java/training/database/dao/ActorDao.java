@@ -18,8 +18,10 @@ import java.util.List;
 @Repository
 @Transactional
 public class ActorDao extends Database {
-	@PersistenceContext @Lazy private EntityManager em;
-	@Autowired @Lazy private FilmActorDao filmActorDao;
+	@PersistenceContext @Lazy
+	private EntityManager em;
+	@Autowired @Lazy
+	private FilmActorDao filmActorDao;
 	private static final String baseQuery = "SELECT a FROM sakila.actor a";
 
 
