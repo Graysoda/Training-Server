@@ -5,7 +5,10 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import training.database.dao.ActorDao;
-import training.generated.*;
+import training.generated.Actor;
+import training.generated.CreateActorRequest;
+import training.generated.DeleteActorRequest;
+import training.generated.UpdateActorRequest;
 
 import java.util.List;
 
@@ -50,9 +53,9 @@ public class ActorServiceImpl implements ActorService {
 		actorDao.delete(request);
 	}
 
-	@Override
-	@Transactional
-	public List<Summary> getFilmsWithActor(long actorId) {
-		return actorDao.getFilms(actorId);
-	}
+//	@Override
+//	@Transactional
+//	public List<Summary> getFilmsWithActor(long actorId) {
+//		return actorDao.getFilms(actorId);
+//	}
 }

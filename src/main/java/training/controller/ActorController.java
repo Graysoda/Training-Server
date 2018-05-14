@@ -30,10 +30,10 @@ public class ActorController {
         return new ResponseEntity<>(actorService.getActorsByFirstName(firstName), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/actor/{actorId}/films", method = RequestMethod.GET)
-    public ResponseEntity<?> getFilmsWithActor(@RequestParam(value = "actorId")long actorId){
-        return new ResponseEntity<>(actorService.getFilmsWithActor(actorId), HttpStatus.OK);
-    }
+//    @RequestMapping(value = "/actor/{actorId}/films", method = RequestMethod.GET)
+//    public ResponseEntity<?> getFilmsWithActor(@RequestParam(value = "actorId")long actorId){
+//        return new ResponseEntity<>(actorService.getFilmsWithActor(actorId), HttpStatus.OK);
+//    }
 
 
 }
