@@ -2,6 +2,7 @@ package training.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import training.database.dao.ActorDaoImpl;
@@ -34,20 +35,20 @@ public class ActorServiceImpl implements ActorService {
 
 	@Override
 	@Transactional
-	public void insertActor(CreateActorRequest request) {
-		actorDaoImpl.insert(request);
+	public ResponseEntity<?> insertActor(CreateActorRequest request) {
+		return actorDaoImpl.insert(request);
 	}
 
 	@Override
 	@Transactional
-	public void updateActor(UpdateActorRequest request) {
-		actorDaoImpl.update(request);
+	public ResponseEntity<?> updateActor(UpdateActorRequest request) {
+		return actorDaoImpl.update(request);
 	}
 
 	@Override
 	@Transactional
-	public void deleteActor(DeleteActorRequest request) {
-		actorDaoImpl.delete(request);
+	public ResponseEntity<?> deleteActor(DeleteActorRequest request) {
+		return actorDaoImpl.delete(request);
 	}
 
 	@Override

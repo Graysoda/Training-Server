@@ -2,6 +2,7 @@ package training.endpoint;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
@@ -17,8 +18,8 @@ public class ActorsEndpoint {
 	private ActorServiceImpl actorService;
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "createActorRequest")
-	public void createActor(@RequestPayload CreateActorRequest request) {
-		actorService.insertActor(request);
+	public ResponseEntity<?> createActor(@RequestPayload CreateActorRequest request) {
+		return actorService.insertActor(request);
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "updateActorRequest")
