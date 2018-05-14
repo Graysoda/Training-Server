@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import training.database.dao.CustomerDao;
+import training.database.dao.CustomerDaoImpl;
 import training.generated.CreateCustomerRequest;
 import training.generated.Customer;
 import training.generated.UpdateCustomerRequest;
@@ -13,47 +13,47 @@ import java.util.List;
 
 @Service
 public class CustomerServiceImpl implements CustomerService{
-	@Autowired @Lazy private CustomerDao customerDao;
+	@Autowired @Lazy private CustomerDaoImpl customerDaoImpl;
 
 	@Override
 	@Transactional
 	public void insertCustomer(CreateCustomerRequest request) {
-		customerDao.insert(request);
+		customerDaoImpl.insert(request);
 	}
 
 	@Override
 	@Transactional
 	public List<Customer> getActiveCustomers() {
-		return customerDao.getActive();
+		return customerDaoImpl.getActive();
 	}
 
 	@Override
 	@Transactional
 	public Customer getCustomerById(long id) {
-		return customerDao.getById(id);
+		return customerDaoImpl.getById(id);
 	}
 
 	@Override
 	@Transactional
 	public List<Customer> getCustomersByStore(long id) {
-		return customerDao.getByStore(id);
+		return customerDaoImpl.getByStore(id);
 	}
 
 	@Override
 	@Transactional
 	public List<Customer> getAllCustomers() {
-		return customerDao.getAll();
+		return customerDaoImpl.getAll();
 	}
 
 	@Override
 	@Transactional
 	public void deleteCustomer(long customerId) {
-		customerDao.delete(customerId);
+		customerDaoImpl.delete(customerId);
 	}
 
 	@Override
 	@Transactional
 	public void updateCustomer(UpdateCustomerRequest request) {
-		customerDao.update(request);
+		customerDaoImpl.update(request);
 	}
 }

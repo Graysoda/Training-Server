@@ -8,9 +8,9 @@ package training.database;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import training.database.entity.*;
 
 import javax.sql.DataSource;
 import java.net.URI;
@@ -21,22 +21,8 @@ import java.sql.SQLException;
 
 @Configuration
 @EnableTransactionManagement
-@EntityScan(basePackageClasses ={
-		ActorEntity.class,
-		AddressEntity.class,
-		CategoryEntity.class,
-		CityEntity.class,
-		CustomerEntity.class,
-		FilmActorEntity.class,
-		FilmCategoryEntity.class,
-		FilmEntity.class,
-		InventoryEntity.class,
-		LanguageEntity.class,
-		PaymentEntity.class,
-		RentalEntity.class,
-		StaffEntity.class,
-		StoreEntity.class,
-})
+@EnableJpaRepositories(basePackages = "training.database.dao")
+@EntityScan(basePackages = "training.database.entity")
 public class Database {
 
 	@Bean
@@ -57,13 +43,8 @@ public class Database {
 	}
 
 	@Bean
-	public Connection getConnection() throws SQLException, URISyntaxException {
-		URI dbUri = new URI(System.getenv("DATABASE_URL"));
-
-		String username = dbUri.getUserInfo().split(":")[0];
-		String password = dbUri.getUserInfo().split(":")[1];
-		String dbUrl = "jdbc:postgresql://"+dbUri.getHost()+":"+dbUri.getPort()+dbUri.getPath()+"?ssl=true";
-
+	public Connection getConnection() throws SQLException {
+		String dbUrl = System.getenv("JDBC_DATABASE_URL");
 		return DriverManager.getConnection(dbUrl);
 	}
 }

@@ -56,11 +56,11 @@ public class ActorsEndpoint {
 		return response;
 	}
 
-//	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getFilmsWithActorRequest")
-//	@ResponsePayload
-//	public GetFilmsWithActorResponse getFilmsWithActor(@RequestPayload GetFilmsWithActorRequest request) {
-//		GetFilmsWithActorResponse response = new GetFilmsWithActorResponse();
-//		response.setFilms(actorService.getFilmsWithActor(request.getActorId()));
-//		return response;
-//	}
+	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getFilmsWithActorRequest")
+	@ResponsePayload
+	public GetFilmsWithActorResponse getFilmsWithActor(@RequestPayload GetFilmsWithActorRequest request) {
+		GetFilmsWithActorResponse response = new GetFilmsWithActorResponse();
+		response.setFilms(actorService.getFilmsWithActor(request.getActorId()));
+		return response;
+	}
 }
