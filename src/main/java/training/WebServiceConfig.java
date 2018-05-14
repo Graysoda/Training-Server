@@ -30,7 +30,7 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 		MessageDispatcherServlet servlet = new MessageDispatcherServlet();
 		servlet.setApplicationContext(applicationContext);
 		servlet.setTransformWsdlLocations(true);
-		return new ServletRegistrationBean(servlet, "/ws/*");
+		return new ServletRegistrationBean(servlet, "/soap/*");
 	}
 
 	@Lazy
@@ -38,14 +38,14 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 	public DefaultWsdl11Definition defaultWsdl11Definition(XsdSchema operationsSchema){
 		DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
 		wsdl11Definition.setPortTypeName("OperationPort");
-		wsdl11Definition.setLocationUri("/ws");
+		wsdl11Definition.setLocationUri("/soap");
 		wsdl11Definition.setTargetNamespace("http://localhost:8080");
 		wsdl11Definition.setSchema(operationsSchema);
 		return wsdl11Definition;
 	}
 
 	@Bean(name = "operationsSchema")
-	public XsdSchema operationSchema() throws FileNotFoundException {
+	public XsdSchema operationSchema() {
 		return new SimpleXsdSchema(new FileSystemResource("/app/target/classes/xsd/operations.xsd"));
 	}
 
