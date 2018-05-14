@@ -8,6 +8,7 @@ package training.database;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import training.database.entity.*;
@@ -39,6 +40,7 @@ import java.sql.SQLException;
 })
 public class Database {
 
+	@Lazy
 	@Bean
 	public DataSource dataSource() throws URISyntaxException {
 		URI dbUri = new URI(System.getenv("DATABASE_URL"));
@@ -56,6 +58,7 @@ public class Database {
 		return dataSource;
 	}
 
+	@Lazy
 	@Bean
 	public Connection getConnection() throws SQLException {
 		String dbUrl = System.getenv("JDBC_DATABASE_URL");
