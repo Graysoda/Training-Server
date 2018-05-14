@@ -4,11 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import training.generated.Actor;
+import training.generated.CreateActorRequest;
 import training.generated.Summary;
 import training.service.ActorServiceImpl;
 
@@ -39,5 +37,8 @@ public class ActorController {
         return new ResponseEntity<>(actorService.getFilmsWithActor(actorId), HttpStatus.OK);
     }
 
-
+    @RequestMapping(value = "/actors/create/",method = RequestMethod.PUT)
+    public void createActor(@RequestParam CreateActorRequest request){
+        actorService.insertActor(request);
+    }
 }
