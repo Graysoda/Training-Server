@@ -1,11 +1,13 @@
 package training.database.dao;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import training.database.Database;
 import training.database.entity.ActorEntity;
-import training.generated.*;
+import training.generated.Actor;
+import training.generated.CreateActorRequest;
+import training.generated.DeleteActorRequest;
+import training.generated.UpdateActorRequest;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -20,8 +22,8 @@ import java.util.List;
 public class ActorDao extends Database {
 	@Lazy @PersistenceContext
 	private EntityManager em;
-	@Lazy @Autowired
-	private FilmActorDao filmActorDao;
+	//@Lazy @Autowired
+	//private FilmActorDao filmActorDao;
 	private static final String baseQuery = "SELECT a FROM sakila.actor a";
 
 
@@ -54,9 +56,9 @@ public class ActorDao extends Database {
 		return convertActorEntitiesToGenerated(this.em.createQuery(baseQuery+where.toString(),ActorEntity.class).getResultList());
 	}
 
-	public List<Summary> getFilms(long actorId) {
-		return filmActorDao.getFilmsWithActor(actorId);
-	}
+	//public List<Summary> getFilms(long actorId) {
+//		return filmActorDao.getFilmsWithActor(actorId);
+//	}
 
 	public void insert(CreateActorRequest request) {
 		String sql = "INSERT INTO actor (first_name, last_name) VALUES ('"+request.getFirstName()+"', '"+request.getLastName()+"');";
