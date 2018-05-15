@@ -87,9 +87,9 @@ public class ActorDaoImpl implements ActorDao{
 
 		String sql = "UPDATE actor SET ";
 
-		 if (request.getNewLastName() != null)
+		 if (request.getNewLastName() != null || !request.getNewLastName().isEmpty())
 			sql += "last_name = '"+request.getNewLastName()+"', ";
-		 if (request.getNewFirstName() != null)
+		 if (request.getNewFirstName() != null || !request.getNewFirstName().isEmpty())
 			sql += "first_name = '"+request.getNewFirstName()+"', ";
 
 		sql = sql.substring(0, sql.length()-2) + " WHERE actor_id='"+request.getActorId()+"';";
