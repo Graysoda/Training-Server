@@ -2,6 +2,7 @@ package training.endpoint;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
@@ -11,22 +12,25 @@ import training.service.CustomerServiceImpl;
 
 @Endpoint
 public class CustomerEndpoint {
-	private static final String NAMESPACE_URI = Constants.NAMESPACE_URI;
+	private static final String NAMESPACE_URI = SoapConstants.NAMESPACE_URI;
 	@Autowired @Lazy private CustomerServiceImpl customerService;
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "createCustomerRequest")
-	public void insertCustomer(@RequestPayload CreateCustomerRequest request){
-		customerService.insertCustomer(request);
+	@ResponsePayload
+	public ResponseEntity<?> insertCustomer(@RequestPayload CreateCustomerRequest request){
+		return customerService.insertCustomer(request);
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "deleteCustomerRequest")
-	public void deleteCustomer(@RequestPayload DeleteCustomerRequest request){
-		customerService.deleteCustomer(request.getCustomerId());
+	@ResponsePayload
+	public ResponseEntity<?> deleteCustomer(@RequestPayload DeleteCustomerRequest request){
+		return customerService.deleteCustomer(request.getCustomerId());
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "updateCustomerRequest")
-	public void updateCustomer(@RequestPayload UpdateCustomerRequest request){
-		customerService.updateCustomer(request);
+	@ResponsePayload
+	public ResponseEntity<?> updateCustomer(@RequestPayload UpdateCustomerRequest request){
+		return customerService.updateCustomer(request);
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI,localPart = "getActiveCustomersRequest")

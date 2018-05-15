@@ -2,6 +2,8 @@ package training.database.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import training.database.entity.AddressEntity;
 import training.generated.Address;
@@ -44,43 +46,49 @@ public class AddressDaoImpl implements AddressDao{
 	}
 
 	@Override
-	public void delete(long addressId) {
+	public ResponseEntity<?> delete(long addressId) {
 		String sql = "DELETE FROM address WHERE address_id='"+addressId+"';";
 		try {
 			connection.createStatement().executeUpdate(sql);
+			return ResponseEntity.ok("Address ["+addressId+"] was successfully deleted.");
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Address ["+addressId+"] was not deleted.\n"+
+					e.getSQLState()+"\n"+e.getLocalizedMessage());
 		}
 	}
 
 	@Override
-	public void update(UpdateAddressRequest request) {
+	public ResponseEntity<?> update(UpdateAddressRequest request) {
 		String sql = "UPDATE address SET ";
 
-		if (request.getAddress()!=null)
+		if (request.getAddress()!=null && !request.getAddress().isEmpty())
 			sql += "address = '"+request.getAddress()+"', ";
-		if (request.getAddress2()!=null)
+		if (request.getAddress2()!=null && !request.getAddress2().isEmpty())
 			sql += "address2 = '"+request.getAddress2()+"', ";
-		if (request.getCity()!=null)
+		if (request.getCity()!=null && !request.getCity().isEmpty())
 			sql += "city = '"+ cityDaoImpl.getIdByName(request.getCity())+"', ";
-		if (request.getDistrict()!=null)
+		if (request.getDistrict()!=null && !request.getDistrict().isEmpty())
 			sql += "district = '"+request.getDistrict()+"', ";
-		if (request.getPhone()!=null)
+		if (request.getPhone()!=null && !request.getPhone().isEmpty())
 			sql += "phone = '"+request.getPhone()+"', ";
-		if (request.getPostalCode()!=null)
+		if (request.getPostalCode()!=null && !request.getPostalCode().isEmpty())
 			sql += "postal_code = '"+request.getPostalCode()+"', ";
 
 		sql = sql.substring(0,sql.length()-2) + " WHERE address_id = '"+request.getAddressId()+"';";
 
 		try {
 			connection.createStatement().executeUpdate(sql);
+			return ResponseEntity.ok("Address ["+request.getAddressId()+"] was successfully updated.");
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Address ["+request.getAddressId()+"] was not updated.\n"+
+					e.getSQLState()+"\n"+e.getLocalizedMessage());
 		}
 	}
 
 	@Override
-	public void insert(CreateAddressRequest request) {
+	public ResponseEntity<?> insert(CreateAddressRequest request) {
 		String sql = "INSERT INTO address (address, address2, district, city_id, postal_code, phone) VALUES " +
 				"('"+request.getAddress()+"', '"+
 				request.getAddress2()+"', '"+
@@ -90,9 +98,10 @@ public class AddressDaoImpl implements AddressDao{
 				request.getPhone()+"');";
 		try {
 			connection.createStatement().executeUpdate(sql);
-
+			return ResponseEntity.ok("Address was successfully created.");
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Address was not created!\n"+e.getSQLState()+"\n"+e.getLocalizedMessage());
 		}
 	}
 
@@ -129,9 +138,6 @@ public class AddressDaoImpl implements AddressDao{
 
 		//System.out.println("phone = ["+entity.getPhone()+"]");
 		address.setPhone(entity.getPhone());
-
-		//System.out.println("last update = ["+entity.getLast_update()+"]");
-		address.setLastUpdate(entity.getLast_update());
 
 		return address;
 	}

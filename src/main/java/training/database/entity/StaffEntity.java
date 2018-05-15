@@ -28,13 +28,11 @@ public class StaffEntity {
 	private String username;
 	@NotNull
 	private String password;
-	@NotNull
-	private String last_update;
 
 	public StaffEntity() {
 	}
 
-	public StaffEntity(long staff_id, @NotNull String first_name, @NotNull String last_name, @NotNull long address_id, @NotNull String email, @NotNull long store_id, @NotNull boolean active, @NotNull String username, @NotNull String password, @NotNull String last_update) {
+	public StaffEntity(long staff_id, @NotNull String first_name, @NotNull String last_name, @NotNull long address_id, @NotNull String email, @NotNull long store_id, @NotNull boolean active, @NotNull String username, @NotNull String password) {
 		this.staff_id = staff_id;
 		this.first_name = first_name;
 		this.last_name = last_name;
@@ -44,7 +42,6 @@ public class StaffEntity {
 		this.active = active;
 		this.username = username;
 		this.password = password;
-		this.last_update = last_update;
 	}
 
 	public long getStaff_id() {
@@ -125,13 +122,5 @@ public class StaffEntity {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public String getLast_update() {
-		return last_update;
-	}
-
-	public void setLast_update(String last_update) {
-		this.last_update = last_update;
 	}
 }

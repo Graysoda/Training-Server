@@ -2,6 +2,7 @@ package training.endpoint;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
@@ -11,7 +12,7 @@ import training.service.StaffServiceImpl;
 
 @Endpoint
 public class StaffEndpoint {
-	private static final String NAMESPACE_URI = Constants.NAMESPACE_URI;
+	private static final String NAMESPACE_URI = SoapConstants.NAMESPACE_URI;
 	@Autowired @Lazy private StaffServiceImpl staffService;
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getAllStaffRequest")
@@ -31,17 +32,17 @@ public class StaffEndpoint {
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "createStaffRequest")
-	public void insertStaff(@RequestPayload CreateStaffRequest request){
-		staffService.insertStaff(request);
+	public ResponseEntity<?> insertStaff(@RequestPayload CreateStaffRequest request){
+		return staffService.insertStaff(request);
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "deleteStaffRequest")
-	public void deleteStaff(@RequestPayload DeleteStaffRequest request){
-		staffService.deleteStaff(request.getStaffId());
+	public ResponseEntity<?> deleteStaff(@RequestPayload DeleteStaffRequest request){
+		return staffService.deleteStaff(request.getStaffId());
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "updateStaffRequest")
-	public void updateStaff(@RequestPayload UpdateStaffRequest request){
-		staffService.updateStaff(request);
+	public ResponseEntity<?> updateStaff(@RequestPayload UpdateStaffRequest request){
+		return staffService.updateStaff(request);
 	}
 }

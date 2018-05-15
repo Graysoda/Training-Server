@@ -2,6 +2,7 @@ package training.endpoint;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
@@ -11,22 +12,25 @@ import training.service.AddressServiceImpl;
 
 @Endpoint
 public class AddressEndpoint {
-	private static final String NAMESPACE_URI = Constants.NAMESPACE_URI;
+	private static final String NAMESPACE_URI = SoapConstants.NAMESPACE_URI;
 	@Autowired @Lazy private AddressServiceImpl addressService;
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "createAddressRequest")
-	public void insertAddress(@RequestPayload CreateAddressRequest request){
-		addressService.insertAddress(request);
+	@ResponsePayload
+	public ResponseEntity<?> insertAddress(@RequestPayload CreateAddressRequest request){
+		return addressService.insertAddress(request);
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "deleteAddressRequest")
-	public void deleteAddress(@RequestPayload DeleteAddressRequest request){
-		addressService.deleteAddress(request.getAddressId());
+	@ResponsePayload
+	public ResponseEntity<?> deleteAddress(@RequestPayload DeleteAddressRequest request){
+		return addressService.deleteAddress(request.getAddressId());
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "updateAddressRequest")
-	public void updateAddress(@RequestPayload UpdateAddressRequest request){
-		addressService.updateAddress(request);
+	@ResponsePayload
+	public ResponseEntity<?> updateAddress(@RequestPayload UpdateAddressRequest request){
+		return addressService.updateAddress(request);
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getAllAddressRequest")

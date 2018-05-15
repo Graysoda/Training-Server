@@ -1,5 +1,6 @@
 package training.service;
 
+import org.springframework.http.ResponseEntity;
 import training.generated.Address;
 import training.generated.CreateAddressRequest;
 import training.generated.UpdateAddressRequest;
@@ -7,8 +8,8 @@ import training.generated.UpdateAddressRequest;
 import java.util.List;
 
 public interface AddressService {
-	void insertAddress(CreateAddressRequest request);
+	ResponseEntity<?> insertAddress(CreateAddressRequest request);
 	List<Address> getAllAddresses();
-	void deleteAddress(long addressId);
-	void updateAddress(UpdateAddressRequest request);
+	ResponseEntity<?> deleteAddress(long addressId);
+	ResponseEntity<?> updateAddress(UpdateAddressRequest request);
 }

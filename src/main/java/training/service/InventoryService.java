@@ -1,5 +1,6 @@
 package training.service;
 
+import org.springframework.http.ResponseEntity;
 import training.generated.CreateInventoryRequest;
 import training.generated.Inventory;
 import training.generated.UpdateInventoryRequest;
@@ -11,7 +12,7 @@ public interface InventoryService {
 	List<Inventory> getAllInventory() throws SQLException;
 	Inventory getInventoryById(long id) throws SQLException;
 	List<Inventory> getStoreInventory(long storeId) throws SQLException;
-	void insert(CreateInventoryRequest request);
-	void deleteInventory(long inventoryId);
-	void updateInventory(UpdateInventoryRequest request);
+	ResponseEntity<?> insert(CreateInventoryRequest request);
+	ResponseEntity<?> deleteInventory(long inventoryId);
+	ResponseEntity<?> updateInventory(UpdateInventoryRequest request);
 }

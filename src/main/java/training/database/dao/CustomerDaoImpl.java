@@ -2,6 +2,8 @@ package training.database.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import training.database.entity.CustomerEntity;
 import training.generated.CreateCustomerRequest;
@@ -58,7 +60,7 @@ public class CustomerDaoImpl implements CustomerDao{
 		return convertEntitystoGenerated(this.em.createQuery(baseQuery, CustomerEntity.class).getResultList());
 	}
 
-	public void insert(CreateCustomerRequest request) {
+	public ResponseEntity<?> insert(CreateCustomerRequest request) {
 		String sql = "INSERT INTO customer (store_id, first_name, last_name, email, address_id, active) VALUES " +
 				"('"+request.getStoreId()+"', '"+
 				request.getFirstName()+"', '"+
@@ -68,32 +70,36 @@ public class CustomerDaoImpl implements CustomerDao{
 				request.isActive()+"');";
 		try {
 			connection.createStatement().executeUpdate(sql);
+			return ResponseEntity.ok("Customer was created.");
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Customer was not created.\n"+e.getSQLState()+"\n"+e.getLocalizedMessage());
 		}
 	}
 
-	public void delete(long customerId) {
+	public ResponseEntity<?> delete(long customerId) {
 		String sql = "DELETE FROM customer WHERE customer_id='"+customerId+"';";
 		try {
 			connection.createStatement().executeUpdate(sql);
+			return ResponseEntity.ok("Customer ["+customerId+"] was deleted");
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Customer ["+customerId+"] was not deleted.\n"+e.getSQLState()+"\n"+e.getLocalizedMessage());
 		}
 	}
 
-	public void update(UpdateCustomerRequest request) {
+	public ResponseEntity<?> update(UpdateCustomerRequest request) {
 		String sql = "UPDATE customer SET ";
 
 		if (request.isActive()!=null)
 			sql += "active = '"+request.isActive()+"', ";
 		if (request.getAddressId()!=null)
 			sql += "address_id = '"+request.getAddressId()+"', ";
-		if (request.getEmail()!=null)
+		if (request.getEmail()!=null && !request.getEmail().isEmpty())
 			sql += "email = '"+request.getEmail()+"', ";
-		if (request.getFirstName()!=null)
+		if (request.getFirstName()!=null && !request.getFirstName().isEmpty())
 			sql += "first_name = '"+request.getFirstName()+"', ";
-		if (request.getLastName()!=null)
+		if (request.getLastName()!=null && !request.getLastName().isEmpty())
 			sql += "last_name = '"+request.getLastName()+"', ";
 		if (request.getStoreId()!=null)
 			sql += "store_id = '"+request.getStoreId()+"', ";
@@ -102,8 +108,10 @@ public class CustomerDaoImpl implements CustomerDao{
 
 		try {
 			connection.createStatement().executeUpdate(sql);
+			return ResponseEntity.ok("Customer ["+request.getCustomerId()+"] was updated successfully.");
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Customer ["+request.getCustomerId()+"] was not updated.\n"+e.getSQLState()+"\n"+e.getLocalizedMessage());
 		}
 	}
 
@@ -143,9 +151,6 @@ public class CustomerDaoImpl implements CustomerDao{
 
 		//System.out.println("insert date = ["+entity.getCreate_date()+"]");
 		customer.setCreateDate(entity.getCreate_date());
-
-		//System.out.println("last update = ["+entity.getLast_update()+"]");
-		customer.setLastUpdate(entity.getLast_update());
 
 		return customer;
 	}

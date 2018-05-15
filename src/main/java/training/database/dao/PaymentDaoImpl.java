@@ -2,6 +2,8 @@ package training.database.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import training.database.entity.PaymentEntity;
 import training.generated.CreatePaymentRequest;
@@ -39,7 +41,7 @@ public class PaymentDaoImpl implements PaymentDao {
 		return convertEntitiesToGenerated(this.em.createQuery(baseQuery, PaymentEntity.class).getResultList());
 	}
 
-	public void insert(CreatePaymentRequest request) {
+	public ResponseEntity<?> insert(CreatePaymentRequest request) {
 		String sql = "INSERT INTO payment (customer_id, staff_id, rental_id, amount, payment_date) VALUES " +
 				"("+request.getCustomerId()+", " +
 				request.getStaffId()+", " +
@@ -48,40 +50,46 @@ public class PaymentDaoImpl implements PaymentDao {
 				request.getPaymentDate()+");";
 		try {
 			connection.createStatement().executeUpdate(sql);
+			return ResponseEntity.ok("Payment created.");
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Payment was not created.\n"+e.getSQLState()+"\n"+e.getLocalizedMessage());
 		}
 	}
 
-	public void delete(long paymentId) {
+	public ResponseEntity<?> delete(long paymentId) {
 		String sql = "DELETE FROM payment WHERE payment_id='"+paymentId+"';";
 		try {
 			connection.createStatement().executeUpdate(sql);
+			return ResponseEntity.ok("Payment ["+paymentId+"] was deleted.");
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Payment ["+paymentId+"] was not deleted.\n"+e.getSQLState()+"\n"+e.getLocalizedMessage());
 		}
 	}
 
-	public void update(UpdatePaymentRequest request) {
+	public ResponseEntity<?> update(UpdatePaymentRequest request) {
 		String sql = "UPDATE payment SET ";
 
-		if (request.getAmount()!=null)
+		if (request.getAmount()!=null && request.getAmount() > 0)
 			sql += "amount = '"+request.getAmount()+"', ";
-		if (request.getCustomerId()!=null)
+		if (request.getCustomerId()!=null && request.getCustomerId() > 0)
 			sql += "customer_id = '"+request.getCustomerId()+"', ";
-		if (request.getPaymentDate()!=null)
+		if (request.getPaymentDate()!=null && !request.getPaymentDate().isEmpty())
 			sql += "payment_date = '"+request.getPaymentDate()+"', ";
-		if (request.getRentalId()!=null)
+		if (request.getRentalId()!=null && request.getRentalId() > 0)
 			sql += "rental_id = '"+request.getRentalId()+"', ";
-		if (request.getStaffId()!=null)
+		if (request.getStaffId()!=null && request.getStaffId() > 0)
 			sql += "staff_id = '"+request.getStaffId()+"', ";
 
 		sql = sql.substring(0,sql.length()-2) + " WHERE payment_id = '"+request.getPaymentId()+"';";
 
 		try {
 			connection.createStatement().executeUpdate(sql);
+			return ResponseEntity.ok("Payment ["+request.getPaymentId()+"] was updated.");
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Payment ["+request.getPaymentId()+" was not updated.\n"+e.getSQLState()+"\n"+e.getLocalizedMessage());
 		}
 	}
 

@@ -2,6 +2,8 @@ package training.database.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import training.database.entity.RentalEntity;
 import training.generated.CreateRentalRequest;
@@ -110,7 +112,7 @@ public class RentalDaoImpl implements RentalDao{
         return convertEntitiesToGenerated(this.em.createQuery(query, RentalEntity.class).getResultList());
 	}
 
-	public void insert(CreateRentalRequest request) {
+	public ResponseEntity<?> insert(CreateRentalRequest request) {
 		String sql = "INSERT INTO rental (customer_id, staff_id, inventory_id, rental_date, return_date) VALUES " +
 				"("+request.getCustomerId()+", "+
 				request.getStaffId()+", "+
@@ -119,40 +121,46 @@ public class RentalDaoImpl implements RentalDao{
 				request.getReturnDate()+");";
 		try {
 			connection.createStatement().executeUpdate(sql);
+			return ResponseEntity.ok("Rental created.");
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Rental was not created.\n"+e.getSQLState()+"\n"+e.getLocalizedMessage());
 		}
 	}
 
-	public void delete(long rentalId) {
+	public ResponseEntity<?> delete(long rentalId) {
 		String sql = "DELETE FROM rental WHERE rental_id='"+rentalId+"';";
 		try {
 			connection.createStatement().executeUpdate(sql);
+			return ResponseEntity.ok("Rental ["+rentalId+"] was deleted.");
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Rental ["+rentalId+"] was not deleted.\n"+e.getSQLState()+"\n"+e.getLocalizedMessage());
 		}
 	}
 
-	public void update(UpdateRentalRequest request) {
+	public ResponseEntity<?> update(UpdateRentalRequest request) {
 		String sql = "UPDATE rental SET ";
 
-		if (request.getCustomerId()!=null)
+		if (request.getCustomerId()!=null && request.getCustomerId() > 0)
 			sql += "customer_id = '"+request.getCustomerId()+"', ";
-		if (request.getInventoryId()!=null)
+		if (request.getInventoryId()!=null && request.getInventoryId() > 0)
 			sql += "inventory_id = '"+request.getInventoryId()+"', ";
-		if (request.getRentalDate()!=null)
+		if (request.getRentalDate()!=null && !request.getRentalDate().isEmpty())
 			sql += "rental_date = '"+request.getRentalDate()+"', ";
-		if (request.getReturnDate()!=null)
+		if (request.getReturnDate()!=null && !request.getReturnDate().isEmpty())
 			sql += "return_date = '"+request.getReturnDate()+"', ";
-		if (request.getStaffId()!=null)
+		if (request.getStaffId()!=null && request.getStaffId() > 0)
 			sql += "staff_id = '"+request.getStaffId()+"', ";
 
 		sql = sql.substring(0,sql.length()-2) + " WHERE rental_id = '"+request.getRentalId()+"';";
 
 		try {
 			connection.createStatement().executeUpdate(sql);
+			return ResponseEntity.ok("Rental ["+request.getRentalId()+"] was updated.");
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Rental ["+request.getRentalId()+"] was not updated.\n"+e.getSQLState()+"\n"+e.getLocalizedMessage());
 		}
 	}
 

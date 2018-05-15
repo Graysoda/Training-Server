@@ -1,5 +1,6 @@
 package training.database.dao;
 
+import org.springframework.http.ResponseEntity;
 import training.generated.Address;
 import training.generated.CreateAddressRequest;
 import training.generated.UpdateAddressRequest;
@@ -9,7 +10,7 @@ import java.util.List;
 public interface AddressDao {
     Address getById(long id);
     List<Address> getAll();
-    void delete(long addressId);
-    void update(UpdateAddressRequest request);
-    void insert(CreateAddressRequest request);
+    ResponseEntity<?> delete(long addressId);
+    ResponseEntity<?> update(UpdateAddressRequest request);
+    ResponseEntity<?> insert(CreateAddressRequest request);
 }

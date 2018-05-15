@@ -13,17 +13,14 @@ public class ActorEntity {
 	private String first_name;
 	@NotNull
 	private String last_name;
-	@NotNull
-	private String last_update;
 
 	public ActorEntity() {
 	}
 
-	public ActorEntity(long actor_id, @NotNull String first_name, @NotNull String last_name, @NotNull String last_update) {
+	public ActorEntity(long actor_id, @NotNull String first_name, @NotNull String last_name) {
 		this.actor_id = actor_id;
 		this.first_name = first_name;
 		this.last_name = last_name;
-		this.last_update = last_update;
 	}
 
 	public long getActor_id() {
@@ -48,13 +45,5 @@ public class ActorEntity {
 
 	public void setLast_name(String last_name) {
 		this.last_name = last_name;
-	}
-
-	public String getLast_update() {
-		return this.last_update;
-	}
-
-	public void setLast_update(String last_update) {
-		this.last_update = last_update;
 	}
 }

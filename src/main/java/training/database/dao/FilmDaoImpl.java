@@ -2,6 +2,8 @@ package training.database.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import training.database.entity.FilmEntity;
 import training.generated.*;
@@ -118,7 +120,7 @@ public class FilmDaoImpl implements FilmDao{
 		return convertEntityToSummary(this.em.createQuery(query).getSingleResult());
 	}
 
-	public void insert(CreateFilmRequest request) {
+	public ResponseEntity<?> insert(CreateFilmRequest request) {
 		String sql = "INSERT INTO film " +
 				"(title, " +
 				"description, " +
@@ -145,58 +147,63 @@ public class FilmDaoImpl implements FilmDao{
 				request.getSpecialFeatures()+");";
 		try {
 			connection.createStatement().executeUpdate(sql);
+			return ResponseEntity.ok("Film was created.");
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Film was not created.\n"+e.getSQLState()+"\n"+e.getLocalizedMessage());
 		}
 	}
 
-	public void update(UpdateFilmRequest request) {
+	public ResponseEntity<?> update(UpdateFilmRequest request) {
 		String sql = "UPDATE film SET ";
-		if (request.getTitle() != null)
+		if (request.getTitle() != null && !request.getTitle().isEmpty())
 			sql += "title = '"+request.getTitle()+"', ";
-		if (request.getDescription() != null)
+		if (request.getDescription() != null && !request.getDescription().isEmpty())
 			sql += "description = '"+request.getDescription()+"', ";
-		if (request.getLanguage()!=null)
+		if (request.getLanguage()!=null && !request.getLanguage().isEmpty())
 			sql += "language_id = '"+ languageDaoImpl.getId(request.getLanguage())+"', ";
-		if (request.getOriginalLanguage()!=null)
+		if (request.getOriginalLanguage()!=null && !request.getOriginalLanguage().isEmpty())
 			sql += "original_language = '"+ languageDaoImpl.getId(request.getOriginalLanguage())+"', ";
-		if (request.getLength()!=null)
+		if (request.getLength()!=null && request.getLength() > 0)
 			sql += "length = '"+request.getLength()+"', ";
-		if (request.getRating()!=null)
+		if (request.getRating()!=null && !request.getRating().isEmpty())
 			sql += "rating = '"+request.getRating()+"', ";
-		if (request.getReleaseYear()!=null)
+		if (request.getReleaseYear()!=null && request.getReleaseYear() > 0)
 			sql += "release_year = '"+request.getReleaseYear()+"', ";
-		if (request.getRentalDuration()!=null)
+		if (request.getRentalDuration()!=null && request.getRentalDuration() > 0)
 			sql += "rental_duration ='"+request.getRentalDuration()+"', ";
-		if (request.getRentalRate()!=null)
+		if (request.getRentalRate()!=null && !request.getRentalRate().isNaN())
 			sql += "rental_rate = '"+request.getRentalRate()+"', ";
-		if (request.getReplacementCost()!=null)
+		if (request.getReplacementCost()!=null && !request.getReplacementCost().isNaN())
 			sql += "replacement_cost = '"+request.getReplacementCost()+"', ";
-		if (request.getSpecialFeatures()!=null)
+		if (request.getSpecialFeatures()!=null && !request.getSpecialFeatures().isEmpty())
 			sql += "special_features = '"+request.getSpecialFeatures()+"', ";
 
 		sql += sql.subSequence(0,sql.length()-2) + " WHERE film_id = '"+request.getFilmId()+"';";
 
 		try {
 			connection.createStatement().executeUpdate(sql);
+			return ResponseEntity.ok("Film ["+request.getFilmId()+"] was updated successfully");
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Film ["+request.getFilmId()+"] was not updated.\n"+e.getSQLState()+"\n"+e.getLocalizedMessage());
 		}
 	}
 
-	public void delete(long filmId) {
+	public ResponseEntity<?> delete(long filmId) {
 		String sql = "DELETE FROM film WHERE film_id='"+filmId+"';";
 		try {
 			connection.createStatement().executeUpdate(sql);
+			return ResponseEntity.ok("Film ["+filmId+"] was deleted");
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Film ["+filmId+"] was not deleted.\n"+e.getSQLState()+"\n"+e.getLocalizedMessage());
 		}
 	}
 
 	/******************************
 			Conversions
-	******************************
-	 * @param entities*/
+	******************************/
 	private List<Film> convertListToGenerated(List<FilmEntity> entities) {
 		List<Film> filmList = new ArrayList<>();
 		//System.out.println("converting list to generated");
@@ -254,13 +261,8 @@ public class FilmDaoImpl implements FilmDao{
 		//System.out.println("special features = ["+entity.getSpecial_features()+"]");
 		film.setSpecialFeatures(entity.getSpecial_features());
 
-		//System.out.println("last update = ["+entity.getLast_update()+"]");
-		film.setLastUpdate(entity.getLast_update());
-
 		film.setCategory(filmCategoryDaoImpl.getById(entity.getFilm_id()));
 		film.setActors(filmActorDaoImpl.getActorsFromFilm(entity.getFilm_id()));
-
-		//System.out.println("film_id = "+film.getFilmId());
 
 		return film;
 	}
@@ -281,6 +283,8 @@ public class FilmDaoImpl implements FilmDao{
 		summary.setFilmId(filmEntity.getFilm_id());
 		summary.setTitle(filmEntity.getTitle());
 		summary.setDescription(filmEntity.getDescription());
+		summary.setLength(filmEntity.getLength());
+		summary.setRating(filmEntity.getRating());
 
 		return summary;
 	}

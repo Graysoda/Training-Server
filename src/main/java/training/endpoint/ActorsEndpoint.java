@@ -13,21 +13,24 @@ import training.service.ActorServiceImpl;
 
 @Endpoint
 public class ActorsEndpoint {
-	private static final String NAMESPACE_URI = Constants.NAMESPACE_URI;
+	private static final String NAMESPACE_URI = SoapConstants.NAMESPACE_URI;
 	@Lazy @Autowired
 	private ActorServiceImpl actorService;
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "createActorRequest")
+	@ResponsePayload
 	public ResponseEntity<?> createActor(@RequestPayload CreateActorRequest request) {
 		return actorService.insertActor(request);
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "updateActorRequest")
+	@ResponsePayload
 	public ResponseEntity<?> updateActor(@RequestPayload UpdateActorRequest request) {
 		return actorService.updateActor(request);
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "deleteActorRequest")
+	@ResponsePayload
 	public ResponseEntity<?> deleteActor(@RequestPayload DeleteActorRequest request) {
 		return actorService.deleteActor(request.getActorId());
 	}

@@ -2,6 +2,7 @@ package training.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import training.database.dao.InventoryDaoImpl;
@@ -35,19 +36,19 @@ public class InventoryServiceImpl implements InventoryService{
 
 	@Override
 	@Transactional
-	public void insert(CreateInventoryRequest request) {
-		inventoryDaoImpl.insert(request);
+	public ResponseEntity<?> insert(CreateInventoryRequest request) {
+		return inventoryDaoImpl.insert(request);
 	}
 
 	@Override
 	@Transactional
-	public void deleteInventory(long inventoryId) {
-		inventoryDaoImpl.delete(inventoryId);
+	public ResponseEntity<?> deleteInventory(long inventoryId) {
+		return inventoryDaoImpl.delete(inventoryId);
 	}
 
 	@Override
 	@Transactional
-	public void updateInventory(UpdateInventoryRequest request) {
-		inventoryDaoImpl.update(request);
+	public ResponseEntity<?> updateInventory(UpdateInventoryRequest request) {
+		return inventoryDaoImpl.update(request);
 	}
 }

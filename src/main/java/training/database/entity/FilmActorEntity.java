@@ -12,8 +12,6 @@ public class FilmActorEntity {
 	private long actor_id;
 	@NotNull
 	private long film_id;
-	@NotNull
-	private String last_update;
 
 	public FilmActorEntity() {
 	}
@@ -21,12 +19,6 @@ public class FilmActorEntity {
 	public FilmActorEntity(@NotNull long actor_id, @NotNull long film_id) {
 		this.actor_id = actor_id;
 		this.film_id = film_id;
-	}
-
-	public FilmActorEntity(@NotNull long actor_id, @NotNull long film_id, @NotNull String last_update) {
-		this.actor_id = actor_id;
-		this.film_id = film_id;
-		this.last_update = last_update;
 	}
 
 	public long getActor_id() {
@@ -43,13 +35,5 @@ public class FilmActorEntity {
 
 	public void setFilm_id(long film_id) {
 		this.film_id = film_id;
-	}
-
-	public String getLast_update() {
-		return last_update;
-	}
-
-	public void setLast_update(String last_update) {
-		this.last_update = last_update;
 	}
 }

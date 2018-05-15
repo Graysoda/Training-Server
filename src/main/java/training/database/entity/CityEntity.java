@@ -13,17 +13,14 @@ public class CityEntity {
 	private String city;
 	@NotNull
 	private long country_id;
-	@NotNull
-	private String last_update;
 
 	public CityEntity() {
 	}
 
-	public CityEntity(long city_id, @NotNull String city, @NotNull long country_id, @NotNull String last_update) {
+	public CityEntity(long city_id, @NotNull String city, @NotNull long country_id) {
 		this.city_id = city_id;
 		this.city = city;
 		this.country_id = country_id;
-		this.last_update = last_update;
 	}
 
 	public long getCity_id() {
@@ -48,13 +45,5 @@ public class CityEntity {
 
 	public void setCountry_id(long country_id) {
 		this.country_id = country_id;
-	}
-
-	public String getLast_update() {
-		return last_update;
-	}
-
-	public void setLast_update(String last_update) {
-		this.last_update = last_update;
 	}
 }

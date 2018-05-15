@@ -14,6 +14,7 @@ import training.service.ActorServiceImpl;
 import java.util.List;
 
 @RestController
+@RequestMapping(value = RestConstants.REST_SERVICES_LOCATION, produces = RestConstants.JSON)
 public class ActorController {
     @Autowired @Lazy
     private ActorServiceImpl actorService;
@@ -50,36 +51,17 @@ public class ActorController {
             return new ResponseEntity<>(summaries, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/actors/create/",method = RequestMethod.PUT)
-    public ResponseEntity<?> createActor(@RequestParam String firstName, @RequestParam String lastName){
-        if (firstName == null || firstName.isEmpty() || lastName == null || lastName.isEmpty())
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("first and last name must not be null or empty!");
-
-        CreateActorRequest request = new CreateActorRequest();
-
-        request.setFirstName(firstName);
-        request.setLastName(lastName);
-
+    @RequestMapping(value = "/actors/create",method = RequestMethod.PUT)
+    public ResponseEntity<?> createActor(@RequestBody CreateActorRequest request){
         return actorService.insertActor(request);
     }
 
-    @RequestMapping(value = "/actors/{actorId}/update/", method = RequestMethod.POST)
-    public ResponseEntity<?> updateActor(@PathVariable long actorId, @RequestParam String firstName, @RequestParam String lastName){
-        if(actorId < 1)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("invalid actor id, must be greater than 0");
-        if ((firstName == null || firstName.isEmpty()) && (lastName == null || lastName.isEmpty()))
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please provide a first or last name to update!");
-
-        UpdateActorRequest request = new UpdateActorRequest();
-
-        request.setActorId(actorId);
-        request.setNewFirstName(firstName);
-        request.setNewLastName(lastName);
-
+    @RequestMapping(value = "/actors/update", method = RequestMethod.POST)
+    public ResponseEntity<?> updateActor(@RequestBody UpdateActorRequest request){
         return actorService.updateActor(request);
     }
 
-    @RequestMapping(value = "/actors/{actorId}/delete/", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/actors/{actorId}/delete", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteActor(@PathVariable long actorId){
         return actorService.deleteActor(actorId);
     }

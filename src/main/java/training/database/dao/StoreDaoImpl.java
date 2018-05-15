@@ -56,9 +56,6 @@ public class StoreDaoImpl {
 		//System.out.println("staff id = ["+entity.getStore_id()+"]");
 		store.setManager(staffDaoImpl.getById(entity.getManager_staff_id()));
 
-		//System.out.println("last update = ["+entity.getLast_update()+"]");
-		store.setLastUpdate(entity.getLast_update());
-
 		return store;
 	}
 }

@@ -13,17 +13,14 @@ public class StoreEntity {
 	private long manager_staff_id;
 	@NotNull
 	private long address_id;
-	@NotNull
-	private String last_update;
 
 	public StoreEntity() {
 	}
 
-	public StoreEntity(long store_id, @NotNull long manager_staff_id, @NotNull long address_id, @NotNull String last_update) {
+	public StoreEntity(long store_id, @NotNull long manager_staff_id, @NotNull long address_id) {
 		this.store_id = store_id;
 		this.manager_staff_id = manager_staff_id;
 		this.address_id = address_id;
-		this.last_update = last_update;
 	}
 
 	public long getStore_id() {
@@ -48,13 +45,5 @@ public class StoreEntity {
 
 	public void setAddress_id(long address_id) {
 		this.address_id = address_id;
-	}
-
-	public String getLast_update() {
-		return last_update;
-	}
-
-	public void setLast_update(String last_update) {
-		this.last_update = last_update;
 	}
 }

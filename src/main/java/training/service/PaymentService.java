@@ -1,5 +1,6 @@
 package training.service;
 
+import org.springframework.http.ResponseEntity;
 import training.generated.CreatePaymentRequest;
 import training.generated.Payment;
 import training.generated.UpdatePaymentRequest;
@@ -8,7 +9,7 @@ import java.util.List;
 
 public interface PaymentService {
 	List<Payment> getAllPayments();
-	void insertPayment(CreatePaymentRequest request);
-	void deletePayment(long paymentId);
-	void updatePayment(UpdatePaymentRequest request);
+	ResponseEntity<?> insertPayment(CreatePaymentRequest request);
+	ResponseEntity<?> deletePayment(long paymentId);
+	ResponseEntity<?> updatePayment(UpdatePaymentRequest request);
 }

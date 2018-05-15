@@ -2,6 +2,7 @@ package training.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import training.database.dao.StaffDaoImpl;
@@ -29,19 +30,19 @@ public class StaffServiceImpl implements StaffService {
 
 	@Override
 	@Transactional
-	public void insertStaff(CreateStaffRequest request) {
-		staffDaoImpl.insert(request);
+	public ResponseEntity<?> insertStaff(CreateStaffRequest request) {
+		return staffDaoImpl.insert(request);
 	}
 
 	@Override
 	@Transactional
-	public void deleteStaff(long staffId) {
-		staffDaoImpl.delete(staffId);
+	public ResponseEntity<?> deleteStaff(long staffId) {
+		return staffDaoImpl.delete(staffId);
 	}
 
 	@Override
 	@Transactional
-	public void updateStaff(UpdateStaffRequest request) {
-		staffDaoImpl.update(request);
+	public ResponseEntity<?> updateStaff(UpdateStaffRequest request) {
+		return staffDaoImpl.update(request);
 	}
 }

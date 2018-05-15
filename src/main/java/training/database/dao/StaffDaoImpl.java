@@ -2,6 +2,8 @@ package training.database.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import training.database.entity.StaffEntity;
 import training.generated.CreateStaffRequest;
@@ -49,7 +51,7 @@ public class StaffDaoImpl implements StaffDao {
 		return convertEntitiesToGenerated(this.em.createQuery(baseQuery, StaffEntity.class).getResultList());
 	}
 
-	public void insert(CreateStaffRequest request) {
+	public ResponseEntity<?> insert(CreateStaffRequest request) {
 		String sql = "INSERT INTO staff (first_name, last_name, address_id, email, store_id, active, username, password) VALUES " +
 				"("+request.getFirstName()+", " +
 				request.getLastName()+", " +
@@ -61,22 +63,25 @@ public class StaffDaoImpl implements StaffDao {
 				request.getPassword()+");";
 		try {
 			connection.createStatement().executeUpdate(sql);
-
+			return ResponseEntity.ok("Staff was created.");
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Staff was not created.\n"+e.getSQLState()+"\n"+e.getLocalizedMessage());
 		}
 	}
 
-	public void delete(long staffId) {
+	public ResponseEntity<?> delete(long staffId) {
 		String sql = "DELETE FROM staff WHERE staff_id='"+staffId+"';";
 		try {
 			connection.createStatement().executeUpdate(sql);
+			return ResponseEntity.ok("Staff ["+staffId+"] was deleted.");
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Staff ["+staffId+"] was not deleted.\n"+e.getSQLState()+"\n"+e.getLocalizedMessage());
 		}
 	}
 
-	public void update(UpdateStaffRequest request) {
+	public ResponseEntity<?> update(UpdateStaffRequest request) {
 		String sql = "UPDATE staff SET ";
 
 		if (request.isActive()!=null)
@@ -100,8 +105,10 @@ public class StaffDaoImpl implements StaffDao {
 
 		try {
 			connection.createStatement().executeUpdate(sql);
+			return ResponseEntity.ok("Staff ["+request.getStaffId()+"] was updated.");
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Staff ["+request.getStaffId()+"] was not updated.\n"+e.getSQLState()+"\n"+e.getLocalizedMessage());
 		}
 	}
 
@@ -144,9 +151,6 @@ public class StaffDaoImpl implements StaffDao {
 
 		//System.out.println("password = ["+entity.getPassword()+"]");
 		staff.setPassword(entity.getPassword());
-
-		//System.out.println("last update = ["+entity.getLast_update()+"]");
-		staff.setLastUpdate(entity.getLast_update());
 
 		return staff;
 	}

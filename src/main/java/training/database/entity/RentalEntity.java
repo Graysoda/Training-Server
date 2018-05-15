@@ -19,20 +19,17 @@ public class RentalEntity {
 	private String rental_date;
 	@NotNull
 	private String return_date;
-	@NotNull
-	private String last_update;
 
 	public RentalEntity() {
 	}
 
-	public RentalEntity(long rental_id, @NotNull long customer_id, @NotNull long staff_id, @NotNull long inventory_id, @NotNull String rental_date, @NotNull String return_date, @NotNull String last_update) {
+	public RentalEntity(long rental_id, @NotNull long customer_id, @NotNull long staff_id, @NotNull long inventory_id, @NotNull String rental_date, @NotNull String return_date) {
 		this.rental_id = rental_id;
 		this.customer_id = customer_id;
 		this.staff_id = staff_id;
 		this.inventory_id = inventory_id;
 		this.rental_date = rental_date;
 		this.return_date = return_date;
-		this.last_update = last_update;
 	}
 
 	public long getRental_id() {
@@ -81,13 +78,5 @@ public class RentalEntity {
 
 	public void setReturn_date(String return_date) {
 		this.return_date = return_date;
-	}
-
-	public String getLast_update() {
-		return last_update;
-	}
-
-	public void setLast_update(String last_update) {
-		this.last_update = last_update;
 	}
 }

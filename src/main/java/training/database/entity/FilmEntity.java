@@ -8,21 +8,6 @@ import javax.validation.constraints.NotNull;
 @Entity(name = "sakila.film")
 @Table(name = "film")
 public class FilmEntity{
-
-	public enum mpaa_rating {
-		G("G"),PG("PG"),PG13("PG-13"),R("R"),NC17("NC-17");
-
-		private String rating;
-
-		mpaa_rating(final String rating){
-			this.rating = rating;
-		}
-
-		public String getRating() {
-			return rating;
-		}
-	}
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long film_id;
@@ -37,7 +22,6 @@ public class FilmEntity{
 	@NotNull private float replacement_cost;
 	@NotNull private String rating;
 	@NotNull private String special_features;
-	@NotNull private String last_update;
 
 	public FilmEntity(){}
 
@@ -47,7 +31,7 @@ public class FilmEntity{
 		this.description = description;
 	}
 
-	public FilmEntity(long film_id, @NotNull String title, @NotNull String description, @NotNull int release_year, @NotNull long language_id, Long original_language_id, @NotNull int rental_duration, @NotNull float rental_rate, @NotNull int length, @NotNull float replacement_cost, @NotNull String rating, @NotNull String special_features, @NotNull String last_update) {
+	public FilmEntity(long film_id, @NotNull String title, @NotNull String description, @NotNull int release_year, @NotNull long language_id, Long original_language_id, @NotNull int rental_duration, @NotNull float rental_rate, @NotNull int length, @NotNull float replacement_cost, @NotNull String rating, @NotNull String special_features) {
 		this.film_id = film_id;
 		this.title = title;
 		this.description = description;
@@ -60,7 +44,6 @@ public class FilmEntity{
 		this.replacement_cost = replacement_cost;
 		this.rating = rating;
 		this.special_features = special_features;
-		this.last_update = last_update;
 
 	}
 
@@ -160,14 +143,6 @@ public class FilmEntity{
 		this.special_features = special_features;
 	}
 
-	public String getLast_update() {
-		return last_update;
-	}
-
-	public void setLast_update(String last_update) {
-		this.last_update = last_update;
-	}
-
 	@Override
 	public String toString() {
 		return "film_id="+ film_id +", " +
@@ -180,7 +155,6 @@ public class FilmEntity{
 				"length="+length+", " +
 				"replacement_cost="+ replacement_cost +", " +
 				"rating="+rating+", " +
-				"special_features="+ special_features +", " +
-				"last_update="+ last_update;
+				"special_features="+ special_features;
 	}
 }

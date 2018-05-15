@@ -2,6 +2,7 @@ package training.endpoint;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
@@ -11,7 +12,7 @@ import training.service.RentalServiceImpl;
 
 @Endpoint
 public class RentalEndpoint {
-	private static final String NAMESPACE_URI = Constants.NAMESPACE_URI;
+	private static final String NAMESPACE_URI = SoapConstants.NAMESPACE_URI;
 	@Autowired @Lazy private RentalServiceImpl rentalService;
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getAllRentalsRequest")
@@ -63,17 +64,20 @@ public class RentalEndpoint {
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "createRentalRequest")
-	public void insertRental(@RequestPayload CreateRentalRequest request){
-		rentalService.insertRental(request);
+	@ResponsePayload
+	public ResponseEntity<?> insertRental(@RequestPayload CreateRentalRequest request){
+		return rentalService.insertRental(request);
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "deleteRentalRequest")
-	public void deleteRental(@RequestPayload DeleteRentalRequest request){
-		rentalService.deleteRental(request.getRentalId());
+	@ResponsePayload
+	public ResponseEntity<?> deleteRental(@RequestPayload DeleteRentalRequest request){
+		return rentalService.deleteRental(request.getRentalId());
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "updateRentalRequest")
-	public void updateRental(@RequestPayload UpdateRentalRequest request){
-		rentalService.updateRental(request);
+	@ResponsePayload
+	public ResponseEntity<?> updateRental(@RequestPayload UpdateRentalRequest request){
+		return rentalService.updateRental(request);
 	}
 }

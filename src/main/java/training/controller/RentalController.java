@@ -4,16 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-import training.generated.Rental;
+import org.springframework.web.bind.annotation.*;
+import training.generated.CreateRentalRequest;
+import training.generated.UpdateRentalRequest;
 import training.service.RentalServiceImpl;
 
-import java.util.List;
-
 @RestController
+@RequestMapping(value = RestConstants.REST_SERVICES_LOCATION, produces = RestConstants.JSON)
 public class RentalController {
     @Autowired @Lazy private RentalServiceImpl rentalService;
 
@@ -23,22 +20,37 @@ public class RentalController {
     }
 
     @RequestMapping(value = "/customer/{customerId}/rentals/", method = RequestMethod.GET)
-    public ResponseEntity<List<Rental>> getRentalsByCustomerId(@PathVariable long customerId){
+    public ResponseEntity<?> getRentalsByCustomerId(@PathVariable long customerId){
         return new ResponseEntity<>(rentalService.getRentalsByCustomerId(customerId),HttpStatus.OK);
     }
 
     @RequestMapping(value = "/rentals/return/{date}", method = RequestMethod.GET)
-    public ResponseEntity<List<Rental>> getRentalsByReturnDate(@PathVariable String date){
+    public ResponseEntity<?> getRentalsByReturnDate(@PathVariable String date){
         return new ResponseEntity<>(rentalService.getRentalsByReturnDate(date), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/rentals/start/{date}",method = RequestMethod.GET)
-    public ResponseEntity<List<Rental>> getRentalsByStartDate(@PathVariable String date){
+    public ResponseEntity<?> getRentalsByStartDate(@PathVariable String date){
         return new ResponseEntity<>(rentalService.getRentalByStartDate(date), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/staff/{staffId}/rentals")
-    public ResponseEntity<List<Rental>> getRentalsByStaffId(@PathVariable long staffId){
+    @RequestMapping(value = "/staff/{staffId}/rentals", method = RequestMethod.GET)
+    public ResponseEntity<?> getRentalsByStaffId(@PathVariable long staffId){
         return new ResponseEntity<>(rentalService.getRentalByStaffId(staffId), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/rentals/create", method = RequestMethod.PUT)
+    public ResponseEntity<?> createRental(@RequestBody CreateRentalRequest request){
+        return rentalService.insertRental(request);
+    }
+
+    @RequestMapping(value = "/rentals/update", method = RequestMethod.POST)
+    public ResponseEntity<?> updateRental(@RequestBody UpdateRentalRequest request){
+        return rentalService.updateRental(request);
+    }
+
+    @RequestMapping(value = "/rentals/{rentalId}/delete", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteRental(@PathVariable long rentalId){
+        return rentalService.deleteRental(rentalId);
     }
 }

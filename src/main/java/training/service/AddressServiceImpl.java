@@ -2,6 +2,7 @@ package training.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import training.database.dao.AddressDaoImpl;
@@ -17,8 +18,8 @@ public class AddressServiceImpl implements AddressService{
 
 	@Override
 	@Transactional
-	public void insertAddress(CreateAddressRequest request) {
-		addressDaoImpl.insert(request);
+	public ResponseEntity<?> insertAddress(CreateAddressRequest request) {
+		return addressDaoImpl.insert(request);
 	}
 
 	@Override
@@ -29,13 +30,13 @@ public class AddressServiceImpl implements AddressService{
 
 	@Override
 	@Transactional
-	public void deleteAddress(long addressId) {
-		addressDaoImpl.delete(addressId);
+	public ResponseEntity<?> deleteAddress(long addressId) {
+		return addressDaoImpl.delete(addressId);
 	}
 
 	@Override
 	@Transactional
-	public void updateAddress(UpdateAddressRequest request) {
-		addressDaoImpl.update(request);
+	public ResponseEntity<?> updateAddress(UpdateAddressRequest request) {
+		return addressDaoImpl.update(request);
 	}
 }

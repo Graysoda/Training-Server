@@ -2,6 +2,7 @@ package training.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import training.database.dao.PaymentDaoImpl;
@@ -23,19 +24,19 @@ public class PaymentServiceImpl implements PaymentService{
 
 	@Override
 	@Transactional
-	public void insertPayment(CreatePaymentRequest request) {
-		paymentDaoImpl.insert(request);
+	public ResponseEntity<?> insertPayment(CreatePaymentRequest request) {
+		return paymentDaoImpl.insert(request);
 	}
 
 	@Override
 	@Transactional
-	public void deletePayment(long paymentId) {
-		paymentDaoImpl.delete(paymentId);
+	public ResponseEntity<?> deletePayment(long paymentId) {
+		return paymentDaoImpl.delete(paymentId);
 	}
 
 	@Override
 	@Transactional
-	public void updatePayment(UpdatePaymentRequest request) {
-		paymentDaoImpl.update(request);
+	public ResponseEntity<?> updatePayment(UpdatePaymentRequest request) {
+		return paymentDaoImpl.update(request);
 	}
 }

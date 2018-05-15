@@ -2,6 +2,7 @@ package training.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import training.database.dao.FilmDaoImpl;
@@ -14,14 +15,14 @@ public class FilmServiceImpl implements FilmService {
 
 	@Override
 	@Transactional
-	public void createFilm(CreateFilmRequest film) {
-		this.filmDaoImpl.insert(film);
+	public ResponseEntity<?> createFilm(CreateFilmRequest film) {
+		return this.filmDaoImpl.insert(film);
 	}
 
 	@Override
 	@Transactional
-	public void updateFilm(UpdateFilmRequest film) {
-		this.filmDaoImpl.update(film);
+	public ResponseEntity<?> updateFilm(UpdateFilmRequest film) {
+		return this.filmDaoImpl.update(film);
 	}
 
 	@Override
@@ -57,8 +58,8 @@ public class FilmServiceImpl implements FilmService {
 
 	@Override
 	@Transactional
-	public void deleteFilm(long filmId) {
-		filmDaoImpl.delete(filmId);
+	public ResponseEntity<?> deleteFilm(long filmId) {
+		return filmDaoImpl.delete(filmId);
 	}
 
 	@Override

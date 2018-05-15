@@ -2,6 +2,7 @@ package training.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import training.database.dao.CustomerDaoImpl;
@@ -17,8 +18,8 @@ public class CustomerServiceImpl implements CustomerService{
 
 	@Override
 	@Transactional
-	public void insertCustomer(CreateCustomerRequest request) {
-		customerDaoImpl.insert(request);
+	public ResponseEntity<?> insertCustomer(CreateCustomerRequest request) {
+		return customerDaoImpl.insert(request);
 	}
 
 	@Override
@@ -47,13 +48,13 @@ public class CustomerServiceImpl implements CustomerService{
 
 	@Override
 	@Transactional
-	public void deleteCustomer(long customerId) {
-		customerDaoImpl.delete(customerId);
+	public ResponseEntity<?> deleteCustomer(long customerId) {
+		return customerDaoImpl.delete(customerId);
 	}
 
 	@Override
 	@Transactional
-	public void updateCustomer(UpdateCustomerRequest request) {
-		customerDaoImpl.update(request);
+	public ResponseEntity<?> updateCustomer(UpdateCustomerRequest request) {
+		return customerDaoImpl.update(request);
 	}
 }

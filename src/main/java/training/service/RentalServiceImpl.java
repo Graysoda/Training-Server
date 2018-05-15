@@ -2,6 +2,7 @@ package training.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import training.database.dao.RentalDaoImpl;
@@ -47,20 +48,20 @@ public class RentalServiceImpl implements RentalService{
 
 	@Override
 	@Transactional
-	public void insertRental(CreateRentalRequest request) {
-		rentalDaoImpl.insert(request);
+	public ResponseEntity<?> insertRental(CreateRentalRequest request) {
+		return rentalDaoImpl.insert(request);
 	}
 
 	@Override
 	@Transactional
-	public void deleteRental(long rentalId) {
-		rentalDaoImpl.delete(rentalId);
+	public ResponseEntity<?> deleteRental(long rentalId) {
+		return rentalDaoImpl.delete(rentalId);
 	}
 
 	@Override
 	@Transactional
-	public void updateRental(UpdateRentalRequest request) {
-		rentalDaoImpl.update(request);
+	public ResponseEntity<?> updateRental(UpdateRentalRequest request) {
+		return rentalDaoImpl.update(request);
 	}
 
 	@Override

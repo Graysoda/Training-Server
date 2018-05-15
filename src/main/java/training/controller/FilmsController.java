@@ -4,18 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-import training.generated.Actor;
-import training.generated.Film;
-import training.generated.Summary;
+import org.springframework.web.bind.annotation.*;
+import training.generated.*;
 import training.service.FilmServiceImpl;
 
 import java.util.List;
 
 @RestController
+@RequestMapping(value = RestConstants.REST_SERVICES_LOCATION, produces = RestConstants.JSON)
 public class FilmsController {
     @Autowired @Lazy private FilmServiceImpl filmService;
 
@@ -54,5 +50,18 @@ public class FilmsController {
         return new ResponseEntity<>(filmService.getFilmsActors(filmId), HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/films/create", method = RequestMethod.PUT)
+    public ResponseEntity<?> createFilm(@RequestBody CreateFilmRequest request){
+        return filmService.createFilm(request);
+    }
 
+    @RequestMapping(value = "/films/update", method = RequestMethod.POST)
+    public ResponseEntity<?> updateFilm(@RequestBody UpdateFilmRequest request){
+        return filmService.updateFilm(request);
+    }
+
+    @RequestMapping(value = "/films/{filmId}/delete", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteFilm(@PathVariable long filmId){
+        return filmService.deleteFilm(filmId);
+    }
 }

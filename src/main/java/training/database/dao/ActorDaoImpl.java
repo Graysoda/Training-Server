@@ -135,9 +135,6 @@ public class ActorDaoImpl implements ActorDao{
 		//System.out.println("last name = ["+entity.getLast_name()+"]");
 		actor.setLastName(entity.getLast_name());
 
-		//System.out.println("last_update = ["+entity.getLast_update()+"]");
-		actor.setLastUpdate(entity.getLast_update());
-
 		return actor;
 	}
 }

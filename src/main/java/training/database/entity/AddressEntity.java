@@ -21,13 +21,11 @@ public class AddressEntity {
 	private String postal_code;
 	@NotNull
 	private String phone;
-	@NotNull
-	private String last_update;
 
 	public AddressEntity() {
 	}
 
-	public AddressEntity(long address_id, @NotNull String address, @NotNull String address2, @NotNull String district, @NotNull long city_id, @NotNull String postal_code, @NotNull String phone, @NotNull String last_update) {
+	public AddressEntity(long address_id, @NotNull String address, @NotNull String address2, @NotNull String district, @NotNull long city_id, @NotNull String postal_code, @NotNull String phone) {
 		this.address_id = address_id;
 		this.address = address;
 		this.address2 = address2;
@@ -35,7 +33,6 @@ public class AddressEntity {
 		this.city_id = city_id;
 		this.postal_code = postal_code;
 		this.phone = phone;
-		this.last_update = last_update;
 	}
 
 	public long getAddress_id() {
@@ -92,13 +89,5 @@ public class AddressEntity {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
-	}
-
-	public String getLast_update() {
-		return last_update;
-	}
-
-	public void setLast_update(String last_update) {
-		this.last_update = last_update;
 	}
 }

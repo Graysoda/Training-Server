@@ -2,6 +2,7 @@ package training.endpoint;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
@@ -11,7 +12,7 @@ import training.service.PaymentServiceImpl;
 
 @Endpoint
 public class PaymentEndpoint {
-	private static final String NAMESPACE_URI = Constants.NAMESPACE_URI;
+	private static final String NAMESPACE_URI = SoapConstants.NAMESPACE_URI;
 	@Autowired @Lazy private PaymentServiceImpl paymentService;
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getAllPaymentsRequest")
@@ -23,17 +24,20 @@ public class PaymentEndpoint {
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "createPaymentRequest")
-	public void insertPayment(@RequestPayload CreatePaymentRequest request){
-		paymentService.insertPayment(request);
+    @ResponsePayload
+	public ResponseEntity<?> insertPayment(@RequestPayload CreatePaymentRequest request){
+		return paymentService.insertPayment(request);
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "deletePaymentRequest")
-	public void deletePayment(@RequestPayload DeletePaymentRequest request){
-		paymentService.deletePayment(request.getPaymentId());
+    @ResponsePayload
+	public ResponseEntity<?> deletePayment(@RequestPayload DeletePaymentRequest request){
+		return paymentService.deletePayment(request.getPaymentId());
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "updatePaymentRequest")
-	public void updatePayment(@RequestPayload UpdatePaymentRequest request){
-		paymentService.updatePayment(request);
+    @ResponsePayload
+	public ResponseEntity<?> updatePayment(@RequestPayload UpdatePaymentRequest request){
+		return paymentService.updatePayment(request);
 	}
 }

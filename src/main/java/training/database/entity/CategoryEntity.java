@@ -11,16 +11,13 @@ public class CategoryEntity {
 	private long category_id;
 	@NotNull
 	private String name;
-	@NotNull
-	private String last_update;
 
 	public CategoryEntity() {
 	}
 
-	public CategoryEntity(long category_id, @NotNull String name, @NotNull String last_update) {
+	public CategoryEntity(long category_id, @NotNull String name) {
 		this.category_id = category_id;
 		this.name = name;
-		this.last_update = last_update;
 	}
 
 	public long getCategory_id() {
@@ -37,13 +34,5 @@ public class CategoryEntity {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getLast_update() {
-		return last_update;
-	}
-
-	public void setLast_update(String last_update) {
-		this.last_update = last_update;
 	}
 }

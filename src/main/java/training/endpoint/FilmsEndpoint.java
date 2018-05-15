@@ -1,6 +1,7 @@
 package training.endpoint;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
@@ -11,22 +12,25 @@ import training.service.FilmServiceImpl;
 
 @Endpoint
 public class FilmsEndpoint {
-	private static final String NAMESPACE_URI = Constants.NAMESPACE_URI;
+	private static final String NAMESPACE_URI = SoapConstants.NAMESPACE_URI;
 	@Autowired private FilmServiceImpl filmService;
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "createFilmRequest")
-	public void createFilm(@RequestPayload CreateFilmRequest request) {
-		filmService.createFilm(request);
+	@ResponsePayload
+    public ResponseEntity<?> createFilm(@RequestPayload CreateFilmRequest request) {
+		return filmService.createFilm(request);
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "deleteFilmRequest")
-	public void deleteFilm(@RequestPayload DeleteFilmRequest request) {
-		filmService.deleteFilm(request.getFilmId());
+	@ResponsePayload
+    public ResponseEntity<?> deleteFilm(@RequestPayload DeleteFilmRequest request) {
+		return filmService.deleteFilm(request.getFilmId());
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "updateFilmRequest")
-	public void updateFilm(@RequestPayload UpdateFilmRequest request) {
-		filmService.updateFilm(request);
+	@ResponsePayload
+    public ResponseEntity<?> updateFilm(@RequestPayload UpdateFilmRequest request) {
+		return filmService.updateFilm(request);
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI,localPart = "getAllFilmsRequest")

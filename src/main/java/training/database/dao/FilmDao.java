@@ -1,5 +1,6 @@
 package training.database.dao;
 
+import org.springframework.http.ResponseEntity;
 import training.generated.*;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public interface FilmDao {
     List<Summary> getFilmsById(List<Long> filmIds);
     List<Actor> getFilmsActors(long filmId);
     Summary getSummary(long filmId);
-    void insert(CreateFilmRequest request);
-    void update(UpdateFilmRequest request);
-    void delete(long filmId);
+    ResponseEntity<?> insert(CreateFilmRequest request);
+    ResponseEntity<?> update(UpdateFilmRequest request);
+    ResponseEntity<?> delete(long filmId);
 }

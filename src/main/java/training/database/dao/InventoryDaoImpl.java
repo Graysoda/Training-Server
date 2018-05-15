@@ -2,6 +2,8 @@ package training.database.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import training.database.entity.InventoryEntity;
 import training.generated.CreateInventoryRequest;
@@ -59,38 +61,44 @@ public class InventoryDaoImpl implements InventoryDao {
 		return convertEntitiesToGenerated(this.em.createQuery(baseQuery+" WHERE inv.store_id = '"+storeId+"'",InventoryEntity.class).getResultList());
 	}
 
-	public void insert(CreateInventoryRequest request) {
+	public ResponseEntity<?> insert(CreateInventoryRequest request) {
 		String sql = "INSERT INTO inventory (film_id, store_id) VALUES ("+request.getFilmId()+", "+request.getStoreId()+");";
 		try {
 			connection.createStatement().executeUpdate(sql);
+			return ResponseEntity.ok("Inventory created.");
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Inventory not created.\n"+e.getSQLState()+"\n"+e.getLocalizedMessage());
 		}
 	}
 
-	public void delete(long inventoryId) {
+	public ResponseEntity<?> delete(long inventoryId) {
 		String sql = "DELETE FROM inventory WHERE inventory_id='"+inventoryId+"';";
 		try {
 			connection.createStatement().executeUpdate(sql);
+			return ResponseEntity.ok("Inventory ["+inventoryId+"] was deleted.");
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Inventory ["+inventoryId+"] was not deleted.\n"+e.getSQLState()+"\n"+e.getLocalizedMessage());
 		}
 	}
 
-	public void update(UpdateInventoryRequest request) {
+	public ResponseEntity<?> update(UpdateInventoryRequest request) {
 		String sql = "UPDATE inventory SET ";
 
-		if (request.getFilmId()!=null)
+		if (request.getFilmId()!=null && request.getFilmId() > 0)
 			sql += "film_id = '"+request.getFilmId()+"', ";
-		if (request.getStoreId() != null)
+		if (request.getStoreId() != null && request.getStoreId() > 0)
 			sql += "store_id = '"+request.getStoreId()+"', ";
 
 		sql += sql.subSequence(0,sql.length()-2) + " WHERE inventory_id = '"+request.getInventoryId()+"';";
 
 		try {
 			connection.createStatement().executeUpdate(sql);
+			return ResponseEntity.ok("Inventory ["+request.getInventoryId()+"] was updated.");
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Inventory ["+request.getInventoryId()+"] as not updated.\n"+e.getSQLState()+"\n"+e.getLocalizedMessage());
 		}
 	}
 
@@ -99,12 +107,12 @@ public class InventoryDaoImpl implements InventoryDao {
 
 		//System.out.println("inv id = ["+entity.getInventory_id()+"]");
 		inventory.setInventoryId(entity.getInventory_id());
+
 		//System.out.println("film id = ["+entity.getFilm_id()+"]");
 		inventory.setFilm(filmDaoImpl.getById(entity.getFilm_id()));
+
 		//System.out.println("store id = ["+entity.getStore_id()+"]");
 		inventory.setStore(storeDaoImpl.getById(entity.getStore_id()));
-		//System.out.println("last update = ["+entity.getLast_update()+"]");
-		inventory.setLastUpdate(entity.getLast_update());
 
 		return inventory;
 	}

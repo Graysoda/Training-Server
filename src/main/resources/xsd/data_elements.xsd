@@ -20,7 +20,7 @@
             <xs:element name="inventory_id" type="xs:long"/>
             <xs:element name="film" type="tns:film"/>
             <xs:element name="store" type="tns:store"/>
-            <xs:element name="last_update" type="xs:string"/>
+            <!--<xs:element name="last_update" type="xs:string"/>-->
         </xs:sequence>
     </xs:complexType>
 
@@ -32,7 +32,7 @@
             <xs:element name="customer" type="tns:customer"/>
             <xs:element name="return_date" type="xs:string"/>
             <xs:element name="staff" type="tns:staff"/>
-            <xs:element name="last_update" type="xs:string"/>
+            <!--<xs:element name="last_update" type="xs:string"/>-->
         </xs:sequence>
     </xs:complexType>
 
@@ -48,7 +48,7 @@
             <xs:element name="isActive" type="xs:boolean"/>
             <xs:element name="username" type="xs:string"/>
             <xs:element name="password" type="xs:string"/>
-            <xs:element name="last_update" type="xs:string"/>
+            <!--<xs:element name="last_update" type="xs:string"/>-->
         </xs:sequence>
     </xs:complexType>
 
@@ -57,7 +57,7 @@
             <xs:element name="store_id" type="xs:long"/>
             <xs:element name="manager" type="tns:staff"/>
             <xs:element name="address" type="tns:address"/>
-            <xs:element name="last_update" type="xs:string"/>
+            <!--<xs:element name="last_update" type="xs:string"/>-->
         </xs:sequence>
     </xs:complexType>
 
@@ -71,7 +71,7 @@
             <xs:element name="address" type="tns:address"/>
             <xs:element name="is_active" type="xs:boolean"/>
             <xs:element name="create_date" type="xs:string"/>
-            <xs:element name="last_update" type="xs:string"/>
+            <!--<xs:element name="last_update" type="xs:string"/>-->
         </xs:sequence>
     </xs:complexType>
 
@@ -84,7 +84,7 @@
             <xs:element name="city" type="xs:string"/>
             <xs:element name="postal_code" type="xs:string"/>
             <xs:element name="phone" type="xs:string"/>
-            <xs:element name="last_update" type="xs:string"/>
+            <!--<xs:element name="last_update" type="xs:string"/>-->
         </xs:sequence>
     </xs:complexType>
 
@@ -93,7 +93,7 @@
             <xs:element name="actor_id" type="xs:long"/>
             <xs:element name="first_name" type="xs:string" />
             <xs:element name="last_name" type="xs:string"/>
-            <xs:element name="last_update" type="xs:string"/>
+            <!--<xs:element name="last_update" type="xs:string"/>-->
         </xs:sequence>
     </xs:complexType>
 
@@ -111,7 +111,7 @@
             <xs:element name="replacement_cost" type="xs:float"/>
             <xs:element name="rating" type="xs:string"/>
             <xs:element name="special_features" type="xs:string"/>
-            <xs:element name="last_update" type="xs:string"/>
+            <!--<xs:element name="last_update" type="xs:string"/>-->
             <xs:element name="category" type="xs:string"/>
             <xs:sequence maxOccurs="unbounded">
                 <xs:element name="actors" type="tns:actor"/>
@@ -124,6 +124,8 @@
             <xs:element name="film_id" type="xs:long"/>
             <xs:element name="title" type="xs:string"/>
             <xs:element name="description" type="xs:string"/>
+            <xs:element name="length" type="xs:int"/>
+            <xs:element name="rating" type="xs:string"/>
         </xs:sequence>
     </xs:complexType>
 </xs:schema>
