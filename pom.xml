@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.orasi.soap</groupId>
-    <artifactId>pro_soap_serv</artifactId>
+    <artifactId>training-server</artifactId>
     <version>0.0.1</version>
 
     <parent>
