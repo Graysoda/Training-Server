@@ -53,4 +53,52 @@
             </xs:sequence>
         </xs:complexType>
     </xs:element>
+
+    <xs:element name="getAddressByIdRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element type="xs:long" name="address_id"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getAddressByIdResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="address" type="data:address"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getAddressByCityRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="city_name" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getAddressByCityResponse">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded">
+                <xs:element name="address" type="data:address"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getAddresssByPostalCodeRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="postal_code" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getAddressByPostalCodeResponse">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded">
+                <xs:element name="address" type="data:address"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
 </xs:schema>

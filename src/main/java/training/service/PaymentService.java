@@ -12,4 +12,7 @@ public interface PaymentService {
 	ResponseEntity<?> insertPayment(CreatePaymentRequest request);
 	ResponseEntity<?> deletePayment(long paymentId);
 	ResponseEntity<?> updatePayment(UpdatePaymentRequest request);
+    Payment getPaymentById(long paymentId);
+	List<Payment> getPaymentsForRental(long rentalId);
+	List<Payment> getPaymentFromCustomer(long customerId);
 }

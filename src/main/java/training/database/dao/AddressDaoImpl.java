@@ -41,6 +41,16 @@ public class AddressDaoImpl implements AddressDao{
 	}
 
 	@Override
+	public List<Address> getByCity(String city) {
+		return convertEntitiesToGenerate(this.em.createQuery(baseQuery+" WHERE adr.city_id = '"+cityDaoImpl.getIdByName(city)+"'", AddressEntity.class).getResultList());
+	}
+
+	@Override
+	public List<Address> getByPostalCode(String postalCode) {
+		return convertEntitiesToGenerate(this.em.createQuery(baseQuery+" where adr.postal_code = '"+postalCode+"'", AddressEntity.class).getResultList());
+	}
+
+	@Override
 	public List<Address> getAll() {
 		return convertEntitiesToGenerate(this.em.createQuery(baseQuery,AddressEntity.class).getResultList());
 	}

@@ -39,4 +39,22 @@ public class PaymentServiceImpl implements PaymentService{
 	public ResponseEntity<?> updatePayment(UpdatePaymentRequest request) {
 		return paymentDaoImpl.update(request);
 	}
+
+	@Override
+	@Transactional
+	public Payment getPaymentById(long paymentId) {
+		return paymentDaoImpl.getById(paymentId);
+	}
+
+	@Override
+	@Transactional
+	public List<Payment> getPaymentsForRental(long rentalId) {
+		return paymentDaoImpl.getForRental(rentalId);
+	}
+
+	@Override
+	@Transactional
+	public List<Payment> getPaymentFromCustomer(long customerId) {
+		return paymentDaoImpl.getFromCustomer(customerId);
+	}
 }

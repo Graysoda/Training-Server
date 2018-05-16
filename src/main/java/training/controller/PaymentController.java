@@ -32,8 +32,23 @@ public class PaymentController {
         return paymentService.updatePayment(request);
     }
 
-    @RequestMapping(value = "/payment/{paymentId}/delete")
+    @RequestMapping(value = "/payments/{paymentId}/delete", method = RequestMethod.DELETE)
     public ResponseEntity<?> deletePayment(@PathVariable long paymentId){
         return paymentService.deletePayment(paymentId);
+    }
+
+    @RequestMapping(value = "/payments/{paymentId}/", method = RequestMethod.GET)
+    public ResponseEntity<?> getPaymentById(@PathVariable long paymentId){
+        return new ResponseEntity<>(paymentService.getPaymentById(paymentId), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/rental/{rentalId}/payments", method = RequestMethod.GET)
+    public ResponseEntity<?> getPaymentsForRental(@PathVariable long rentalId){
+        return new ResponseEntity<>(paymentService.getPaymentsForRental(rentalId), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/customer/{customerId}/payments", method = RequestMethod.GET)
+    public ResponseEntity<?> getPaymentsFromCustomer(@PathVariable long customerId){
+        return new ResponseEntity<>(paymentService.getPaymentFromCustomer(customerId), HttpStatus.OK);
     }
 }

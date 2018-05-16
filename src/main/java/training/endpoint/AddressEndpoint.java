@@ -40,4 +40,28 @@ public class AddressEndpoint {
 		response.setAddress(addressService.getAllAddresses());
 		return response;
 	}
+
+	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getAddressByIdRequest")
+	@ResponsePayload
+	public GetAddressByIdResponse getAddressById(@RequestPayload GetAddressByIdRequest request){
+		GetAddressByIdResponse response = new GetAddressByIdResponse();
+		response.setAddress(addressService.getAddressById(request.getAddressId()));
+		return response;
+	}
+
+	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getAddressByCityRequest")
+	@ResponsePayload
+	public GetAddressByCityResponse getAddressByCity(@RequestPayload GetAddressByCityRequest request){
+		GetAddressByCityResponse response = new GetAddressByCityResponse();
+		response.setAddress(addressService.getAddressByCity(request.getCityName()));
+		return response;
+	}
+
+	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getAddressByPostalCodeRequest")
+	@ResponsePayload
+	public GetAddressByPostalCodeResponse getAddressByPostalCode(@RequestPayload GetAddresssByPostalCodeRequest request){
+		GetAddressByPostalCodeResponse response = new GetAddressByPostalCodeResponse();
+		response.setAddress(addressService.getAddressByPostalCode(request.getPostalCode()));
+		return response;
+	}
 }

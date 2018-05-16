@@ -37,10 +37,27 @@ public class PaymentDaoImpl implements PaymentDao {
         this.connection = connection;
     }
 
+    @Override
     public List<Payment> getAll(){
 		return convertEntitiesToGenerated(this.em.createQuery(baseQuery, PaymentEntity.class).getResultList());
 	}
 
+	@Override
+	public Payment getById(long paymentId) {
+		return convertEntityToGenerated(this.em.createQuery(baseQuery+" WHERE p.payment_id = '"+paymentId+"'",PaymentEntity.class).getSingleResult());
+	}
+
+	@Override
+	public List<Payment> getForRental(long rentalId) {
+		return convertEntitiesToGenerated(this.em.createQuery(baseQuery+" WHERE p.rental_id = '"+rentalId+"'",PaymentEntity.class).getResultList());
+	}
+
+	@Override
+	public List<Payment> getFromCustomer(long customerId) {
+		return convertEntitiesToGenerated(this.em.createQuery(baseQuery+" WHERE p.customer_id = '"+customerId+"'", PaymentEntity.class).getResultList());
+	}
+
+	@Override
 	public ResponseEntity<?> insert(CreatePaymentRequest request) {
 		String sql = "INSERT INTO payment (customer_id, staff_id, rental_id, amount, payment_date) VALUES " +
 				"("+request.getCustomerId()+", " +
@@ -57,6 +74,7 @@ public class PaymentDaoImpl implements PaymentDao {
 		}
 	}
 
+	@Override
 	public ResponseEntity<?> delete(long paymentId) {
 		String sql = "DELETE FROM payment WHERE payment_id='"+paymentId+"';";
 		try {
@@ -68,6 +86,7 @@ public class PaymentDaoImpl implements PaymentDao {
 		}
 	}
 
+	@Override
 	public ResponseEntity<?> update(UpdatePaymentRequest request) {
 		String sql = "UPDATE payment SET ";
 

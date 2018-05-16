@@ -57,4 +57,10 @@ public class CustomerServiceImpl implements CustomerService{
 	public ResponseEntity<?> updateCustomer(UpdateCustomerRequest request) {
 		return customerDaoImpl.update(request);
 	}
+
+	@Override
+	@Transactional
+	public List<Customer> getInactiveCustomers() {
+		return customerDaoImpl.getInactive();
+	}
 }

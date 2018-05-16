@@ -15,4 +15,5 @@ public interface CustomerService {
 	List<Customer> getAllCustomers();
 	ResponseEntity<?> deleteCustomer(long customerId);
 	ResponseEntity<?> updateCustomer(UpdateCustomerRequest request);
+    List<Customer> getInactiveCustomers();
 }

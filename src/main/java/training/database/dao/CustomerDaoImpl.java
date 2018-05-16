@@ -44,22 +44,32 @@ public class CustomerDaoImpl implements CustomerDao{
         this.connection = connection;
     }
 
+	@Override
     public List<Customer> getActive() {
 		return convertEntitystoGenerated(this.em.createQuery(baseQuery+" WHERE c.active = '1'",CustomerEntity.class).getResultList());
 	}
 
+	@Override
+	public List<Customer> getInactive() {
+		return convertEntitystoGenerated(this.em.createQuery(baseQuery+" WHERE c.active = '0'",CustomerEntity.class).getResultList());
+	}
+
+	@Override
 	public Customer getById(long id) {
 		return convertEntityToGenerated(this.em.createQuery(baseQuery+" WHERE c.customer_id = '"+id+"'", CustomerEntity.class).getSingleResult());
 	}
 
+	@Override
 	public List<Customer> getByStore(long id) {
 		return convertEntitystoGenerated(this.em.createQuery(baseQuery+" WHERE c.store_id = '"+id+"'",CustomerEntity.class).getResultList());
 	}
 
+	@Override
 	public List<Customer> getAll() {
 		return convertEntitystoGenerated(this.em.createQuery(baseQuery, CustomerEntity.class).getResultList());
 	}
 
+	@Override
 	public ResponseEntity<?> insert(CreateCustomerRequest request) {
 		String sql = "INSERT INTO customer (store_id, first_name, last_name, email, address_id, active) VALUES " +
 				"('"+request.getStoreId()+"', '"+
@@ -77,6 +87,7 @@ public class CustomerDaoImpl implements CustomerDao{
 		}
 	}
 
+	@Override
 	public ResponseEntity<?> delete(long customerId) {
 		String sql = "DELETE FROM customer WHERE customer_id='"+customerId+"';";
 		try {
@@ -88,6 +99,7 @@ public class CustomerDaoImpl implements CustomerDao{
 		}
 	}
 
+	@Override
 	public ResponseEntity<?> update(UpdateCustomerRequest request) {
 		String sql = "UPDATE customer SET ";
 

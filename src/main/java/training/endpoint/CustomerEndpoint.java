@@ -41,6 +41,14 @@ public class CustomerEndpoint {
 		return response;
 	}
 
+	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getInactiveCustomersRequest")
+	@ResponsePayload
+	public GetInactiveCustomerResponse getInactiveCustomer(@RequestPayload GetInactiveCustomersRequest request){
+		GetInactiveCustomerResponse response = new GetInactiveCustomerResponse();
+		response.setCustomer(customerService.getInactiveCustomers());
+		return response;
+	}
+
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getCustomerByIdRequest")
 	@ResponsePayload
 	public GetCustomerByIdResponse getCustomerById(@RequestPayload GetCustomerByIdRequest request){

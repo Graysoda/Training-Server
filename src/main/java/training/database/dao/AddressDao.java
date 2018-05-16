@@ -13,4 +13,6 @@ public interface AddressDao {
     ResponseEntity<?> delete(long addressId);
     ResponseEntity<?> update(UpdateAddressRequest request);
     ResponseEntity<?> insert(CreateAddressRequest request);
+    List<Address> getByCity(String city);
+    List<Address> getByPostalCode(String postalCode);
 }

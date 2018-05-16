@@ -84,6 +84,20 @@
         </xs:complexType>
     </xs:element>
 
+    <xs:element name="getInactiveCustomersRequest">
+        <xs:complexType>
+            <xs:sequence maxOccurs="1" minOccurs="1"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getInactiveCustomerResponse">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded">
+                <xs:element name="customer" type="data:customer"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
     <xs:element name="getCustomersByStoreRequest">
         <xs:complexType>
             <xs:sequence>

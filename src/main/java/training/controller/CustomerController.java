@@ -34,7 +34,12 @@ public class CustomerController {
 
     @RequestMapping(value = "/customers/active/", method = RequestMethod.GET)
     public ResponseEntity<List<Customer>> getActiveCustomers(){
-        return new ResponseEntity<>(customerService.getActiveCustomers(), HttpStatus.OK);//TODO get inactive customers
+        return new ResponseEntity<>(customerService.getActiveCustomers(), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/customers/inactive/", method = RequestMethod.GET)
+    public ResponseEntity<?> getInactiveCustomers(){
+        return new ResponseEntity<>(customerService.getInactiveCustomers(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/customer/create", method = RequestMethod.PUT)

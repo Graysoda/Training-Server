@@ -39,4 +39,22 @@ public class AddressServiceImpl implements AddressService{
 	public ResponseEntity<?> updateAddress(UpdateAddressRequest request) {
 		return addressDaoImpl.update(request);
 	}
+
+	@Override
+	@Transactional
+	public Address getAddressById(long addressId) {
+		return addressDaoImpl.getById(addressId);
+	}
+
+	@Override
+	@Transactional
+	public List<Address> getAddressByCity(String city) {
+		return addressDaoImpl.getByCity(city);
+	}
+
+	@Override
+	@Transactional
+	public List<Address> getAddressByPostalCode(String postalCode) {
+		return addressDaoImpl.getByPostalCode(postalCode);
+	}
 }

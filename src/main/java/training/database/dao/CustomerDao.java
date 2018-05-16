@@ -15,4 +15,5 @@ public interface CustomerDao {
     ResponseEntity<?> insert(CreateCustomerRequest request);
     ResponseEntity<?> update(UpdateCustomerRequest request);
     ResponseEntity<?> delete(long customerId);
+    List<Customer> getInactive();
 }

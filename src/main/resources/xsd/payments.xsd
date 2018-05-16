@@ -51,4 +51,52 @@
             </xs:sequence>
         </xs:complexType>
     </xs:element>
+
+    <xs:element name="getPaymentByIdRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element type="xs:long" name="payment_id"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getPaymentByIdResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="payment" type="data:payment"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getPaymentsForRentalRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="rental_id" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getPaymentsForRentalResponse">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded">
+                <xs:element name="payment" type="data:payment"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getPaymentsFromCustomerRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element type="xs:long" name="customer_id"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getPaymentsFromCustomerResponse">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded">
+                <xs:element name="payment" type="data:payment"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
 </xs:schema>

@@ -23,6 +23,28 @@ public class PaymentEndpoint {
 		return response;
 	}
 
+	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getPaymentByIdRequest")
+	@ResponsePayload
+	public GetPaymentByIdResponse getPaymentById(@RequestPayload GetPaymentByIdRequest request){
+		GetPaymentByIdResponse response = new GetPaymentByIdResponse();
+		response.setPayment(paymentService.getPaymentById(request.getPaymentId()));
+		return response;
+	}
+
+	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getPaymentForRentalRequest")
+	@ResponsePayload
+	public GetPaymentsForRentalResponse getPaymentsForRental(@RequestPayload GetPaymentsForRentalRequest request){
+		GetPaymentsForRentalResponse response = new GetPaymentsForRentalResponse();
+		response.setPayment(paymentService.getPaymentsForRental(request.getRentalId()));
+		return response;
+	}
+
+	public GetPaymentsFromCustomerResponse getPaymentsFromCustomer(@RequestPayload GetPaymentsFromCustomerRequest request){
+		GetPaymentsFromCustomerResponse response = new GetPaymentsFromCustomerResponse();
+		response.setPayment(paymentService.getPaymentFromCustomer(request.getCustomerId()));
+		return response;
+	}
+
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "createPaymentRequest")
     @ResponsePayload
 	public ResponseEntity<?> insertPayment(@RequestPayload CreatePaymentRequest request){

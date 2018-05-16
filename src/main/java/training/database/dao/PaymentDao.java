@@ -12,4 +12,7 @@ public interface PaymentDao {
     ResponseEntity<?> insert(CreatePaymentRequest request);
     ResponseEntity<?> update(UpdatePaymentRequest request);
     ResponseEntity<?> delete(long paymentId);
+    Payment getById(long paymentId);
+    List<Payment> getForRental(long rentalId);
+    List<Payment> getFromCustomer(long customerId);
 }

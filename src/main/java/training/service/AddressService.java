@@ -12,4 +12,7 @@ public interface AddressService {
 	List<Address> getAllAddresses();
 	ResponseEntity<?> deleteAddress(long addressId);
 	ResponseEntity<?> updateAddress(UpdateAddressRequest request);
+    Address getAddressById(long addressId);
+	List<Address> getAddressByCity(String city);
+	List<Address> getAddressByPostalCode(String postalCode);
 }
