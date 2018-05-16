@@ -9,7 +9,7 @@ import javax.persistence.PersistenceContext;
 @Repository
 public class CategoryDaoImpl implements CategoryDao{
 	protected EntityManager em;
-	private String baseQuery = "SELECT c FROM sakila.category c ";
+	private final String baseQuery = "SELECT c FROM sakila.category c ";
 
 	public EntityManager getEm() {
 		return em;

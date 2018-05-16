@@ -9,7 +9,7 @@ import javax.persistence.PersistenceContext;
 @Repository
 class CityDaoImpl implements CityDao{
 	protected EntityManager em;
-	private String baseQuery = "SELECT c FROM sakila.city c ";
+	private final String baseQuery = "SELECT c FROM sakila.city c ";
 
 	public EntityManager getEm() {
 		return em;

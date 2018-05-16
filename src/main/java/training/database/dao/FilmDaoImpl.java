@@ -87,14 +87,14 @@ public class FilmDaoImpl implements FilmDao{
 		if (filmIds.size() == 1)
 			return convertEntitiesToSummary(this.em.createQuery(baseFilmQuery+" WHERE f.film_id = '"+filmIds.get(0)+"'",FilmEntity.class).getResultList());
 
-		String where = " WHERE f.film_id IN (";
+		StringBuilder where = new StringBuilder(" WHERE f.film_id IN (");
 
 		for (Long filmId : filmIds) {
-			if (!where.contains(filmId.toString()))
-				where += "'"+filmId+"', ";
+			if (!where.toString().contains(filmId.toString()))
+				where.append("'").append(filmId).append("', ");
 		}
 
-		where = where.substring(0,where.length()-2)+")";
+		where = new StringBuilder(where.substring(0, where.length() - 2) + ")");
 
 		return convertEntitiesToSummary(this.em.createQuery(baseFilmQuery+where,FilmEntity.class).getResultList());
 	}

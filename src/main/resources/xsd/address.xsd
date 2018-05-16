@@ -86,7 +86,7 @@
         </xs:complexType>
     </xs:element>
 
-    <xs:element name="getAddresssByPostalCodeRequest">
+    <xs:element name="getAddressByPostalCodeRequest">
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="postal_code" type="xs:string"/>
