@@ -59,7 +59,7 @@ public class AddressEndpoint {
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getAddressByPostalCodeRequest")
 	@ResponsePayload
-	public GetAddressByPostalCodeResponse getAddressByPostalCode(@RequestPayload GetAddresssByPostalCodeRequest request){
+	public GetAddressByPostalCodeResponse getAddressByPostalCode(@RequestPayload GetAddressByPostalCodeRequest request){
 		GetAddressByPostalCodeResponse response = new GetAddressByPostalCodeResponse();
 		response.setAddress(addressService.getAddressByPostalCode(request.getPostalCode()));
 		return response;
