@@ -20,11 +20,13 @@ public class ActorController {
     private ActorServiceImpl actorService;
 
     @RequestMapping(value = "/actors/", method = RequestMethod.GET)
+    @ResponseBody
     public ResponseEntity<List<Actor>> getAllActors(){
         return new ResponseEntity<>(actorService.getAllActors(),HttpStatus.OK);
     }
 
     @RequestMapping(value = "/actors/{actorId}", method = RequestMethod.GET)
+    @ResponseBody
     public ResponseEntity<?> getActorById(@PathVariable long actorId) {
         Actor actor = actorService.getActorById(actorId);
         if (actor == null)
@@ -34,6 +36,7 @@ public class ActorController {
     }
 
     @RequestMapping(value = "/actors/first_name/{firstName}", method = RequestMethod.GET)
+    @ResponseBody
     public ResponseEntity<?> getActorsByFirstName(@PathVariable String firstName){
         List<Actor> actors = actorService.getActorsByFirstName(firstName);
         if (actors == null || actors.size() == 0)
@@ -43,6 +46,7 @@ public class ActorController {
     }
 
     @RequestMapping(value = "/actors/{actorId}/films", method = RequestMethod.GET)
+    @ResponseBody
     public ResponseEntity<?> getFilmsWithActor(@PathVariable long actorId){
         List<Summary> summaries = actorService.getFilmsWithActor(actorId);
         if (summaries == null || summaries.size() == 0)
@@ -52,6 +56,7 @@ public class ActorController {
     }
 
     @RequestMapping(value = "/actors/create", method = RequestMethod.PUT)
+    @ResponseBody
     public ResponseEntity<?> createActor(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName){
         CreateActorRequest request = new CreateActorRequest();
 
@@ -62,6 +67,7 @@ public class ActorController {
     }
 
     @RequestMapping(value = "/actors/{actorId}/update", method = RequestMethod.POST)
+    @ResponseBody
     public ResponseEntity<?> updateActor(@PathVariable long actorId, @RequestParam String firstName, @RequestParam String lastName){
         UpdateActorRequest request = new UpdateActorRequest();
 
@@ -73,6 +79,7 @@ public class ActorController {
     }
 
     @RequestMapping(value = "/actors/{actorId}/delete", method = RequestMethod.DELETE)
+    @ResponseBody
     public ResponseEntity<?> deleteActor(@PathVariable long actorId){
         return actorService.deleteActor(actorId);
     }
