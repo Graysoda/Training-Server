@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface ActorDao {
     List<Actor> getAllActors();
-    Actor findById(long actorId);
+    Actor getById(long actorId);
     List<Actor> findByFirstName(String actorFirstName);
     List<Actor> getActorsById(List<Long> actorIds);
     List<Summary> getFilms(long actorId);

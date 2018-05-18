@@ -27,7 +27,7 @@ public class ActorServiceImpl implements ActorService {
 	@Override
 	@Transactional
 	public Actor getActorById(long id) {
-		return actorDaoImpl.findById(id);
+		return actorDaoImpl.getById(id);
 	}
 
 	@Override

@@ -14,6 +14,7 @@ import training.generated.UpdateActorRequest;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,7 +42,7 @@ public class ActorDaoImpl implements ActorDao{
 		return convertActorEntitiesToGenerated(this.em.createQuery(baseQuery,ActorEntity.class).getResultList());
 	}
 
-	public Actor findById(long id) {
+	public Actor getById(long id) {
 		return this.convertActorEntityToGenerated(this.em.createQuery(baseQuery+" WHERE a.actor_id = '"+id+"'", ActorEntity.class).getSingleResult());
 	}
 
@@ -53,7 +54,7 @@ public class ActorDaoImpl implements ActorDao{
     	if (actorIds.size()==0)
     		return new ArrayList<>();
     	if (actorIds.size()==1)
-    		return Collections.singletonList(findById(actorIds.get(0)));
+    		return Collections.singletonList(getById(actorIds.get(0)));
 
 		StringBuilder where = new StringBuilder(" WHERE a.actor_id IN (");
 
@@ -74,11 +75,25 @@ public class ActorDaoImpl implements ActorDao{
 		String sql = "INSERT INTO actor (first_name, last_name) VALUES ('"+request.getFirstName()+"', '"+request.getLastName()+"');";
 		try {
 			connection.createStatement().executeUpdate(sql);
-			return new ResponseEntity<>(convertActorEntityToGenerated(this.em.createQuery(baseQuery+" ORDER BY a.last_update DESC",ActorEntity.class).setMaxResults(1).getSingleResult()),HttpStatus.CREATED);
+			return new ResponseEntity<>(getNewActor(),HttpStatus.CREATED);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Actor was not create.\n"+e.getLocalizedMessage());
 		}
+	}
+
+	private Actor getNewActor() throws SQLException {
+		String sql = "SELECT actor_id, first_name, last_name FROM actor ORDER BY last_update DESC LIMIT 1";
+
+		ResultSet resultSet = connection.createStatement().executeQuery(sql);
+
+		Actor actor = new Actor();
+
+		actor.setActorId(resultSet.getLong("actor_id"));
+		actor.setFirstName(resultSet.getString("first_name"));
+		actor.setLastName(resultSet.getString("last_name"));
+
+		return actor;
 	}
 
 	public ResponseEntity<?> update(UpdateActorRequest request) {
@@ -95,7 +110,7 @@ public class ActorDaoImpl implements ActorDao{
 		sql = sql.substring(0, sql.length()-2) + " WHERE actor_id='"+request.getActorId()+"';";
 		try{
 			connection.createStatement().executeUpdate(sql);
-			return ResponseEntity.status(HttpStatus.OK).body("Actor ["+request.getActorId()+"] was updated successfully.");
+			return new ResponseEntity<>(getById(request.getActorId()),HttpStatus.ACCEPTED);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Actor ["+request.getActorId()+"] was not updated.\n"+e.getLocalizedMessage());
