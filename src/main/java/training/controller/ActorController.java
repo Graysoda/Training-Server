@@ -52,7 +52,7 @@ public class ActorController {
     }
 
     @RequestMapping(value = "/actors/create",method = RequestMethod.PUT)
-    public ResponseEntity<?> createActor(@RequestParam String firstName, @RequestParam String lastName){
+    public ResponseEntity<?> createActor(@RequestParam(name = "firstName")String firstName, @RequestParam(name = "lastName") String lastName){
         CreateActorRequest request = new CreateActorRequest();
 
         request.setFirstName(firstName);

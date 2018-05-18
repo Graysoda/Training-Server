@@ -74,7 +74,7 @@ public class ActorDaoImpl implements ActorDao{
 		String sql = "INSERT INTO actor (first_name, last_name) VALUES ('"+request.getFirstName()+"', '"+request.getLastName()+"');";
 		try {
 			connection.createStatement().executeUpdate(sql);
-			return new ResponseEntity<>(convertActorEntityToGenerated(this.em.createQuery(baseQuery+" LIMIT 1 ORDER BY last_update DESC",ActorEntity.class).getSingleResult()),HttpStatus.CREATED);
+			return new ResponseEntity<>(convertActorEntityToGenerated(this.em.createQuery(baseQuery+" ORDER BY a.last_update DESC",ActorEntity.class).setMaxResults(1).getSingleResult()),HttpStatus.CREATED);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Actor was not create.\n"+e.getLocalizedMessage());
