@@ -33,7 +33,7 @@ public class ActorController {
             return new ResponseEntity<>(actor,HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/actors_first_name/{firstName}", method = RequestMethod.GET)
+    @RequestMapping(value = "/actors/first_name/{firstName}", method = RequestMethod.GET)
     public ResponseEntity<?> getActorsByFirstName(@PathVariable String firstName){
         List<Actor> actors = actorService.getActorsByFirstName(firstName);
         if (actors == null || actors.size() == 0)
@@ -52,12 +52,23 @@ public class ActorController {
     }
 
     @RequestMapping(value = "/actors/create",method = RequestMethod.PUT)
-    public ResponseEntity<?> createActor(@RequestBody CreateActorRequest request){
+    public ResponseEntity<?> createActor(@RequestParam String firstName, @RequestParam String lastName){
+        CreateActorRequest request = new CreateActorRequest();
+
+        request.setFirstName(firstName);
+        request.setLastName(lastName);
+
         return actorService.insertActor(request);
     }
 
-    @RequestMapping(value = "/actors/update", method = RequestMethod.POST)
-    public ResponseEntity<?> updateActor(@RequestBody UpdateActorRequest request){
+    @RequestMapping(value = "/actors/{actorId}/update", method = RequestMethod.POST)
+    public ResponseEntity<?> updateActor(@PathVariable long actorId, @RequestParam String firstName, @RequestParam String lastName){
+        UpdateActorRequest request = new UpdateActorRequest();
+
+        request.setActorId(actorId);
+        request.setNewFirstName(firstName);
+        request.setNewLastName(lastName);
+
         return actorService.updateActor(request);
     }
 
