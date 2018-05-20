@@ -86,6 +86,7 @@ public class ActorDaoImpl implements ActorDao{
 		String sql = "SELECT actor_id, first_name, last_name FROM actor ORDER BY last_update DESC LIMIT 1";
 
 		ResultSet resultSet = connection.createStatement().executeQuery(sql);
+		resultSet.next();
 
 		Actor actor = new Actor();
 
