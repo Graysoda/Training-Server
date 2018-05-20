@@ -72,8 +72,10 @@ public class ActorController {
         UpdateActorRequest request = new UpdateActorRequest();
 
         request.setActorId(actorId);
-        request.setNewFirstName(firstName);
-        request.setNewLastName(lastName);
+        if (firstName != null)
+            request.setNewFirstName(firstName);
+        if (lastName != null)
+            request.setNewLastName(lastName);
 
         return actorService.updateActor(request);
     }
