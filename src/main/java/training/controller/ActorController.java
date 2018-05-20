@@ -57,7 +57,7 @@ public class ActorController {
 
     @RequestMapping(value = "/actors/create", method = RequestMethod.PUT)
     @ResponseBody
-    public ResponseEntity<?> createActor(@RequestBody(required = false) String firstName, @RequestBody(required = false) String lastName){
+    public ResponseEntity<?> createActor(@RequestBody String firstName, @RequestBody String lastName){
         CreateActorRequest request = new CreateActorRequest();
 
         request.setFirstName(firstName);
@@ -68,7 +68,7 @@ public class ActorController {
 
     @RequestMapping(value = "/actors/{actorId}/update", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<?> updateActor(@PathVariable long actorId, @RequestParam String firstName, @RequestParam String lastName){
+    public ResponseEntity<?> updateActor(@PathVariable long actorId, @RequestBody(required = false) String firstName, @RequestBody(required = false) String lastName){
         UpdateActorRequest request = new UpdateActorRequest();
 
         request.setActorId(actorId);
