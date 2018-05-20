@@ -57,7 +57,7 @@ public class ActorController {
 
     @RequestMapping(value = "/actors/create", method = RequestMethod.PUT)
     @ResponseBody
-    public ResponseEntity<?> createActor(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName){
+    public ResponseEntity<?> createActor(@RequestBody(required = false) String firstName, @RequestBody(required = false) String lastName){
         CreateActorRequest request = new CreateActorRequest();
 
         request.setFirstName(firstName);
