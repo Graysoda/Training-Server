@@ -55,10 +55,10 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 
 	private void combineSchemas() {
 		StringBuilder sb = new StringBuilder();
-		String header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
-				"<xs:schema xmlns:xs=\"http://www.w3.org/2001/XMLSchema\"" +
-				"           targetNamespace=\"my-namespace\"" +
-				"			xmlns:data=\"my-namespace\""+
+		String header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+				"<xs:schema xmlns:xs=\"http://www.w3.org/2001/XMLSchema\"\n" +
+				"           targetNamespace=\"my-namespace\"\n" +
+				"			xmlns:data=\"my-namespace\"\n"+
 				"           elementFormDefault=\"qualified\">";
 		String foot = "</xs:schema>";
 		String[] fileNames = new String[]{
@@ -75,7 +75,7 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 		String line;
 		BufferedReader reader = null;
 
-		sb.append(header).append("\n<xs:include schemaLocation=\"data_elements.xsd\"/>");
+		sb.append(header).append("\n<xs:include schemaLocation=\"data_elements.xsd\"/>\n");
 
 		for (String fileName : fileNames) {
 			StringBuilder fileString = new StringBuilder();
@@ -92,10 +92,12 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			sb.append(clean(fileString.toString()));
+			sb.append(clean(fileString.toString())).append("\n");
 		}
 
 		sb.append(foot).append("\n");
+
+		//System.out.println(sb.toString());
 
 		try {
 			File ops = new FileSystemResource("/app/target/classes/xsd/operations.xsd").getFile();

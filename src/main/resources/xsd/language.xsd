@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-        targetNamespace="my-namespace"
-        xmlns:data="my-namespace"
-        elementFormDefault="qualified">
+           targetNamespace="my-namespace"
+           xmlns:data="my-namespace"
+           elementFormDefault="qualified">
     <xs:include schemaLocation="data_elements.xsd"/>
 
     <xs:element name="getAllLanguagesRequest">
