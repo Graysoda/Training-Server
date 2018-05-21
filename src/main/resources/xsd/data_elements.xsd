@@ -4,6 +4,13 @@
            xmlns:tns="my-namespace"
            elementFormDefault="qualified">
 
+    <xs:complexType name="language">
+        <xs:sequence>
+            <xs:element name="language_id" type="xs:long"/>
+            <xs:element name="name" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
     <xs:complexType name="payment">
         <xs:sequence>
             <xs:element name="payment_id" type="xs:long"/>

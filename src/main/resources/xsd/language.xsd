@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="my-namespace"
+        xmlns:data="my-namespace"
+        elementFormDefault="qualified">
+    <xs:include schemaLocation="data_elements.xsd"/>
+
+    <xs:element name="getAllLanguagesRequest">
+        <xs:complexType>
+            <xs:sequence maxOccurs="1" minOccurs="1"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getAllLanguagesResponse">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded">
+                <xs:element name="language" type="data:language"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getLanguageByIdRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="language_id" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getLanguageByIdResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="language" type="data:language"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getLanguageByNameRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="language_name" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getLanguageByNameResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="language" type="data:language"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

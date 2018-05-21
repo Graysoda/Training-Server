@@ -90,7 +90,7 @@
         </xs:complexType>
     </xs:element>
 
-    <xs:element name="getInactiveCustomerResponse">
+    <xs:element name="getInactiveCustomersResponse">
         <xs:complexType>
             <xs:sequence maxOccurs="unbounded">
                 <xs:element name="customer" type="data:customer"/>
