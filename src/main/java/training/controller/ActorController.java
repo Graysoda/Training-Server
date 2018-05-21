@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import training.controller.jsonObjects.ActorJson;
 import training.generated.Actor;
 import training.generated.CreateActorRequest;
 import training.generated.Summary;
@@ -68,14 +69,16 @@ public class ActorController {
 
     @RequestMapping(value = "/actors/{actorId}/update", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<?> updateActor(@PathVariable long actorId, @RequestBody(required = false) String firstName, @RequestBody(required = false) String lastName){
+    public ResponseEntity<?> updateActor(@PathVariable long actorId, @RequestBody ActorJson actorJson){
         UpdateActorRequest request = new UpdateActorRequest();
 
         request.setActorId(actorId);
-        if (firstName != null)
-            request.setNewFirstName(firstName);
-        if (lastName != null)
-            request.setNewLastName(lastName);
+        if (actorJson.getFirstName() != null){
+            request.setNewFirstName(actorJson.getFirstName());
+        }
+
+        if (actorJson.getLastName() != null)
+            request.setNewLastName(actorJson.getLastName());
 
         return actorService.updateActor(request);
     }
