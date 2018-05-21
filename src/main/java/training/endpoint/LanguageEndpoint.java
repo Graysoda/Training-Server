@@ -1,7 +1,6 @@
 package training.endpoint;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
@@ -12,7 +11,7 @@ import training.service.LanguageServiceImpl;
 @Endpoint
 public class LanguageEndpoint {
 	private static final String NAMESPACE_URI = SoapConstants.NAMESPACE_URI;
-	@Lazy @Autowired private LanguageServiceImpl languageService;
+	@Autowired private LanguageServiceImpl languageService;
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getAllLanguagesRequest")
 	@ResponsePayload

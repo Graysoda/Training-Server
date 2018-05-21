@@ -69,7 +69,8 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 				"inventory.xsd",
 				"payments.xsd",
 				"rental.xsd",
-				"staff.xsd"
+				"staff.xsd",
+				"language.xsd"
 		};
 		String line;
 		BufferedReader reader = null;
