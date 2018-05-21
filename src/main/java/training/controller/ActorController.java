@@ -58,11 +58,19 @@ public class ActorController {
 
     @RequestMapping(value = "/actors/create", method = RequestMethod.PUT)
     @ResponseBody
-    public ResponseEntity<?> createActor(@RequestBody String firstName, @RequestBody String lastName){
+    public ResponseEntity<?> createActor(@RequestBody ActorJson actorJson){
         CreateActorRequest request = new CreateActorRequest();
 
-        request.setFirstName(firstName);
-        request.setLastName(lastName);
+        if (actorJson.getFirstName() != null){
+            request.setFirstName(actorJson.getFirstName());
+        } else {
+            return ResponseEntity.badRequest().body("Actor needs a first name!");
+        }
+        if (actorJson.getLastName() != null){
+            request.setLastName(actorJson.getLastName());
+        } else {
+            return ResponseEntity.badRequest().body("Actor needs a last name!");
+        }
 
         return actorService.insertActor(request);
     }

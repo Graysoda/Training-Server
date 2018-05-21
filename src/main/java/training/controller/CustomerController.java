@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import training.controller.jsonObjects.CustomerJson;
 import training.generated.CreateCustomerRequest;
 import training.generated.Customer;
 import training.generated.UpdateCustomerRequest;
@@ -47,8 +48,25 @@ public class CustomerController {
         return customerService.insertCustomer(request);
     }
 
-    @RequestMapping(value = "/customer/update", method = RequestMethod.POST)
-    public ResponseEntity<?> updateCustomer(@RequestBody UpdateCustomerRequest request){
+    @RequestMapping(value = "/customer/{customerId}/update", method = RequestMethod.POST)
+    public ResponseEntity<?> updateCustomer(@PathVariable long customerId, @RequestBody CustomerJson customerJson){
+        UpdateCustomerRequest request = new UpdateCustomerRequest();
+
+        request.setCustomerId(customerId);
+
+        if (customerJson.isActive() != null)
+            request.setActive(customerJson.isActive());
+        if (customerJson.getAddressId() != null)
+            request.setAddressId(customerJson.getAddressId());
+        if (customerJson.getEmail() != null)
+            request.setEmail(customerJson.getEmail());
+        if (customerJson.getFirstName() != null)
+            request.setFirstName(customerJson.getFirstName());
+        if (customerJson.getLastName() != null)
+            request.setLastName(customerJson.getLastName());
+        if (customerJson.getStoreId() != null)
+            request.setStoreId(customerJson.getStoreId());
+
         return customerService.updateCustomer(request);
     }
 

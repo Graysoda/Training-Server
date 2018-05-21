@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import training.controller.jsonObjects.InventoryJson;
 import training.generated.CreateInventoryRequest;
 import training.generated.Inventory;
 import training.generated.UpdateInventoryRequest;
@@ -33,12 +34,33 @@ public class InventoryController {
     }
 
     @RequestMapping(value = "/inventory/create", method = RequestMethod.PUT)
-    public ResponseEntity<?> createInventory(@RequestBody CreateInventoryRequest request){
+    public ResponseEntity<?> createInventory(@RequestBody InventoryJson inventoryJson){
+        CreateInventoryRequest request = new CreateInventoryRequest();
+
+        if (inventoryJson.getFilmId() != null)
+            request.setFilmId(inventoryJson.getFilmId());
+        else
+            return ResponseEntity.badRequest().body("Inventory filmId cannot be null.");
+
+        if (inventoryJson.getStoreId() != null)
+            request.setStoreId(inventoryJson.getStoreId());
+        else
+            return ResponseEntity.badRequest().body("Inventory storeId canoot be null.");
+
         return inventoryService.insert(request);
     }
 
-    @RequestMapping(value = "/inventory/update", method = RequestMethod.POST)
-    public ResponseEntity<?> updateInventory(@RequestBody UpdateInventoryRequest request){
+    @RequestMapping(value = "/inventory/{inventoryId}/update", method = RequestMethod.POST)
+    public ResponseEntity<?> updateInventory(@PathVariable long inventoryId, @RequestBody InventoryJson inventoryJson){
+        UpdateInventoryRequest request = new UpdateInventoryRequest();
+
+        request.setInventoryId(inventoryId);
+
+        if (inventoryJson.getFilmId() != null)
+            request.setFilmId(inventoryJson.getFilmId());
+        if (inventoryJson.getStoreId() != null)
+            request.setStoreId(inventoryJson.getStoreId());
+
         return inventoryService.updateInventory(request);
     }
 

@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import training.controller.jsonObjects.FilmJson;
 import training.generated.*;
 import training.service.FilmServiceImpl;
 
@@ -51,12 +52,96 @@ public class FilmsController {
     }
 
     @RequestMapping(value = "/films/create", method = RequestMethod.PUT)
-    public ResponseEntity<?> createFilm(@RequestBody CreateFilmRequest request){
+    public ResponseEntity<?> createFilm(@RequestBody FilmJson filmJson){
+        CreateFilmRequest request = new CreateFilmRequest();
+
+        if (filmJson.getTitle() != null)
+            request.setTitle(filmJson.getTitle());
+        else
+            return ResponseEntity.badRequest().body("Film title cannot be null.");
+
+        if (filmJson.getDescription() != null)
+            request.setDescription(filmJson.getDescription());
+        else
+            return ResponseEntity.badRequest().body("Film description cannot be null.");
+
+        if (filmJson.getLanguage() != null)
+            request.setLanguageId(filmJson.getLanguage());
+        else
+            return ResponseEntity.badRequest().body("Film language cannot be null.");
+
+        if (filmJson.getLength() != null)
+            request.setLength(filmJson.getLength());
+        else
+            return ResponseEntity.badRequest().body("Film length cannot be null.");
+
+        if (filmJson.getOriginalLanguage() != null)
+            request.setOriginalLanguage(filmJson.getOriginalLanguage());
+        else
+            return ResponseEntity.badRequest().body("Film originalLanguage cannot be null");
+
+        if (filmJson.getRating() != null)
+            request.setRating(filmJson.getRating());
+        else
+            return ResponseEntity.badRequest().body("Film rating cannot be null.");
+
+        if (filmJson.getReleaseYear() != null)
+            request.setReleaseYear(filmJson.getReleaseYear());
+        else
+            return ResponseEntity.badRequest().body("Film releaseYear cannot be null.");
+
+        if (filmJson.getRentalDuration() != null)
+            request.setRentalDuration(filmJson.getRentalDuration());
+        else
+            return ResponseEntity.badRequest().body("Film rentalDuration cannot be null.");
+
+        if (filmJson.getRentalRate() != null)
+            request.setRentalRate(filmJson.getRentalRate());
+        else
+            return ResponseEntity.badRequest().body("Film rentalRate cannot be null.");
+
+        if (filmJson.getReplacementCost() != null)
+            request.setReplacementCost(filmJson.getReplacementCost());
+        else
+            return ResponseEntity.badRequest().body("Film replacementCost cannot be null.");
+
+        if (filmJson.getSpecialFeatures() != null)
+            request.setSpecialFeatures(filmJson.getSpecialFeatures());
+        else
+            return ResponseEntity.badRequest().body("Film specialFeatures cannot be null.");
+
         return filmService.createFilm(request);
     }
 
-    @RequestMapping(value = "/films/update", method = RequestMethod.POST)
-    public ResponseEntity<?> updateFilm(@RequestBody UpdateFilmRequest request){
+    @RequestMapping(value = "/films/{filmId}/update", method = RequestMethod.POST)
+    public ResponseEntity<?> updateFilm(@PathVariable long filmId, @RequestBody FilmJson filmJson){
+        UpdateFilmRequest request = new UpdateFilmRequest();
+
+        request.setFilmId(filmId);
+
+        if (filmJson.getTitle() != null)
+            request.setTitle(filmJson.getTitle());
+        if (filmJson.getDescription() != null)
+            request.setDescription(filmJson.getDescription());
+        if (filmJson.getLanguage() != null)
+            request.setLanguage(filmJson.getLanguage());
+        if (filmJson.getLength() != null)
+            request.setLength(filmJson.getLength());
+        if (filmJson.getOriginalLanguage() != null)
+            request.setOriginalLanguage(filmJson.getOriginalLanguage());
+        if (filmJson.getRating() != null)
+            request.setRating(filmJson.getRating());
+        if (filmJson.getReleaseYear() != null)
+            request.setReleaseYear(filmJson.getReleaseYear());
+        if (filmJson.getRentalDuration() != null)
+            request.setRentalDuration(filmJson.getRentalDuration());
+        if (filmJson.getRentalRate() != null)
+            request.setRentalRate(filmJson.getRentalRate());
+        if (filmJson.getReplacementCost() != null)
+            request.setReplacementCost(filmJson.getReplacementCost());
+        if (filmJson.getSpecialFeatures() != null)
+            request.setSpecialFeatures(filmJson.getSpecialFeatures());
+
         return filmService.updateFilm(request);
     }
 

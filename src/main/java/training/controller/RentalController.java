@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import training.controller.jsonObjects.RentalJson;
 import training.generated.CreateRentalRequest;
 import training.generated.UpdateRentalRequest;
 import training.service.RentalServiceImpl;
@@ -40,12 +41,54 @@ public class RentalController {
     }
 
     @RequestMapping(value = "/rentals/create", method = RequestMethod.PUT)
-    public ResponseEntity<?> createRental(@RequestBody CreateRentalRequest request){
+    public ResponseEntity<?> createRental(@RequestBody RentalJson rentalJson){
+        CreateRentalRequest request = new CreateRentalRequest();
+
+        if (rentalJson.getCustomerId() != null)
+            request.setCustomerId(rentalJson.getCustomerId());
+        else
+            return ResponseEntity.badRequest().body("Rental customerId cannot be null.");
+
+        if (rentalJson.getInventoryId() != null)
+            request.setInventoryId(rentalJson.getInventoryId());
+        else
+            return ResponseEntity.badRequest().body("Rental inventoryId cannot be null.");
+
+        if (rentalJson.getRentalDate() != null)
+            request.setRentalDate(rentalJson.getRentalDate());
+        else
+            return ResponseEntity.badRequest().body("Rental rentalDate cannot be null.");
+
+        if (rentalJson.getReturnDate() != null)
+            request.setReturnDate(rentalJson.getReturnDate());
+        else
+            return ResponseEntity.badRequest().body("Rental returnDate cannot be null.");
+
+        if (rentalJson.getStaffId() != null)
+            request.setStaffId(rentalJson.getStaffId());
+        else
+            return ResponseEntity.badRequest().body("Rental staffId cannot be null.");
+
         return rentalService.insertRental(request);
     }
 
-    @RequestMapping(value = "/rentals/update", method = RequestMethod.POST)
-    public ResponseEntity<?> updateRental(@RequestBody UpdateRentalRequest request){
+    @RequestMapping(value = "/rentals/{rentalId}/update", method = RequestMethod.POST)
+    public ResponseEntity<?> updateRental(@PathVariable long rentalId, @RequestBody RentalJson rentalJson){
+        UpdateRentalRequest request = new UpdateRentalRequest();
+
+        request.setRentalId(rentalId);
+
+        if (rentalJson.getCustomerId() != null)
+            request.setCustomerId(rentalJson.getCustomerId());
+        if (rentalJson.getInventoryId() != null)
+            request.setInventoryId(rentalJson.getInventoryId());
+        if (rentalJson.getRentalDate() != null)
+            request.setRentalDate(rentalJson.getRentalDate());
+        if (rentalJson.getReturnDate() != null)
+            request.setReturnDate(rentalJson.getReturnDate());
+        if (rentalJson.getStaffId() != null)
+            request.setStaffId(rentalJson.getStaffId());
+
         return rentalService.updateRental(request);
     }
 

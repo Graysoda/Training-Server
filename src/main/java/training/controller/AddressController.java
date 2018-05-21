@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import training.controller.jsonObjects.AddressJson;
 import training.generated.CreateAddressRequest;
 import training.generated.UpdateAddressRequest;
 import training.service.AddressServiceImpl;
@@ -35,12 +36,62 @@ public class AddressController {
     }
 
     @RequestMapping(value = "/address/create", method = RequestMethod.PUT)
-    public ResponseEntity<?> createAddress(@RequestBody CreateAddressRequest request){
+    public ResponseEntity<?> createAddress(@RequestBody AddressJson addressJson){
+        CreateAddressRequest request = new CreateAddressRequest();
+
+        if (addressJson.getAddress() != null){
+            request.setAddress(addressJson.getAddress());
+        } else {
+            return ResponseEntity.badRequest().body("Address first line cannot be null.");
+        }
+        if (addressJson.getAddress2() != null){
+            request.setAddress2(addressJson.getAddress2());
+        } else {
+            return ResponseEntity.badRequest().body("Address second line cannot be null.");
+        }
+        if (addressJson.getCity() != null){
+            request.setCity(addressJson.getCity());
+        } else {
+            return ResponseEntity.badRequest().body("Address city cannot be null.");
+        }
+        if (addressJson.getDistrict() != null){
+            request.setDistrict(addressJson.getDistrict());
+        } else {
+            return ResponseEntity.badRequest().body("Address district cannot be null.");
+        }
+        if (addressJson.getPostalCode() != null){
+            request.setPostalCode(addressJson.getPostalCode());
+        } else {
+            return ResponseEntity.badRequest().body("Address postal code cannot be null.");
+        }
+        if (addressJson.getPhone() != null){
+            request.setPhone(addressJson.getPhone());
+        } else {
+            return ResponseEntity.badRequest().body("Address phone cannot be null.");
+        }
+
         return addressService.insertAddress(request);
     }
 
-    @RequestMapping(value = "/address/update", method = RequestMethod.POST)
-    public ResponseEntity<?> updateAddress(@RequestBody UpdateAddressRequest request){
+    @RequestMapping(value = "/address/{addressId}/update", method = RequestMethod.POST)
+    public ResponseEntity<?> updateAddress(@PathVariable long addressId, @RequestBody AddressJson addressJson){
+        UpdateAddressRequest request = new UpdateAddressRequest();
+
+        request.setAddressId(addressId);
+
+        if (addressJson.getAddress() != null)
+            request.setAddress(addressJson.getAddress());
+        if (addressJson.getAddress2() != null)
+            request.setAddress2(addressJson.getAddress2());
+        if (addressJson.getDistrict() != null)
+            request.setDistrict(addressJson.getDistrict());
+        if (addressJson.getCity() != null)
+            request.setCity(addressJson.getCity());
+        if (addressJson.getPostalCode() != null)
+            request.setPostalCode(addressJson.getPostalCode());
+        if (addressJson.getPhone() != null)
+            request.setPhone(addressJson.getPhone());
+
         return addressService.updateAddress(request);
     }
 
