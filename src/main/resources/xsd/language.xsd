@@ -22,7 +22,7 @@
     <xs:element name="getLanguageByIdRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="language_id" type="xs:long"/>
+                <xs:element name="languageId" type="xs:long"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>

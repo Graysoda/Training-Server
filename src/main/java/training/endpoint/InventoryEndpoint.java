@@ -40,19 +40,62 @@ public class InventoryEndpoint {
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "createInventoryRequest")
     @ResponsePayload
-	public ResponseEntity<?> insertInventory(@RequestPayload CreateInventoryRequest request){
-		return inventoryService.insert(request);
+	public CreateInventoryResponse insertInventory(@RequestPayload CreateInventoryRequest request){
+		CreateInventoryResponse response = new CreateInventoryResponse();
+
+		if (request.getFilmId() < 0){
+			response.setError("filmId is invalid");
+			return response;
+		}
+		if (request.getStoreId() < 0){
+			response.setError("storeId is invalid");
+			return response;
+		}
+		ResponseEntity entity = inventoryService.insert(request);
+
+		if (entity.getBody() instanceof Inventory){
+			response.setInventory(((Inventory) entity.getBody()));
+			return response;
+		} else {
+			response.setError(entity.getBody().toString());
+			return response;
+		}
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "deleteInventoryRequest")
     @ResponsePayload
-	public ResponseEntity<?> deleteInventory(@RequestPayload DeleteInventoryRequest request){
-		return inventoryService.deleteInventory(request.getInventoryId());
+	public DeleteInventoryResponse deleteInventory(@RequestPayload DeleteInventoryRequest request){
+		DeleteInventoryResponse response = new DeleteInventoryResponse();
+
+		if (request.getInventoryId() < 0){
+			response.setResponse("inventoryId is invalid");
+			return response;
+		}
+
+		ResponseEntity entity = inventoryService.deleteInventory(request.getInventoryId());
+
+		response.setResponse(entity.getBody().toString());
+		return response;
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "updateInventoryRequest")
     @ResponsePayload
-	public ResponseEntity<?> updateInventory(@RequestPayload UpdateInventoryRequest request){
-		return inventoryService.updateInventory(request);
+	public UpdateInventoryResponse updateInventory(@RequestPayload UpdateInventoryRequest request){
+		UpdateInventoryResponse response = new UpdateInventoryResponse();
+
+		if (request.getInventoryId() < 0){
+			response.setError("inventoryId is invalid");
+			return response;
+		}
+
+		ResponseEntity entity = inventoryService.updateInventory(request);
+
+		if (entity.getBody() instanceof Inventory){
+			response.setInventory(((Inventory) entity.getBody()));
+			return response;
+		} else {
+			response.setError(entity.getBody().toString());
+			return response;
+		}
 	}
 }

@@ -66,7 +66,7 @@ public class FilmsController {
             return ResponseEntity.badRequest().body("Film description cannot be null.");
 
         if (filmJson.getLanguage() != null)
-            request.setLanguageId(filmJson.getLanguage());
+            request.setLanguage(filmJson.getLanguage());
         else
             return ResponseEntity.badRequest().body("Film language cannot be null.");
 

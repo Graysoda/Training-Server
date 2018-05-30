@@ -17,20 +17,76 @@ public class AddressEndpoint {
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "createAddressRequest")
 	@ResponsePayload
-	public ResponseEntity<?> insertAddress(@RequestPayload CreateAddressRequest request){
-		return addressService.insertAddress(request);
+	public CreateAddressResponse insertAddress(@RequestPayload CreateAddressRequest request){
+		CreateAddressResponse response = new CreateAddressResponse();
+
+		if (request.getAddress().isEmpty()){
+			response.setError("first address line cannot be empty.");
+			return response;
+		}
+		if (request.getCity().isEmpty()){
+			response.setError("city cannot be empty.");
+			return response;
+		}
+		if (request.getDistrict().isEmpty()){
+			response.setError("district cannot be empty.");
+			return response;
+		}
+		if (request.getPhone().isEmpty()){
+			response.setError("phone cannot be empty.");
+			return response;
+		}
+		if (request.getPostalCode().isEmpty()){
+			response.setError("postalCode cannot be empty.");
+			return response;
+		}
+
+		ResponseEntity entity = addressService.insertAddress(request);
+
+		if (entity.getBody() instanceof Address){
+			response.setAddress(((Address) entity.getBody()));
+			return response;
+		} else {
+			response.setError(entity.getBody().toString());
+			return response;
+		}
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "deleteAddressRequest")
 	@ResponsePayload
-	public ResponseEntity<?> deleteAddress(@RequestPayload DeleteAddressRequest request){
-		return addressService.deleteAddress(request.getAddressId());
+	public DeleteAddressResponse deleteAddress(@RequestPayload DeleteAddressRequest request){
+		DeleteAddressResponse response = new DeleteAddressResponse();
+
+		if (request.getAddressId() < 0){
+			response.setResponse("addressId is invalid");
+			return response;
+		}
+
+		ResponseEntity entity = addressService.deleteAddress(request.getAddressId());
+
+		response.setResponse(entity.getBody().toString());
+		return response;
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "updateAddressRequest")
 	@ResponsePayload
-	public ResponseEntity<?> updateAddress(@RequestPayload UpdateAddressRequest request){
-		return addressService.updateAddress(request);
+	public UpdateAddressResponse updateAddress(@RequestPayload UpdateAddressRequest request){
+		UpdateAddressResponse response = new UpdateAddressResponse();
+
+		if (request.getAddressId() < 0){
+			response.setError("addressId is invalid");
+			return response;
+		}
+
+		ResponseEntity entity = addressService.updateAddress(request);
+
+		if (entity.getBody() instanceof Address){
+			response.setAddress((Address) entity.getBody());
+			return response;
+		} else {
+			response.setError(entity.getBody().toString());
+			return response;
+		}
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getAllAddressRequest")

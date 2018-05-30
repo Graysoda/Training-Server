@@ -64,12 +64,12 @@ public class ActorController {
         if (actorJson.getFirstName() != null){
             request.setFirstName(actorJson.getFirstName());
         } else {
-            return ResponseEntity.badRequest().body("Actor needs a first name!");
+            return ResponseEntity.badRequest().body("Actor needs a firstName!");
         }
         if (actorJson.getLastName() != null){
             request.setLastName(actorJson.getLastName());
         } else {
-            return ResponseEntity.badRequest().body("Actor needs a last name!");
+            return ResponseEntity.badRequest().body("Actor needs a lastName!");
         }
 
         return actorService.insertActor(request);

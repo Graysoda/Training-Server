@@ -8,12 +8,21 @@
     <xs:element name="createCustomerRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="store_id" type="xs:long"/>
-                <xs:element name="first_name" type="xs:string"/>
-                <xs:element name="last_name" type="xs:string"/>
+                <xs:element name="storeId" type="xs:long"/>
+                <xs:element name="firstName" type="xs:string"/>
+                <xs:element name="lastName" type="xs:string"/>
                 <xs:element name="email" type="xs:string"/>
-                <xs:element name="address_id" type="xs:long"/>
+                <xs:element name="addressId" type="xs:long"/>
                 <xs:element name="active" type="xs:boolean"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="createCustomerResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="customer" type="data:customer"/>
+                <xs:element name="error" type="xs:string"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -21,13 +30,22 @@
     <xs:element name="updateCustomerRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="customer_id" type="xs:long"/>
-                <xs:element name="store_id" type="xs:long" nillable="true"/>
-                <xs:element name="first_name" type="xs:string" nillable="true"/>
-                <xs:element name="last_name" type="xs:string" nillable="true"/>
+                <xs:element name="customerId" type="xs:long"/>
+                <xs:element name="storeId" type="xs:long" nillable="true"/>
+                <xs:element name="firstName" type="xs:string" nillable="true"/>
+                <xs:element name="lastName" type="xs:string" nillable="true"/>
                 <xs:element name="email" type="xs:string" nillable="true"/>
-                <xs:element name="address_id" type="xs:long" nillable="true"/>
+                <xs:element name="addressId" type="xs:long" nillable="true"/>
                 <xs:element name="active" type="xs:boolean" nillable="true"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="updateCustomerResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element type="data:customer" name="customer"/>
+                <xs:element name="error" type="xs:string"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -35,7 +53,15 @@
     <xs:element name="deleteCustomerRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="customer_id" type="xs:long"/>
+                <xs:element name="customerId" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="deleteCustomerResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element type="xs:string" name="response"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -57,7 +83,7 @@
     <xs:element name="getCustomerByIdRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="customer_id" type="xs:long"/>
+                <xs:element name="customerId" type="xs:long"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -101,7 +127,7 @@
     <xs:element name="getCustomersByStoreRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="store_id" type="xs:long"/>
+                <xs:element name="storeId" type="xs:long"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>

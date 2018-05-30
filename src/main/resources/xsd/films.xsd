@@ -38,7 +38,7 @@
     <xs:element name="getFilmByIdRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="film_id" type="xs:int"/>
+                <xs:element name="filmId" type="xs:int"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -54,7 +54,7 @@
     <xs:element name="getFilmByReleaseYearRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="release_year" type="xs:int"/>
+                <xs:element name="releaseYear" type="xs:int"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -83,18 +83,18 @@
         </xs:complexType>
     </xs:element>
 
-    <xs:element name="getFilmTextRequest">
+    <xs:element name="getFilmSummaryRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="film_id" type="xs:long"/>
+                <xs:element name="filmId" type="xs:long"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
 
-    <xs:element name="getFilmTextResponse">
+    <xs:element name="getFilmSummaryResponse">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="film_text" type="data:summary"/>
+                <xs:element name="summary" type="data:summary"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -102,7 +102,7 @@
     <xs:element name="getFilmsActorsRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="film_id" type="xs:long"/>
+                <xs:element name="filmId" type="xs:long"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -120,15 +120,24 @@
             <xs:sequence>
                 <xs:element name="title" type="xs:string"/>
                 <xs:element name="description" type="xs:string"/>
-                <xs:element name="release_year" type="xs:int"/>
-                <xs:element name="language_id" type="xs:string"/>
-                <xs:element name="original_language" type="xs:string"/>
-                <xs:element name="rental_duration" type="xs:int"/>
-                <xs:element name="rental_rate" type="xs:float"/>
+                <xs:element name="releaseYear" type="xs:int"/>
+                <xs:element name="language" type="xs:string"/>
+                <xs:element name="originalLanguage" type="xs:string"/>
+                <xs:element name="rentalDuration" type="xs:int"/>
+                <xs:element name="rentalRate" type="xs:float"/>
                 <xs:element name="length" type="xs:int"/>
-                <xs:element name="replacement_cost" type="xs:float"/>
+                <xs:element name="replacementCost" type="xs:float"/>
                 <xs:element name="rating" type="xs:string"/>
-                <xs:element name="special_features" type="xs:string"/>
+                <xs:element name="specialFeatures" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="createFilmResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="film" type="data:film"/>
+                <xs:element name="error" type="xs:string"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -136,18 +145,27 @@
     <xs:element name="updateFilmRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="film_id" type="xs:long"/>
+                <xs:element name="filmId" type="xs:long"/>
                 <xs:element name="title" type="xs:string" nillable="true"/>
                 <xs:element name="description" type="xs:string" nillable="true"/>
-                <xs:element name="release_year" type="xs:int" nillable="true"/>
+                <xs:element name="releaseYear" type="xs:int" nillable="true"/>
                 <xs:element name="language" type="xs:string" nillable="true"/>
-                <xs:element name="original_language" type="xs:string" nillable="true"/>
-                <xs:element name="rental_duration" type="xs:int" nillable="true"/>
-                <xs:element name="rental_rate" type="xs:float" nillable="true"/>
+                <xs:element name="originalLanguage" type="xs:string" nillable="true"/>
+                <xs:element name="rentalDuration" type="xs:int" nillable="true"/>
+                <xs:element name="rentalRate" type="xs:float" nillable="true"/>
                 <xs:element name="length" type="xs:int" nillable="true"/>
-                <xs:element name="replacement_cost" type="xs:float" nillable="true"/>
+                <xs:element name="replacementCost" type="xs:float" nillable="true"/>
                 <xs:element name="rating" type="xs:string" nillable="true"/>
-                <xs:element name="special_features" type="xs:string" nillable="true"/>
+                <xs:element name="specialFeatures" type="xs:string" nillable="true"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="updateFilmResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="film" type="data:film"/>
+                <xs:element name="error" type="xs:string"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -155,7 +173,15 @@
     <xs:element name="deleteFilmRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="film_id" type="xs:long"/>
+                <xs:element name="filmId" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="deleteFilmResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="response" type="xs:string"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>

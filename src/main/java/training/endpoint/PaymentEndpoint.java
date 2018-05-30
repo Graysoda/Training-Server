@@ -47,19 +47,75 @@ public class PaymentEndpoint {
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "createPaymentRequest")
     @ResponsePayload
-	public ResponseEntity<?> insertPayment(@RequestPayload CreatePaymentRequest request){
-		return paymentService.insertPayment(request);
+	public CreatePaymentResponse insertPayment(@RequestPayload CreatePaymentRequest request){
+		CreatePaymentResponse response = new CreatePaymentResponse();
+
+		if (request.getStaffId() < 0){
+			response.setError("staffId is invalid");
+			return response;
+		}
+		if (request.getRentalId() < 0){
+			response.setError("rentalId is invalid");
+			return response;
+		}
+		if (request.getPaymentDate().isEmpty()){
+			response.setError("paymentDate cannot be empty");
+			return response;
+		}
+		if (request.getCustomerId() < 0){
+			response.setError("customerId is invalid");
+			return response;
+		}
+		if (request.getAmount() < 0){
+			response.setError("amount is invalid");
+			return response;
+		}
+
+		ResponseEntity entity = paymentService.insertPayment(request);
+
+		if (entity.getBody() instanceof Payment){
+			response.setPayment((Payment) entity.getBody());
+			return response;
+		} else {
+			response.setError(entity.getBody().toString());
+			return response;
+		}
+
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "deletePaymentRequest")
     @ResponsePayload
-	public ResponseEntity<?> deletePayment(@RequestPayload DeletePaymentRequest request){
-		return paymentService.deletePayment(request.getPaymentId());
+	public DeletePaymentResponse deletePayment(@RequestPayload DeletePaymentRequest request){
+		DeletePaymentResponse response = new DeletePaymentResponse();
+
+		if (request.getPaymentId() < 0){
+			response.setResponse("paymentId is invalid");
+			return response;
+		}
+		ResponseEntity entity = paymentService.deletePayment(request.getPaymentId());
+
+		response.setResponse(entity.getBody().toString());
+		return response;
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "updatePaymentRequest")
     @ResponsePayload
-	public ResponseEntity<?> updatePayment(@RequestPayload UpdatePaymentRequest request){
-		return paymentService.updatePayment(request);
+	public UpdatePaymentResponse updatePayment(@RequestPayload UpdatePaymentRequest request){
+		UpdatePaymentResponse response = new UpdatePaymentResponse();
+
+		if (request.getPaymentId() < 0){
+			response.setError("paymentId is invalid");
+			return response;
+		}
+
+		ResponseEntity entity = paymentService.updatePayment(request);
+
+		if (entity.getBody() instanceof Payment){
+			response.setPayment((Payment) entity.getBody());
+			return response;
+		} else {
+			response.setError(entity.getBody().toString());
+			return response;
+		}
 	}
 }

@@ -17,20 +17,77 @@ public class CustomerEndpoint {
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "createCustomerRequest")
 	@ResponsePayload
-	public ResponseEntity<?> insertCustomer(@RequestPayload CreateCustomerRequest request){
-		return customerService.insertCustomer(request);
+	public CreateCustomerResponse insertCustomer(@RequestPayload CreateCustomerRequest request){
+		CreateCustomerResponse response = new CreateCustomerResponse();
+
+		if (request.getFirstName().isEmpty()){
+			response.setError("firstName cannot be empty.");
+			return response;
+		}
+		if (request.getLastName().isEmpty()){
+			response.setError("lastName cannot be empty.");
+			return response;
+		}
+		if (request.getEmail().isEmpty()){
+			response.setError("email cannot be empty.");
+			return response;
+		}
+		if (request.getAddressId() < 0){
+			response.setError("addressId is invalid");
+			return response;
+		}
+		if (request.getStoreId() < 0){
+			response.setError("storeId is invalid");
+			return response;
+		}
+
+		ResponseEntity entity = customerService.insertCustomer(request);
+
+		if (entity.getBody() instanceof Customer){
+			response.setCustomer(((Customer) entity.getBody()));
+			return response;
+		} else {
+			response.setError(entity.getBody().toString());
+			return response;
+		}
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "deleteCustomerRequest")
 	@ResponsePayload
-	public ResponseEntity<?> deleteCustomer(@RequestPayload DeleteCustomerRequest request){
-		return customerService.deleteCustomer(request.getCustomerId());
+	public DeleteCustomerResponse deleteCustomer(@RequestPayload DeleteCustomerRequest request){
+		DeleteCustomerResponse response = new DeleteCustomerResponse();
+
+		if (request.getCustomerId() < 0){
+			response.setResponse("customerId is invalid.");
+			return response;
+		}
+
+		ResponseEntity entity = customerService.deleteCustomer(request.getCustomerId());
+
+		response.setResponse(entity.getBody().toString());
+
+		return response;
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "updateCustomerRequest")
 	@ResponsePayload
-	public ResponseEntity<?> updateCustomer(@RequestPayload UpdateCustomerRequest request){
-		return customerService.updateCustomer(request);
+	public UpdateCustomerResponse updateCustomer(@RequestPayload UpdateCustomerRequest request){
+		UpdateCustomerResponse response = new UpdateCustomerResponse();
+
+		if (request.getCustomerId() < 0){
+			response.setError("customerId is invalid.");
+			return response;
+		}
+
+		ResponseEntity entity = customerService.updateCustomer(request);
+
+		if (entity.getBody() instanceof Customer){
+			response.setCustomer(((Customer) entity.getBody()));
+			return response;
+		} else {
+			response.setError(entity.getBody().toString());
+			return response;
+		}
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI,localPart = "getActiveCustomersRequest")

@@ -9,28 +9,114 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 import training.generated.*;
 import training.service.FilmServiceImpl;
 
+import java.util.ArrayList;
+
 
 @Endpoint
 public class FilmsEndpoint {
 	private static final String NAMESPACE_URI = SoapConstants.NAMESPACE_URI;
 	@Autowired private FilmServiceImpl filmService;
+	private static final ArrayList<String> ratings = new ArrayList<String>(){
+		{
+			add("R");
+			add("G");
+			add("PG");
+			add("PG-13");
+			add("NC-17");
+		}
+	};
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "createFilmRequest")
 	@ResponsePayload
-    public ResponseEntity<?> createFilm(@RequestPayload CreateFilmRequest request) {
-		return filmService.createFilm(request);
+    public CreateFilmResponse createFilm(@RequestPayload CreateFilmRequest request) {
+		CreateFilmResponse response = new CreateFilmResponse();
+
+		if (request.getTitle().isEmpty()){
+			response.setError("title cannot be empty");
+			return response;
+		}
+		if (request.getDescription().isEmpty()){
+			response.setError("description cannot be empty");
+			return response;
+		}
+		if (request.getLanguage().isEmpty()){
+			response.setError("language cannot be empty");
+			return response;
+		}
+		if (request.getLength() < 0){
+			response.setError("length is invalid");
+			return response;
+		}
+		if (request.getRating().isEmpty()){
+			response.setError("rating cannot be empty");
+			return response;
+		} else if (!isValidRating(request.getRating())){
+			response.setError("rating is invalid");
+			return response;
+		}
+		if (request.getReleaseYear() < 0){
+			response.setError("releaseYear is invalid");
+			return response;
+		}
+		if (request.getRentalDuration() < 0){
+			response.setError("rentalDuration is invalid");
+			return response;
+		}
+		if (request.getRentalRate() < 0){
+			response.setError("rentalRate is invalid");
+			return response;
+		}
+		if (request.getReplacementCost() < 0){
+			response.setError("replacementCost is invalid");
+			return response;
+		}
+
+		ResponseEntity entity = filmService.createFilm(request);
+
+		if (entity.getBody() instanceof Film){
+			response.setFilm(((Film) entity.getBody()));
+			return response;
+		} else {
+			response.setError(entity.getBody().toString());
+			return response;
+		}
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "deleteFilmRequest")
 	@ResponsePayload
-    public ResponseEntity<?> deleteFilm(@RequestPayload DeleteFilmRequest request) {
-		return filmService.deleteFilm(request.getFilmId());
+    public DeleteFilmResponse deleteFilm(@RequestPayload DeleteFilmRequest request) {
+		DeleteFilmResponse response = new DeleteFilmResponse();
+
+		if (request.getFilmId() < 0){
+			response.setResponse("filmId is invalid");
+			return response;
+		}
+
+		ResponseEntity entity = filmService.deleteFilm(request.getFilmId());
+
+		response.setResponse(entity.getBody().toString());
+		return response;
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "updateFilmRequest")
 	@ResponsePayload
-    public ResponseEntity<?> updateFilm(@RequestPayload UpdateFilmRequest request) {
-		return filmService.updateFilm(request);
+    public UpdateFilmResponse updateFilm(@RequestPayload UpdateFilmRequest request) {
+		UpdateFilmResponse response = new UpdateFilmResponse();
+
+		if (request.getFilmId() < 0){
+			response.setError("filmId is invalid");
+			return response;
+		}
+
+		ResponseEntity entity = filmService.updateFilm(request);
+
+		if (entity.getBody() instanceof Film){
+			response.setFilm(((Film) entity.getBody()));
+			return response;
+		} else {
+			response.setError(entity.getBody().toString());
+			return response;
+		}
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI,localPart = "getAllFilmsRequest")
@@ -75,11 +161,11 @@ public class FilmsEndpoint {
 		return response;
 	}
 
-	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getFilmTextRequest")
+	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getFilmSummaryRequest")
 	@ResponsePayload
-	public GetFilmTextResponse getFilmText(@RequestPayload GetFilmTextRequest request){
-		GetFilmTextResponse response = new GetFilmTextResponse();
-		response.setFilmText(filmService.getFilmSummary(request.getFilmId()));
+	public GetFilmSummaryResponse getFilmText(@RequestPayload GetFilmSummaryRequest request){
+		GetFilmSummaryResponse response = new GetFilmSummaryResponse();
+		response.setSummary(filmService.getFilmSummary(request.getFilmId()));
 		return response;
 	}
 
@@ -89,5 +175,16 @@ public class FilmsEndpoint {
 		GetFilmsActorsResponse response = new GetFilmsActorsResponse();
 		response.setActors(filmService.getFilmsActors(request.getFilmId()));
 		return response;
+	}
+
+	private boolean isValidRating(String rating) {
+		boolean isValid = false;
+		for (int i = 0; i < ratings.size(); i++) {
+			if (rating.equals(ratings.get(i))){
+				isValid = true;
+				break;
+			}
+		}
+		return isValid;
 	}
 }

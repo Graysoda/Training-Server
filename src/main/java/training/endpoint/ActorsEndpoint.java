@@ -19,20 +19,62 @@ public class ActorsEndpoint {
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "createActorRequest")
 	@ResponsePayload
-	public ResponseEntity<?> createActor(@RequestPayload CreateActorRequest request) {
-		return actorService.insertActor(request);
+	public CreateActorResponse createActor(@RequestPayload CreateActorRequest request) {
+		CreateActorResponse response = new CreateActorResponse();
+		if (request.getFirstName().isEmpty()){
+			response.setError("firstName cannot be empty.");
+			return response;
+		}
+		if (request.getLastName().isEmpty()){
+			response.setError("lastName cannot be empty.");
+			return response;
+		}
+
+		ResponseEntity entity =  actorService.insertActor(request);
+
+		if (entity.getBody() instanceof Actor){
+			response.setActor((Actor) entity.getBody());
+			return response;
+		} else {
+			response.setError(entity.getBody().toString());
+			return response;
+		}
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "updateActorRequest")
 	@ResponsePayload
-	public ResponseEntity<?> updateActor(@RequestPayload UpdateActorRequest request) {
-		return actorService.updateActor(request);
+	public UpdateActorResponse updateActor(@RequestPayload UpdateActorRequest request) {
+		UpdateActorResponse response = new UpdateActorResponse();
+		if (request.getActorId() < 0){
+			response.setError("actorId is invalid");
+			return response;
+		}
+
+		ResponseEntity entity =  actorService.updateActor(request);
+
+		if (entity.getBody() instanceof Actor){
+			response.setActor(((Actor) entity.getBody()));
+			return response;
+		} else {
+			response.setError(entity.getBody().toString());
+			return response;
+		}
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "deleteActorRequest")
 	@ResponsePayload
-	public ResponseEntity<?> deleteActor(@RequestPayload DeleteActorRequest request) {
-		return actorService.deleteActor(request.getActorId());
+	public DeleteActorResponse deleteActor(@RequestPayload DeleteActorRequest request) {
+		DeleteActorResponse response = new DeleteActorResponse();
+
+		if (request.getActorId() < 0){
+			response.setResponse("actorId is invalid");
+			return response;
+		}
+
+		ResponseEntity entity = actorService.deleteActor(request.getActorId());
+
+		response.setResponse(entity.getBody().toString());
+		return response;
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getAllActorsRequest")

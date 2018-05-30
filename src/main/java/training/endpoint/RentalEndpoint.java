@@ -65,19 +65,75 @@ public class RentalEndpoint {
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "createRentalRequest")
 	@ResponsePayload
-	public ResponseEntity<?> insertRental(@RequestPayload CreateRentalRequest request){
-		return rentalService.insertRental(request);
+	public CreateRentalResponse insertRental(@RequestPayload CreateRentalRequest request){
+		CreateRentalResponse response = new CreateRentalResponse();
+
+		if (request.getStaffId() < 0){
+			response.setError("staffId is invalid");
+			return response;
+		}
+		if (request.getReturnDate().equals("") || request.getReturnDate().isEmpty()){
+			response.setError("returnDate is invalid");
+			return response;
+		}
+		if (request.getRentalDate().equals("") || request.getRentalDate().isEmpty()){
+			response.setError("rentalDate is invalid");
+			return response;
+		}
+		if (request.getInventoryId() < 0){
+			response.setError("inventoryId is invalid");
+			return response;
+		}
+		if (request.getCustomerId() < 0){
+			response.setError("customerId is invalid");
+			return response;
+		}
+
+		ResponseEntity entity = rentalService.insertRental(request);
+
+		if (entity.getBody() instanceof Rental){
+			response.setRental((Rental) entity.getBody());
+			return response;
+		} else {
+			response.setError(entity.getBody().toString());
+			return response;
+		}
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "deleteRentalRequest")
 	@ResponsePayload
-	public ResponseEntity<?> deleteRental(@RequestPayload DeleteRentalRequest request){
-		return rentalService.deleteRental(request.getRentalId());
+	public DeleteRentalResponse deleteRental(@RequestPayload DeleteRentalRequest request){
+		DeleteRentalResponse response = new DeleteRentalResponse();
+
+		if (request.getRentalId() < 0){
+			response.setResponse("rentalId is invalid");
+			return response;
+		}
+
+		ResponseEntity entity = rentalService.deleteRental(request.getRentalId());
+
+		response.setResponse(entity.getBody().toString());
+		return response;
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "updateRentalRequest")
 	@ResponsePayload
-	public ResponseEntity<?> updateRental(@RequestPayload UpdateRentalRequest request){
-		return rentalService.updateRental(request);
+	public UpdateRentalResponse updateRental(@RequestPayload UpdateRentalRequest request){
+		UpdateRentalResponse response = new UpdateRentalResponse();
+
+		if (request.getRentalId() < 0){
+			response.setError("rentalId is invalid");
+			return response;
+		}
+
+		ResponseEntity entity = rentalService.updateRental(request);
+
+		if (entity.getBody() instanceof Rental){
+			response.setRental((Rental) entity.getBody());
+			return response;
+		} else {
+			response.setError(entity.getBody().toString());
+			return response;
+		}
 	}
 }

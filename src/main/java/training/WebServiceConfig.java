@@ -4,7 +4,6 @@ import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.ws.config.annotation.EnableWs;
@@ -13,8 +12,6 @@ import org.springframework.ws.transport.http.MessageDispatcherServlet;
 import org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition;
 import org.springframework.xml.xsd.SimpleXsdSchema;
 import org.springframework.xml.xsd.XsdSchema;
-import org.springframework.xml.xsd.XsdSchemaCollection;
-import org.springframework.xml.xsd.commons.CommonsXsdSchemaCollection;
 
 import java.io.*;
 
@@ -35,26 +32,11 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 		return new ServletRegistrationBean(servlet, "/soap/*");
 	}
 
-	@Bean(name = "test")
-	public DefaultWsdl11Definition testWsdl(XsdSchemaCollection collection){
-		DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
-		wsdl11Definition.setPortTypeName("TestPort");
-		wsdl11Definition.setLocationUri("/soap");
-		wsdl11Definition.setTargetNamespace(TARGET_NAMESPACE);
-		wsdl11Definition.setSchemaCollection(collection);
-		return wsdl11Definition;
-	}
-
-	@Bean(name = "collection")
-	public XsdSchemaCollection collection(){
-		return new CommonsXsdSchemaCollection(new ClassPathResource("/xsd/")).;
-	}
-
 	@Bean(name = "operations")
 	public DefaultWsdl11Definition operationWsdl11Definition(XsdSchema operationsSchema){
 		DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
 		wsdl11Definition.setPortTypeName("OperationPort");
-		wsdl11Definition.setLocationUri("/soap");
+		wsdl11Definition.setLocationUri("/soap/");
 		wsdl11Definition.setTargetNamespace(TARGET_NAMESPACE);
 		wsdl11Definition.setSchema(operationsSchema);
 		return wsdl11Definition;
@@ -64,7 +46,7 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 	public DefaultWsdl11Definition actorWsdl11Definition(XsdSchema actorSchema){
 		DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
 		wsdl11Definition.setPortTypeName("ActorPort");
-		wsdl11Definition.setLocationUri("/soap");
+		wsdl11Definition.setLocationUri("/soap/actor");
 		wsdl11Definition.setTargetNamespace(TARGET_NAMESPACE);
 		wsdl11Definition.setSchema(actorSchema);
 		return wsdl11Definition;
@@ -74,7 +56,7 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 	public DefaultWsdl11Definition addressWsdlDefinition(XsdSchema addressSchema){
 		DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
 		wsdl11Definition.setPortTypeName("AddressPort");
-		wsdl11Definition.setLocationUri("/soap");
+		wsdl11Definition.setLocationUri("/soap/address");
 		wsdl11Definition.setTargetNamespace(TARGET_NAMESPACE);
 		wsdl11Definition.setSchema(addressSchema);
 		return wsdl11Definition;
@@ -83,7 +65,7 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 	public DefaultWsdl11Definition customerWsdlDefinition(XsdSchema customerSchema){
 		DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
 		wsdl11Definition.setPortTypeName("CustomerPort");
-		wsdl11Definition.setLocationUri("/soap");
+		wsdl11Definition.setLocationUri("/soap/customer");
 		wsdl11Definition.setTargetNamespace(TARGET_NAMESPACE);
 		wsdl11Definition.setSchema(customerSchema);
 		return wsdl11Definition;
@@ -93,7 +75,7 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 	public DefaultWsdl11Definition filmsWsdlDefinition(XsdSchema filmsSchema){
 		DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
 		wsdl11Definition.setPortTypeName("FilmsPort");
-		wsdl11Definition.setLocationUri("/soap");
+		wsdl11Definition.setLocationUri("/soap/film");
 		wsdl11Definition.setTargetNamespace(TARGET_NAMESPACE);
 		wsdl11Definition.setSchema(filmsSchema);
 		return wsdl11Definition;
@@ -103,7 +85,7 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 	public DefaultWsdl11Definition inventoryWsdlDefinition(XsdSchema inventorySchema){
 		DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
 		wsdl11Definition.setPortTypeName("InventoryPort");
-		wsdl11Definition.setLocationUri("/soap");
+		wsdl11Definition.setLocationUri("/soap/inventory");
 		wsdl11Definition.setTargetNamespace(TARGET_NAMESPACE);
 		wsdl11Definition.setSchema(inventorySchema);
 		return wsdl11Definition;
@@ -113,7 +95,7 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 	public DefaultWsdl11Definition paymentsWsdlDefinition(XsdSchema paymentsSchema){
 		DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
 		wsdl11Definition.setPortTypeName("PaymentsPort");
-		wsdl11Definition.setLocationUri("/soap");
+		wsdl11Definition.setLocationUri("/soap/payment");
 		wsdl11Definition.setTargetNamespace(TARGET_NAMESPACE);
 		wsdl11Definition.setSchema(paymentsSchema);
 		return wsdl11Definition;
@@ -123,7 +105,7 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 	public DefaultWsdl11Definition rentalWsdlDefinition(XsdSchema rentalSchema){
 		DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
 		wsdl11Definition.setPortTypeName("RentalPort");
-		wsdl11Definition.setLocationUri("/soap");
+		wsdl11Definition.setLocationUri("/soap/rental");
 		wsdl11Definition.setTargetNamespace(TARGET_NAMESPACE);
 		wsdl11Definition.setSchema(rentalSchema);
 		return wsdl11Definition;
@@ -133,7 +115,7 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 	public DefaultWsdl11Definition staffWsdlDefinition(XsdSchema staffSchema){
 		DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
 		wsdl11Definition.setPortTypeName("StaffPort");
-		wsdl11Definition.setLocationUri("/soap");
+		wsdl11Definition.setLocationUri("/soap/staff");
 		wsdl11Definition.setTargetNamespace(TARGET_NAMESPACE);
 		wsdl11Definition.setSchema(staffSchema);
 		return wsdl11Definition;
@@ -143,7 +125,7 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 	public DefaultWsdl11Definition languageWsdlDefinition(XsdSchema languageSchema){
 		DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
 		wsdl11Definition.setPortTypeName("LanguagePort");
-		wsdl11Definition.setLocationUri("/soap");
+		wsdl11Definition.setLocationUri("/soap/language");
 		wsdl11Definition.setTargetNamespace(TARGET_NAMESPACE);
 		wsdl11Definition.setSchema(languageSchema);
 		return wsdl11Definition;

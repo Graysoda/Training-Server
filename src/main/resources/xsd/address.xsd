@@ -12,8 +12,17 @@
                 <xs:element name="address2" type="xs:string"/>
                 <xs:element name="district" type="xs:string"/>
                 <xs:element name="city" type="xs:string"/>
-                <xs:element name="postal_code" type="xs:string"/>
+                <xs:element name="postalCode" type="xs:string"/>
                 <xs:element name="phone" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="createAddressResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="address" type="data:address"/>
+                <xs:element name="error" type="xs:string"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -21,13 +30,22 @@
     <xs:element name="updateAddressRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="address_id" type="xs:long"/>
+                <xs:element name="addressId" type="xs:long"/>
                 <xs:element name="address" type="xs:string" nillable="true"/>
                 <xs:element name="address2" type="xs:string" nillable="true"/>
                 <xs:element name="district" type="xs:string" nillable="true"/>
                 <xs:element name="city" type="xs:string" nillable="true"/>
-                <xs:element name="postal_code" type="xs:string" nillable="true"/>
+                <xs:element name="postalCode" type="xs:string" nillable="true"/>
                 <xs:element name="phone" type="xs:string" nillable="true"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="updateAddressResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="address" type="data:address"/>
+                <xs:element name="error" type="xs:string"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -35,7 +53,15 @@
     <xs:element name="deleteAddressRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="address_id" type="xs:long"/>
+                <xs:element name="addressId" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="deleteAddressResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="response" type="xs:string"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -73,7 +99,7 @@
     <xs:element name="getAddressByCityRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="city_name" type="xs:string"/>
+                <xs:element name="cityName" type="xs:string"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -89,7 +115,7 @@
     <xs:element name="getAddressByPostalCodeRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="postal_code" type="xs:string"/>
+                <xs:element name="postalCode" type="xs:string"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>

@@ -137,7 +137,7 @@ public class FilmDaoImpl implements FilmDao{
 				"("+request.getTitle()+", " +
 				request.getDescription()+", " +
 				request.getReleaseYear()+", " +
-				request.getLanguageId()+", " +
+				request.getLanguage()+", " +
 				request.getOriginalLanguage()+", "+
 				request.getRentalDuration()+", "+
 				request.getRentalRate()+", "+

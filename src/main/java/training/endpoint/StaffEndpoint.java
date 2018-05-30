@@ -32,17 +32,81 @@ public class StaffEndpoint {
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "createStaffRequest")
-	public ResponseEntity<?> insertStaff(@RequestPayload CreateStaffRequest request){
-		return staffService.insertStaff(request);
+	public CreateStaffResponse insertStaff(@RequestPayload CreateStaffRequest request){
+		CreateStaffResponse response = new CreateStaffResponse();
+
+		if (request.getFirstName().isEmpty()){
+			response.setError("firstName cannot be empty");
+			return response;
+		}
+		if (request.getLastName().isEmpty()){
+			response.setError("lastName cannot be empty");
+			return response;
+		}
+		if (request.getPassword().isEmpty()){
+			response.setError("password cannot be empty");
+			return response;
+		}
+		if (request.getUsername().isEmpty()){
+			response.setError("username cannot be empty");
+			return response;
+		}
+		if (request.getEmail().isEmpty()){
+			response.setError("email cannot be empty");
+			return response;
+		}
+		if (request.getAddressId() < 0){
+			response.setError("addressId is invalid");
+			return response;
+		}
+		if (request.getStoreId() < 0){
+			response.setError("storeId is invalid");
+			return response;
+		}
+
+		ResponseEntity entity = staffService.insertStaff(request);
+
+		if (entity.getBody() instanceof Staff){
+			response.setStaff((Staff) entity.getBody());
+			return response;
+		} else {
+			response.setError(entity.getBody().toString());
+			return response;
+		}
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "deleteStaffRequest")
-	public ResponseEntity<?> deleteStaff(@RequestPayload DeleteStaffRequest request){
-		return staffService.deleteStaff(request.getStaffId());
+	public DeleteStaffResponse deleteStaff(@RequestPayload DeleteStaffRequest request){
+		DeleteStaffResponse response = new DeleteStaffResponse();
+
+		if (request.getStaffId() < 0){
+			response.setResponse("staffId is invalid");
+			return response;
+		}
+
+		ResponseEntity entity = staffService.deleteStaff(request.getStaffId());
+
+		response.setResponse(entity.getBody().toString());
+		return response;
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "updateStaffRequest")
-	public ResponseEntity<?> updateStaff(@RequestPayload UpdateStaffRequest request){
-		return staffService.updateStaff(request);
+	public UpdateStaffResponse updateStaff(@RequestPayload UpdateStaffRequest request){
+		UpdateStaffResponse response = new UpdateStaffResponse();
+
+		if (request.getStaffId() < 0){
+			response.setError("staffId is invalid");
+			return response;
+		}
+
+		ResponseEntity entity = staffService.updateStaff(request);
+
+		if (entity.getBody() instanceof Staff){
+			response.setStaff((Staff) entity.getBody());
+			return response;
+		} else {
+			response.setError(entity.getBody().toString());
+			return response;
+		}
 	}
 }

@@ -9,8 +9,17 @@
     <xs:element name="createActorRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="first_name" type="xs:string"/>
-                <xs:element name="last_name" type="xs:string"/>
+                <xs:element name="firstName" type="xs:string"/>
+                <xs:element name="lastName" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="createActorResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="actor" type="data:actor"/>
+                <xs:element name="error" type="xs:string"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -18,9 +27,18 @@
     <xs:element name="updateActorRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="actor_id" type="xs:long"/>
-                <xs:element name="new_first_name" type="xs:string" nillable="true"/>
-                <xs:element name="new_last_name" type="xs:string" nillable="true"/>
+                <xs:element name="actorId" type="xs:long"/>
+                <xs:element name="newFirstName" type="xs:string" nillable="true"/>
+                <xs:element name="newLastName" type="xs:string" nillable="true"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="updateActorResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="actor" type="data:actor"/>
+                <xs:element name="error" type="xs:string"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -28,7 +46,15 @@
     <xs:element name="deleteActorRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="actor_id" type="xs:long"/>
+                <xs:element name="actorId" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="deleteActorResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="response" type="xs:string"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -50,7 +76,7 @@
     <xs:element name="getActorsByIdRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="actor_id" type="xs:int"/>
+                <xs:element name="actorId" type="xs:int"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -66,7 +92,7 @@
     <xs:element name="getActorsByFirstNameRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="actor_first_name" type="xs:string"/>
+                <xs:element name="actorFirstName" type="xs:string"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -82,7 +108,7 @@
     <xs:element name="getFilmsWithActorRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="actor_id" type="xs:long"/>
+                <xs:element name="actorId" type="xs:long"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
