@@ -3,6 +3,7 @@ package training.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import training.database.dao.impl.CustomerDaoImpl;
 import training.generated.CreateCustomerRequest;
 import training.generated.Customer;
@@ -11,6 +12,7 @@ import training.service.CustomerService;
 
 import java.util.List;
 
+@Service
 public class CustomerServiceImpl implements CustomerService {
 	@Autowired @Lazy private CustomerDaoImpl customerDaoImpl;
 

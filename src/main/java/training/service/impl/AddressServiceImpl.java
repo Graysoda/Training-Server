@@ -3,6 +3,7 @@ package training.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import training.database.dao.impl.AddressDaoImpl;
 import training.generated.Address;
 import training.generated.CreateAddressRequest;
@@ -11,6 +12,7 @@ import training.service.AddressService;
 
 import java.util.List;
 
+@Service
 public class AddressServiceImpl implements AddressService {
 	@Autowired @Lazy private AddressDaoImpl addressDaoImpl;
 

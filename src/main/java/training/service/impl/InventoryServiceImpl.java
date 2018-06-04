@@ -3,6 +3,7 @@ package training.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import training.database.dao.impl.InventoryDaoImpl;
 import training.generated.CreateInventoryRequest;
 import training.generated.Inventory;
@@ -11,6 +12,7 @@ import training.service.InventoryService;
 
 import java.util.List;
 
+@Service
 public class InventoryServiceImpl implements InventoryService {
 	@Autowired @Lazy private InventoryDaoImpl inventoryDaoImpl;
 
