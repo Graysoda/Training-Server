@@ -8,7 +8,7 @@ import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 import training.generated.*;
-import training.service.RentalServiceImpl;
+import training.service.impl.RentalServiceImpl;
 
 @Endpoint
 public class RentalEndpoint {

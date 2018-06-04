@@ -10,7 +10,7 @@ import training.generated.Actor;
 import training.generated.CreateActorRequest;
 import training.generated.Summary;
 import training.generated.UpdateActorRequest;
-import training.service.ActorServiceImpl;
+import training.service.impl.ActorServiceImpl;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ public class ActorController {
     @Autowired @Lazy
     private ActorServiceImpl actorService;
 
-    @RequestMapping(value = "/actors/", method = RequestMethod.GET)
+    @RequestMapping(value = "/actors", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<List<Actor>> getAllActors(){
         return new ResponseEntity<>(actorService.getAllActors(),HttpStatus.OK);
@@ -56,7 +56,7 @@ public class ActorController {
             return new ResponseEntity<>(summaries, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/actors/create", method = RequestMethod.PUT)
+    @RequestMapping(value = "/actors", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<?> createActor(@RequestBody ActorJson actorJson){
         CreateActorRequest request = new CreateActorRequest();
@@ -75,7 +75,7 @@ public class ActorController {
         return actorService.insertActor(request);
     }
 
-    @RequestMapping(value = "/actors/{actorId}/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/actors/{actorId}", method = RequestMethod.PUT)
     @ResponseBody
     public ResponseEntity<?> updateActor(@PathVariable long actorId, @RequestBody ActorJson actorJson){
         UpdateActorRequest request = new UpdateActorRequest();
@@ -91,7 +91,7 @@ public class ActorController {
         return actorService.updateActor(request);
     }
 
-    @RequestMapping(value = "/actors/{actorId}/delete", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/actors/{actorId}", method = RequestMethod.DELETE)
     @ResponseBody
     public ResponseEntity<?> deleteActor(@PathVariable long actorId){
         return actorService.deleteActor(actorId);

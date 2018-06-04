@@ -9,7 +9,7 @@ import training.controller.jsonObjects.PaymentJson;
 import training.generated.CreatePaymentRequest;
 import training.generated.Payment;
 import training.generated.UpdatePaymentRequest;
-import training.service.PaymentServiceImpl;
+import training.service.impl.PaymentServiceImpl;
 
 import java.util.List;
 
@@ -18,12 +18,12 @@ import java.util.List;
 public class PaymentController {
     @Autowired @Lazy private PaymentServiceImpl paymentService;
 
-    @RequestMapping(value = "/payments/", method = RequestMethod.GET)
+    @RequestMapping(value = "/payments", method = RequestMethod.GET)
     public ResponseEntity<List<Payment>> getAllPayments(){
         return new ResponseEntity<>(paymentService.getAllPayments(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/payments/create", method = RequestMethod.PUT)
+    @RequestMapping(value = "/payments", method = RequestMethod.POST)
     public ResponseEntity<?> createPayment(@RequestBody PaymentJson paymentJson){
         CreatePaymentRequest request = new CreatePaymentRequest();
 
@@ -55,7 +55,7 @@ public class PaymentController {
         return paymentService.insertPayment(request);
     }
 
-    @RequestMapping(value = "/payments/{paymentId}/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/payments/{paymentId}", method = RequestMethod.PUT)
     public ResponseEntity<?> updatePayment(@PathVariable long paymentId, @RequestBody PaymentJson paymentJson){
         UpdatePaymentRequest request = new UpdatePaymentRequest();
 
@@ -76,12 +76,12 @@ public class PaymentController {
         return paymentService.updatePayment(request);
     }
 
-    @RequestMapping(value = "/payments/{paymentId}/delete", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/payments/{paymentId}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deletePayment(@PathVariable long paymentId){
         return paymentService.deletePayment(paymentId);
     }
 
-    @RequestMapping(value = "/payments/{paymentId}/", method = RequestMethod.GET)
+    @RequestMapping(value = "/payments/{paymentId}", method = RequestMethod.GET)
     public ResponseEntity<?> getPaymentById(@PathVariable long paymentId){
         return new ResponseEntity<>(paymentService.getPaymentById(paymentId), HttpStatus.OK);
     }

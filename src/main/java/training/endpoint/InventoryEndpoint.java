@@ -7,7 +7,7 @@ import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 import training.generated.*;
-import training.service.InventoryServiceImpl;
+import training.service.impl.InventoryServiceImpl;
 
 @Endpoint
 public class InventoryEndpoint {

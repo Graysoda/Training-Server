@@ -1,10 +1,11 @@
-package training.database.dao;
+package training.database.dao.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
+import training.database.dao.FilmDao;
 import training.database.entity.FilmEntity;
 import training.generated.*;
 
@@ -21,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class FilmDaoImpl implements FilmDao{
+public class FilmDaoImpl implements FilmDao {
     protected EntityManager em;
 	private LanguageDaoImpl languageDaoImpl;
 	private FilmCategoryDaoImpl filmCategoryDaoImpl;

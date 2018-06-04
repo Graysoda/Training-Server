@@ -8,34 +8,34 @@ import org.springframework.web.bind.annotation.*;
 import training.controller.jsonObjects.AddressJson;
 import training.generated.CreateAddressRequest;
 import training.generated.UpdateAddressRequest;
-import training.service.AddressServiceImpl;
+import training.service.impl.AddressServiceImpl;
 
 @RestController
 @RequestMapping(value = RestConstants.REST_SERVICES_LOCATION, produces = RestConstants.JSON)
 public class AddressController {
     @Autowired @Lazy private AddressServiceImpl addressService;
 
-    @RequestMapping(value = "/address/", method = RequestMethod.GET)
+    @RequestMapping(value = "/address", method = RequestMethod.GET)
     public ResponseEntity<?> getAllAddresses(){
         return new ResponseEntity<>(addressService.getAllAddresses(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/address/{addressId}/", method = RequestMethod.GET)
+    @RequestMapping(value = "/address/{addressId}", method = RequestMethod.GET)
     public ResponseEntity<?> getAddressById(@PathVariable long addressId){
         return new ResponseEntity<>(addressService.getAddressById(addressId), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/{city}/address/", method = RequestMethod.GET)
+    @RequestMapping(value = "/{city}/address", method = RequestMethod.GET)
     public ResponseEntity<?> getAddressByCity(@PathVariable String city){
         return new ResponseEntity<>(addressService.getAddressByCity(city),HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/address/postal/{postalCode}/", method = RequestMethod.GET)
+    @RequestMapping(value = "/address/postal/{postalCode}", method = RequestMethod.GET)
     public ResponseEntity<?> getAddressByPostalCode(@PathVariable String postalCode){
         return new ResponseEntity<>(addressService.getAddressByPostalCode(postalCode), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/address/create", method = RequestMethod.PUT)
+    @RequestMapping(value = "/address", method = RequestMethod.POST)
     public ResponseEntity<?> createAddress(@RequestBody AddressJson addressJson){
         CreateAddressRequest request = new CreateAddressRequest();
 
@@ -73,7 +73,7 @@ public class AddressController {
         return addressService.insertAddress(request);
     }
 
-    @RequestMapping(value = "/address/{addressId}/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/address/{addressId}", method = RequestMethod.PUT)
     public ResponseEntity<?> updateAddress(@PathVariable long addressId, @RequestBody AddressJson addressJson){
         UpdateAddressRequest request = new UpdateAddressRequest();
 
@@ -95,7 +95,7 @@ public class AddressController {
         return addressService.updateAddress(request);
     }
 
-    @RequestMapping(value = "/address/{addressId}/delete", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/address/{addressId}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteAddress(@PathVariable long addressId){
         return addressService.deleteAddress(addressId);
     }

@@ -9,7 +9,7 @@ import training.controller.jsonObjects.StaffJson;
 import training.generated.CreateStaffRequest;
 import training.generated.Staff;
 import training.generated.UpdateStaffRequest;
-import training.service.StaffServiceImpl;
+import training.service.impl.StaffServiceImpl;
 
 import java.util.List;
 
@@ -18,17 +18,17 @@ import java.util.List;
 public class StaffController {
     @Autowired @Lazy private StaffServiceImpl staffService;
 
-    @RequestMapping(value = "/staff/", method = RequestMethod.GET)
+    @RequestMapping(value = "/staff", method = RequestMethod.GET)
     public ResponseEntity<List<Staff>> getAllStaff(){
         return new ResponseEntity<>(staffService.getAllStaff(),HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/staff/{staffId}/", method = RequestMethod.GET)
+    @RequestMapping(value = "/staff/{staffId}", method = RequestMethod.GET)
     public ResponseEntity<Staff> getStaffById(@PathVariable long staffId){
         return new ResponseEntity<>(staffService.getStaffById((int) staffId), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/staff/create", method = RequestMethod.PUT)
+    @RequestMapping(value = "/staff", method = RequestMethod.POST)
     public ResponseEntity<?> createStaff(@RequestBody StaffJson staffJson){
         CreateStaffRequest request = new CreateStaffRequest();
 
@@ -75,7 +75,7 @@ public class StaffController {
         return staffService.insertStaff(request);
     }
 
-    @RequestMapping(value = "/staff/{staffId}/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/staff/{staffId}", method = RequestMethod.PUT)
     public ResponseEntity<?> updateStaff(@PathVariable long staffId, @RequestBody StaffJson staffJson){
         UpdateStaffRequest request = new UpdateStaffRequest();
 
@@ -101,7 +101,7 @@ public class StaffController {
         return staffService.updateStaff(request);
     }
 
-    @RequestMapping(value = "/staff/{staffId}/delete", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/staff/{staffId}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteStaff(@PathVariable long staffId){
         return staffService.deleteStaff(staffId);
     }

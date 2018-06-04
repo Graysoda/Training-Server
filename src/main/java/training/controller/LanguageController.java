@@ -5,8 +5,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import training.controller.jsonObjects.LanguageJson;
-import training.service.LanguageServiceImpl;
+import training.service.impl.LanguageServiceImpl;
 
 @RestController
 @RequestMapping(value = RestConstants.REST_SERVICES_LOCATION, produces = RestConstants.JSON)
@@ -14,19 +13,17 @@ public class LanguageController {
 	@Autowired @Lazy
 	private LanguageServiceImpl languageService;
 
-	@RequestMapping(value = "/langauges/", method = RequestMethod.GET)
+	@RequestMapping(value = "/langauges", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<?> getAllLanguages(){
 		return new ResponseEntity<>(languageService.getAllLanguages(), HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/languages/", method = RequestMethod.GET)
+	@RequestMapping(value = "/languages/{languageId}", method = RequestMethod.GET)
 	@ResponseBody
-	public ResponseEntity<?> getLanguageByValue(@RequestBody LanguageJson languageJson){
-		if (languageJson.getLanguageId() != null){
-			return new ResponseEntity<>(languageService.getLanguageById(languageJson.getLanguageId()),HttpStatus.OK);
-		} else if (languageJson.getName() != null){
-			return new ResponseEntity<>(languageService.getLanguageByName(languageJson.getName()),HttpStatus.OK);
+	public ResponseEntity<?> getLanguageByValue(@PathVariable Long languageId){
+		if (languageId != null){
+			return new ResponseEntity<>(languageService.getLanguageById(languageId),HttpStatus.OK);
 		} else {
 			return ResponseEntity.badRequest().body("Request Body is null.");
 		}

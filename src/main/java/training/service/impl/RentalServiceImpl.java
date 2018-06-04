@@ -1,71 +1,60 @@
-package training.service;
+package training.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import training.database.dao.RentalDaoImpl;
+import training.database.dao.impl.RentalDaoImpl;
 import training.generated.CreateRentalRequest;
 import training.generated.Rental;
 import training.generated.UpdateRentalRequest;
+import training.service.RentalService;
 
 import java.util.List;
 
-@Service
-public class RentalServiceImpl implements RentalService{
+public class RentalServiceImpl implements RentalService {
 	@Autowired @Lazy private RentalDaoImpl rentalDaoImpl;
 
 	@Override
-	@Transactional
 	public List<Rental> getRentalsByCustomerId(long id) {
 		return rentalDaoImpl.getByCustomerId(id);
 	}
 
 	@Override
-	@Transactional
 	public Rental getRentalById(long id) {
 		return rentalDaoImpl.getById(id);
 	}
 
 	@Override
-	@Transactional
 	public List<Rental> getRentalsByReturnDate(String date) {
 		return rentalDaoImpl.getByReturnDate(date);
 	}
 
 	@Override
-	@Transactional
 	public List<Rental> getRentalByStaffId(long id) {
 		return rentalDaoImpl.getByStaffId(id);
 	}
 
 	@Override
-	@Transactional
 	public List<Rental> getRentalByStartDate(String date) {
 		return rentalDaoImpl.getByStartDate(date);
 	}
 
 	@Override
-	@Transactional
 	public ResponseEntity<?> insertRental(CreateRentalRequest request) {
 		return rentalDaoImpl.insert(request);
 	}
 
 	@Override
-	@Transactional
 	public ResponseEntity<?> deleteRental(long rentalId) {
 		return rentalDaoImpl.delete(rentalId);
 	}
 
 	@Override
-	@Transactional
 	public ResponseEntity<?> updateRental(UpdateRentalRequest request) {
 		return rentalDaoImpl.update(request);
 	}
 
 	@Override
-	@Transactional
 	public List<Rental> getAllRentals() {
 		return rentalDaoImpl.getAll();
 	}

@@ -8,7 +8,7 @@ import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 import training.generated.*;
-import training.service.ActorServiceImpl;
+import training.service.impl.ActorServiceImpl;
 
 
 @Endpoint
@@ -88,7 +88,7 @@ public class ActorsEndpoint {
 	@PayloadRoot(namespace = NAMESPACE_URI,localPart = "getActorsByIdRequest")
 	@ResponsePayload
 	public GetActorsByIdResponse getActorById(@RequestPayload GetActorsByIdRequest request){
-		System.out.println("get specific actor");
+		//System.out.println("get specific actor");
 		GetActorsByIdResponse response = new GetActorsByIdResponse();
 		response.setActor(actorService.getActorById(request.getActorId()));
 		return response;

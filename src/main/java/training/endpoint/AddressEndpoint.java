@@ -8,7 +8,7 @@ import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 import training.generated.*;
-import training.service.AddressServiceImpl;
+import training.service.impl.AddressServiceImpl;
 
 @Endpoint
 public class AddressEndpoint {

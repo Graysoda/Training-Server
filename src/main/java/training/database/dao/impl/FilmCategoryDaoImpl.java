@@ -1,15 +1,16 @@
-package training.database.dao;
+package training.database.dao.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
+import training.database.dao.FilmCategoryDao;
 import training.database.entity.FilmCategoryEntity;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 @Repository
-public class FilmCategoryDaoImpl implements FilmCategoryDao{
+public class FilmCategoryDaoImpl implements FilmCategoryDao {
 	protected EntityManager em;
 	private CategoryDaoImpl categoryDaoImpl;
 	private static final String baseQuery = "SELECT fc FROM sakila.film_category fc";

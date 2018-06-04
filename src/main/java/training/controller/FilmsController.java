@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import training.controller.jsonObjects.FilmJson;
 import training.generated.*;
-import training.service.FilmServiceImpl;
+import training.service.impl.FilmServiceImpl;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ import java.util.List;
 public class FilmsController {
     @Autowired @Lazy private FilmServiceImpl filmService;
 
-    @RequestMapping(value = "/films/", method = RequestMethod.GET)
+    @RequestMapping(value = "/films", method = RequestMethod.GET)
     public ResponseEntity<List<Film>> getAllFilms(){
         return new ResponseEntity<>(filmService.getAllFilms(), HttpStatus.OK);
     }
@@ -46,12 +46,12 @@ public class FilmsController {
         return new ResponseEntity<>(filmService.getFilmSummary(filmId), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/films/{filmId}/actors/", method = RequestMethod.GET)
+    @RequestMapping(value = "/films/{filmId}/actors", method = RequestMethod.GET)
     public ResponseEntity<List<Actor>> getFilmsActors(@PathVariable long filmId){
         return new ResponseEntity<>(filmService.getFilmsActors(filmId), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/films/create", method = RequestMethod.PUT)
+    @RequestMapping(value = "/films", method = RequestMethod.POST)
     public ResponseEntity<?> createFilm(@RequestBody FilmJson filmJson){
         CreateFilmRequest request = new CreateFilmRequest();
 
@@ -113,7 +113,7 @@ public class FilmsController {
         return filmService.createFilm(request);
     }
 
-    @RequestMapping(value = "/films/{filmId}/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/films/{filmId}", method = RequestMethod.PUT)
     public ResponseEntity<?> updateFilm(@PathVariable long filmId, @RequestBody FilmJson filmJson){
         UpdateFilmRequest request = new UpdateFilmRequest();
 
@@ -145,7 +145,7 @@ public class FilmsController {
         return filmService.updateFilm(request);
     }
 
-    @RequestMapping(value = "/films/{filmId}/delete", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/films/{filmId}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteFilm(@PathVariable long filmId){
         return filmService.deleteFilm(filmId);
     }

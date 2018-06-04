@@ -9,7 +9,7 @@ import training.controller.jsonObjects.InventoryJson;
 import training.generated.CreateInventoryRequest;
 import training.generated.Inventory;
 import training.generated.UpdateInventoryRequest;
-import training.service.InventoryServiceImpl;
+import training.service.impl.InventoryServiceImpl;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ import java.util.List;
 public class InventoryController {
     @Autowired @Lazy private InventoryServiceImpl inventoryService;
 
-    @RequestMapping(value = "/inventory/", method = RequestMethod.GET)
+    @RequestMapping(value = "/inventory", method = RequestMethod.GET)
     public ResponseEntity<List<Inventory>> getAllInventory(){
         return new ResponseEntity<>(inventoryService.getAllInventory(), HttpStatus.OK);
     }
@@ -33,7 +33,7 @@ public class InventoryController {
         return new ResponseEntity<>(inventoryService.getStoreInventory(storeId), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/inventory/create", method = RequestMethod.PUT)
+    @RequestMapping(value = "/inventory", method = RequestMethod.POST)
     public ResponseEntity<?> createInventory(@RequestBody InventoryJson inventoryJson){
         CreateInventoryRequest request = new CreateInventoryRequest();
 
@@ -50,7 +50,7 @@ public class InventoryController {
         return inventoryService.insert(request);
     }
 
-    @RequestMapping(value = "/inventory/{inventoryId}/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/inventory/{inventoryId}", method = RequestMethod.PUT)
     public ResponseEntity<?> updateInventory(@PathVariable long inventoryId, @RequestBody InventoryJson inventoryJson){
         UpdateInventoryRequest request = new UpdateInventoryRequest();
 
@@ -64,7 +64,7 @@ public class InventoryController {
         return inventoryService.updateInventory(request);
     }
 
-    @RequestMapping(value = "/inventory/{inventoryId}/delete", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/inventory/{inventoryId}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteInventory(@PathVariable long inventoryId){
         return inventoryService.deleteInventory(inventoryId);
     }

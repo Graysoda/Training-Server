@@ -1,4 +1,4 @@
-package training.database.dao;
+package training.database.dao.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;

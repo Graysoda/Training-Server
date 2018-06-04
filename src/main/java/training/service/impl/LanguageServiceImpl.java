@@ -1,14 +1,13 @@
-package training.service;
+package training.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Service;
-import training.database.dao.LanguageDaoImpl;
+import training.database.dao.impl.LanguageDaoImpl;
 import training.generated.Language;
+import training.service.LanguageService;
 
 import java.util.List;
 
-@Service
 public class LanguageServiceImpl implements LanguageService {
 	@Lazy @Autowired private LanguageDaoImpl languageDao;
 	@Override

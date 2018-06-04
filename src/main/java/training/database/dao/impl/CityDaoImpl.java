@@ -1,13 +1,14 @@
-package training.database.dao;
+package training.database.dao.impl;
 
 import org.springframework.stereotype.Repository;
+import training.database.dao.CityDao;
 import training.database.entity.CityEntity;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 @Repository
-class CityDaoImpl implements CityDao{
+class CityDaoImpl implements CityDao {
 	protected EntityManager em;
 	private final String baseQuery = "SELECT c FROM sakila.city c ";
 

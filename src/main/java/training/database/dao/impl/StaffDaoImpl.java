@@ -1,10 +1,11 @@
-package training.database.dao;
+package training.database.dao.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
+import training.database.dao.StaffDao;
 import training.database.entity.StaffEntity;
 import training.generated.CreateStaffRequest;
 import training.generated.Staff;

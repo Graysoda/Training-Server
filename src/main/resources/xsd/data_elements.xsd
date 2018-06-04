@@ -27,7 +27,6 @@
             <xs:element name="inventoryId" type="xs:long"/>
             <xs:element name="film" type="tns:film"/>
             <xs:element name="store" type="tns:store"/>
-            <!--<xs:element name="last_update" type="xs:string"/>-->
         </xs:sequence>
     </xs:complexType>
 
@@ -39,7 +38,6 @@
             <xs:element name="customer" type="tns:customer"/>
             <xs:element name="returnDate" type="xs:string"/>
             <xs:element name="staff" type="tns:staff"/>
-            <!--<xs:element name="last_update" type="xs:string"/>-->
         </xs:sequence>
     </xs:complexType>
 
@@ -49,13 +47,11 @@
             <xs:element name="firstName" type="xs:string"/>
             <xs:element name="lastName" type="xs:string"/>
             <xs:element name="address" type="tns:address"/>
-            <!--<xs:element name="picture" type="" TODO-->
             <xs:element name="email" type="xs:string"/>
             <xs:element name="storeId" type="xs:long"/>
             <xs:element name="isActive" type="xs:boolean"/>
             <xs:element name="username" type="xs:string"/>
             <xs:element name="password" type="xs:string"/>
-            <!--<xs:element name="last_update" type="xs:string"/>-->
         </xs:sequence>
     </xs:complexType>
 
@@ -64,7 +60,6 @@
             <xs:element name="storeId" type="xs:long"/>
             <xs:element name="manager" type="tns:staff"/>
             <xs:element name="address" type="tns:address"/>
-            <!--<xs:element name="last_update" type="xs:string"/>-->
         </xs:sequence>
     </xs:complexType>
 
@@ -78,7 +73,6 @@
             <xs:element name="address" type="tns:address"/>
             <xs:element name="isActive" type="xs:boolean"/>
             <xs:element name="createDate" type="xs:string"/>
-            <!--<xs:element name="last_update" type="xs:string"/>-->
         </xs:sequence>
     </xs:complexType>
 
@@ -91,7 +85,6 @@
             <xs:element name="city" type="xs:string"/>
             <xs:element name="postalCode" type="xs:string"/>
             <xs:element name="phone" type="xs:string"/>
-            <!--<xs:element name="last_update" type="xs:string"/>-->
         </xs:sequence>
     </xs:complexType>
 
@@ -100,7 +93,6 @@
             <xs:element name="actorId" type="xs:long"/>
             <xs:element name="firstName" type="xs:string" />
             <xs:element name="lastName" type="xs:string"/>
-            <!--<xs:element name="last_update" type="xs:string"/>-->
         </xs:sequence>
     </xs:complexType>
 
@@ -118,7 +110,6 @@
             <xs:element name="replacementCost" type="xs:float"/>
             <xs:element name="rating" type="xs:string"/>
             <xs:element name="specialFeatures" type="xs:string"/>
-            <!--<xs:element name="last_update" type="xs:string"/>-->
             <xs:element name="category" type="xs:string"/>
             <xs:sequence maxOccurs="unbounded">
                 <xs:element name="actors" type="tns:actor"/>

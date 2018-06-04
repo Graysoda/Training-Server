@@ -1,10 +1,11 @@
-package training.database.dao;
+package training.database.dao.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
+import training.database.dao.CustomerDao;
 import training.database.entity.CustomerEntity;
 import training.generated.CreateCustomerRequest;
 import training.generated.Customer;
@@ -19,7 +20,7 @@ import java.util.List;
 
 
 @Repository
-public class CustomerDaoImpl implements CustomerDao{
+public class CustomerDaoImpl implements CustomerDao {
 	protected EntityManager em;
 	private AddressDaoImpl addressDaoImpl;
 	private Connection connection;

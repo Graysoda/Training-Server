@@ -6,7 +6,7 @@ import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 import training.generated.*;
-import training.service.LanguageServiceImpl;
+import training.service.impl.LanguageServiceImpl;
 
 @Endpoint
 public class LanguageEndpoint {

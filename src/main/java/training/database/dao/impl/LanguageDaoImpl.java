@@ -1,6 +1,7 @@
-package training.database.dao;
+package training.database.dao.impl;
 
 import org.springframework.stereotype.Repository;
+import training.database.dao.LanguageDao;
 import training.database.entity.LanguageEntity;
 import training.generated.Language;
 
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class LanguageDaoImpl implements LanguageDao{
+public class LanguageDaoImpl implements LanguageDao {
 	protected EntityManager em;
 	private static final String baseQuery = "SELECT l FROM sakila.language l";
 

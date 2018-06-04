@@ -1,10 +1,11 @@
-package training.database.dao;
+package training.database.dao.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
+import training.database.dao.AddressDao;
 import training.database.entity.AddressEntity;
 import training.generated.Address;
 import training.generated.CreateAddressRequest;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class AddressDaoImpl implements AddressDao{
+public class AddressDaoImpl implements AddressDao {
 	protected EntityManager em;
 	@Autowired @Lazy
 	private CityDaoImpl cityDaoImpl;
