@@ -15,9 +15,9 @@ public class FilmJson {
     private Float replacementCost;
     private String specialFeatures;
     private String category;
-    private List<Long> actorIds;
+    private List<Long> actors;
 
-    public FilmJson(String title, String description, String rating, Integer length, String language, String originalLanguage, Integer releaseYear, Integer rentalDuration, Float rentalRate, Float replacementCost, String specialFeatures, String category, List<Long> actorIds) {
+    public FilmJson(String title, String description, String rating, Integer length, String language, String originalLanguage, Integer releaseYear, Integer rentalDuration, Float rentalRate, Float replacementCost, String specialFeatures, String category, List<Long> actors) {
         this.title = title;
         this.description = description;
         this.rating = rating;
@@ -30,7 +30,7 @@ public class FilmJson {
         this.replacementCost = replacementCost;
         this.specialFeatures = specialFeatures;
         this.category = category;
-        this.actorIds = actorIds;
+        this.actors = actors;
     }
 
     public FilmJson() {
@@ -40,8 +40,8 @@ public class FilmJson {
         return category;
     }
 
-    public List<Long> getActorIds() {
-        return actorIds;
+    public List<Long> getActors() {
+        return actors;
     }
 
     public String getTitle() {

@@ -116,8 +116,14 @@ public class FilmsController {
         if (StringUtils.isNotEmpty(filmJson.getCategory()))
             request.setCategory(filmJson.getCategory());
 
-        if (filmJson.getActorIds().size() > 0)
-            request.setActorId(filmJson.getActorIds());
+		System.out.println(filmJson.getActors().size());
+
+		for (Long aLong : filmJson.getActors()) {
+			System.out.println(aLong);
+		}
+
+        if (filmJson.getActors() != null && filmJson.getActors().size() > 0)
+            request.setActorId(filmJson.getActors());
 
         return filmService.createFilm(request);
     }

@@ -206,7 +206,7 @@ public class FilmDaoImpl implements FilmDao {
 		if (request.getLanguage()!=null && !request.getLanguage().isEmpty())
 			sql += "language_id = '"+ languageDaoImpl.getId(request.getLanguage())+"', ";
 		if (request.getOriginalLanguage()!=null && !request.getOriginalLanguage().isEmpty())
-			sql += "original_language = '"+ languageDaoImpl.getId(request.getOriginalLanguage())+"', ";
+			sql += "original_language_id = '"+ languageDaoImpl.getId(request.getOriginalLanguage())+"', ";
 		if (request.getLength()!=null && request.getLength() > 0)
 			sql += "length = '"+request.getLength()+"', ";
 		if (request.getRating()!=null && !request.getRating().isEmpty())
@@ -222,7 +222,9 @@ public class FilmDaoImpl implements FilmDao {
 		if (request.getSpecialFeatures()!=null && !request.getSpecialFeatures().isEmpty())
 			sql += "special_features = '"+request.getSpecialFeatures()+"', ";
 
-		sql += sql.subSequence(0,sql.length()-2) + " WHERE film_id = '"+request.getFilmId()+"';";
+		sql = sql.subSequence(0,sql.length()-2) + " WHERE film_id = '"+request.getFilmId()+"';";
+
+		System.out.println(sql);
 
 		try {
 			connection.createStatement().executeUpdate(sql);
@@ -246,7 +248,7 @@ public class FilmDaoImpl implements FilmDao {
 
 	@Override
 	public boolean exists(Long filmId) {
-		String sql = "EXISTS( SELECT film_id FROM film WHERE film_id = '"+filmId+"';";
+		String sql = "SELECT film_id FROM film WHERE film_id = '"+filmId+"';";
 		try {
 			ResultSet resultSet = connection.createStatement().executeQuery(sql);
 			if (resultSet.next()){
