@@ -104,7 +104,7 @@ public class AddressDaoImpl implements AddressDao {
 
 		try {
 			connection.createStatement().executeUpdate(sql);
-			return ResponseEntity.ok("Address ["+request.getAddressId()+"] was successfully updated.");
+			return ResponseEntity.ok(getById(request.getAddressId()));
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Address ["+request.getAddressId()+"] was not updated.\n"+

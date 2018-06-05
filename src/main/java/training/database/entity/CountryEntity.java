@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 public class CountryEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long countryId;
+	private Long country_id;
 
 	@NotNull
 	private String country;
@@ -16,17 +16,17 @@ public class CountryEntity {
 	public CountryEntity() {
 	}
 
-	public CountryEntity(Long countryId, @NotNull String country) {
-		this.countryId = countryId;
+	public CountryEntity(Long country_id, @NotNull String country) {
+		this.country_id = country_id;
 		this.country = country;
 	}
 
-	public Long getCountryId() {
-		return countryId;
+	public Long getCountry_id() {
+		return country_id;
 	}
 
-	public void setCountryId(Long countryId) {
-		this.countryId = countryId;
+	public void setCountry_id(Long country_id) {
+		this.country_id = country_id;
 	}
 
 	public String getCountry() {

@@ -14,7 +14,10 @@ import training.generated.UpdatePaymentRequest;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,12 +63,18 @@ public class PaymentDaoImpl implements PaymentDao {
 
 	@Override
 	public ResponseEntity<?> insert(CreatePaymentRequest request) {
+		Date date = null;
+		try {
+			date = new Date(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(request.getPaymentDate()).getTime());
+		} catch (ParseException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("date is in wrong format, should be \"yyyy-MM-dd HH:mm:ss\"");
+		}
 		String sql = "INSERT INTO payment (customer_id, staff_id, rental_id, amount, payment_date) VALUES " +
 				"("+request.getCustomerId()+", " +
 				request.getStaffId()+", " +
 				request.getRentalId()+", " +
 				request.getAmount()+", " +
-				request.getPaymentDate()+");";
+				date.toString()+");";
 		try {
 			connection.createStatement().executeUpdate(sql);
 			return ResponseEntity.ok("Payment created.");

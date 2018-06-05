@@ -29,7 +29,7 @@ public class CountryDaoImpl {
 	private Country convertEntityToGenerated(CountryEntity entity) {
 		Country country = new Country();
 
-		country.setCountryId(entity.getCountryId());
+		country.setCountryId(entity.getCountry_id());
 		country.setName(entity.getCountry());
 
 		return country;

@@ -159,7 +159,8 @@ public class FilmDaoImpl implements FilmDao {
 	}
 
 	private ResponseEntity<?> getNewFilm(String category, List<Long> actorIds) throws SQLException {
-		String sql = "SELECT film_id, title, description, release_year, language_id, original_language_id, rental_duration, rental_rate, length, replacement_cost, rating, special_features FROM film ORDER BY last_update DESC LIMIT 1";
+		String sql = "SELECT film_id, title, description, release_year, language_id, original_language_id, rental_duration, rental_rate, length, replacement_cost, rating, special_features " +
+				"FROM film ORDER BY last_update DESC LIMIT 1";
 
 		ResultSet resultSet = connection.createStatement().executeQuery(sql);
 		resultSet.next();
@@ -185,6 +186,7 @@ public class FilmDaoImpl implements FilmDao {
 			else
 				film.setCategory("category relation not set!");
 		}
+		System.out.println();
 		if (actorIds.size() > 0){
 			for (Long actorId : actorIds) {
 				filmActorDaoImpl.insert(film.getFilmId().longValue(), actorId);

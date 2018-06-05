@@ -1,5 +1,7 @@
 package training.controller.jsonObjects;
 
+import java.util.List;
+
 public class FilmJson {
     private String title;
     private String description;
@@ -12,8 +14,10 @@ public class FilmJson {
     private Float rentalRate;
     private Float replacementCost;
     private String specialFeatures;
+    private String category;
+    private List<Long> actorIds;
 
-    public FilmJson(String title, String description, String rating, Integer length, String language, String originalLanguage, Integer releaseYear, Integer rentalDuration, Float rentalRate, Float replacementCost, String specialFeatures) {
+    public FilmJson(String title, String description, String rating, Integer length, String language, String originalLanguage, Integer releaseYear, Integer rentalDuration, Float rentalRate, Float replacementCost, String specialFeatures, String category, List<Long> actorIds) {
         this.title = title;
         this.description = description;
         this.rating = rating;
@@ -25,9 +29,19 @@ public class FilmJson {
         this.rentalRate = rentalRate;
         this.replacementCost = replacementCost;
         this.specialFeatures = specialFeatures;
+        this.category = category;
+        this.actorIds = actorIds;
     }
 
     public FilmJson() {
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public List<Long> getActorIds() {
+        return actorIds;
     }
 
     public String getTitle() {

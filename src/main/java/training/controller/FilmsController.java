@@ -113,6 +113,12 @@ public class FilmsController {
         else
             return ResponseEntity.badRequest().body("Film specialFeatures cannot be null.");
 
+        if (StringUtils.isNotEmpty(filmJson.getCategory()))
+            request.setCategory(filmJson.getCategory());
+
+        if (filmJson.getActorIds().size() > 0)
+            request.setActorId(filmJson.getActorIds());
+
         return filmService.createFilm(request);
     }
 
