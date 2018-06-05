@@ -1,5 +1,6 @@
 package training.controller;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
@@ -55,17 +56,17 @@ public class FilmsController {
     public ResponseEntity<?> createFilm(@RequestBody FilmJson filmJson){
         CreateFilmRequest request = new CreateFilmRequest();
 
-        if (filmJson.getTitle() != null)
+        if (StringUtils.isNotEmpty(filmJson.getTitle()))
             request.setTitle(filmJson.getTitle());
         else
             return ResponseEntity.badRequest().body("Film title cannot be null.");
 
-        if (filmJson.getDescription() != null)
+        if (StringUtils.isNotEmpty(filmJson.getDescription()))
             request.setDescription(filmJson.getDescription());
         else
             return ResponseEntity.badRequest().body("Film description cannot be null.");
 
-        if (filmJson.getLanguage() != null)
+        if (StringUtils.isNotEmpty(filmJson.getLanguage())) //TODO
             request.setLanguage(filmJson.getLanguage());
         else
             return ResponseEntity.badRequest().body("Film language cannot be null.");
@@ -75,14 +76,14 @@ public class FilmsController {
         else
             return ResponseEntity.badRequest().body("Film length cannot be null.");
 
-        if (filmJson.getOriginalLanguage() != null)
+        if (StringUtils.isNotEmpty(filmJson.getOriginalLanguage()))
             request.setOriginalLanguage(filmJson.getOriginalLanguage());
         else
             return ResponseEntity.badRequest().body("Film originalLanguage cannot be null");
 
-		System.out.println("rating = ["+filmJson.getRating()+"]");
+		//System.out.println("rating = ["+filmJson.getRating()+"]");
 
-        if (filmJson.getRating() != null)
+        if (StringUtils.isNotEmpty(filmJson.getRating()))
             request.setRating(filmJson.getRating());
         else
             return ResponseEntity.badRequest().body("Film rating cannot be null.");

@@ -1,17 +1,20 @@
 package training.controller.jsonObjects;
 
+import training.generated.City;
+import training.generated.Country;
+
 public class AddressJson {
     private String address;
     private String address2;
     private String district;
-    private String city;
+    private CityJson city;
     private String postalCode;
     private String phone;
 
     public AddressJson() {
     }
 
-    public AddressJson(String address, String address2, String district, String city, String postalCode, String phone) {
+    public AddressJson(String address, String address2, String district, CityJson city, String postalCode, String phone) {
         this.address = address;
         this.address2 = address2;
         this.district = district;
@@ -32,7 +35,19 @@ public class AddressJson {
         return district;
     }
 
-    public String getCity() {
+    public City getCity() {
+        City city = new City();
+
+        city.setName(this.city.getCity());
+        city.setCityId(this.city.getCityId());
+
+        Country country = new Country();
+
+        country.setName(this.city.getCountry().getCountry());
+        country.setCountryId(this.city.getCountry().getCountryId());
+
+        city.setCountry(country);
+
         return city;
     }
 

@@ -78,7 +78,7 @@ public class CustomerDaoImpl implements CustomerDao {
 				request.getLastName()+"', '"+
 				request.getEmail()+"', '"+
 				request.getAddressId()+"', '"+
-				request.isActive()+"');";
+				(request.isActive()?1:0)+"');";
 		try {
 			connection.createStatement().executeUpdate(sql);
 			return ResponseEntity.ok("Customer was created.");

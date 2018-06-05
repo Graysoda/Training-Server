@@ -17,4 +17,5 @@ public interface FilmDao {
     ResponseEntity<?> insert(CreateFilmRequest request);
     ResponseEntity<?> update(UpdateFilmRequest request);
     ResponseEntity<?> delete(long filmId);
+	boolean exists(Long filmId);
 }

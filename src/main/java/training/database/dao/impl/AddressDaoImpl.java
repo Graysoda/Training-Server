@@ -1,5 +1,6 @@
 package training.database.dao.impl;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
@@ -12,8 +13,10 @@ import training.generated.CreateAddressRequest;
 import training.generated.UpdateAddressRequest;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -71,14 +74,25 @@ public class AddressDaoImpl implements AddressDao {
 
 	@Override
 	public ResponseEntity<?> update(UpdateAddressRequest request) {
+		Long cityId;
+		try{
+			cityId = request.getCity().getCityId();
+		} catch (NoResultException | NullPointerException e){
+			if (request.getCity().getCountry() != null && StringUtils.isNotEmpty(request.getCity().getName())){
+				cityId = cityDaoImpl.insert(request.getCity().getCountry(),request.getCity().getName());
+			} else {
+				throw e;
+			}
+		}
+
 		String sql = "UPDATE address SET ";
 
 		if (request.getAddress()!=null && !request.getAddress().isEmpty())
 			sql += "address = '"+request.getAddress()+"', ";
 		if (request.getAddress2()!=null && !request.getAddress2().isEmpty())
 			sql += "address2 = '"+request.getAddress2()+"', ";
-		if (request.getCity()!=null && !request.getCity().isEmpty())
-			sql += "city = '"+ cityDaoImpl.getIdByName(request.getCity())+"', ";
+		if (request.getCity()!= null)
+			sql += "city_id = '"+ cityId + "', ";
 		if (request.getDistrict()!=null && !request.getDistrict().isEmpty())
 			sql += "district = '"+request.getDistrict()+"', ";
 		if (request.getPhone()!=null && !request.getPhone().isEmpty())
@@ -100,20 +114,50 @@ public class AddressDaoImpl implements AddressDao {
 
 	@Override
 	public ResponseEntity<?> insert(CreateAddressRequest request) {
+		Long cityId;
+		try{
+			cityId = request.getCity().getCityId();
+		} catch (NoResultException | NullPointerException e){
+			if (request.getCity().getCountry() != null && StringUtils.isNotEmpty(request.getCity().getName())){
+				cityId = cityDaoImpl.insert(request.getCity().getCountry(),request.getCity().getName());
+			} else {
+				throw e;
+			}
+		}
+
 		String sql = "INSERT INTO address (address, address2, district, city_id, postal_code, phone) VALUES " +
 				"('"+request.getAddress()+"', '"+
 				request.getAddress2()+"', '"+
 				request.getDistrict()+"', '"+
-				cityDaoImpl.getIdByName(request.getCity())+"', '"+
+				cityId+"', '"+
 				request.getPostalCode()+"', '"+
 				request.getPhone()+"');";
 		try {
 			connection.createStatement().executeUpdate(sql);
-			return ResponseEntity.ok("Address was successfully created.");
+			return ResponseEntity.ok(getNewestAddress());
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Address was not created!\n"+e.getSQLState()+"\n"+e.getLocalizedMessage());
 		}
+	}
+
+	private Address getNewestAddress() throws SQLException {
+		String sql = "SELECT address_id, address, address2, district, city_id, postal_code, phone FROM address ORDER BY last_update DESC LIMIT 1";
+
+		ResultSet resultSet = connection.createStatement().executeQuery(sql);
+		resultSet.next();
+
+		Address address = new Address();
+
+		address.setAddressId(resultSet.getLong("address_id"));
+		address.setAddress(resultSet.getString("address"));
+		address.setAddress2(resultSet.getString("address2"));
+		address.setCity(cityDaoImpl.getById(resultSet.getLong("city_id")));
+		address.setDistrict(resultSet.getString("district"));
+		address.setPhone(resultSet.getString("phone"));
+		address.setPostalCode(resultSet.getString("postal_code"));
+
+		return address;
 	}
 
 	private List<Address> convertEntitiesToGenerate(List<AddressEntity> resultList) {
@@ -139,7 +183,7 @@ public class AddressDaoImpl implements AddressDao {
 		address.setAddressId(entity.getAddress_id());
 
 		//System.out.println("city id = ["+entity.getCity_id()+"]");
-		address.setCity(cityDaoImpl.getNameById(entity.getCity_id()));
+		address.setCity(cityDaoImpl.getById(entity.getCity_id()));
 
 		//System.out.println("district = ["+entity.getDistrict()+"]");
 		address.setDistrict(entity.getDistrict());

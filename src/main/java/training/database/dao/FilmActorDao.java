@@ -8,4 +8,5 @@ import java.util.List;
 public interface FilmActorDao {
     List<Actor> getActorsFromFilm(long filmId);
     List<Summary> getFilmsWithActor(long actorId);
+	void insert(Long filmId, Long actorId);
 }

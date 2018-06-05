@@ -24,10 +24,11 @@ public class AddressEndpoint {
 			response.setError("first address line cannot be empty.");
 			return response;
 		}
-		if (request.getCity().isEmpty()){
-			response.setError("city cannot be empty.");
+		if (request.getCity() == null){
+			response.setError("city cannot be null.");
 			return response;
 		}
+		if (request.getCity().getCountry() == null)
 		if (request.getDistrict().isEmpty()){
 			response.setError("district cannot be empty.");
 			return response;

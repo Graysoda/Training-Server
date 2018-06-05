@@ -1,5 +1,6 @@
 package training.database.dao.impl;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
 import java.math.BigInteger;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -135,24 +137,62 @@ public class FilmDaoImpl implements FilmDao {
 				"rating, " +
 				"special_features) " +
 				"VALUES " +
-				"("+request.getTitle()+", " +
-				request.getDescription()+", " +
-				request.getReleaseYear()+", " +
-				request.getLanguage()+", " +
-				request.getOriginalLanguage()+", "+
-				request.getRentalDuration()+", "+
-				request.getRentalRate()+", "+
-				request.getLength()+", "+
-				request.getReplacementCost()+", "+
-				request.getRating()+", "+
-				request.getSpecialFeatures()+");";
+				"('"+request.getTitle()+"', '" +
+				request.getDescription()+"', '" +
+				request.getReleaseYear()+"', '" +
+				languageDaoImpl.getId(request.getLanguage())+"', '" +
+				languageDaoImpl.getId(request.getOriginalLanguage())+"', '"+
+				request.getRentalDuration()+"', '"+
+				request.getRentalRate()+"', '"+
+				request.getLength()+"', '"+
+				request.getReplacementCost()+"', '"+
+				request.getRating()+"', '"+
+				request.getSpecialFeatures()+"');";
+
 		try {
 			connection.createStatement().executeUpdate(sql);
-			return ResponseEntity.ok("Film was created.");
+			return getNewFilm(request.getCategory(), request.getActorId());
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Film was not created.\n"+e.getSQLState()+"\n"+e.getLocalizedMessage());
 		}
+	}
+
+	private ResponseEntity<?> getNewFilm(String category, List<Long> actorIds) throws SQLException {
+		String sql = "SELECT film_id, title, description, release_year, language_id, original_language_id, rental_duration, rental_rate, length, replacement_cost, rating, special_features FROM film ORDER BY last_update DESC LIMIT 1";
+
+		ResultSet resultSet = connection.createStatement().executeQuery(sql);
+		resultSet.next();
+
+		Film film = new Film();
+
+		film.setFilmId(BigInteger.valueOf(resultSet.getLong("film_id")));
+		film.setTitle(resultSet.getString("title"));
+		film.setDescription(resultSet.getString("description"));
+		film.setReleaseYear(resultSet.getInt("release_year"));
+		film.setLanguage(languageDaoImpl.getLanguage(resultSet.getInt("language_id")).trim());
+		film.setOriginalLanguage(languageDaoImpl.getLanguage(resultSet.getInt("original_language_id")).trim());
+		film.setRentalDuration(resultSet.getInt("rental_duration"));
+		film.setRentalRate(resultSet.getFloat("rental_rate"));
+		film.setLength(resultSet.getInt("length"));
+		film.setReplacementCost(resultSet.getFloat("replacement_cost"));
+		film.setRating(resultSet.getString("rating"));
+		film.setSpecialFeatures(resultSet.getString("special_features"));
+
+		if (StringUtils.isNotEmpty(category)){
+			if (filmCategoryDaoImpl.insert(film.getFilmId(), category))
+				film.setCategory(category);
+			else
+				film.setCategory("category relation not set!");
+		}
+		if (actorIds.size() > 0){
+			for (Long actorId : actorIds) {
+				filmActorDaoImpl.insert(film.getFilmId().longValue(), actorId);
+			}
+			film.setActors(filmActorDaoImpl.getActorsFromFilm(film.getFilmId().longValue()));
+		}
+
+		return ResponseEntity.ok().body(film);
 	}
 
 	public ResponseEntity<?> update(UpdateFilmRequest request) {
@@ -200,6 +240,20 @@ public class FilmDaoImpl implements FilmDao {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Film ["+filmId+"] was not deleted.\n"+e.getSQLState()+"\n"+e.getLocalizedMessage());
 		}
+	}
+
+	@Override
+	public boolean exists(Long filmId) {
+		String sql = "EXISTS( SELECT film_id FROM film WHERE film_id = '"+filmId+"';";
+		try {
+			ResultSet resultSet = connection.createStatement().executeQuery(sql);
+			if (resultSet.next()){
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	/******************************

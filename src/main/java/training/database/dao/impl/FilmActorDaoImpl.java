@@ -10,15 +10,23 @@ import training.generated.Summary;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class FilmActorDaoImpl implements FilmActorDao {
     protected EntityManager em;
+    private Connection connection;
     private FilmDaoImpl filmDaoImpl;
     private ActorDaoImpl actorDaoImpl;
     private static final String baseQuery = "SELECT fa FROM sakila.film_actor fa";
+
+    @Autowired @Lazy
+    public void setConnection(Connection connection) {
+        this.connection = connection;
+    }
 
     public EntityManager getEm() {
         return em;
@@ -45,6 +53,19 @@ public class FilmActorDaoImpl implements FilmActorDao {
 
     public List<Summary> getFilmsWithActor(long actorId){
         return filmDaoImpl.getFilmsById(getFilmIds(this.em.createQuery(baseQuery+" WHERE fa.actor_id = '"+actorId+"'",FilmActorEntity.class).getResultList()));
+    }
+
+    @Override
+    public void insert(Long filmId, Long actorId) {
+        if (filmDaoImpl.exists(filmId) && actorDaoImpl.exists(actorId)){
+            String sql = "INSERT INTO film_actor (film_id, actor_id) VALUES ('"+filmId+"', '"+actorId+"');";
+
+            try{
+                connection.createStatement().executeUpdate(sql);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private List<Long> getFilmIds(List<FilmActorEntity> resultList) {

@@ -17,4 +17,5 @@ public interface ActorDao {
     ResponseEntity<?> insert(CreateActorRequest request);
     ResponseEntity<?> update(UpdateActorRequest request);
     ResponseEntity<?> delete(long actorId);
+	boolean exists(Long actorId);
 }

@@ -131,6 +131,20 @@ public class ActorDaoImpl implements ActorDao {
 		}
 	}
 
+	@Override
+	public boolean exists(Long actorId) {
+		String sql = "EXISTS( SELECT actor_id FROM actor WHERE actor_id = '"+actorId+"';";
+		try {
+			ResultSet resultSet = connection.createStatement().executeQuery(sql);
+			if (resultSet.next()){
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
 	private List<Actor> convertActorEntitiesToGenerated(List<ActorEntity> actorEntityList) {
 		List<Actor> actors = new ArrayList<>();
 
