@@ -31,7 +31,7 @@ public class FilmsController {
         return new ResponseEntity<>(filmService.getFilmByRating(rating), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/films/release_year/{release_year}", method = RequestMethod.GET)
+    @RequestMapping(value = "/films/releaseYear/{releaseYear}", method = RequestMethod.GET)
     public ResponseEntity<List<Film>> getFilmsByReleaseYear(@PathVariable int releaseYear){
         return new ResponseEntity<>(filmService.getFilmByReleaseYear(releaseYear), HttpStatus.OK);
     }
@@ -79,6 +79,8 @@ public class FilmsController {
             request.setOriginalLanguage(filmJson.getOriginalLanguage());
         else
             return ResponseEntity.badRequest().body("Film originalLanguage cannot be null");
+
+		System.out.println("rating = ["+filmJson.getRating()+"]");
 
         if (filmJson.getRating() != null)
             request.setRating(filmJson.getRating());

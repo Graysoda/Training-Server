@@ -13,7 +13,7 @@ public class LanguageController {
 	@Autowired @Lazy
 	private LanguageServiceImpl languageService;
 
-	@RequestMapping(value = "/langauges", method = RequestMethod.GET)
+	@RequestMapping(value = "/languages", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<?> getAllLanguages(){
 		return new ResponseEntity<>(languageService.getAllLanguages(), HttpStatus.OK);

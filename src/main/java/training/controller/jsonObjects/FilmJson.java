@@ -3,7 +3,7 @@ package training.controller.jsonObjects;
 public class FilmJson {
     private String title;
     private String description;
-    private String Rating;
+    private String rating;
     private Integer length;
     private String language;
     private String originalLanguage;
@@ -16,7 +16,7 @@ public class FilmJson {
     public FilmJson(String title, String description, String rating, Integer length, String language, String originalLanguage, Integer releaseYear, Integer rentalDuration, Float rentalRate, Float replacementCost, String specialFeatures) {
         this.title = title;
         this.description = description;
-        Rating = rating;
+        this.rating = rating;
         this.length = length;
         this.language = language;
         this.originalLanguage = originalLanguage;
@@ -39,7 +39,7 @@ public class FilmJson {
     }
 
     public String getRating() {
-        return Rating;
+        return rating;
     }
 
     public Integer getLength() {
