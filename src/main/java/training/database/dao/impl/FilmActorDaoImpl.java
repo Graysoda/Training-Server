@@ -68,6 +68,26 @@ public class FilmActorDaoImpl implements FilmActorDao {
         }
     }
 
+    @Override
+    public void deleteFilm(long filmId) {
+        String sql = "DELETE FROM film_actor WHERE film_id = '"+filmId+"';";
+        try {
+            connection.createStatement().executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void deleteActor(long actorId) {
+        String sql = "DELETE FROM film_actor WHERE actor_id = '"+actorId+"';";
+        try {
+            connection.createStatement().executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     private List<Long> getFilmIds(List<FilmActorEntity> resultList) {
         List<Long> filmIds = new ArrayList<>();
 

@@ -14,6 +14,7 @@ import training.generated.UpdateRentalRequest;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -25,7 +26,7 @@ import java.util.List;
 public class RentalDaoImpl implements RentalDao {
 	protected EntityManager em;
 	private CustomerDaoImpl customerDaoImpl;
-	private FilmDaoImpl filmDaoImpl;
+	private InventoryDaoImpl inventoryDao;
 	private StaffDaoImpl staffDaoImpl;
 	private Connection connection;
 	private static final String baseQuery = "SELECT r FROM sakila.rental r";
@@ -40,11 +41,11 @@ public class RentalDaoImpl implements RentalDao {
     }
 
     @Autowired @Lazy
-    public void setFilmDaoImpl(FilmDaoImpl filmDaoImpl) {
-        this.filmDaoImpl = filmDaoImpl;
-    }
+	public void setInventoryDao(InventoryDaoImpl inventoryDao) {
+		this.inventoryDao = inventoryDao;
+	}
 
-    @Autowired @Lazy
+	@Autowired @Lazy
     public void setCustomerDaoImpl(CustomerDaoImpl customerDaoImpl) {
         this.customerDaoImpl = customerDaoImpl;
     }
@@ -115,18 +116,36 @@ public class RentalDaoImpl implements RentalDao {
 
 	public ResponseEntity<?> insert(CreateRentalRequest request) {
 		String sql = "INSERT INTO rental (customer_id, staff_id, inventory_id, rental_date, return_date) VALUES " +
-				"("+request.getCustomerId()+", "+
-				request.getStaffId()+", "+
-				request.getInventoryId()+", "+
-				request.getRentalDate()+", "+
-				request.getReturnDate()+");";
+				"('"+request.getCustomerId()+"', '"+
+				request.getStaffId()+"', '"+
+				request.getInventoryId()+"', '"+
+				request.getRentalDate()+"', '"+
+				request.getReturnDate()+"');";
 		try {
 			connection.createStatement().executeUpdate(sql);
-			return ResponseEntity.ok("Rental created.");
+			return ResponseEntity.ok(getNewestRental());
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Rental was not created.\n"+e.getSQLState()+"\n"+e.getLocalizedMessage());
 		}
+	}
+
+	private Rental getNewestRental() throws SQLException {
+		String sql = "SELECT customer_id, staff_id, inventory_id, rental_date, return_date, rental_id FROM rental ORDER BY last_update DESC LIMIT 1";
+
+		ResultSet resultSet = connection.createStatement().executeQuery(sql);
+		resultSet.next();
+
+		Rental rental = new Rental();
+
+		rental.setCustomer(customerDaoImpl.getById(resultSet.getLong("customer_id")));
+		rental.setItem(inventoryDao.getById(resultSet.getLong("inventory_id")).getFilm());
+		rental.setRentalDate(resultSet.getString("rental_date"));
+		rental.setReturnDate(resultSet.getString("return_date"));
+		rental.setStaff(staffDaoImpl.getById(resultSet.getLong("staff_id")));
+		rental.setRentalId(resultSet.getLong("rental_id"));
+
+		return rental;
 	}
 
 	public ResponseEntity<?> delete(long rentalId) {
@@ -158,7 +177,7 @@ public class RentalDaoImpl implements RentalDao {
 
 		try {
 			connection.createStatement().executeUpdate(sql);
-			return ResponseEntity.ok("Rental ["+request.getRentalId()+"] was updated.");
+			return ResponseEntity.ok(getById(request.getRentalId()));
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Rental ["+request.getRentalId()+"] was not updated.\n"+e.getSQLState()+"\n"+e.getLocalizedMessage());
@@ -178,7 +197,7 @@ public class RentalDaoImpl implements RentalDao {
 		rental.setStaff(staffDaoImpl.getById(entity.getStaff_id()));
 
 		//System.out.println("inventory id = ["+entity.getInventory_id()+"]");
-		rental.setItem(filmDaoImpl.getById(entity.getInventory_id()));
+		rental.setItem(inventoryDao.getById(entity.getInventory_id()).getFilm());
 
 		//System.out.println("rental date = ["+entity.getRental_date()+"]");
 		rental.setRentalDate(entity.getRental_date());

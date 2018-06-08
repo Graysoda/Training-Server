@@ -151,14 +151,14 @@ public class FilmDaoImpl implements FilmDao {
 
 		try {
 			connection.createStatement().executeUpdate(sql);
-			return getNewFilm(request.getCategory(), request.getActorId());
+			return getNewestFilm(request.getCategory(), request.getActorId());
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Film was not created.\n"+e.getSQLState()+"\n"+e.getLocalizedMessage());
 		}
 	}
 
-	private ResponseEntity<?> getNewFilm(String category, List<Long> actorIds) throws SQLException {
+	private ResponseEntity<?> getNewestFilm(String category, List<Long> actorIds) throws SQLException {
 		String sql = "SELECT film_id, title, description, release_year, language_id, original_language_id, rental_duration, rental_rate, length, replacement_cost, rating, special_features " +
 				"FROM film ORDER BY last_update DESC LIMIT 1";
 
@@ -199,6 +199,7 @@ public class FilmDaoImpl implements FilmDao {
 
 	public ResponseEntity<?> update(UpdateFilmRequest request) {
 		String sql = "UPDATE film SET ";
+
 		if (request.getTitle() != null && !request.getTitle().isEmpty())
 			sql += "title = '"+request.getTitle()+"', ";
 		if (request.getDescription() != null && !request.getDescription().isEmpty())
@@ -221,6 +222,16 @@ public class FilmDaoImpl implements FilmDao {
 			sql += "replacement_cost = '"+request.getReplacementCost()+"', ";
 		if (request.getSpecialFeatures()!=null && !request.getSpecialFeatures().isEmpty())
 			sql += "special_features = '"+request.getSpecialFeatures()+"', ";
+		if (request.getCategory() != null && !request.getCategory().isEmpty()){
+			filmCategoryDaoImpl.delete(request.getFilmId());
+			filmCategoryDaoImpl.insert(BigInteger.valueOf(request.getFilmId()),request.getCategory());
+		}
+		if (request.getActorId() != null && request.getActorId().size()>0){
+			filmActorDaoImpl.deleteFilm(request.getFilmId());
+			for (Long aLong : request.getActorId()) {
+				filmActorDaoImpl.insert(request.getFilmId(), aLong);
+			}
+		}
 
 		sql = sql.subSequence(0,sql.length()-2) + " WHERE film_id = '"+request.getFilmId()+"';";
 
@@ -228,7 +239,7 @@ public class FilmDaoImpl implements FilmDao {
 
 		try {
 			connection.createStatement().executeUpdate(sql);
-			return ResponseEntity.ok("Film ["+request.getFilmId()+"] was updated successfully");
+			return ResponseEntity.ok(getById(request.getFilmId()));
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Film ["+request.getFilmId()+"] was not updated.\n"+e.getSQLState()+"\n"+e.getLocalizedMessage());
@@ -237,6 +248,8 @@ public class FilmDaoImpl implements FilmDao {
 
 	public ResponseEntity<?> delete(long filmId) {
 		String sql = "DELETE FROM film WHERE film_id='"+filmId+"';";
+		filmCategoryDaoImpl.delete(filmId);
+		filmActorDaoImpl.deleteFilm(filmId);
 		try {
 			connection.createStatement().executeUpdate(sql);
 			return ResponseEntity.ok("Film ["+filmId+"] was deleted");

@@ -14,6 +14,7 @@ import training.generated.UpdateStaffRequest;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,21 +55,42 @@ public class StaffDaoImpl implements StaffDao {
 
 	public ResponseEntity<?> insert(CreateStaffRequest request) {
 		String sql = "INSERT INTO staff (first_name, last_name, address_id, email, store_id, active, username, password) VALUES " +
-				"("+request.getFirstName()+", " +
-				request.getLastName()+", " +
-				request.getAddressId()+", " +
-				request.getEmail()+", " +
-				request.getStoreId()+", " +
-				request.isActive()+", " +
-				request.getUsername()+", " +
-				request.getPassword()+");";
+				"('"+request.getFirstName()+"', '" +
+				request.getLastName()+"', '" +
+				request.getAddressId()+"', '" +
+				request.getEmail()+"', '" +
+				request.getStoreId()+"', '" +
+				request.isActive()+"', '" +
+				request.getUsername()+"', '" +
+				request.getPassword()+"');";
 		try {
 			connection.createStatement().executeUpdate(sql);
-			return ResponseEntity.ok("Staff was created.");
+			return ResponseEntity.ok(getNewestStaff());
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Staff was not created.\n"+e.getSQLState()+"\n"+e.getLocalizedMessage());
 		}
+	}
+
+	private Staff getNewestStaff() throws SQLException {
+		String sql = "SELECT staff_id, first_name, last_name, address_id, email, store_id, active, username, password from staff ORDER BY last_update DESC LIMIT 1";
+
+		ResultSet resultSet = connection.createStatement().executeQuery(sql);
+		resultSet.next();
+
+		Staff staff = new Staff();
+
+		staff.setStaffId(resultSet.getLong("staff_id"));
+		staff.setAddress(addressDaoImpl.getById(resultSet.getLong("address_id")));
+		staff.setEmail(resultSet.getString("email"));
+		staff.setFirstName(resultSet.getString("first_name"));
+		staff.setIsActive(resultSet.getBoolean("active"));
+		staff.setLastName(resultSet.getString("last_name"));
+		staff.setPassword(resultSet.getString("password"));
+		staff.setUsername(resultSet.getString("username"));
+		staff.setStoreId(resultSet.getLong("store_id"));
+
+		return staff;
 	}
 
 	public ResponseEntity<?> delete(long staffId) {
@@ -106,7 +128,7 @@ public class StaffDaoImpl implements StaffDao {
 
 		try {
 			connection.createStatement().executeUpdate(sql);
-			return ResponseEntity.ok("Staff ["+request.getStaffId()+"] was updated.");
+			return ResponseEntity.ok(getById(request.getStaffId()));
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Staff ["+request.getStaffId()+"] was not updated.\n"+e.getSQLState()+"\n"+e.getLocalizedMessage());

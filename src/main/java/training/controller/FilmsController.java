@@ -116,12 +116,6 @@ public class FilmsController {
         if (StringUtils.isNotEmpty(filmJson.getCategory()))
             request.setCategory(filmJson.getCategory());
 
-		System.out.println(filmJson.getActors().size());
-
-		for (Long aLong : filmJson.getActors()) {
-			System.out.println(aLong);
-		}
-
         if (filmJson.getActors() != null && filmJson.getActors().size() > 0)
             request.setActorId(filmJson.getActors());
 
@@ -156,6 +150,10 @@ public class FilmsController {
             request.setReplacementCost(filmJson.getReplacementCost());
         if (filmJson.getSpecialFeatures() != null)
             request.setSpecialFeatures(filmJson.getSpecialFeatures());
+        if (filmJson.getActors() != null)
+            request.setActorId(filmJson.getActors());
+        if (filmJson.getCategory() != null)
+            request.setCategory(filmJson.getCategory());
 
         return filmService.updateFilm(request);
     }

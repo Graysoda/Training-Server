@@ -122,6 +122,7 @@ public class ActorDaoImpl implements ActorDao {
 
 	public ResponseEntity<?> delete(long actorId) {
 		String sql = "DELETE FROM actor WHERE actor_id='"+actorId+"';";
+		filmActorDao.deleteActor(actorId);
 		try {
 			connection.createStatement().executeUpdate(sql);
 			return ResponseEntity.status(HttpStatus.OK).body("Actor ["+actorId+"] was deleted successfully.");

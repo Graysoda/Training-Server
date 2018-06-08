@@ -14,6 +14,7 @@ import training.generated.UpdateInventoryRequest;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,14 +64,29 @@ public class InventoryDaoImpl implements InventoryDao {
 	}
 
 	public ResponseEntity<?> insert(CreateInventoryRequest request) {
-		String sql = "INSERT INTO inventory (film_id, store_id) VALUES ("+request.getFilmId()+", "+request.getStoreId()+");";
+		String sql = "INSERT INTO inventory (film_id, store_id) VALUES ('"+request.getFilmId()+"', '"+request.getStoreId()+"');";
 		try {
 			connection.createStatement().executeUpdate(sql);
-			return ResponseEntity.ok("Inventory created.");
+			return ResponseEntity.ok(getNewestInventory());
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Inventory not created.\n"+e.getSQLState()+"\n"+e.getLocalizedMessage());
 		}
+	}
+
+	private Inventory getNewestInventory() throws SQLException {
+		String sql = "SELECT film_id, store_id, inventory_id FROM inventory ORDER BY last_update DESC LIMIT 1";
+
+		ResultSet resultSet = connection.createStatement().executeQuery(sql);
+		resultSet.next();
+
+		Inventory inventory = new Inventory();
+
+		inventory.setFilm(filmDaoImpl.getById(resultSet.getLong("film_id")));
+		inventory.setInventoryId(resultSet.getLong("inventory_id"));
+		inventory.setStore(storeDaoImpl.getById(resultSet.getLong("store_id")));
+
+		return inventory;
 	}
 
 	public ResponseEntity<?> delete(long inventoryId) {
@@ -92,11 +108,11 @@ public class InventoryDaoImpl implements InventoryDao {
 		if (request.getStoreId() != null && request.getStoreId() > 0)
 			sql += "store_id = '"+request.getStoreId()+"', ";
 
-		sql += sql.subSequence(0,sql.length()-2) + " WHERE inventory_id = '"+request.getInventoryId()+"';";
+		sql = sql.subSequence(0,sql.length()-2) + " WHERE inventory_id = '"+request.getInventoryId()+"';";
 
 		try {
 			connection.createStatement().executeUpdate(sql);
-			return ResponseEntity.ok("Inventory ["+request.getInventoryId()+"] was updated.");
+			return ResponseEntity.ok(getById(request.getInventoryId()));
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Inventory ["+request.getInventoryId()+"] as not updated.\n"+e.getSQLState()+"\n"+e.getLocalizedMessage());

@@ -9,4 +9,6 @@ public interface FilmActorDao {
     List<Actor> getActorsFromFilm(long filmId);
     List<Summary> getFilmsWithActor(long actorId);
 	void insert(Long filmId, Long actorId);
+	void deleteFilm(long filmId);
+	void deleteActor(long actorId);
 }

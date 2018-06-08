@@ -9,9 +9,9 @@ import javax.validation.constraints.NotNull;
 public class CustomerEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long customer_id;
+	private Long customer_id;
 	@NotNull
-	private long store_id;
+	private Long store_id;
 	@NotNull
 	private String first_name;
 	@NotNull
@@ -19,9 +19,9 @@ public class CustomerEntity {
 	@NotNull
 	private String email;
 	@NotNull
-	private long address_id;
+	private Long address_id;
 	@NotNull
-	private boolean active;
+	private Boolean active;
 	@NotNull
 	private String create_date;
 

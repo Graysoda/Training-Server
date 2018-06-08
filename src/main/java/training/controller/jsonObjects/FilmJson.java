@@ -17,7 +17,9 @@ public class FilmJson {
     private String category;
     private List<Long> actors;
 
-    public FilmJson(String title, String description, String rating, Integer length, String language, String originalLanguage, Integer releaseYear, Integer rentalDuration, Float rentalRate, Float replacementCost, String specialFeatures, String category, List<Long> actors) {
+    public FilmJson(String title, String description, String rating, Integer length, String language,
+                    String originalLanguage, Integer releaseYear, Integer rentalDuration, Float rentalRate,
+                    Float replacementCost, String specialFeatures, String category, List<Long> actors) {
         this.title = title;
         this.description = description;
         this.rating = rating;

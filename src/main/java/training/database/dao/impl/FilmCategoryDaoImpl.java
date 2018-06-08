@@ -60,4 +60,14 @@ public class FilmCategoryDaoImpl implements FilmCategoryDao {
 		}
 		return false;
 	}
+
+	@Override
+	public void delete(long filmId) {
+		String sql = "DELETE FROM film_category WHERE film_id = '"+filmId+"';";
+		try {
+			connection.createStatement().executeUpdate(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 }

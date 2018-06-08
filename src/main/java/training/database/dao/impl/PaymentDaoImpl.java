@@ -15,6 +15,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -67,21 +68,40 @@ public class PaymentDaoImpl implements PaymentDao {
 		try {
 			date = new Date(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(request.getPaymentDate()).getTime());
 		} catch (ParseException e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("date is in wrong format, should be \"yyyy-MM-dd HH:mm:ss\"");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Date is in wrong format, should be \"yyyy-MM-dd HH:mm:ss\"");
 		}
 		String sql = "INSERT INTO payment (customer_id, staff_id, rental_id, amount, payment_date) VALUES " +
-				"("+request.getCustomerId()+", " +
-				request.getStaffId()+", " +
-				request.getRentalId()+", " +
-				request.getAmount()+", " +
-				date.toString()+");";
+				"('"+request.getCustomerId()+"', '" +
+				request.getStaffId()+"', '" +
+				request.getRentalId()+"', '" +
+				request.getAmount()+"', '" +
+				date.toString().replace("'","")+"');";
 		try {
 			connection.createStatement().executeUpdate(sql);
-			return ResponseEntity.ok("Payment created.");
+			return ResponseEntity.ok(getNewestPayment());
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Payment was not created.\n"+e.getSQLState()+"\n"+e.getLocalizedMessage());
 		}
+	}
+
+	private Payment getNewestPayment() throws SQLException {
+		String sql = "SELECT customer_id, staff_id, rental_id, amount, payment_date, payment_id, payment_date FROM payment ORDER BY payment_id DESC LIMIT 1";
+
+		ResultSet resultSet = connection.createStatement().executeQuery(sql);
+		resultSet.next();
+
+		Payment payment = new Payment();
+
+		payment.setAmount(resultSet.getFloat("amount"));
+		payment.setCustomerId(resultSet.getLong("customer_id"));
+		payment.setPaymentDate(resultSet.getString("payment_date"));
+		payment.setPaymentId(resultSet.getLong("payment_id"));
+		payment.setRentalId(resultSet.getLong("rental_id"));
+		payment.setStaffId(resultSet.getLong("staff_id"));
+		payment.setPaymentDate(resultSet.getString("payment_date"));
+
+		return payment;
 	}
 
 	@Override
@@ -115,7 +135,7 @@ public class PaymentDaoImpl implements PaymentDao {
 
 		try {
 			connection.createStatement().executeUpdate(sql);
-			return ResponseEntity.ok("Payment ["+request.getPaymentId()+"] was updated.");
+			return ResponseEntity.ok(getById(request.getPaymentId()));
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Payment ["+request.getPaymentId()+" was not updated.\n"+e.getSQLState()+"\n"+e.getLocalizedMessage());
@@ -141,7 +161,7 @@ public class PaymentDaoImpl implements PaymentDao {
 		//System.out.println("amount = ["+entity.getAmount()+"]");
 		payment.setAmount(entity.getAmount());
 
-		//System.out.println("custoemr id = ["+entity.getCustomer_id()+"]");
+		//System.out.println("customer id = ["+entity.getCustomer_id()+"]");
 		payment.setCustomerId(entity.getCustomer_id());
 
 		//System.out.println("payment date = ["+entity.getPayment_date()+"]");

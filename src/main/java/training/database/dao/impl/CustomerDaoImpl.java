@@ -14,6 +14,7 @@ import training.generated.UpdateCustomerRequest;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,12 +48,12 @@ public class CustomerDaoImpl implements CustomerDao {
 
 	@Override
     public List<Customer> getActive() {
-		return convertEntitystoGenerated(this.em.createQuery(baseQuery+" WHERE c.active = '1'",CustomerEntity.class).getResultList());
+		return convertEntitysToGenerated(this.em.createQuery(baseQuery+" WHERE c.active = '1'",CustomerEntity.class).getResultList());
 	}
 
 	@Override
 	public List<Customer> getInactive() {
-		return convertEntitystoGenerated(this.em.createQuery(baseQuery+" WHERE c.active = '0'",CustomerEntity.class).getResultList());
+		return convertEntitysToGenerated(this.em.createQuery(baseQuery+" WHERE c.active = '0'",CustomerEntity.class).setMaxResults(100).getResultList());
 	}
 
 	@Override
@@ -62,12 +63,12 @@ public class CustomerDaoImpl implements CustomerDao {
 
 	@Override
 	public List<Customer> getByStore(long id) {
-		return convertEntitystoGenerated(this.em.createQuery(baseQuery+" WHERE c.store_id = '"+id+"'",CustomerEntity.class).getResultList());
+		return convertEntitysToGenerated(this.em.createQuery(baseQuery+" WHERE c.store_id = '"+id+"'",CustomerEntity.class).getResultList());
 	}
 
 	@Override
 	public List<Customer> getAll() {
-		return convertEntitystoGenerated(this.em.createQuery(baseQuery, CustomerEntity.class).getResultList());
+		return convertEntitysToGenerated(this.em.createQuery(baseQuery, CustomerEntity.class).getResultList());
 	}
 
 	@Override
@@ -81,11 +82,31 @@ public class CustomerDaoImpl implements CustomerDao {
 				(request.isActive()?1:0)+"');";
 		try {
 			connection.createStatement().executeUpdate(sql);
-			return ResponseEntity.ok("Customer was created.");
+			return ResponseEntity.ok(getNewestCustomer());
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Customer was not created.\n"+e.getSQLState()+"\n"+e.getLocalizedMessage());
 		}
+	}
+
+	private Customer getNewestCustomer() throws SQLException {
+		String sql = "SELECT customer_id, store_id, first_name, last_name, email, address_id, active, create_date FROM customer ORDER BY last_update DESC LIMIT 1";
+
+		ResultSet resultSet = connection.createStatement().executeQuery(sql);
+		resultSet.next();
+
+		Customer customer = new Customer();
+
+		customer.setCustomerId(resultSet.getLong("customer_id"));
+		customer.setEmail(resultSet.getString("email"));
+		customer.setFirstName(resultSet.getString("first_name"));
+		customer.setLastName(resultSet.getString("last_name"));
+		customer.setIsActive(resultSet.getInt("active") == 1);
+		customer.setAddress(addressDaoImpl.getById(resultSet.getLong("address_id")));
+		customer.setStoreId(resultSet.getLong("store_id"));
+		customer.setCreateDate(resultSet.getString("create_date"));
+
+		return customer;
 	}
 
 	@Override
@@ -121,14 +142,14 @@ public class CustomerDaoImpl implements CustomerDao {
 
 		try {
 			connection.createStatement().executeUpdate(sql);
-			return ResponseEntity.ok("Customer ["+request.getCustomerId()+"] was updated successfully.");
+			return ResponseEntity.ok(getById(request.getCustomerId()));
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Customer ["+request.getCustomerId()+"] was not updated.\n"+e.getSQLState()+"\n"+e.getLocalizedMessage());
 		}
 	}
 
-	private List<Customer> convertEntitystoGenerated(List<CustomerEntity> entities){
+	private List<Customer> convertEntitysToGenerated(List<CustomerEntity> entities){
 		List<Customer> customers = new ArrayList<>();
 
 		for (CustomerEntity entity : entities){
