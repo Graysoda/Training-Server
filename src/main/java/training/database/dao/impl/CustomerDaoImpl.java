@@ -126,7 +126,7 @@ public class CustomerDaoImpl implements CustomerDao {
 		String sql = "UPDATE customer SET ";
 
 		if (request.isActive()!=null)
-			sql += "active = '"+request.isActive()+"', ";
+			sql += "active = '"+(request.isActive()?1:0)+"', ";
 		if (request.getAddressId()!=null)
 			sql += "address_id = '"+request.getAddressId()+"', ";
 		if (request.getEmail()!=null && !request.getEmail().isEmpty())

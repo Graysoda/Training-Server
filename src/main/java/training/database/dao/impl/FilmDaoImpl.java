@@ -186,7 +186,7 @@ public class FilmDaoImpl implements FilmDao {
 			else
 				film.setCategory("category relation not set!");
 		}
-		System.out.println();
+
 		if (actorIds.size() > 0){
 			for (Long actorId : actorIds) {
 				filmActorDaoImpl.insert(film.getFilmId().longValue(), actorId);

@@ -60,7 +60,7 @@ public class StaffDaoImpl implements StaffDao {
 				request.getAddressId()+"', '" +
 				request.getEmail()+"', '" +
 				request.getStoreId()+"', '" +
-				request.isActive()+"', '" +
+				(request.isActive()?1:0)+"', '" +
 				request.getUsername()+"', '" +
 				request.getPassword()+"');";
 		try {
@@ -108,7 +108,7 @@ public class StaffDaoImpl implements StaffDao {
 		String sql = "UPDATE staff SET ";
 
 		if (request.isActive()!=null)
-			sql += "active = '"+request.isActive()+"', ";
+			sql += "active = '"+(request.isActive()?1:0)+"', ";
 		if (request.getAddressId()!=null)
 			sql += "address_id = '"+request.getAddressId()+"', ";
 		if (request.getEmail()!=null)

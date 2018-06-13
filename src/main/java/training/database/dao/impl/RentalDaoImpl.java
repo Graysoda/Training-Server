@@ -90,8 +90,8 @@ public class RentalDaoImpl implements RentalDao {
                 "IN " +
 				"(SELECT r.rental_id " +
                 "FROM sakila.rental r " +
-                "WHERE DATE_TRUNC('day', r.return_date) >= TO_DATE('"+date+"', 'YYYY-MM-DD') " +
-                "AND DATE_TRUNC('day', r.return_date) < (TO_DATE('"+sdf.format(calendar.getTime())+"', 'YYYY-MM-DD')))";
+                "WHERE DATE_TRUNC('day', r.rental_date) >= TO_DATE('"+date+"', 'YYYY-MM-DD') " +
+                "AND DATE_TRUNC('day', r.rental_date) < (TO_DATE('"+sdf.format(calendar.getTime())+"', 'YYYY-MM-DD')))";
 		return convertEntitiesToGenerated(this.em.createQuery(query,RentalEntity.class).getResultList());
 	}
 

@@ -124,6 +124,9 @@ public class AddressDaoImpl implements AddressDao {
 				throw e;
 			}
 		}
+		if (!StringUtils.isNumeric(request.getPhone()) || request.getPhone().length() != 10){
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("phone number either contains letters or was not 10 digits long");
+		}
 
 		String sql = "INSERT INTO address (address, address2, district, city_id, postal_code, phone) VALUES " +
 				"('"+request.getAddress()+"', '"+

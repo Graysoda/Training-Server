@@ -60,7 +60,7 @@ public class InventoryDaoImpl implements InventoryDao {
 	}
 
 	public List<Inventory> getStoreInventory(long storeId) {
-		return convertEntitiesToGenerated(this.em.createQuery(baseQuery+" WHERE inv.store_id = '"+storeId+"'",InventoryEntity.class).getResultList());
+		return convertEntitiesToGenerated(this.em.createQuery(baseQuery+" WHERE inv.store_id = '"+storeId+"'",InventoryEntity.class).setMaxResults(100).getResultList());
 	}
 
 	public ResponseEntity<?> insert(CreateInventoryRequest request) {
