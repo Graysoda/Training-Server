@@ -51,6 +51,10 @@ public class ActorDaoImpl implements ActorDao {
 		return convertActorEntitiesToGenerated(this.em.createQuery(baseQuery+" WHERE a.first_name = '"+actorFirstName.toUpperCase()+"'",ActorEntity.class).getResultList());
 	}
 
+	public List<Actor> findByLastName(String actorLastName){
+		return convertActorEntitiesToGenerated(this.em.createQuery(baseQuery+" WHERE a.last_name = '"+actorLastName.toUpperCase()+"'",ActorEntity.class).getResultList());
+	}
+
 	public List<Actor> getActorsById(List<Long> actorIds) {
     	if (actorIds.size()==0)
     		return new ArrayList<>();
@@ -73,7 +77,7 @@ public class ActorDaoImpl implements ActorDao {
 	}
 
 	public ResponseEntity<?> insert(CreateActorRequest request) {
-		String sql = "INSERT INTO actor (first_name, last_name) VALUES ('"+request.getFirstName()+"', '"+request.getLastName()+"');";
+		String sql = "INSERT INTO actor (first_name, last_name) VALUES ('"+request.getFirstName().toUpperCase()+"', '"+request.getLastName().toUpperCase()+"');";
 		try {
 			connection.createStatement().executeUpdate(sql);
 			return new ResponseEntity<>(getNewActor(),HttpStatus.CREATED);
@@ -106,9 +110,9 @@ public class ActorDaoImpl implements ActorDao {
 		String sql = "UPDATE actor SET ";
 
 		 if (request.getNewLastName() != null && !request.getNewLastName().isEmpty())
-			sql += "last_name = '"+request.getNewLastName()+"', ";
+			sql += "last_name = '"+request.getNewLastName().toUpperCase()+"', ";
 		 if (request.getNewFirstName() != null && !request.getNewFirstName().isEmpty())
-			sql += "first_name = '"+request.getNewFirstName()+"', ";
+			sql += "first_name = '"+request.getNewFirstName().toUpperCase()+"', ";
 
 		sql = sql.substring(0, sql.length()-2) + " WHERE actor_id='"+request.getActorId()+"';";
 		try{
@@ -124,8 +128,13 @@ public class ActorDaoImpl implements ActorDao {
 		String sql = "DELETE FROM actor WHERE actor_id='"+actorId+"';";
 		filmActorDao.deleteActor(actorId);
 		try {
-			connection.createStatement().executeUpdate(sql);
-			return ResponseEntity.status(HttpStatus.OK).body("Actor ["+actorId+"] was deleted successfully.");
+			int i = connection.createStatement().executeUpdate(sql);
+			if (i == 1)
+				return ResponseEntity.status(HttpStatus.OK).body("Actor ["+actorId+"] was deleted successfully.");
+			else if (i > 1)
+				return ResponseEntity.badRequest().body("more than 1 actor was deleted!");
+			else
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("No actors were deleted");
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Actor ["+actorId+"] was not deleted.\n"+e.getLocalizedMessage());

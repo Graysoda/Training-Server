@@ -66,7 +66,7 @@ public class ActorsEndpoint {
 	public DeleteActorResponse deleteActor(@RequestPayload DeleteActorRequest request) {
 		DeleteActorResponse response = new DeleteActorResponse();
 
-		if (request.getActorId() < 0){
+		if (request.getActorId() <= 0){
 			response.setResponse("actorId is invalid");
 			return response;
 		}
@@ -99,6 +99,14 @@ public class ActorsEndpoint {
 	public GetActorsByFirstNameResponse getActorsByFirstName(@RequestPayload GetActorsByFirstNameRequest request){
 		GetActorsByFirstNameResponse response = new GetActorsByFirstNameResponse();
 		response.setActor(actorService.getActorsByFirstName(request.getActorFirstName()));
+		return response;
+	}
+
+	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getActorsByLastNameRequest")
+	@ResponsePayload
+	public GetActorsByLastNameResponse getActorsByLastName(@RequestPayload GetActorsByLastNameRequest request){
+		GetActorsByLastNameResponse response = new GetActorsByLastNameResponse();
+		response.setActor(actorService.getActorsByLastName(request.getActorLastName()));
 		return response;
 	}
 

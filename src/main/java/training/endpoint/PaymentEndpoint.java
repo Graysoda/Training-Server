@@ -31,7 +31,7 @@ public class PaymentEndpoint {
 		return response;
 	}
 
-	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getPaymentForRentalRequest")
+	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getPaymentsForRentalRequest")
 	@ResponsePayload
 	public GetPaymentsForRentalResponse getPaymentsForRental(@RequestPayload GetPaymentsForRentalRequest request){
 		GetPaymentsForRentalResponse response = new GetPaymentsForRentalResponse();
@@ -39,6 +39,8 @@ public class PaymentEndpoint {
 		return response;
 	}
 
+	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getPaymentsFromCustomerRequest")
+	@ResponsePayload
 	public GetPaymentsFromCustomerResponse getPaymentsFromCustomer(@RequestPayload GetPaymentsFromCustomerRequest request){
 		GetPaymentsFromCustomerResponse response = new GetPaymentsFromCustomerResponse();
 		response.setPayment(paymentService.getPaymentFromCustomer(request.getCustomerId()));

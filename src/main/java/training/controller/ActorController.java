@@ -46,6 +46,16 @@ public class ActorController {
             return new ResponseEntity<>(actors, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/actors/last_name/{lastName}",method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<?> getActorsByLastName(@PathVariable String lastName){
+        List<Actor> actors = actorService.getActorsByLastName(lastName);
+        if (actors == null || actors.size() == 0)
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No Actors with that last name.");
+        else
+            return new ResponseEntity<>(actors, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/actors/{actorId}/films", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<?> getFilmsWithActor(@PathVariable long actorId){
@@ -93,7 +103,10 @@ public class ActorController {
 
     @RequestMapping(value = "/actors/{actorId}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<?> deleteActor(@PathVariable long actorId){
-        return actorService.deleteActor(actorId);
+    public ResponseEntity<?> deleteActor(@PathVariable Long actorId){
+        if (actorId != null && actorId > 0)
+            return actorService.deleteActor(actorId);
+        else
+            return ResponseEntity.badRequest().body("Invalid actorId");
     }
 }

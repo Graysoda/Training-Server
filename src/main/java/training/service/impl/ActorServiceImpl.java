@@ -33,6 +33,10 @@ public class ActorServiceImpl implements ActorService {
 		return actorDaoImpl.findByFirstName(name);
 	}
 
+	public List<Actor> getActorsByLastName(String name){
+    	return actorDaoImpl.findByLastName(name);
+	}
+
 	@Override
 	public ResponseEntity<?> insertActor(CreateActorRequest request) {
 		return actorDaoImpl.insert(request);
@@ -44,7 +48,7 @@ public class ActorServiceImpl implements ActorService {
 	}
 
 	@Override
-	public ResponseEntity<?> deleteActor(long actorId) {
+	public ResponseEntity<?> deleteActor(Long actorId) {
 		return actorDaoImpl.delete(actorId);
 	}
 

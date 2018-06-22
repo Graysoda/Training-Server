@@ -105,6 +105,22 @@
         </xs:complexType>
     </xs:element>
 
+    <xs:element name="getActorsByLastNameRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="actorLastName" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getActorsByLastNameResponse">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded">
+                <xs:element name="actor" type="data:actor"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
     <xs:element name="getFilmsWithActorRequest">
         <xs:complexType>
             <xs:sequence>

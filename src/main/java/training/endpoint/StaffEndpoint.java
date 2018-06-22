@@ -32,6 +32,7 @@ public class StaffEndpoint {
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "createStaffRequest")
+	@ResponsePayload
 	public CreateStaffResponse insertStaff(@RequestPayload CreateStaffRequest request){
 		CreateStaffResponse response = new CreateStaffResponse();
 
@@ -76,6 +77,7 @@ public class StaffEndpoint {
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "deleteStaffRequest")
+	@ResponsePayload
 	public DeleteStaffResponse deleteStaff(@RequestPayload DeleteStaffRequest request){
 		DeleteStaffResponse response = new DeleteStaffResponse();
 
@@ -91,6 +93,7 @@ public class StaffEndpoint {
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "updateStaffRequest")
+	@ResponsePayload
 	public UpdateStaffResponse updateStaff(@RequestPayload UpdateStaffRequest request){
 		UpdateStaffResponse response = new UpdateStaffResponse();
 

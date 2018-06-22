@@ -23,7 +23,7 @@ public interface ActorService {
 	@Transactional
 	ResponseEntity<?> updateActor(UpdateActorRequest request);
 	@Transactional
-	ResponseEntity<?> deleteActor(long ActorId);
+	ResponseEntity<?> deleteActor(Long ActorId);
 	@Transactional
 	List<Summary> getFilmsWithActor(long actorId);
 }
