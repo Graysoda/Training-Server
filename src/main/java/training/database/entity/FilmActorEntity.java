@@ -1,16 +1,19 @@
 package training.database.entity;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity(name = "sakila.film_actor")
 @Table(name = "film_actor")
+@IdClass(FilmActorKey.class)
 public class FilmActorEntity {
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@NotNull
 	private long actor_id;
-	@NotNull
+	@Id
 	private long film_id;
 
 	public FilmActorEntity() {

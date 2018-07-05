@@ -27,7 +27,7 @@
     <xs:element name="updateActorRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="actorId" type="xs:long"/>
+                <xs:element name="actor_id" type="xs:long"/>
                 <xs:element name="newFirstName" type="xs:string" nillable="true"/>
                 <xs:element name="newLastName" type="xs:string" nillable="true"/>
             </xs:sequence>
@@ -46,7 +46,7 @@
     <xs:element name="deleteActorRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="actorId" type="xs:long"/>
+                <xs:element name="actor_id" type="xs:long"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -76,7 +76,7 @@
     <xs:element name="getActorsByIdRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="actorId" type="xs:int"/>
+                <xs:element name="actor_id" type="xs:int"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -124,7 +124,7 @@
     <xs:element name="getFilmsWithActorRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="actorId" type="xs:long"/>
+                <xs:element name="actor_id" type="xs:long"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>

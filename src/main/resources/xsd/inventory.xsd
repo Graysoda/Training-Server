@@ -8,7 +8,7 @@
     <xs:element name="createInventoryRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="filmId" type="xs:long"/>
+                <xs:element name="film_id" type="xs:long"/>
                 <xs:element name="storeId" type="xs:long"/>
             </xs:sequence>
         </xs:complexType>
@@ -27,7 +27,7 @@
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="inventoryId" type="xs:long"/>
-                <xs:element name="filmId" type="xs:long" nillable="true"/>
+                <xs:element name="film_id" type="xs:long" nillable="true"/>
                 <xs:element name="storeId" type="xs:long" nillable="true"/>
             </xs:sequence>
         </xs:complexType>

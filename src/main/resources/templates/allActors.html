@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<head lang="en">
+    <meta charset="UTF-8"/>
+    <title> Actors </title>
+    <link rel="stylesheet" href="/../css/main.css" th:href="@{../css/main.css}" />
+</head>
+<body>
+
+<table>
+    <thead>
+        <tr>
+            <th> ID </th>
+            <th> First Name </th>
+            <th> Last Name </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:if="${actors.empty}">
+            <td colspan="2"> No Actors Available </td>
+        </tr>
+        <tr th:each="actor : ${actors}">
+            <td><span th:text="${actor.actorId}"> ID </span></td>
+            <td><span th:text="${actor.firstName}"> First Name </span></td>
+            <td><span th:text="${actor.lastName}"> Last Name </span></td>
+        </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

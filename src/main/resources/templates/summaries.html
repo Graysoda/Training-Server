@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> Associated Films </title>
+    <link rel="stylesheet" href="/../../../css/main.css" th:href="@{../../../css/main.css}" />
+</head>
+<body>
+<table>
+    <thead>
+    <tr>
+        <th> ID </th>
+        <th> Title </th>
+        <th> Description </th>
+        <th> Length </th>
+        <th> Rating </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${summaries.empty}">
+        <td colspan="2"> No Films Associated With Actor </td>
+    </tr>
+    <tr th:each="summary : ${summaries}">
+        <td><span th:text="${summary.filmId}"> ID </span></td>
+        <td><span th:text="${summary.title}"> Title </span></td>
+        <td><span th:text="${summary.description}"> Description </span></td>
+        <td><span th:text="${summary.length}"> Length </span></td>
+        <td><span th:text="${summary.rating}"> Rating </span></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

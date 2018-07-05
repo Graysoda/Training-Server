@@ -105,7 +105,7 @@
 
     <xs:complexType name="actor">
         <xs:sequence>
-            <xs:element name="actorId" type="xs:long"/>
+            <xs:element name="actor_id" type="xs:long"/>
             <xs:element name="firstName" type="xs:string" />
             <xs:element name="lastName" type="xs:string"/>
         </xs:sequence>
@@ -113,7 +113,7 @@
 
     <xs:complexType name="film">
         <xs:sequence>
-            <xs:element name="filmId" type="xs:positiveInteger"/>
+            <xs:element name="film_id" type="xs:positiveInteger"/>
             <xs:element name="title" type="xs:string"/>
             <xs:element name="description" type="xs:string"/>
             <xs:element name="releaseYear" type="xs:int"/>
@@ -134,7 +134,7 @@
 
     <xs:complexType name="summary">
         <xs:sequence>
-            <xs:element name="filmId" type="xs:long"/>
+            <xs:element name="film_id" type="xs:long"/>
             <xs:element name="title" type="xs:string"/>
             <xs:element name="description" type="xs:string"/>
             <xs:element name="length" type="xs:int"/>

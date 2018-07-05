@@ -85,7 +85,7 @@ public class FilmDaoImpl implements FilmDao {
 	}
 
 	public List<Summary> getFilmsById(List<Long> filmIds) {
-		if (filmIds.size()==0)
+		if (filmIds.size() == 0)
 			return new ArrayList<>();
 		if (filmIds.size() == 1)
 			return convertEntitiesToSummary(this.em.createQuery(baseFilmQuery+" WHERE f.film_id = '"+filmIds.get(0)+"'",FilmEntity.class).getResultList());
@@ -99,7 +99,7 @@ public class FilmDaoImpl implements FilmDao {
 
 		where = new StringBuilder(where.substring(0, where.length() - 2) + ")");
 
-		return convertEntitiesToSummary(this.em.createQuery(baseFilmQuery+where,FilmEntity.class).getResultList());
+		return convertEntitiesToSummary(this.em.createQuery(baseFilmQuery + where.toString(),FilmEntity.class).getResultList());
 	}
 
 	public List<Actor> getFilmsActors(long filmId) {
