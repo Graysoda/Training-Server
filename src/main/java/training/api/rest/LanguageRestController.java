@@ -9,7 +9,7 @@ import training.service.impl.LanguageServiceImpl;
 
 @RestController
 @RequestMapping(value = RestConstants.REST_SERVICES_LOCATION, produces = RestConstants.JSON)
-public class LanguageController {
+public class LanguageRestController {
 	@Autowired @Lazy
 	private LanguageServiceImpl languageService;
 

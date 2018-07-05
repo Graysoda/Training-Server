@@ -17,7 +17,7 @@ import training.service.impl.ActorServiceImpl;
 import java.util.List;
 
 @Controller
-public class ActorUiController {
+public class ActorController {
     private ActorServiceImpl actorService;
 
     @Autowired

@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = RestConstants.REST_SERVICES_LOCATION, produces = RestConstants.JSON)
-public class FilmsController {
+public class FilmsRestController {
     @Autowired @Lazy private FilmServiceImpl filmService;
 
     @RequestMapping(value = "/films", method = RequestMethod.GET)

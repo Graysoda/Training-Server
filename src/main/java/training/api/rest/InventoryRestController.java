@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = RestConstants.REST_SERVICES_LOCATION, produces = RestConstants.JSON)
-public class InventoryController {
+public class InventoryRestController {
     @Autowired @Lazy private InventoryServiceImpl inventoryService;
 
     @RequestMapping(value = "/inventory", method = RequestMethod.GET)

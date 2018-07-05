@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = RestConstants.REST_SERVICES_LOCATION, produces = RestConstants.JSON)
-public class PaymentController {
+public class PaymentRestController {
     @Autowired @Lazy private PaymentServiceImpl paymentService;
 
     @RequestMapping(value = "/payments", method = RequestMethod.GET)

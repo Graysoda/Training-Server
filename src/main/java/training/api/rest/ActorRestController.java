@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = RestConstants.REST_SERVICES_LOCATION, produces = RestConstants.JSON)
-public class ActorController {
+public class ActorRestController {
     @Autowired @Lazy
     private ActorServiceImpl actorService;
 

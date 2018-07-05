@@ -12,7 +12,7 @@ import training.service.impl.AddressServiceImpl;
 
 @RestController
 @RequestMapping(value = RestConstants.REST_SERVICES_LOCATION, produces = RestConstants.JSON)
-public class AddressController {
+public class AddressRestController {
     @Autowired @Lazy private AddressServiceImpl addressService;
 
     @RequestMapping(value = "/address", method = RequestMethod.GET)

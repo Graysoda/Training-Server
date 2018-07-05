@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = RestConstants.REST_SERVICES_LOCATION, produces = RestConstants.JSON)
-public class StaffController {
+public class StaffRestController {
     @Autowired @Lazy private StaffServiceImpl staffService;
 
     @RequestMapping(value = "/staff", method = RequestMethod.GET)

@@ -12,7 +12,7 @@ import training.service.impl.RentalServiceImpl;
 
 @RestController
 @RequestMapping(value = RestConstants.REST_SERVICES_LOCATION, produces = RestConstants.JSON)
-public class RentalController {
+public class RentalRestController {
     @Autowired @Lazy private RentalServiceImpl rentalService;
 
     @RequestMapping(value = "/rentals", method = RequestMethod.GET)

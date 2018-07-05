@@ -52,6 +52,7 @@ public class FilmActorDaoImpl implements FilmActorDao {
     }
 
     public List<Summary> getFilmsWithActor(long actorId){
+		//System.out.println("FIELD IDS ARE: " + getFilmIds(this.em.createQuery(baseQuery+" WHERE fa.actor_id = '"+actorId+"'",FilmActorEntity.class).getResultList()));
         return filmDaoImpl.getFilmsById(getFilmIds(this.em.createQuery(baseQuery+" WHERE fa.actor_id = '"+actorId+"'",FilmActorEntity.class).getResultList()));
     }
 
@@ -89,11 +90,18 @@ public class FilmActorDaoImpl implements FilmActorDao {
     }
 
     private List<Long> getFilmIds(List<FilmActorEntity> resultList) {
-        List<Long> filmIds = new ArrayList<>();
+        List<Long> filmIds = new ArrayList<>(resultList.size());
+        //System.out.println("resultList size = ["+resultList.size()+"]");
 
-        for (FilmActorEntity entity : resultList) {
-            filmIds.add(entity.getFilm_id());
-        }
+//        for (int i=0;i<resultList.size();i++){
+//			System.out.println("result list ["+i+"] = ["+resultList.get(i).getFilm_id()+"]");
+//		}
+
+
+		for (FilmActorEntity entity : resultList) {
+			filmIds.add(entity.getFilm_id());
+			//System.out.println("film id [" + entity.getFilm_id() + "] added");
+		}
 
         return filmIds;
     }

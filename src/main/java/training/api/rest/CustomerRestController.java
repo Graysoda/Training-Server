@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = RestConstants.REST_SERVICES_LOCATION, produces = RestConstants.JSON)
-public class CustomerController {
+public class CustomerRestController {
     @Autowired @Lazy private CustomerServiceImpl customerService;
 
     @RequestMapping(value = "/customers", method = RequestMethod.GET)
