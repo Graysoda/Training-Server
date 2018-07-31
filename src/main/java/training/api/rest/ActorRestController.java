@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import training.api.Common;
 import training.api.rest.jsonObjects.ActorJson;
 import training.generated.Actor;
 import training.generated.CreateActorRequest;
@@ -71,15 +72,15 @@ public class ActorRestController {
     public ResponseEntity<?> createActor(@RequestBody ActorJson actorJson){
         CreateActorRequest request = new CreateActorRequest();
 
-        if (actorJson.getFirstName() != null && RestConstants.isStringSafe(actorJson.getFirstName())){
+        if (actorJson.getFirstName() != null && Common.isStringSafe(actorJson.getFirstName())){
             request.setFirstName(actorJson.getFirstName());
         } else {
-            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Actor firstName"));
+            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Actor firstName"));
         }
-        if (actorJson.getLastName() != null && RestConstants.isStringSafe(actorJson.getLastName())){
+        if (actorJson.getLastName() != null && Common.isStringSafe(actorJson.getLastName())){
             request.setLastName(actorJson.getLastName());
         } else {
-            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Actor lastName"));
+            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Actor lastName"));
         }
 
         return actorService.insertActor(request);
@@ -91,15 +92,15 @@ public class ActorRestController {
         UpdateActorRequest request = new UpdateActorRequest();
 
         request.setActorId(actorId);
-        if (actorJson.getFirstName() != null && RestConstants.isStringSafe(actorJson.getFirstName()))
+        if (actorJson.getFirstName() != null && Common.isStringSafe(actorJson.getFirstName()))
             request.setNewFirstName(actorJson.getFirstName());
         else
-            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Actor firstName"));
+            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Actor firstName"));
 
-        if (actorJson.getLastName() != null && RestConstants.isStringSafe(actorJson.getLastName()))
+        if (actorJson.getLastName() != null && Common.isStringSafe(actorJson.getLastName()))
             request.setNewLastName(actorJson.getLastName());
         else
-            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Actor lastName"));
+            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Actor lastName"));
 
         return actorService.updateActor(request);
     }

@@ -7,6 +7,7 @@ import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
+import training.api.Common;
 import training.generated.*;
 import training.service.impl.StaffServiceImpl;
 
@@ -37,31 +38,52 @@ public class StaffEndpoint {
 		CreateStaffResponse response = new CreateStaffResponse();
 
 		if (request.getFirstName().isEmpty()){
-			response.setError("firstName cannot be empty");
+			response.setError("Staff firstName cannot be empty");
+			return response;
+		} else if (!Common.isStringSafe(request.getFirstName())){
+			response.setError(Common.stringFailureMessage("Staff firstName"));
 			return response;
 		}
+
 		if (request.getLastName().isEmpty()){
-			response.setError("lastName cannot be empty");
+			response.setError("Staff lastName cannot be empty");
+			return response;
+		} else if (!Common.isStringSafe(request.getLastName())){
+			response.setError(Common.stringFailureMessage("Staff lastName"));
 			return response;
 		}
+
 		if (request.getPassword().isEmpty()){
-			response.setError("password cannot be empty");
+			response.setError("Staff password cannot be empty");
+			return response;
+		} else if (!Common.isStringSafe(request.getPassword())){
+			response.setError(Common.stringFailureMessage("Staff password"));
 			return response;
 		}
+
 		if (request.getUsername().isEmpty()){
-			response.setError("username cannot be empty");
+			response.setError("Staff username cannot be empty");
+			return response;
+		} else if (!Common.isStringSafe(request.getUsername())){
+			response.setError(Common.stringFailureMessage("Staff username"));
 			return response;
 		}
+
 		if (request.getEmail().isEmpty()){
-			response.setError("email cannot be empty");
+			response.setError("Staff email cannot be empty");
+			return response;
+		} else if (!Common.isStringSafe(request.getEmail())){
+			response.setError(Common.stringFailureMessage("Staff email"));
 			return response;
 		}
+
 		if (request.getAddressId() < 0){
-			response.setError("addressId is invalid");
+			response.setError("Staff addressId is invalid");
 			return response;
 		}
+
 		if (request.getStoreId() < 0){
-			response.setError("storeId is invalid");
+			response.setError("Staff storeId is invalid");
 			return response;
 		}
 
@@ -99,6 +121,56 @@ public class StaffEndpoint {
 
 		if (request.getStaffId() < 0){
 			response.setError("staffId is invalid");
+			return response;
+		}
+
+		if (request.getFirstName().isEmpty()){
+			response.setError("Staff firstName cannot be empty");
+			return response;
+		} else if (!Common.isStringSafe(request.getFirstName())){
+			response.setError(Common.stringFailureMessage("Staff firstName"));
+			return response;
+		}
+
+		if (request.getLastName().isEmpty()){
+			response.setError("Staff lastName cannot be empty");
+			return response;
+		} else if (!Common.isStringSafe(request.getLastName())){
+			response.setError(Common.stringFailureMessage("Staff lastName"));
+			return response;
+		}
+
+		if (request.getPassword().isEmpty()){
+			response.setError("Staff password cannot be empty");
+			return response;
+		} else if (!Common.isStringSafe(request.getPassword())){
+			response.setError(Common.stringFailureMessage("Staff password"));
+			return response;
+		}
+
+		if (request.getUsername().isEmpty()){
+			response.setError("Staff username cannot be empty");
+			return response;
+		} else if (!Common.isStringSafe(request.getUsername())){
+			response.setError(Common.stringFailureMessage("Staff username"));
+			return response;
+		}
+
+		if (request.getEmail().isEmpty()){
+			response.setError("Staff email cannot be empty");
+			return response;
+		} else if (!Common.isStringSafe(request.getEmail())){
+			response.setError(Common.stringFailureMessage("Staff email"));
+			return response;
+		}
+
+		if (request.getAddressId() < 0){
+			response.setError("Staff addressId is invalid");
+			return response;
+		}
+
+		if (request.getStoreId() < 0){
+			response.setError("Staff storeId is invalid");
 			return response;
 		}
 

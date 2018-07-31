@@ -7,6 +7,7 @@ import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
+import training.api.Common;
 import training.generated.*;
 import training.service.impl.AddressServiceImpl;
 
@@ -23,22 +24,42 @@ public class AddressEndpoint {
 		if (request.getAddress().isEmpty()){
 			response.setError("first address line cannot be empty.");
 			return response;
+		} else if (!Common.isStringSafe(request.getAddress())){
+			response.setError(Common.stringFailureMessage("Address address"));
+			return response;
 		}
+
+		if (!Common.isStringSafe(request.getAddress2())){
+			response.setError(Common.stringFailureMessage("Address address2"));
+			return response;
+		}
+
 		if (request.getCity() == null){
-			response.setError("city cannot be null.");
+			response.setError("Address city cannot be null.");
 			return response;
 		}
-		if (request.getCity().getCountry() == null)
+
 		if (request.getDistrict().isEmpty()){
-			response.setError("district cannot be empty.");
+			response.setError("Address district cannot be empty.");
+			return response;
+		} else if (!Common.isStringSafe(request.getDistrict())){
+			response.setError(Common.stringFailureMessage("Address district"));
 			return response;
 		}
+
 		if (request.getPhone().isEmpty()){
-			response.setError("phone cannot be empty.");
+			response.setError("Address phone cannot be empty.");
+			return response;
+		} else if (!Common.isStringSafe(request.getPhone())){
+			response.setError(Common.stringFailureMessage("Address phone"));
 			return response;
 		}
+
 		if (request.getPostalCode().isEmpty()){
-			response.setError("postalCode cannot be empty.");
+			response.setError("Address postalCode cannot be empty.");
+			return response;
+		} else if (!Common.isStringSafe(request.getPostalCode())){
+			response.setError(Common.stringFailureMessage("Address postalCode"));
 			return response;
 		}
 
@@ -76,6 +97,48 @@ public class AddressEndpoint {
 
 		if (request.getAddressId() < 0){
 			response.setError("addressId is invalid");
+			return response;
+		}
+
+		if (request.getAddress().isEmpty()){
+			response.setError("first address line cannot be empty.");
+			return response;
+		} else if (!Common.isStringSafe(request.getAddress())){
+			response.setError(Common.stringFailureMessage("Address address"));
+			return response;
+		}
+
+		if (!Common.isStringSafe(request.getAddress2())){
+			response.setError(Common.stringFailureMessage("Address address2"));
+			return response;
+		}
+
+		if (request.getCity() == null){
+			response.setError("Address city cannot be null.");
+			return response;
+		}
+
+		if (request.getDistrict().isEmpty()){
+			response.setError("Address district cannot be empty.");
+			return response;
+		} else if (!Common.isStringSafe(request.getDistrict())){
+			response.setError(Common.stringFailureMessage("Address district"));
+			return response;
+		}
+
+		if (request.getPhone().isEmpty()){
+			response.setError("Address phone cannot be empty.");
+			return response;
+		} else if (!Common.isStringSafe(request.getPhone())){
+			response.setError(Common.stringFailureMessage("Address phone"));
+			return response;
+		}
+
+		if (request.getPostalCode().isEmpty()){
+			response.setError("Address postalCode cannot be empty.");
+			return response;
+		} else if (!Common.isStringSafe(request.getPostalCode())){
+			response.setError(Common.stringFailureMessage("Address postalCode"));
 			return response;
 		}
 

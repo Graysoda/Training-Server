@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import training.api.Common;
 import training.api.rest.jsonObjects.PaymentJson;
 import training.generated.CreatePaymentRequest;
 import training.generated.Payment;
@@ -35,7 +36,7 @@ public class PaymentRestController {
         if (paymentJson.getCustomerId() != null && paymentJson.getCustomerId() > 0)
             request.setCustomerId(paymentJson.getCustomerId());
         else
-            return ResponseEntity.badRequest().body(RestConstants.idFailureMessage("Payment customerId"));
+            return ResponseEntity.badRequest().body(Common.idFailureMessage("Payment customerId"));
 
         if (paymentJson.getPaymentDate() != null)
             request.setPaymentDate(paymentJson.getPaymentDate());
@@ -45,12 +46,12 @@ public class PaymentRestController {
         if (paymentJson.getRentalId() != null && paymentJson.getRentalId() > 0)
             request.setRentalId(paymentJson.getRentalId());
         else
-            return ResponseEntity.badRequest().body(RestConstants.idFailureMessage("Payment rentalId"));
+            return ResponseEntity.badRequest().body(Common.idFailureMessage("Payment rentalId"));
 
         if (paymentJson.getStaffId() != null && paymentJson.getStaffId() > 0)
             request.setStaffId(paymentJson.getStaffId());
         else
-            return ResponseEntity.badRequest().body(RestConstants.idFailureMessage("Payment staffId"));
+            return ResponseEntity.badRequest().body(Common.idFailureMessage("Payment staffId"));
 
         return paymentService.insertPayment(request);
     }
@@ -70,7 +71,7 @@ public class PaymentRestController {
         if (paymentJson.getCustomerId() != null && paymentJson.getCustomerId() > 0)
             request.setCustomerId(paymentJson.getCustomerId());
         else
-            return ResponseEntity.badRequest().body(RestConstants.idFailureMessage("Payment customerId"));
+            return ResponseEntity.badRequest().body(Common.idFailureMessage("Payment customerId"));
 
         if (paymentJson.getPaymentDate() != null)
             request.setPaymentDate(paymentJson.getPaymentDate());
@@ -80,12 +81,12 @@ public class PaymentRestController {
         if (paymentJson.getRentalId() != null && paymentJson.getRentalId() > 0)
             request.setRentalId(paymentJson.getRentalId());
         else
-            return ResponseEntity.badRequest().body(RestConstants.idFailureMessage("Payment rentalId"));
+            return ResponseEntity.badRequest().body(Common.idFailureMessage("Payment rentalId"));
 
         if (paymentJson.getStaffId() != null && paymentJson.getStaffId() > 0)
             request.setStaffId(paymentJson.getStaffId());
         else
-            return ResponseEntity.badRequest().body(RestConstants.idFailureMessage("Payment staffId"));
+            return ResponseEntity.badRequest().body(Common.idFailureMessage("Payment staffId"));
 
         return paymentService.updatePayment(request);
     }

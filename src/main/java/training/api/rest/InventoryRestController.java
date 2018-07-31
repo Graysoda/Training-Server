@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import training.api.Common;
 import training.api.rest.jsonObjects.InventoryJson;
 import training.generated.CreateInventoryRequest;
 import training.generated.Inventory;
@@ -40,12 +41,12 @@ public class InventoryRestController {
         if (inventoryJson.getFilmId() != null && inventoryJson.getFilmId() > 0)
             request.setFilmId(inventoryJson.getFilmId());
         else
-            return ResponseEntity.badRequest().body(RestConstants.idFailureMessage("Inventory filmId"));
+            return ResponseEntity.badRequest().body(Common.idFailureMessage("Inventory filmId"));
 
         if (inventoryJson.getStoreId() != null && inventoryJson.getStoreId() > 0)
             request.setStoreId(inventoryJson.getStoreId());
         else
-            return ResponseEntity.badRequest().body(RestConstants.idFailureMessage("Inventory storeId"));
+            return ResponseEntity.badRequest().body(Common.idFailureMessage("Inventory storeId"));
 
         return inventoryService.insert(request);
     }
@@ -59,12 +60,12 @@ public class InventoryRestController {
         if (inventoryJson.getFilmId() != null && inventoryJson.getFilmId() > 0)
             request.setFilmId(inventoryJson.getFilmId());
         else
-            return ResponseEntity.badRequest().body(RestConstants.idFailureMessage("Inventory filmId"));
+            return ResponseEntity.badRequest().body(Common.idFailureMessage("Inventory filmId"));
 
         if (inventoryJson.getStoreId() != null && inventoryJson.getStoreId() > 0)
             request.setStoreId(inventoryJson.getStoreId());
         else
-            return ResponseEntity.badRequest().body(RestConstants.idFailureMessage("Inventory storeId"));
+            return ResponseEntity.badRequest().body(Common.idFailureMessage("Inventory storeId"));
 
         return inventoryService.updateInventory(request);
     }

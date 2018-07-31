@@ -88,6 +88,15 @@ public class InventoryEndpoint {
 			return response;
 		}
 
+		if (request.getFilmId() < 0){
+			response.setError("filmId is invalid");
+			return response;
+		}
+		if (request.getStoreId() < 0){
+			response.setError("storeId is invalid");
+			return response;
+		}
+
 		ResponseEntity entity = inventoryService.updateInventory(request);
 
 		if (entity.getBody() instanceof Inventory){

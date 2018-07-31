@@ -7,6 +7,7 @@ import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
+import training.api.Common;
 import training.generated.*;
 import training.service.impl.CustomerServiceImpl;
 
@@ -21,23 +22,32 @@ public class CustomerEndpoint {
 		CreateCustomerResponse response = new CreateCustomerResponse();
 
 		if (request.getFirstName().isEmpty()){
-			response.setError("firstName cannot be empty.");
+			response.setError("Customer firstName cannot be empty.");
+			return response;
+		} else if (!Common.isStringSafe(request.getFirstName())){
+			response.setError(Common.stringFailureMessage("Customer firstName"));
 			return response;
 		}
 		if (request.getLastName().isEmpty()){
-			response.setError("lastName cannot be empty.");
+			response.setError("Customer lastName cannot be empty.");
+			return response;
+		} else if (!Common.isStringSafe(request.getLastName())){
+			response.setError(Common.stringFailureMessage("Customer lastName"));
 			return response;
 		}
 		if (request.getEmail().isEmpty()){
-			response.setError("email cannot be empty.");
+			response.setError("Customer email cannot be empty.");
+			return response;
+		} else if (!Common.isStringSafe(request.getEmail())){
+			response.setError(Common.stringFailureMessage("Customer email"));
 			return response;
 		}
 		if (request.getAddressId() < 0){
-			response.setError("addressId is invalid");
+			response.setError("Customer addressId is invalid");
 			return response;
 		}
 		if (request.getStoreId() < 0){
-			response.setError("storeId is invalid");
+			response.setError("Customer storeId is invalid");
 			return response;
 		}
 

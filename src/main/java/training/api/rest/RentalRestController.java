@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import training.api.Common;
 import training.api.rest.jsonObjects.RentalJson;
 import training.generated.CreateRentalRequest;
 import training.generated.UpdateRentalRequest;
@@ -47,27 +48,27 @@ public class RentalRestController {
         if (rentalJson.getCustomerId() != null && rentalJson.getCustomerId() > 0)
             request.setCustomerId(rentalJson.getCustomerId());
         else
-            return ResponseEntity.badRequest().body(RestConstants.idFailureMessage("Rental customerId"));
+            return ResponseEntity.badRequest().body(Common.idFailureMessage("Rental customerId"));
 
         if (rentalJson.getInventoryId() != null && rentalJson.getInventoryId() > 0)
             request.setInventoryId(rentalJson.getInventoryId());
         else
-            return ResponseEntity.badRequest().body(RestConstants.idFailureMessage("Rental inventoryId"));
+            return ResponseEntity.badRequest().body(Common.idFailureMessage("Rental inventoryId"));
 
-        if (rentalJson.getRentalDate() != null && RestConstants.isStringSafe(rentalJson.getRentalDate()))
+        if (rentalJson.getRentalDate() != null && Common.isStringSafe(rentalJson.getRentalDate()))
             request.setRentalDate(rentalJson.getRentalDate());
         else
-            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Rental rentalDate"));
+            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Rental rentalDate"));
 
-        if (rentalJson.getReturnDate() != null && RestConstants.isStringSafe(rentalJson.getReturnDate()))
+        if (rentalJson.getReturnDate() != null && Common.isStringSafe(rentalJson.getReturnDate()))
             request.setReturnDate(rentalJson.getReturnDate());
         else
-            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Rental returnDate"));
+            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Rental returnDate"));
 
         if (rentalJson.getStaffId() != null && rentalJson.getStaffId() > 0)
             request.setStaffId(rentalJson.getStaffId());
         else
-            return ResponseEntity.badRequest().body(RestConstants.idFailureMessage("Rental staffId"));
+            return ResponseEntity.badRequest().body(Common.idFailureMessage("Rental staffId"));
 
         return rentalService.insertRental(request);
     }
@@ -81,27 +82,27 @@ public class RentalRestController {
         if (rentalJson.getCustomerId() != null && rentalJson.getCustomerId() > 0)
             request.setCustomerId(rentalJson.getCustomerId());
         else
-            return ResponseEntity.badRequest().body(RestConstants.idFailureMessage("Rental customerId"));
+            return ResponseEntity.badRequest().body(Common.idFailureMessage("Rental customerId"));
 
         if (rentalJson.getInventoryId() != null && rentalJson.getInventoryId() > 0)
             request.setInventoryId(rentalJson.getInventoryId());
         else
-            return ResponseEntity.badRequest().body(RestConstants.idFailureMessage("Rental inventoryId"));
+            return ResponseEntity.badRequest().body(Common.idFailureMessage("Rental inventoryId"));
 
-        if (rentalJson.getRentalDate() != null && RestConstants.isStringSafe(rentalJson.getRentalDate()))
+        if (rentalJson.getRentalDate() != null && Common.isStringSafe(rentalJson.getRentalDate()))
             request.setRentalDate(rentalJson.getRentalDate());
         else
-            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Rental rentalDate"));
+            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Rental rentalDate"));
 
-        if (rentalJson.getReturnDate() != null && RestConstants.isStringSafe(rentalJson.getReturnDate()))
+        if (rentalJson.getReturnDate() != null && Common.isStringSafe(rentalJson.getReturnDate()))
             request.setReturnDate(rentalJson.getReturnDate());
         else
-            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Rental returnDate"));
+            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Rental returnDate"));
 
         if (rentalJson.getStaffId() != null && rentalJson.getStaffId() > 0)
             request.setStaffId(rentalJson.getStaffId());
         else
-            return ResponseEntity.badRequest().body(RestConstants.idFailureMessage("Rental staffId"));
+            return ResponseEntity.badRequest().body(Common.idFailureMessage("Rental staffId"));
 
         return rentalService.updateRental(request);
     }

@@ -6,6 +6,7 @@ import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
+import training.api.Common;
 import training.generated.*;
 import training.service.impl.FilmServiceImpl;
 
@@ -32,21 +33,39 @@ public class FilmsEndpoint {
 		CreateFilmResponse response = new CreateFilmResponse();
 
 		if (request.getTitle().isEmpty()){
-			response.setError("title cannot be empty");
+			response.setError("Film title cannot be empty");
+			return response;
+		} else if (!Common.isStringSafe(request.getTitle())){
+			response.setError(Common.stringFailureMessage("Film title"));
 			return response;
 		}
+
 		if (request.getDescription().isEmpty()){
 			response.setError("description cannot be empty");
 			return response;
+		} else if (!Common.isStringSafe(request.getDescription())){
+			response.setError(Common.stringFailureMessage("Film description"));
+			return response;
 		}
+
 		if (request.getLanguage().isEmpty()){
 			response.setError("language cannot be empty");
 			return response;
+		} else if (!Common.isStringSafe(request.getLanguage())){
+			response.setError(Common.stringFailureMessage("Film language"));
+			return response;
 		}
+
+		if (!Common.isStringSafe(request.getOriginalLanguage())){
+			response.setError(Common.stringFailureMessage("Film originalLanguage"));
+			return response;
+		}
+
 		if (request.getLength() < 0){
 			response.setError("length is invalid");
 			return response;
 		}
+
 		if (request.getRating().isEmpty()){
 			response.setError("rating cannot be empty");
 			return response;
@@ -54,18 +73,22 @@ public class FilmsEndpoint {
 			response.setError("rating is invalid");
 			return response;
 		}
+
 		if (request.getReleaseYear() < 0){
 			response.setError("releaseYear is invalid");
 			return response;
 		}
+
 		if (request.getRentalDuration() < 0){
 			response.setError("rentalDuration is invalid");
 			return response;
 		}
+
 		if (request.getRentalRate() < 0){
 			response.setError("rentalRate is invalid");
 			return response;
 		}
+
 		if (request.getReplacementCost() < 0){
 			response.setError("replacementCost is invalid");
 			return response;
@@ -105,6 +128,68 @@ public class FilmsEndpoint {
 
 		if (request.getFilmId() < 0){
 			response.setError("filmId is invalid");
+			return response;
+		}
+
+		if (request.getTitle().isEmpty()){
+			response.setError("Film title cannot be empty");
+			return response;
+		} else if (!Common.isStringSafe(request.getTitle())){
+			response.setError(Common.stringFailureMessage("Film title"));
+			return response;
+		}
+
+		if (request.getDescription().isEmpty()){
+			response.setError("description cannot be empty");
+			return response;
+		} else if (!Common.isStringSafe(request.getDescription())){
+			response.setError(Common.stringFailureMessage("Film description"));
+			return response;
+		}
+
+		if (request.getLanguage().isEmpty()){
+			response.setError("language cannot be empty");
+			return response;
+		} else if (!Common.isStringSafe(request.getLanguage())){
+			response.setError(Common.stringFailureMessage("Film language"));
+			return response;
+		}
+
+		if (!Common.isStringSafe(request.getOriginalLanguage())){
+			response.setError(Common.stringFailureMessage("Film originalLanguage"));
+			return response;
+		}
+
+		if (request.getLength() < 0){
+			response.setError("length is invalid");
+			return response;
+		}
+
+		if (request.getRating().isEmpty()){
+			response.setError("rating cannot be empty");
+			return response;
+		} else if (!isValidRating(request.getRating())){
+			response.setError("rating is invalid");
+			return response;
+		}
+
+		if (request.getReleaseYear() < 0){
+			response.setError("releaseYear is invalid");
+			return response;
+		}
+
+		if (request.getRentalDuration() < 0){
+			response.setError("rentalDuration is invalid");
+			return response;
+		}
+
+		if (request.getRentalRate() < 0){
+			response.setError("rentalRate is invalid");
+			return response;
+		}
+
+		if (request.getReplacementCost() < 0){
+			response.setError("replacementCost is invalid");
 			return response;
 		}
 

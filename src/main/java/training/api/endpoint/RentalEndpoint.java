@@ -7,6 +7,7 @@ import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
+import training.api.Common;
 import training.generated.*;
 import training.service.impl.RentalServiceImpl;
 
@@ -72,18 +73,28 @@ public class RentalEndpoint {
 			response.setError("staffId is invalid");
 			return response;
 		}
-		if (request.getReturnDate().equals("") || request.getReturnDate().isEmpty()){
+
+		if (request.getReturnDate().isEmpty()){
 			response.setError("returnDate is invalid");
 			return response;
-		}
-		if (request.getRentalDate().equals("") || request.getRentalDate().isEmpty()){
-			response.setError("rentalDate is invalid");
+		} else if (!Common.isStringSafe(request.getReturnDate())){
+			response.setError(Common.stringFailureMessage("Rental returnDate"));
 			return response;
 		}
+
+		if (request.getRentalDate().isEmpty()){
+			response.setError("rentalDate is invalid");
+			return response;
+		} else if (!Common.isStringSafe(request.getRentalDate())){
+			response.setError(Common.stringFailureMessage("Rental rentalDate"));
+			return response;
+		}
+
 		if (request.getInventoryId() < 0){
 			response.setError("inventoryId is invalid");
 			return response;
 		}
+
 		if (request.getCustomerId() < 0){
 			response.setError("customerId is invalid");
 			return response;
@@ -125,6 +136,38 @@ public class RentalEndpoint {
 			response.setError("rentalId is invalid");
 			return response;
 		}
+
+		if (request.getStaffId() < 0){
+			response.setError("staffId is invalid");
+			return response;
+		}
+
+		if (request.getReturnDate().isEmpty()){
+			response.setError("returnDate is invalid");
+			return response;
+		} else if (!Common.isStringSafe(request.getReturnDate())){
+			response.setError(Common.stringFailureMessage("Rental returnDate"));
+			return response;
+		}
+
+		if (request.getRentalDate().isEmpty()){
+			response.setError("rentalDate is invalid");
+			return response;
+		} else if (!Common.isStringSafe(request.getRentalDate())){
+			response.setError(Common.stringFailureMessage("Rental rentalDate"));
+			return response;
+		}
+
+		if (request.getInventoryId() < 0){
+			response.setError("inventoryId is invalid");
+			return response;
+		}
+
+		if (request.getCustomerId() < 0){
+			response.setError("customerId is invalid");
+			return response;
+		}
+
 
 		ResponseEntity entity = rentalService.updateRental(request);
 

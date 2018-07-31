@@ -7,6 +7,7 @@ import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
+import training.api.Common;
 import training.generated.*;
 import training.service.impl.ActorServiceImpl;
 
@@ -21,12 +22,13 @@ public class ActorsEndpoint {
 	@ResponsePayload
 	public CreateActorResponse createActor(@RequestPayload CreateActorRequest request) {
 		CreateActorResponse response = new CreateActorResponse();
-		if (request.getFirstName().isEmpty()){
-			response.setError("firstName cannot be empty.");
+
+		if (request.getFirstName().isEmpty() && !Common.isStringSafe(request.getFirstName())){
+			response.setError(Common.stringFailureMessage("Actor firstName"));
 			return response;
 		}
-		if (request.getLastName().isEmpty()){
-			response.setError("lastName cannot be empty.");
+		if (request.getLastName().isEmpty() && !Common.isStringSafe(request.getLastName())){
+			response.setError(Common.stringFailureMessage("Actor lastName"));
 			return response;
 		}
 
@@ -45,8 +47,19 @@ public class ActorsEndpoint {
 	@ResponsePayload
 	public UpdateActorResponse updateActor(@RequestPayload UpdateActorRequest request) {
 		UpdateActorResponse response = new UpdateActorResponse();
+
 		if (request.getActorId() < 0){
 			response.setError("actorId is invalid");
+			return response;
+		}
+
+		if (request.getNewFirstName().isEmpty() || !Common.isStringSafe(request.getNewFirstName())){
+			response.setError(Common.stringFailureMessage("Actor firstName"));
+			return response;
+		}
+
+		if (request.getNewLastName().isEmpty() || !Common.isStringSafe(request.getNewLastName())){
+			response.setError(Common.stringFailureMessage("Actor lastName"));
 			return response;
 		}
 

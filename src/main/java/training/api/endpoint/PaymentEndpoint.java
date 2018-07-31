@@ -7,6 +7,7 @@ import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
+import training.api.Common;
 import training.generated.*;
 import training.service.impl.PaymentServiceImpl;
 
@@ -56,18 +57,25 @@ public class PaymentEndpoint {
 			response.setError("staffId is invalid");
 			return response;
 		}
+
 		if (request.getRentalId() < 0){
 			response.setError("rentalId is invalid");
 			return response;
 		}
+
 		if (request.getPaymentDate().isEmpty()){
 			response.setError("paymentDate cannot be empty");
 			return response;
+		} else if (!Common.isStringSafe(request.getPaymentDate())){
+			response.setError(Common.stringFailureMessage("Payment paymentDate"));
+			return response;
 		}
+
 		if (request.getCustomerId() < 0){
 			response.setError("customerId is invalid");
 			return response;
 		}
+
 		if (request.getAmount() < 0){
 			response.setError("amount is invalid");
 			return response;
@@ -107,6 +115,34 @@ public class PaymentEndpoint {
 
 		if (request.getPaymentId() < 0){
 			response.setError("paymentId is invalid");
+			return response;
+		}
+
+		if (request.getStaffId() < 0){
+			response.setError("staffId is invalid");
+			return response;
+		}
+
+		if (request.getRentalId() < 0){
+			response.setError("rentalId is invalid");
+			return response;
+		}
+
+		if (request.getPaymentDate().isEmpty()){
+			response.setError("paymentDate cannot be empty");
+			return response;
+		} else if (!Common.isStringSafe(request.getPaymentDate())){
+			response.setError(Common.stringFailureMessage("Payment paymentDate"));
+			return response;
+		}
+
+		if (request.getCustomerId() < 0){
+			response.setError("customerId is invalid");
+			return response;
+		}
+
+		if (request.getAmount() < 0){
+			response.setError("amount is invalid");
 			return response;
 		}
 

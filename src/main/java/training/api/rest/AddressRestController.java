@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import training.api.Common;
 import training.api.rest.jsonObjects.AddressJson;
 import training.generated.CreateAddressRequest;
 import training.generated.UpdateAddressRequest;
@@ -39,35 +40,35 @@ public class AddressRestController {
     public ResponseEntity<?> createAddress(@RequestBody AddressJson addressJson){
         CreateAddressRequest request = new CreateAddressRequest();
 
-        if (addressJson.getAddress() != null && !addressJson.getAddress().isEmpty() && RestConstants.isStringSafe(addressJson.getAddress())){
+        if (addressJson.getAddress() != null && !addressJson.getAddress().isEmpty() && Common.isStringSafe(addressJson.getAddress())){
             request.setAddress(addressJson.getAddress());
         } else {
             return ResponseEntity.badRequest().body("Address first line cannot be null or empty or contain \',\",\\,;.");
         }
-        if (addressJson.getAddress2() != null && RestConstants.isStringSafe(addressJson.getAddress2())){
+        if (addressJson.getAddress2() != null && Common.isStringSafe(addressJson.getAddress2())){
             request.setAddress2(addressJson.getAddress2());
         } else {
-            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Address address2"));
+            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Address address2"));
         }
         if (addressJson.getCity() != null){
             request.setCity(addressJson.getCity());
         } else {
-            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Address city cannot be null."));
+            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Address city cannot be null."));
         }
-        if (addressJson.getDistrict() != null && RestConstants.isStringSafe(addressJson.getDistrict())){
+        if (addressJson.getDistrict() != null && Common.isStringSafe(addressJson.getDistrict())){
             request.setDistrict(addressJson.getDistrict());
         } else {
-            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Address district"));
+            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Address district"));
         }
-        if (addressJson.getPostalCode() != null && RestConstants.isStringSafe(addressJson.getPostalCode())){
+        if (addressJson.getPostalCode() != null && Common.isStringSafe(addressJson.getPostalCode())){
             request.setPostalCode(addressJson.getPostalCode());
         } else {
-            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Address postalCode"));
+            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Address postalCode"));
         }
-        if (addressJson.getPhone() != null && RestConstants.isStringSafe(addressJson.getPhone())){
+        if (addressJson.getPhone() != null && Common.isStringSafe(addressJson.getPhone())){
             request.setPhone(addressJson.getPhone());
         } else {
-            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Address phone"));
+            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Address phone"));
         }
 
         return addressService.insertAddress(request);
@@ -79,35 +80,35 @@ public class AddressRestController {
 
         request.setAddressId(addressId);
 
-        if (addressJson.getAddress() != null && !addressJson.getAddress().isEmpty() && RestConstants.isStringSafe(addressJson.getAddress())){
+        if (addressJson.getAddress() != null && !addressJson.getAddress().isEmpty() && Common.isStringSafe(addressJson.getAddress())){
             request.setAddress(addressJson.getAddress());
         } else {
             return ResponseEntity.badRequest().body("Address first line cannot be null or empty or contain \',\",\\,;.");
         }
-        if (addressJson.getAddress2() != null && RestConstants.isStringSafe(addressJson.getAddress2())){
+        if (addressJson.getAddress2() != null && Common.isStringSafe(addressJson.getAddress2())){
             request.setAddress2(addressJson.getAddress2());
         } else {
-            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Address address2"));
+            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Address address2"));
         }
         if (addressJson.getCity() != null){
             request.setCity(addressJson.getCity());
         } else {
-            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Address city cannot be null."));
+            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Address city cannot be null."));
         }
-        if (addressJson.getDistrict() != null && RestConstants.isStringSafe(addressJson.getDistrict())){
+        if (addressJson.getDistrict() != null && Common.isStringSafe(addressJson.getDistrict())){
             request.setDistrict(addressJson.getDistrict());
         } else {
-            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Address district"));
+            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Address district"));
         }
-        if (addressJson.getPostalCode() != null && RestConstants.isStringSafe(addressJson.getPostalCode())){
+        if (addressJson.getPostalCode() != null && Common.isStringSafe(addressJson.getPostalCode())){
             request.setPostalCode(addressJson.getPostalCode());
         } else {
-            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Address postalCode"));
+            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Address postalCode"));
         }
-        if (addressJson.getPhone() != null && RestConstants.isStringSafe(addressJson.getPhone())){
+        if (addressJson.getPhone() != null && Common.isStringSafe(addressJson.getPhone())){
             request.setPhone(addressJson.getPhone());
         } else {
-            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Address phone"));
+            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Address phone"));
         }
 
         return addressService.updateAddress(request);

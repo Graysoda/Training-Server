@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import training.api.Common;
 import training.api.rest.jsonObjects.CustomerJson;
 import training.generated.CreateCustomerRequest;
 import training.generated.Customer;
@@ -56,31 +57,31 @@ public class CustomerRestController {
         if (customerJson.getStoreId() != null && customerJson.getStoreId() > 0){
             request.setStoreId(customerJson.getStoreId());
         } else {
-            return ResponseEntity.badRequest().body(RestConstants.idFailureMessage("Customer storeId"));
+            return ResponseEntity.badRequest().body(Common.idFailureMessage("Customer storeId"));
         }
 
         if (customerJson.getAddressId() != null && customerJson.getAddressId() > 0){
             request.setAddressId(customerJson.getAddressId());
         } else {
-            return ResponseEntity.badRequest().body(RestConstants.idFailureMessage("Customer addressId"));
+            return ResponseEntity.badRequest().body(Common.idFailureMessage("Customer addressId"));
         }
 
-        if (customerJson.getEmail() != null && RestConstants.isStringSafe(customerJson.getEmail())){
+        if (customerJson.getEmail() != null && Common.isStringSafe(customerJson.getEmail())){
             request.setEmail(customerJson.getEmail());
         } else {
-            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Customer email"));
+            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Customer email"));
         }
 
-        if (customerJson.getFirstName() != null && RestConstants.isStringSafe(customerJson.getFirstName())){
+        if (customerJson.getFirstName() != null && Common.isStringSafe(customerJson.getFirstName())){
             request.setFirstName(customerJson.getFirstName());
         } else {
-            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Customer firstName"));
+            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Customer firstName"));
         }
 
-        if (customerJson.getLastName() != null && RestConstants.isStringSafe(customerJson.getLastName())){
+        if (customerJson.getLastName() != null && Common.isStringSafe(customerJson.getLastName())){
             request.setLastName(customerJson.getLastName());
         } else {
-            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Customer lastName"));
+            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Customer lastName"));
         }
 
         return customerService.insertCustomer(request);
@@ -101,31 +102,31 @@ public class CustomerRestController {
         if (customerJson.getStoreId() != null && customerJson.getStoreId() > 0){
             request.setStoreId(customerJson.getStoreId());
         } else {
-            return ResponseEntity.badRequest().body(RestConstants.idFailureMessage("Customer storeId"));
+            return ResponseEntity.badRequest().body(Common.idFailureMessage("Customer storeId"));
         }
 
         if (customerJson.getAddressId() != null && customerJson.getAddressId() > 0){
             request.setAddressId(customerJson.getAddressId());
         } else {
-            return ResponseEntity.badRequest().body(RestConstants.idFailureMessage("Customer addressId"));
+            return ResponseEntity.badRequest().body(Common.idFailureMessage("Customer addressId"));
         }
 
-        if (customerJson.getEmail() != null && RestConstants.isStringSafe(customerJson.getEmail())){
+        if (customerJson.getEmail() != null && Common.isStringSafe(customerJson.getEmail())){
             request.setEmail(customerJson.getEmail());
         } else {
-            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Customer email"));
+            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Customer email"));
         }
 
-        if (customerJson.getFirstName() != null && RestConstants.isStringSafe(customerJson.getFirstName())){
+        if (customerJson.getFirstName() != null && Common.isStringSafe(customerJson.getFirstName())){
             request.setFirstName(customerJson.getFirstName());
         } else {
-            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Customer firstName"));
+            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Customer firstName"));
         }
 
-        if (customerJson.getLastName() != null && RestConstants.isStringSafe(customerJson.getLastName())){
+        if (customerJson.getLastName() != null && Common.isStringSafe(customerJson.getLastName())){
             request.setLastName(customerJson.getLastName());
         } else {
-            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Customer lastName"));
+            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Customer lastName"));
         }
 
         return customerService.updateCustomer(request);
