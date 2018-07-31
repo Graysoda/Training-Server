@@ -32,25 +32,25 @@ public class PaymentRestController {
         else
             return ResponseEntity.badRequest().body("Payment amount cannot be null.");
 
-        if (paymentJson.getCustomerId() != null)
+        if (paymentJson.getCustomerId() != null && paymentJson.getCustomerId() > 0)
             request.setCustomerId(paymentJson.getCustomerId());
         else
-            return ResponseEntity.badRequest().body("Payment customerId cannot be null.");
+            return ResponseEntity.badRequest().body(RestConstants.idFailureMessage("Payment customerId"));
 
         if (paymentJson.getPaymentDate() != null)
             request.setPaymentDate(paymentJson.getPaymentDate());
         else
             return ResponseEntity.badRequest().body("Payment paymentDate cannot be null.");
 
-        if (paymentJson.getRentalId() != null)
+        if (paymentJson.getRentalId() != null && paymentJson.getRentalId() > 0)
             request.setRentalId(paymentJson.getRentalId());
         else
-            return ResponseEntity.badRequest().body("Payment rentalId cannot be null.");
+            return ResponseEntity.badRequest().body(RestConstants.idFailureMessage("Payment rentalId"));
 
-        if (paymentJson.getStaffId() != null)
+        if (paymentJson.getStaffId() != null && paymentJson.getStaffId() > 0)
             request.setStaffId(paymentJson.getStaffId());
         else
-            return ResponseEntity.badRequest().body("Payment staffId cannot be null.");
+            return ResponseEntity.badRequest().body(RestConstants.idFailureMessage("Payment staffId"));
 
         return paymentService.insertPayment(request);
     }
@@ -64,14 +64,28 @@ public class PaymentRestController {
 
         if (paymentJson.getAmount() != null)
             request.setAmount(paymentJson.getAmount());
-        if (paymentJson.getCustomerId() != null)
+        else
+            return ResponseEntity.badRequest().body("Payment amount cannot be null.");
+
+        if (paymentJson.getCustomerId() != null && paymentJson.getCustomerId() > 0)
             request.setCustomerId(paymentJson.getCustomerId());
+        else
+            return ResponseEntity.badRequest().body(RestConstants.idFailureMessage("Payment customerId"));
+
         if (paymentJson.getPaymentDate() != null)
             request.setPaymentDate(paymentJson.getPaymentDate());
-        if (paymentJson.getRentalId() != null)
+        else
+            return ResponseEntity.badRequest().body("Payment paymentDate cannot be null.");
+
+        if (paymentJson.getRentalId() != null && paymentJson.getRentalId() > 0)
             request.setRentalId(paymentJson.getRentalId());
-        if (paymentJson.getStaffId() != null)
+        else
+            return ResponseEntity.badRequest().body(RestConstants.idFailureMessage("Payment rentalId"));
+
+        if (paymentJson.getStaffId() != null && paymentJson.getStaffId() > 0)
             request.setStaffId(paymentJson.getStaffId());
+        else
+            return ResponseEntity.badRequest().body(RestConstants.idFailureMessage("Payment staffId"));
 
         return paymentService.updatePayment(request);
     }

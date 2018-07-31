@@ -106,8 +106,9 @@
     <xs:complexType name="actor">
         <xs:sequence>
             <xs:element name="actor_id" type="xs:long"/>
-            <xs:element name="firstName" type="xs:string" />
+            <xs:element name="firstName" type="xs:string"/>
             <xs:element name="lastName" type="xs:string"/>
+
         </xs:sequence>
     </xs:complexType>
 

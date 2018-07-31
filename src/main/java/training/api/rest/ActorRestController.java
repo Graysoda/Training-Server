@@ -71,15 +71,15 @@ public class ActorRestController {
     public ResponseEntity<?> createActor(@RequestBody ActorJson actorJson){
         CreateActorRequest request = new CreateActorRequest();
 
-        if (actorJson.getFirstName() != null){
+        if (actorJson.getFirstName() != null && RestConstants.isStringSafe(actorJson.getFirstName())){
             request.setFirstName(actorJson.getFirstName());
         } else {
-            return ResponseEntity.badRequest().body("Actor needs a firstName!");
+            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Actor firstName"));
         }
-        if (actorJson.getLastName() != null){
+        if (actorJson.getLastName() != null && RestConstants.isStringSafe(actorJson.getLastName())){
             request.setLastName(actorJson.getLastName());
         } else {
-            return ResponseEntity.badRequest().body("Actor needs a lastName!");
+            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Actor lastName"));
         }
 
         return actorService.insertActor(request);
@@ -91,12 +91,15 @@ public class ActorRestController {
         UpdateActorRequest request = new UpdateActorRequest();
 
         request.setActorId(actorId);
-        if (actorJson.getFirstName() != null){
+        if (actorJson.getFirstName() != null && RestConstants.isStringSafe(actorJson.getFirstName()))
             request.setNewFirstName(actorJson.getFirstName());
-        }
+        else
+            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Actor firstName"));
 
-        if (actorJson.getLastName() != null)
+        if (actorJson.getLastName() != null && RestConstants.isStringSafe(actorJson.getLastName()))
             request.setNewLastName(actorJson.getLastName());
+        else
+            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Actor lastName"));
 
         return actorService.updateActor(request);
     }

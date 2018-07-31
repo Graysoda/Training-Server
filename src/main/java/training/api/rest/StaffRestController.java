@@ -37,40 +37,40 @@ public class StaffRestController {
         else
             return ResponseEntity.badRequest().body("Staff active cannot be null.");
 
-        if (staffJson.getAddressId() != null)
+        if (staffJson.getAddressId() != null && staffJson.getAddressId() > 0)
             request.setAddressId(staffJson.getAddressId());
         else
-            return ResponseEntity.badRequest().body("Staff addressId cannot be null.");
+            return ResponseEntity.badRequest().body(RestConstants.idFailureMessage("Staff addressId"));
 
-        if (staffJson.getEmail() != null)
+        if (staffJson.getEmail() != null && RestConstants.isStringSafe(staffJson.getEmail()))
             request.setEmail(staffJson.getEmail());
         else
-            return ResponseEntity.badRequest().body("Staff email cannot be null.");
+            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Staff email"));
 
-        if (staffJson.getFirstName() != null)
+        if (staffJson.getFirstName() != null && RestConstants.isStringSafe(staffJson.getFirstName()))
             request.setFirstName(staffJson.getFirstName());
         else
-            return ResponseEntity.badRequest().body("Staff firstName cannot be null.");
+            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Staff firstName"));
 
-        if (staffJson.getLastName() != null)
+        if (staffJson.getLastName() != null && RestConstants.isStringSafe(staffJson.getLastName()))
             request.setLastName(staffJson.getLastName());
         else
-            return ResponseEntity.badRequest().body("Staff lastName cannot be null.");
+            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Staff lastName"));
 
-        if (staffJson.getUsername() != null)
+        if (staffJson.getUsername() != null && RestConstants.isStringSafe(staffJson.getUsername()))
             request.setUsername(staffJson.getUsername());
         else
-            return ResponseEntity.badRequest().body("Staff username cannot be null.");
+            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Staff username"));
 
-        if (staffJson.getPassword() != null)
+        if (staffJson.getPassword() != null && RestConstants.isStringSafe(staffJson.getPassword()))
             request.setPassword(staffJson.getPassword());
         else
-            return ResponseEntity.badRequest().body("Staff password cannot be null.");
+            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Staff password"));
 
-        if (staffJson.getStoreId() != null)
+        if (staffJson.getStoreId() != null && staffJson.getStoreId() > 0)
             request.setStoreId(staffJson.getStoreId());
         else
-            return ResponseEntity.badRequest().body("Staff storeId cannot be null.");
+            return ResponseEntity.badRequest().body(RestConstants.idFailureMessage("Staff storeId"));
 
         return staffService.insertStaff(request);
     }
@@ -83,20 +83,43 @@ public class StaffRestController {
 
         if (staffJson.getActive() != null)
             request.setActive(staffJson.getActive());
-        if (staffJson.getAddressId() != null)
+        else
+            return ResponseEntity.badRequest().body("Staff active cannot be null.");
+
+        if (staffJson.getAddressId() != null && staffJson.getAddressId() > 0)
             request.setAddressId(staffJson.getAddressId());
-        if (staffJson.getEmail() != null)
+        else
+            return ResponseEntity.badRequest().body(RestConstants.idFailureMessage("Staff addressId"));
+
+        if (staffJson.getEmail() != null && RestConstants.isStringSafe(staffJson.getEmail()))
             request.setEmail(staffJson.getEmail());
-        if (staffJson.getFirstName() != null)
+        else
+            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Staff email"));
+
+        if (staffJson.getFirstName() != null && RestConstants.isStringSafe(staffJson.getFirstName()))
             request.setFirstName(staffJson.getFirstName());
-        if (staffJson.getLastName() != null)
+        else
+            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Staff firstName"));
+
+        if (staffJson.getLastName() != null && RestConstants.isStringSafe(staffJson.getLastName()))
             request.setLastName(staffJson.getLastName());
-        if (staffJson.getUsername() != null)
+        else
+            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Staff lastName"));
+
+        if (staffJson.getUsername() != null && RestConstants.isStringSafe(staffJson.getUsername()))
             request.setUsername(staffJson.getUsername());
-        if (staffJson.getPassword() != null)
+        else
+            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Staff username"));
+
+        if (staffJson.getPassword() != null && RestConstants.isStringSafe(staffJson.getPassword()))
             request.setPassword(staffJson.getPassword());
-        if (staffJson.getStoreId() != null)
+        else
+            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Staff password"));
+
+        if (staffJson.getStoreId() != null && staffJson.getStoreId() > 0)
             request.setStoreId(staffJson.getStoreId());
+        else
+            return ResponseEntity.badRequest().body(RestConstants.idFailureMessage("Staff storeId"));
 
         return staffService.updateStaff(request);
     }

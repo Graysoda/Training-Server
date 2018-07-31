@@ -56,37 +56,35 @@ public class FilmsRestController {
     public ResponseEntity<?> createFilm(@RequestBody FilmJson filmJson){
         CreateFilmRequest request = new CreateFilmRequest();
 
-        if (StringUtils.isNotEmpty(filmJson.getTitle()))
+        if (StringUtils.isNotEmpty(filmJson.getTitle()) && RestConstants.isStringSafe(filmJson.getTitle()))
             request.setTitle(filmJson.getTitle());
         else
-            return ResponseEntity.badRequest().body("Film title cannot be null.");
+            return ResponseEntity.badRequest().body("Film title cannot be null or empty or contain \',\",\\,;");
 
-        if (StringUtils.isNotEmpty(filmJson.getDescription()))
+        if (StringUtils.isNotEmpty(filmJson.getDescription()) && RestConstants.isStringSafe(filmJson.getDescription()))
             request.setDescription(filmJson.getDescription());
         else
-            return ResponseEntity.badRequest().body("Film description cannot be null.");
+            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Film description"));
 
-        if (StringUtils.isNotEmpty(filmJson.getLanguage())) //TODO
+        if (StringUtils.isNotEmpty(filmJson.getLanguage()) && RestConstants.isStringSafe(filmJson.getLanguage()))
             request.setLanguage(filmJson.getLanguage());
         else
-            return ResponseEntity.badRequest().body("Film language cannot be null.");
+            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Film language"));
 
         if (filmJson.getLength() != null)
             request.setLength(filmJson.getLength());
         else
             return ResponseEntity.badRequest().body("Film length cannot be null.");
 
-        if (StringUtils.isNotEmpty(filmJson.getOriginalLanguage()))
+        if (StringUtils.isNotEmpty(filmJson.getOriginalLanguage()) && RestConstants.isStringSafe(filmJson.getOriginalLanguage()))
             request.setOriginalLanguage(filmJson.getOriginalLanguage());
         else
-            return ResponseEntity.badRequest().body("Film originalLanguage cannot be null");
+            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Film originalLanguage"));
 
-		//System.out.println("rating = ["+filmJson.getRating()+"]");
-
-        if (StringUtils.isNotEmpty(filmJson.getRating()))
+        if (StringUtils.isNotEmpty(filmJson.getRating()) && RestConstants.isStringSafe(filmJson.getRating()))
             request.setRating(filmJson.getRating());
         else
-            return ResponseEntity.badRequest().body("Film rating cannot be null.");
+            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Film rating"));
 
         if (filmJson.getReleaseYear() != null)
             request.setReleaseYear(filmJson.getReleaseYear());
@@ -108,12 +106,12 @@ public class FilmsRestController {
         else
             return ResponseEntity.badRequest().body("Film replacementCost cannot be null.");
 
-        if (filmJson.getSpecialFeatures() != null)
+        if (filmJson.getSpecialFeatures() != null && RestConstants.isStringSafe(filmJson.getSpecialFeatures()))
             request.setSpecialFeatures(filmJson.getSpecialFeatures());
         else
-            return ResponseEntity.badRequest().body("Film specialFeatures cannot be null.");
+            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Film specialFeatures"));
 
-        if (StringUtils.isNotEmpty(filmJson.getCategory()))
+        if (StringUtils.isNotEmpty(filmJson.getCategory()) && RestConstants.isStringSafe(filmJson.getCategory()))
             request.setCategory(filmJson.getCategory());
 
         if (filmJson.getActors() != null && filmJson.getActors().size() > 0)
@@ -128,31 +126,62 @@ public class FilmsRestController {
 
         request.setFilmId(filmId);
 
-        if (filmJson.getTitle() != null)
+        if (StringUtils.isNotEmpty(filmJson.getTitle()) && RestConstants.isStringSafe(filmJson.getTitle()))
             request.setTitle(filmJson.getTitle());
-        if (filmJson.getDescription() != null)
+        else
+            return ResponseEntity.badRequest().body("Film title cannot be null or empty or contain \',\",\\,;");
+
+        if (StringUtils.isNotEmpty(filmJson.getDescription()) && RestConstants.isStringSafe(filmJson.getDescription()))
             request.setDescription(filmJson.getDescription());
-        if (filmJson.getLanguage() != null)
+        else
+            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Film description"));
+
+        if (StringUtils.isNotEmpty(filmJson.getLanguage()) && RestConstants.isStringSafe(filmJson.getLanguage()))
             request.setLanguage(filmJson.getLanguage());
+        else
+            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Film language"));
+
         if (filmJson.getLength() != null)
             request.setLength(filmJson.getLength());
-        if (filmJson.getOriginalLanguage() != null)
+        else
+            return ResponseEntity.badRequest().body("Film length cannot be null.");
+
+        if (StringUtils.isNotEmpty(filmJson.getOriginalLanguage()) && RestConstants.isStringSafe(filmJson.getOriginalLanguage()))
             request.setOriginalLanguage(filmJson.getOriginalLanguage());
-        if (filmJson.getRating() != null)
+        else
+            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Film originalLanguage"));
+
+        if (StringUtils.isNotEmpty(filmJson.getRating()) && RestConstants.isStringSafe(filmJson.getRating()))
             request.setRating(filmJson.getRating());
+        else
+            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Film rating"));
+
         if (filmJson.getReleaseYear() != null)
             request.setReleaseYear(filmJson.getReleaseYear());
+        else
+            return ResponseEntity.badRequest().body("Film releaseYear cannot be null.");
+
         if (filmJson.getRentalDuration() != null)
             request.setRentalDuration(filmJson.getRentalDuration());
+        else
+            return ResponseEntity.badRequest().body("Film rentalDuration cannot be null.");
+
         if (filmJson.getRentalRate() != null)
             request.setRentalRate(filmJson.getRentalRate());
+        else
+            return ResponseEntity.badRequest().body("Film rentalRate cannot be null.");
+
         if (filmJson.getReplacementCost() != null)
             request.setReplacementCost(filmJson.getReplacementCost());
-        if (filmJson.getSpecialFeatures() != null)
+        else
+            return ResponseEntity.badRequest().body("Film replacementCost cannot be null.");
+
+        if (filmJson.getSpecialFeatures() != null && RestConstants.isStringSafe(filmJson.getSpecialFeatures()))
             request.setSpecialFeatures(filmJson.getSpecialFeatures());
-        if (filmJson.getActors() != null)
-            request.setActorId(filmJson.getActors());
-        if (filmJson.getCategory() != null)
+        else
+            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Film specialFeatures"));
+
+        if (StringUtils.isNotEmpty(filmJson.getCategory()) && RestConstants.isStringSafe(filmJson.getCategory()))
             request.setCategory(filmJson.getCategory());
 
         return filmService.updateFilm(request);

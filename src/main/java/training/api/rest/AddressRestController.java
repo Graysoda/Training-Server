@@ -39,35 +39,35 @@ public class AddressRestController {
     public ResponseEntity<?> createAddress(@RequestBody AddressJson addressJson){
         CreateAddressRequest request = new CreateAddressRequest();
 
-        if (addressJson.getAddress() != null){
+        if (addressJson.getAddress() != null && !addressJson.getAddress().isEmpty() && RestConstants.isStringSafe(addressJson.getAddress())){
             request.setAddress(addressJson.getAddress());
         } else {
-            return ResponseEntity.badRequest().body("Address first line cannot be null.");
+            return ResponseEntity.badRequest().body("Address first line cannot be null or empty or contain \',\",\\,;.");
         }
-        if (addressJson.getAddress2() != null){
+        if (addressJson.getAddress2() != null && RestConstants.isStringSafe(addressJson.getAddress2())){
             request.setAddress2(addressJson.getAddress2());
         } else {
-            return ResponseEntity.badRequest().body("Address second line cannot be null.");
+            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Address address2"));
         }
         if (addressJson.getCity() != null){
             request.setCity(addressJson.getCity());
         } else {
-            return ResponseEntity.badRequest().body("Address city cannot be null.");
+            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Address city cannot be null."));
         }
-        if (addressJson.getDistrict() != null){
+        if (addressJson.getDistrict() != null && RestConstants.isStringSafe(addressJson.getDistrict())){
             request.setDistrict(addressJson.getDistrict());
         } else {
-            return ResponseEntity.badRequest().body("Address district cannot be null.");
+            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Address district"));
         }
-        if (addressJson.getPostalCode() != null){
+        if (addressJson.getPostalCode() != null && RestConstants.isStringSafe(addressJson.getPostalCode())){
             request.setPostalCode(addressJson.getPostalCode());
         } else {
-            return ResponseEntity.badRequest().body("Address postal code cannot be null.");
+            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Address postalCode"));
         }
-        if (addressJson.getPhone() != null){
+        if (addressJson.getPhone() != null && RestConstants.isStringSafe(addressJson.getPhone())){
             request.setPhone(addressJson.getPhone());
         } else {
-            return ResponseEntity.badRequest().body("Address phone cannot be null.");
+            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Address phone"));
         }
 
         return addressService.insertAddress(request);
@@ -79,18 +79,36 @@ public class AddressRestController {
 
         request.setAddressId(addressId);
 
-        if (addressJson.getAddress() != null)
+        if (addressJson.getAddress() != null && !addressJson.getAddress().isEmpty() && RestConstants.isStringSafe(addressJson.getAddress())){
             request.setAddress(addressJson.getAddress());
-        if (addressJson.getAddress2() != null)
+        } else {
+            return ResponseEntity.badRequest().body("Address first line cannot be null or empty or contain \',\",\\,;.");
+        }
+        if (addressJson.getAddress2() != null && RestConstants.isStringSafe(addressJson.getAddress2())){
             request.setAddress2(addressJson.getAddress2());
-        if (addressJson.getDistrict() != null)
-            request.setDistrict(addressJson.getDistrict());
-        if (addressJson.getCity() != null)
+        } else {
+            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Address address2"));
+        }
+        if (addressJson.getCity() != null){
             request.setCity(addressJson.getCity());
-        if (addressJson.getPostalCode() != null)
+        } else {
+            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Address city cannot be null."));
+        }
+        if (addressJson.getDistrict() != null && RestConstants.isStringSafe(addressJson.getDistrict())){
+            request.setDistrict(addressJson.getDistrict());
+        } else {
+            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Address district"));
+        }
+        if (addressJson.getPostalCode() != null && RestConstants.isStringSafe(addressJson.getPostalCode())){
             request.setPostalCode(addressJson.getPostalCode());
-        if (addressJson.getPhone() != null)
+        } else {
+            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Address postalCode"));
+        }
+        if (addressJson.getPhone() != null && RestConstants.isStringSafe(addressJson.getPhone())){
             request.setPhone(addressJson.getPhone());
+        } else {
+            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Address phone"));
+        }
 
         return addressService.updateAddress(request);
     }

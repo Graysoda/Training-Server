@@ -161,7 +161,10 @@ public class StaffDaoImpl implements StaffDao {
 		staff.setEmail(entity.getEmail());
 
 		//System.out.println("address id = ["+entity.getAddress_id()+"]");
-		staff.setAddress(addressDaoImpl.getById(entity.getAddress_id()));
+		if(entity.getAddress_id() > 0)
+			staff.setAddress(addressDaoImpl.getById(entity.getAddress_id()));
+		else
+			System.out.println("address id for staff ["+entity.getStaff_id()+"] is ["+entity.getAddress_id()+"]");
 
 		//System.out.println("store id = ["+entity.getStore_id()+"]");
 		staff.setStoreId(entity.getStore_id());

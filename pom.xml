@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.orasi.training</groupId>
-    <artifactId>test-server-spring</artifactId>
+    <artifactId>training-server</artifactId>
     <version>0.0.1</version>
 
     <parent>
@@ -84,7 +84,7 @@
                 <artifactId>heroku-maven-plugin</artifactId>
                 <version>2.0.4</version>
                 <configuration>
-                    <appName>test-server-spring</appName>
+                    <appName>training-server</appName>
                     <processTypes>
                         <web>java $JAVA_OPTS -Dserver.port=$PORT -cp target/classes:target/dependency/* training.Application</web>
                     </processTypes>

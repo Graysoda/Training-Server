@@ -22,10 +22,6 @@ public class LanguageRestController {
 	@RequestMapping(value = "/languages/{languageId}", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<?> getLanguageByValue(@PathVariable Long languageId){
-		if (languageId != null){
-			return new ResponseEntity<>(languageService.getLanguageById(languageId),HttpStatus.OK);
-		} else {
-			return ResponseEntity.badRequest().body("Request Body is null.");
-		}
+		return new ResponseEntity<>(languageService.getLanguageById(languageId),HttpStatus.OK);
 	}
 }

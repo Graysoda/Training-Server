@@ -44,30 +44,30 @@ public class RentalRestController {
     public ResponseEntity<?> createRental(@RequestBody RentalJson rentalJson){
         CreateRentalRequest request = new CreateRentalRequest();
 
-        if (rentalJson.getCustomerId() != null)
+        if (rentalJson.getCustomerId() != null && rentalJson.getCustomerId() > 0)
             request.setCustomerId(rentalJson.getCustomerId());
         else
-            return ResponseEntity.badRequest().body("Rental customerId cannot be null.");
+            return ResponseEntity.badRequest().body(RestConstants.idFailureMessage("Rental customerId"));
 
-        if (rentalJson.getInventoryId() != null)
+        if (rentalJson.getInventoryId() != null && rentalJson.getInventoryId() > 0)
             request.setInventoryId(rentalJson.getInventoryId());
         else
-            return ResponseEntity.badRequest().body("Rental inventoryId cannot be null.");
+            return ResponseEntity.badRequest().body(RestConstants.idFailureMessage("Rental inventoryId"));
 
-        if (rentalJson.getRentalDate() != null)
+        if (rentalJson.getRentalDate() != null && RestConstants.isStringSafe(rentalJson.getRentalDate()))
             request.setRentalDate(rentalJson.getRentalDate());
         else
-            return ResponseEntity.badRequest().body("Rental rentalDate cannot be null.");
+            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Rental rentalDate"));
 
-        if (rentalJson.getReturnDate() != null)
+        if (rentalJson.getReturnDate() != null && RestConstants.isStringSafe(rentalJson.getReturnDate()))
             request.setReturnDate(rentalJson.getReturnDate());
         else
-            return ResponseEntity.badRequest().body("Rental returnDate cannot be null.");
+            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Rental returnDate"));
 
-        if (rentalJson.getStaffId() != null)
+        if (rentalJson.getStaffId() != null && rentalJson.getStaffId() > 0)
             request.setStaffId(rentalJson.getStaffId());
         else
-            return ResponseEntity.badRequest().body("Rental staffId cannot be null.");
+            return ResponseEntity.badRequest().body(RestConstants.idFailureMessage("Rental staffId"));
 
         return rentalService.insertRental(request);
     }
@@ -78,16 +78,30 @@ public class RentalRestController {
 
         request.setRentalId(rentalId);
 
-        if (rentalJson.getCustomerId() != null)
+        if (rentalJson.getCustomerId() != null && rentalJson.getCustomerId() > 0)
             request.setCustomerId(rentalJson.getCustomerId());
-        if (rentalJson.getInventoryId() != null)
+        else
+            return ResponseEntity.badRequest().body(RestConstants.idFailureMessage("Rental customerId"));
+
+        if (rentalJson.getInventoryId() != null && rentalJson.getInventoryId() > 0)
             request.setInventoryId(rentalJson.getInventoryId());
-        if (rentalJson.getRentalDate() != null)
+        else
+            return ResponseEntity.badRequest().body(RestConstants.idFailureMessage("Rental inventoryId"));
+
+        if (rentalJson.getRentalDate() != null && RestConstants.isStringSafe(rentalJson.getRentalDate()))
             request.setRentalDate(rentalJson.getRentalDate());
-        if (rentalJson.getReturnDate() != null)
+        else
+            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Rental rentalDate"));
+
+        if (rentalJson.getReturnDate() != null && RestConstants.isStringSafe(rentalJson.getReturnDate()))
             request.setReturnDate(rentalJson.getReturnDate());
-        if (rentalJson.getStaffId() != null)
+        else
+            return ResponseEntity.badRequest().body(RestConstants.stringFailureMessage("Rental returnDate"));
+
+        if (rentalJson.getStaffId() != null && rentalJson.getStaffId() > 0)
             request.setStaffId(rentalJson.getStaffId());
+        else
+            return ResponseEntity.badRequest().body(RestConstants.idFailureMessage("Rental staffId"));
 
         return rentalService.updateRental(request);
     }

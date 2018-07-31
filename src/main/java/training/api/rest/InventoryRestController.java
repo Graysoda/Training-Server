@@ -37,15 +37,15 @@ public class InventoryRestController {
     public ResponseEntity<?> createInventory(@RequestBody InventoryJson inventoryJson){
         CreateInventoryRequest request = new CreateInventoryRequest();
 
-        if (inventoryJson.getFilmId() != null)
+        if (inventoryJson.getFilmId() != null && inventoryJson.getFilmId() > 0)
             request.setFilmId(inventoryJson.getFilmId());
         else
-            return ResponseEntity.badRequest().body("Inventory filmId cannot be null.");
+            return ResponseEntity.badRequest().body(RestConstants.idFailureMessage("Inventory filmId"));
 
-        if (inventoryJson.getStoreId() != null)
+        if (inventoryJson.getStoreId() != null && inventoryJson.getStoreId() > 0)
             request.setStoreId(inventoryJson.getStoreId());
         else
-            return ResponseEntity.badRequest().body("Inventory storeId canoot be null.");
+            return ResponseEntity.badRequest().body(RestConstants.idFailureMessage("Inventory storeId"));
 
         return inventoryService.insert(request);
     }
@@ -56,10 +56,15 @@ public class InventoryRestController {
 
         request.setInventoryId(inventoryId);
 
-        if (inventoryJson.getFilmId() != null)
+        if (inventoryJson.getFilmId() != null && inventoryJson.getFilmId() > 0)
             request.setFilmId(inventoryJson.getFilmId());
-        if (inventoryJson.getStoreId() != null)
+        else
+            return ResponseEntity.badRequest().body(RestConstants.idFailureMessage("Inventory filmId"));
+
+        if (inventoryJson.getStoreId() != null && inventoryJson.getStoreId() > 0)
             request.setStoreId(inventoryJson.getStoreId());
+        else
+            return ResponseEntity.badRequest().body(RestConstants.idFailureMessage("Inventory storeId"));
 
         return inventoryService.updateInventory(request);
     }
