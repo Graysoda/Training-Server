@@ -1,1 +1,1 @@
-web: java -jar target/test-server-spring-0.0.1.jar
+web: java -Dserver.port=$PORT -Dspring.profiles.active=dev $JAVA_OPTS -jar target/test-server-spring-0.0.1.jar

@@ -92,10 +92,10 @@ public class FilmsRestController {
         else
             return ResponseEntity.badRequest().body(Common.stringFailureMessage("Film originalLanguage"));
 
-        if (!isValidRating(filmJson.getRating()) && Common.isStringSafe(filmJson.getRating()))
+        if (isValidRating(filmJson.getRating()))
             request.setRating(filmJson.getRating());
         else
-            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Film rating"));
+            return ResponseEntity.badRequest().body("Film rating is invalid.");
 
         if (filmJson.getReleaseYear() != null)
             request.setReleaseYear(filmJson.getReleaseYear());
@@ -162,10 +162,10 @@ public class FilmsRestController {
         else
             return ResponseEntity.badRequest().body(Common.stringFailureMessage("Film originalLanguage"));
 
-        if (!isValidRating(filmJson.getRating()) && Common.isStringSafe(filmJson.getRating()))
+        if (isValidRating(filmJson.getRating()))
             request.setRating(filmJson.getRating());
         else
-            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Film rating"));
+            return ResponseEntity.badRequest().body("Film rating is invalid.");
 
         if (filmJson.getReleaseYear() != null)
             request.setReleaseYear(filmJson.getReleaseYear());
