@@ -1,1 +1,1 @@
-web: java -jar target/test-server-spring-0.0.1.jar
+web: java $JAVA_OPTS -Dspring.profile.active=prod -Dserver.port=$PORT -cp target/classes:target/dependency/* training.Application

@@ -37,17 +37,10 @@
             <artifactId>thymeleaf-spring5</artifactId>
             <version>3.0.9.RELEASE</version>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
-
-        <!--<dependency>-->
-            <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>spring-boot-starter-data-rest</artifactId>-->
-        <!--</dependency>-->
-
 
         <dependency>
             <groupId>wsdl4j</groupId>
@@ -62,6 +55,12 @@
             <groupId>commons-dbcp</groupId>
             <artifactId>commons-dbcp</artifactId>
             <version>1.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.10</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.autentia.web.rest</groupId>
@@ -86,8 +85,9 @@
                 <configuration>
                     <appName>training-server</appName>
                     <processTypes>
-                        <web>java $JAVA_OPTS -Dserver.port=$PORT -cp target/classes:target/dependency/* training.Application</web>
+                        <web>java $JAVA_OPTS -Dspring.profile.active=prod -Dserver.port=$PORT -cp target/classes:target/dependency/* training.Application</web>
                     </processTypes>
+                    <jdkVersion>1.8</jdkVersion>
                 </configuration>
             </plugin>
             <plugin>
