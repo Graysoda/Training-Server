@@ -8,8 +8,8 @@
     <xs:element name="createInventoryRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="film_id" type="xs:long"/>
-                <xs:element name="storeId" type="xs:long"/>
+                <xs:element name="filmId" type="xs:int"/>
+                <xs:element name="storeId" type="xs:int"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -26,9 +26,9 @@
     <xs:element name="updateInventoryRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="inventoryId" type="xs:long"/>
-                <xs:element name="film_id" type="xs:long" nillable="true"/>
-                <xs:element name="storeId" type="xs:long" nillable="true"/>
+                <xs:element name="inventoryId" type="xs:int"/>
+                <xs:element name="filmId" type="xs:int" nillable="true"/>
+                <xs:element name="storeId" type="xs:int" nillable="true"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -45,7 +45,7 @@
     <xs:element name="deleteInventoryRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="inventoryId" type="xs:long"/>
+                <xs:element name="inventoryId" type="xs:int"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -66,8 +66,9 @@
 
     <xs:element name="getAllInventoryResponse">
         <xs:complexType>
-            <xs:sequence maxOccurs="unbounded">
-                <xs:element name="inventory" type="data:inventory"/>
+            <xs:sequence>
+                <xs:element name="inventory" type="data:inventory" maxOccurs="unbounded"/>
+                <xs:element name="error" type="xs:string" />
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -75,7 +76,7 @@
     <xs:element name="getInventoryByIdRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="inventoryId" type="xs:long"/>
+                <xs:element name="inventoryId" type="xs:int"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -84,6 +85,7 @@
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="inventory" type="data:inventory"/>
+                <xs:element name="error" type="xs:string" />
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -91,15 +93,16 @@
     <xs:element name="getStoreInventoryRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="storeId" type="xs:long"/>
+                <xs:element name="storeId" type="xs:int"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
 
     <xs:element name="getStoreInventoryResponse">
         <xs:complexType>
-            <xs:sequence maxOccurs="unbounded">
-                <xs:element name="inventory" type="data:inventory"/>
+            <xs:sequence>
+                <xs:element name="inventory" type="data:inventory" maxOccurs="unbounded"/>
+                <xs:element name="error" type="xs:string" />
             </xs:sequence>
         </xs:complexType>
     </xs:element>

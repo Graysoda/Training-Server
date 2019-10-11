@@ -10,9 +10,9 @@
             <xs:sequence>
                 <xs:element name="firstName" type="xs:string"/>
                 <xs:element name="lastName" type="xs:string"/>
-                <xs:element name="addressId" type="xs:long"/>
+                <xs:element name="addressId" type="xs:int"/>
                 <xs:element name="email" type="xs:string"/>
-                <xs:element name="storeId" type="xs:long"/>
+                <xs:element name="storeId" type="xs:int"/>
                 <xs:element name="active" type="xs:boolean"/>
                 <xs:element name="username" type="xs:string"/>
                 <xs:element name="password" type="xs:string"/>
@@ -32,12 +32,12 @@
     <xs:element name="updateStaffRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="staffId" type="xs:long"/>
+                <xs:element name="staffId" type="xs:int"/>
                 <xs:element name="firstName" type="xs:string" nillable="true"/>
                 <xs:element name="lastName" type="xs:string" nillable="true"/>
-                <xs:element name="addressId" type="xs:long" nillable="true"/>
+                <xs:element name="addressId" type="xs:int" nillable="true"/>
                 <xs:element name="email" type="xs:string" nillable="true"/>
-                <xs:element name="storeId" type="xs:long" nillable="true"/>
+                <xs:element name="storeId" type="xs:int" nillable="true"/>
                 <xs:element name="active" type="xs:boolean" nillable="true"/>
                 <xs:element name="username" type="xs:string" nillable="true"/>
                 <xs:element name="password" type="xs:string" nillable="true"/>
@@ -57,7 +57,7 @@
     <xs:element name="deleteStaffRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="staffId" type="xs:long"/>
+                <xs:element name="staffId" type="xs:int"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -96,6 +96,52 @@
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="staff" type="data:staff"/>
+                <xs:element name="error" type="xs:string" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getStaffByStoreRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="storeId" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getStaffByStoreResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="staff" type="data:staff" maxOccurs="unbounded"/>
+                <xs:element name="error" type="xs:string" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getActiveStaffRequest">
+        <xs:complexType>
+            <xs:sequence maxOccurs="1" minOccurs="1"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getActiveStaffResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="staff" type="data:staff" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getInactiveStaffRequest">
+        <xs:complexType>
+            <xs:sequence maxOccurs="1" minOccurs="1"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getInactiveStaffResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="staff" type="data:staff" maxOccurs="unbounded"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>

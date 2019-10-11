@@ -22,7 +22,7 @@
     <xs:element name="getLanguageByIdRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="languageId" type="xs:long"/>
+                <xs:element name="languageId" type="xs:int"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -31,6 +31,7 @@
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="language" type="data:language"/>
+                <xs:element name="error" type="xs:string" />
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -38,7 +39,7 @@
     <xs:element name="getLanguageByNameRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="language_name" type="xs:string"/>
+                <xs:element name="languageName" type="xs:string"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -47,6 +48,7 @@
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="language" type="data:language"/>
+                <xs:element name="error" type="xs:string" />
             </xs:sequence>
         </xs:complexType>
     </xs:element>

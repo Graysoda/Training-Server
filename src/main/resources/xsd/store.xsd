@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="my-namespace"
+           xmlns:data="my-namespace"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="data_elements.xsd"/>
+
+    <xs:element name="getAllStoresRequest">
+        <xs:complexType>
+            <xs:sequence minOccurs="1" maxOccurs="1" />
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getAllStoresResponse">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded">
+                <xs:element name="stores" type="data:store"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getStoreByIdRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="storeId" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getStoreByIdResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="stores" type="data:store"/>
+                <xs:element name="error" type="xs:string" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getStoreAddressRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="storeId" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getStoreAddressResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="storeAddress" type="data:address"/>
+                <xs:element name="error" type="xs:string" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getStoreManagerRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="storeId" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getStoreManagerResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="storeManager" type="data:staff"/>
+                <xs:element name="error" type="xs:string" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="createStoreRequest">
+        <xs:complexType>
+            <xs:sequence maxOccurs="1">
+                <xs:element name="staffId" type="xs:int"/>
+                <xs:element name="addressId" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="createStoreResponse">
+        <xs:complexType>
+            <xs:sequence maxOccurs="1">
+                <xs:element name="store" type="data:store"/>
+                <xs:element name="error" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="updateStoreRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="storeId" type="xs:int"/>
+                <xs:element name="addressId" type="xs:int" nillable="true"/>
+                <xs:element name="staffId" type="xs:int" nillable="true"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="updateStoreResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="store" type="data:store"/>
+                <xs:element name="error" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="deleteStoreRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="storeId" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="deleteStoreResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="response" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

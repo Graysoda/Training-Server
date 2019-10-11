@@ -1,114 +1,109 @@
 package training.api.rest;
 
+import org.hibernate.validator.internal.util.StringHelper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import training.api.Common;
-import training.api.rest.jsonObjects.RentalJson;
+import training.Constants;
+import training.api.ValidationHelper;
 import training.generated.CreateRentalRequest;
+import training.generated.Rental;
 import training.generated.UpdateRentalRequest;
-import training.service.impl.RentalServiceImpl;
+import training.persistence.dto.RentalDto;
+import training.service.CustomerService;
+import training.service.RentalService;
+import training.service.StaffService;
+
+import java.util.List;
+import java.util.Objects;
 
 @RestController
-@RequestMapping(value = RestConstants.REST_SERVICES_LOCATION, produces = RestConstants.JSON)
+@RequestMapping(value = "/rest", produces = {"application/json"})
 public class RentalRestController {
-    @Autowired @Lazy private RentalServiceImpl rentalService;
+    @Autowired
+    private RentalService rentalService;
+    @Autowired
+    private CustomerService customerService;
+    @Autowired
+    private StaffService staffService;
+    @Autowired
+    private ValidationHelper validationHelper;
 
-    @RequestMapping(value = "/rentals", method = RequestMethod.GET)
-    public ResponseEntity<?> getAllRentals(){
-        return new ResponseEntity<>(rentalService.getAllRentals(), HttpStatus.OK);
+    @GetMapping("/rentals")
+    public ResponseEntity<List<Rental>> getAllRentals(){
+        return ResponseEntity.ok(rentalService.getAllRentals());
     }
 
-    @RequestMapping(value = "/customer/{customerId}/rentals", method = RequestMethod.GET)
-    public ResponseEntity<?> getRentalsByCustomerId(@PathVariable long customerId){
-        return new ResponseEntity<>(rentalService.getRentalsByCustomerId(customerId),HttpStatus.OK);
+    @GetMapping("/rentals/{rentalId}")
+    public ResponseEntity<?> getRentalById(@PathVariable int rentalId){
+        if (!rentalService.exists(rentalId)){
+            return ResponseEntity.badRequest().body("rental " + Constants.DNE);
+        }
+        return ResponseEntity.ok(rentalService.getRentalById(rentalId));
     }
 
-    @RequestMapping(value = "/rentals/return/{date}", method = RequestMethod.GET)
-    public ResponseEntity<?> getRentalsByReturnDate(@PathVariable String date){
-        return new ResponseEntity<>(rentalService.getRentalsByReturnDate(date), HttpStatus.OK);
+    @GetMapping("/customer/{customerId}/rentals")
+    public ResponseEntity<?> getCustomerRentals(@PathVariable int customerId){
+        if (!customerService.exists(customerId)){
+            return ResponseEntity.badRequest().body("customer " + Constants.DNE);
+        }
+        return ResponseEntity.ok(rentalService.getCustomerRentals(customerId));
     }
 
-    @RequestMapping(value = "/rentals/start/{date}",method = RequestMethod.GET)
+    @GetMapping("/rentals/start/{date}")
     public ResponseEntity<?> getRentalsByStartDate(@PathVariable String date){
-        return new ResponseEntity<>(rentalService.getRentalByStartDate(date), HttpStatus.OK);
+        if (Objects.isNull(Constants.formatString(date))){
+            return ResponseEntity.badRequest().body("date is invalid format should be [" + Constants.DATE_FORMAT + "]");
+        }
+        return ResponseEntity.ok(rentalService.getRentalsByStartDate(Constants.formatString(date)));
     }
 
-    @RequestMapping(value = "/staff/{staffId}/rentals", method = RequestMethod.GET)
-    public ResponseEntity<?> getRentalsByStaffId(@PathVariable long staffId){
-        return new ResponseEntity<>(rentalService.getRentalByStaffId(staffId), HttpStatus.OK);
+    @GetMapping("/rentals/return/{date}")
+    public ResponseEntity<?> getRentalsByReturnDate(@PathVariable String date){
+        if (Objects.isNull(Constants.formatString(date))){
+            return ResponseEntity.badRequest().body("date is invalid format should be [" + Constants.DATE_FORMAT + "]");
+        }
+        return ResponseEntity.ok(rentalService.getRentalsByReturnDate(Constants.formatString(date)));
     }
 
-    @RequestMapping(value = "/rentals", method = RequestMethod.POST)
-    public ResponseEntity<?> createRental(@RequestBody RentalJson rentalJson){
-        CreateRentalRequest request = new CreateRentalRequest();
-
-        if (rentalJson.getCustomerId() != null && rentalJson.getCustomerId() > 0)
-            request.setCustomerId(rentalJson.getCustomerId());
-        else
-            return ResponseEntity.badRequest().body(Common.idFailureMessage("Rental customerId"));
-
-        if (rentalJson.getInventoryId() != null && rentalJson.getInventoryId() > 0)
-            request.setInventoryId(rentalJson.getInventoryId());
-        else
-            return ResponseEntity.badRequest().body(Common.idFailureMessage("Rental inventoryId"));
-
-        if (rentalJson.getRentalDate() != null && Common.isStringSafe(rentalJson.getRentalDate()))
-            request.setRentalDate(rentalJson.getRentalDate());
-        else
-            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Rental rentalDate"));
-
-        if (rentalJson.getReturnDate() != null && Common.isStringSafe(rentalJson.getReturnDate()))
-            request.setReturnDate(rentalJson.getReturnDate());
-        else
-            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Rental returnDate"));
-
-        if (rentalJson.getStaffId() != null && rentalJson.getStaffId() > 0)
-            request.setStaffId(rentalJson.getStaffId());
-        else
-            return ResponseEntity.badRequest().body(Common.idFailureMessage("Rental staffId"));
-
-        return rentalService.insertRental(request);
+    @GetMapping("/staff/{staffId}/rentals")
+    public ResponseEntity<?> getStaffRentals(@PathVariable int staffId){
+        if (!staffService.exists(staffId)){
+            return ResponseEntity.badRequest().body("staff does not exist.");
+        }
+        return ResponseEntity.ok(rentalService.getStaffRentals(staffId));
     }
 
-    @RequestMapping(value = "/rentals/{rentalId}", method = RequestMethod.PUT)
-    public ResponseEntity<?> updateRental(@PathVariable long rentalId, @RequestBody RentalJson rentalJson){
-        UpdateRentalRequest request = new UpdateRentalRequest();
-
-        request.setRentalId(rentalId);
-
-        if (rentalJson.getCustomerId() != null && rentalJson.getCustomerId() > 0)
-            request.setCustomerId(rentalJson.getCustomerId());
-        else
-            return ResponseEntity.badRequest().body(Common.idFailureMessage("Rental customerId"));
-
-        if (rentalJson.getInventoryId() != null && rentalJson.getInventoryId() > 0)
-            request.setInventoryId(rentalJson.getInventoryId());
-        else
-            return ResponseEntity.badRequest().body(Common.idFailureMessage("Rental inventoryId"));
-
-        if (rentalJson.getRentalDate() != null && Common.isStringSafe(rentalJson.getRentalDate()))
-            request.setRentalDate(rentalJson.getRentalDate());
-        else
-            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Rental rentalDate"));
-
-        if (rentalJson.getReturnDate() != null && Common.isStringSafe(rentalJson.getReturnDate()))
-            request.setReturnDate(rentalJson.getReturnDate());
-        else
-            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Rental returnDate"));
-
-        if (rentalJson.getStaffId() != null && rentalJson.getStaffId() > 0)
-            request.setStaffId(rentalJson.getStaffId());
-        else
-            return ResponseEntity.badRequest().body(Common.idFailureMessage("Rental staffId"));
-
-        return rentalService.updateRental(request);
+    @PostMapping(value = "/rentals", consumes = "application/json")
+    public ResponseEntity<?> createRental(@RequestBody CreateRentalRequest request){
+        RentalDto rental = new RentalDto(request);
+        String error = validationHelper.validateRentalCreation(rental);
+        return StringHelper.isNullOrEmptyString(error) ? ResponseEntity.ok(rentalService.save(rental)) :
+                ResponseEntity.badRequest().body(error);
     }
 
-    @RequestMapping(value = "/rentals/{rentalId}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteRental(@PathVariable long rentalId){
-        return rentalService.deleteRental(rentalId);
+    @PutMapping(value = "/rentals/{rentalId}", consumes = "application/json")
+    public ResponseEntity<?> updateRental(@PathVariable int rentalId, @RequestBody UpdateRentalRequest request){
+        RentalDto rental = new RentalDto(request);
+        String error = validationHelper.validateRentalUpdate(rentalId, rental);
+        return StringHelper.isNullOrEmptyString(error) ? ResponseEntity.ok(rentalService.save(rental)) :
+                ResponseEntity.badRequest().body(error);
+    }
+
+    @PutMapping(value = "/rentals", consumes = "application/json")
+    public ResponseEntity<?> updateRental(@RequestBody UpdateRentalRequest request){
+        RentalDto rental = new RentalDto(request);
+        String error = validationHelper.validateRentalUpdate(rental);
+        return StringHelper.isNullOrEmptyString(error) ? ResponseEntity.ok(rentalService.save(rental)) :
+                ResponseEntity.badRequest().body(error);
+    }
+
+    @DeleteMapping("/rentals/{rentalId}")
+    public ResponseEntity<?> deleteRental(@PathVariable int rentalId){
+        if (rentalId <= 0 || !rentalService.exists(rentalId)){
+            return ResponseEntity.badRequest().body("rental id is invalid.");
+        }
+        rentalService.delete(rentalId);
+        return ResponseEntity.ok("rental with id [" + rentalId + "] was deleted.");
     }
 }

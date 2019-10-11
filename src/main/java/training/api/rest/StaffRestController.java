@@ -1,132 +1,90 @@
 package training.api.rest;
 
+import org.hibernate.validator.internal.util.StringHelper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import training.api.Common;
-import training.api.rest.jsonObjects.StaffJson;
+import training.api.ValidationHelper;
 import training.generated.CreateStaffRequest;
 import training.generated.Staff;
 import training.generated.UpdateStaffRequest;
-import training.service.impl.StaffServiceImpl;
+import training.persistence.dto.StaffDto;
+import training.service.StaffService;
+import training.service.StoreService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(value = RestConstants.REST_SERVICES_LOCATION, produces = RestConstants.JSON)
+@RequestMapping(value = "/rest", produces = {"application/json"})
 public class StaffRestController {
-    @Autowired @Lazy private StaffServiceImpl staffService;
+    @Autowired
+    private StaffService staffService;
+    @Autowired
+    private StoreService storeService;
+    @Autowired
+    private ValidationHelper validationHelper;
 
-    @RequestMapping(value = "/staff", method = RequestMethod.GET)
+    @GetMapping("/staff")
     public ResponseEntity<List<Staff>> getAllStaff(){
-        return new ResponseEntity<>(staffService.getAllStaff(),HttpStatus.OK);
+        return ResponseEntity.ok(staffService.getAllStaff());
     }
 
-    @RequestMapping(value = "/staff/{staffId}", method = RequestMethod.GET)
-    public ResponseEntity<Staff> getStaffById(@PathVariable long staffId){
-        return new ResponseEntity<>(staffService.getStaffById((int) staffId), HttpStatus.OK);
+    @GetMapping("/staff/{staffId}")
+    public ResponseEntity<?> getStaffById(@PathVariable int staffId){
+        if (!staffService.exists(staffId)){
+            return ResponseEntity.badRequest().body("staff id invalid");
+        }
+        return ResponseEntity.ok(staffService.getStaffById(staffId));
     }
 
-    @RequestMapping(value = "/staff", method = RequestMethod.POST)
-    public ResponseEntity<?> createStaff(@RequestBody StaffJson staffJson){
-        CreateStaffRequest request = new CreateStaffRequest();
-
-        if (staffJson.getActive() != null)
-            request.setActive(staffJson.getActive());
-        else
-            return ResponseEntity.badRequest().body("Staff active cannot be null.");
-
-        if (staffJson.getAddressId() != null && staffJson.getAddressId() > 0)
-            request.setAddressId(staffJson.getAddressId());
-        else
-            return ResponseEntity.badRequest().body(Common.idFailureMessage("Staff addressId"));
-
-        if (staffJson.getEmail() != null && Common.isStringSafe(staffJson.getEmail()))
-            request.setEmail(staffJson.getEmail());
-        else
-            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Staff email"));
-
-        if (staffJson.getFirstName() != null && Common.isStringSafe(staffJson.getFirstName()))
-            request.setFirstName(staffJson.getFirstName());
-        else
-            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Staff firstName"));
-
-        if (staffJson.getLastName() != null && Common.isStringSafe(staffJson.getLastName()))
-            request.setLastName(staffJson.getLastName());
-        else
-            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Staff lastName"));
-
-        if (staffJson.getUsername() != null && Common.isStringSafe(staffJson.getUsername()))
-            request.setUsername(staffJson.getUsername());
-        else
-            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Staff username"));
-
-        if (staffJson.getPassword() != null && Common.isStringSafe(staffJson.getPassword()))
-            request.setPassword(staffJson.getPassword());
-        else
-            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Staff password"));
-
-        if (staffJson.getStoreId() != null && staffJson.getStoreId() > 0)
-            request.setStoreId(staffJson.getStoreId());
-        else
-            return ResponseEntity.badRequest().body(Common.idFailureMessage("Staff storeId"));
-
-        return staffService.insertStaff(request);
+    @GetMapping("/store/{storeId}/staff")
+    public ResponseEntity<?> getStoreStaff(@PathVariable int storeId){
+        if (!storeService.exists(storeId)){
+            return ResponseEntity.badRequest().body("store id is invalid");
+        }
+        return ResponseEntity.ok(staffService.getStaffByStoreId(storeId));
     }
 
-    @RequestMapping(value = "/staff/{staffId}", method = RequestMethod.PUT)
-    public ResponseEntity<?> updateStaff(@PathVariable long staffId, @RequestBody StaffJson staffJson){
-        UpdateStaffRequest request = new UpdateStaffRequest();
-
-        request.setStaffId(staffId);
-
-        if (staffJson.getActive() != null)
-            request.setActive(staffJson.getActive());
-        else
-            return ResponseEntity.badRequest().body("Staff active cannot be null.");
-
-        if (staffJson.getAddressId() != null && staffJson.getAddressId() > 0)
-            request.setAddressId(staffJson.getAddressId());
-        else
-            return ResponseEntity.badRequest().body(Common.idFailureMessage("Staff addressId"));
-
-        if (staffJson.getEmail() != null && Common.isStringSafe(staffJson.getEmail()))
-            request.setEmail(staffJson.getEmail());
-        else
-            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Staff email"));
-
-        if (staffJson.getFirstName() != null && Common.isStringSafe(staffJson.getFirstName()))
-            request.setFirstName(staffJson.getFirstName());
-        else
-            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Staff firstName"));
-
-        if (staffJson.getLastName() != null && Common.isStringSafe(staffJson.getLastName()))
-            request.setLastName(staffJson.getLastName());
-        else
-            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Staff lastName"));
-
-        if (staffJson.getUsername() != null && Common.isStringSafe(staffJson.getUsername()))
-            request.setUsername(staffJson.getUsername());
-        else
-            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Staff username"));
-
-        if (staffJson.getPassword() != null && Common.isStringSafe(staffJson.getPassword()))
-            request.setPassword(staffJson.getPassword());
-        else
-            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Staff password"));
-
-        if (staffJson.getStoreId() != null && staffJson.getStoreId() > 0)
-            request.setStoreId(staffJson.getStoreId());
-        else
-            return ResponseEntity.badRequest().body(Common.idFailureMessage("Staff storeId"));
-
-        return staffService.updateStaff(request);
+    @GetMapping("/staff/active")
+    public ResponseEntity<List<Staff>> getActiveStaff(){
+        return ResponseEntity.ok(staffService.getActiveStaff());
     }
 
-    @RequestMapping(value = "/staff/{staffId}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteStaff(@PathVariable long staffId){
-        return staffService.deleteStaff(staffId);
+    @GetMapping("/staff/inactive")
+    public ResponseEntity<List<Staff>> getInactiveStaff(){
+        return ResponseEntity.ok(staffService.getInactiveStaff());
+    }
+
+    @PostMapping(value = "/staff", consumes = "application/json")
+    public ResponseEntity<?> createStaff(@RequestBody CreateStaffRequest request){
+        StaffDto staff = new StaffDto(request);
+        String error = validationHelper.validateStaffCreation(staff);
+        return StringHelper.isNullOrEmptyString(error) ? ResponseEntity.ok(staffService.save(staff)) :
+                ResponseEntity.badRequest().body(error);
+    }
+
+    @PutMapping(value = "/staff/{staffId}", consumes = "application/json")
+    public ResponseEntity<?> updateStaff(@PathVariable int staffId, @RequestBody UpdateStaffRequest request){
+        StaffDto staff = new StaffDto(request);
+        String error = validationHelper.validateStaffUpdate(staffId, staff);
+        return StringHelper.isNullOrEmptyString(error) ? ResponseEntity.ok(staffService.save(staff)) :
+                ResponseEntity.badRequest().body(error);
+    }
+
+    @PutMapping(value = "/staff", consumes = "application/json")
+    public ResponseEntity<?> updateStaff(@RequestBody UpdateStaffRequest request){
+        StaffDto staff = new StaffDto(request);
+        String error = validationHelper.validateStaffUpdate(staff);
+        return StringHelper.isNullOrEmptyString(error) ? ResponseEntity.ok(staffService.save(staff)) :
+                ResponseEntity.badRequest().body(error);
+    }
+
+    @DeleteMapping("/staff/{staffId}")
+    public ResponseEntity<?> deleteStaff(@PathVariable int staffId){
+        if (staffId <= 0 || !staffService.exists(staffId)){
+            return ResponseEntity.badRequest().body("staff id is invalid.");
+        }
+        staffService.delete(staffId);
+        return ResponseEntity.ok("staff with id [" + staffId + "] was deleted.");
     }
 }

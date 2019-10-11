@@ -8,9 +8,9 @@
     <xs:element name="createPaymentRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="customerId" type="xs:long"/>
-                <xs:element name="staffId" type="xs:long"/>
-                <xs:element name="rentalId" type="xs:long"/>
+                <xs:element name="customerId" type="xs:int"/>
+                <xs:element name="staffId" type="xs:int"/>
+                <xs:element name="rentalId" type="xs:int"/>
                 <xs:element name="amount" type="xs:float"/>
                 <xs:element name="paymentDate" type="xs:string"/>
             </xs:sequence>
@@ -29,10 +29,10 @@
     <xs:element name="updatePaymentRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="paymentId" type="xs:long"/>
-                <xs:element name="customerId" type="xs:long" nillable="true"/>
-                <xs:element name="staffId" type="xs:long" nillable="true"/>
-                <xs:element name="rentalId" type="xs:long" nillable="true"/>
+                <xs:element name="paymentId" type="xs:int"/>
+                <xs:element name="customerId" type="xs:int" nillable="true"/>
+                <xs:element name="staffId" type="xs:int" nillable="true"/>
+                <xs:element name="rentalId" type="xs:int" nillable="true"/>
                 <xs:element name="amount" type="xs:float" nillable="true"/>
                 <xs:element name="paymentDate" type="xs:string" nillable="true"/>
             </xs:sequence>
@@ -51,7 +51,7 @@
     <xs:element name="deletePaymentRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="paymentId" type="xs:long"/>
+                <xs:element name="paymentId" type="xs:int"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -81,7 +81,7 @@
     <xs:element name="getPaymentByIdRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element type="xs:long" name="paymentId"/>
+                <xs:element type="xs:int" name="paymentId"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -90,6 +90,7 @@
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="payment" type="data:payment"/>
+                <xs:element name="error" type="xs:string" />
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -97,15 +98,16 @@
     <xs:element name="getPaymentsForRentalRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="rentalId" type="xs:long"/>
+                <xs:element name="rentalId" type="xs:int"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
 
     <xs:element name="getPaymentsForRentalResponse">
         <xs:complexType>
-            <xs:sequence maxOccurs="unbounded">
-                <xs:element name="payment" type="data:payment"/>
+            <xs:sequence>
+                <xs:element name="payment" type="data:payment" maxOccurs="unbounded"/>
+                <xs:element name="error" type="xs:string" />
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -113,15 +115,16 @@
     <xs:element name="getPaymentsFromCustomerRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element type="xs:long" name="customerId"/>
+                <xs:element type="xs:int" name="customerId"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
 
     <xs:element name="getPaymentsFromCustomerResponse">
         <xs:complexType>
-            <xs:sequence maxOccurs="unbounded">
-                <xs:element name="payment" type="data:payment"/>
+            <xs:sequence>
+                <xs:element name="payment" type="data:payment" maxOccurs="unbounded"/>
+                <xs:element name="error" type="xs:string" />
             </xs:sequence>
         </xs:complexType>
     </xs:element>

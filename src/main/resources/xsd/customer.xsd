@@ -8,11 +8,11 @@
     <xs:element name="createCustomerRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="storeId" type="xs:long"/>
+                <xs:element name="storeId" type="xs:int"/>
                 <xs:element name="firstName" type="xs:string"/>
                 <xs:element name="lastName" type="xs:string"/>
                 <xs:element name="email" type="xs:string"/>
-                <xs:element name="addressId" type="xs:long"/>
+                <xs:element name="addressId" type="xs:int"/>
                 <xs:element name="active" type="xs:boolean"/>
             </xs:sequence>
         </xs:complexType>
@@ -30,12 +30,12 @@
     <xs:element name="updateCustomerRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="customerId" type="xs:long"/>
-                <xs:element name="storeId" type="xs:long" nillable="true"/>
+                <xs:element name="customerId" type="xs:int"/>
+                <xs:element name="storeId" type="xs:int" nillable="true"/>
                 <xs:element name="firstName" type="xs:string" nillable="true"/>
                 <xs:element name="lastName" type="xs:string" nillable="true"/>
                 <xs:element name="email" type="xs:string" nillable="true"/>
-                <xs:element name="addressId" type="xs:long" nillable="true"/>
+                <xs:element name="addressId" type="xs:int" nillable="true"/>
                 <xs:element name="active" type="xs:boolean" nillable="true"/>
             </xs:sequence>
         </xs:complexType>
@@ -53,7 +53,7 @@
     <xs:element name="deleteCustomerRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="customerId" type="xs:long"/>
+                <xs:element name="customerId" type="xs:int"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -83,7 +83,7 @@
     <xs:element name="getCustomerByIdRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="customerId" type="xs:long"/>
+                <xs:element name="customerId" type="xs:int"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -92,20 +92,22 @@
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="customer" type="data:customer"/>
+                <xs:element name="error" type="xs:string" />
             </xs:sequence>
         </xs:complexType>
     </xs:element>
 
     <xs:element name="getActiveCustomersRequest">
-        <xs:complexType>
-            <xs:sequence maxOccurs="1" minOccurs="1"/>
-        </xs:complexType>
-    </xs:element>
+    <xs:complexType>
+        <xs:sequence maxOccurs="1" minOccurs="1"/>
+    </xs:complexType>
+</xs:element>
 
     <xs:element name="getActiveCustomersResponse">
         <xs:complexType>
-            <xs:sequence maxOccurs="unbounded">
-                <xs:element name="customer" type="data:customer"/>
+            <xs:sequence>
+                <xs:element name="customer" type="data:customer" maxOccurs="unbounded"/>
+                <xs:element name="error" type="xs:string" />
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -118,8 +120,9 @@
 
     <xs:element name="getInactiveCustomersResponse">
         <xs:complexType>
-            <xs:sequence maxOccurs="unbounded">
-                <xs:element name="customer" type="data:customer"/>
+            <xs:sequence>
+                <xs:element name="customer" type="data:customer" maxOccurs="unbounded"/>
+                <xs:element name="error" type="xs:string" />
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -127,15 +130,16 @@
     <xs:element name="getCustomersByStoreRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="storeId" type="xs:long"/>
+                <xs:element name="storeId" type="xs:int"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
 
     <xs:element name="getCustomersByStoreResponse">
         <xs:complexType>
-            <xs:sequence maxOccurs="unbounded">
-                <xs:element name="customer" type="data:customer"/>
+            <xs:sequence>
+                <xs:element name="customer" type="data:customer" maxOccurs="unbounded"/>
+                <xs:element name="error" type="xs:string" />
             </xs:sequence>
         </xs:complexType>
     </xs:element>

@@ -1,116 +1,95 @@
 package training.api.rest;
 
+import org.hibernate.validator.internal.util.StringHelper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import training.api.Common;
-import training.api.rest.jsonObjects.ActorJson;
+import training.api.ValidationHelper;
 import training.generated.Actor;
 import training.generated.CreateActorRequest;
-import training.generated.Summary;
+import training.generated.Film;
 import training.generated.UpdateActorRequest;
-import training.service.impl.ActorServiceImpl;
+import training.persistence.dto.ActorDto;
+import training.service.ActorService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(value = RestConstants.REST_SERVICES_LOCATION, produces = RestConstants.JSON)
+@RequestMapping(value = "/rest", produces = {"application/json"})
 public class ActorRestController {
-    @Autowired @Lazy
-    private ActorServiceImpl actorService;
+    @Autowired
+    private ActorService actorService;
+    @Autowired
+    private ValidationHelper validationHelper;
 
-    @RequestMapping(value = "/actors", method = RequestMethod.GET)
-    @ResponseBody
+    @GetMapping(value = "/actors")
     public ResponseEntity<List<Actor>> getAllActors(){
-        return new ResponseEntity<>(actorService.getAllActors(),HttpStatus.OK);
+        return new ResponseEntity<>(actorService.getAllActors(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/actors/{actorId}", method = RequestMethod.GET)
-    @ResponseBody
-    public ResponseEntity<?> getActorById(@PathVariable long actorId) {
+    @GetMapping(value = "/actors/{actorId}")
+    public ResponseEntity<?> getActorById(@PathVariable int actorId){
         Actor actor = actorService.getActorById(actorId);
-        if (actor == null)
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No Actor with id ["+actorId+"]");
-        else
-            return new ResponseEntity<>(actor,HttpStatus.OK);
+
+        return actor != null ? new ResponseEntity<>(actor, HttpStatus.OK)
+                : ResponseEntity.status(HttpStatus.NOT_FOUND).body("No Actor with id ["+actorId+"]");
     }
 
-    @RequestMapping(value = "/actors/first_name/{firstName}", method = RequestMethod.GET)
-    @ResponseBody
+    @GetMapping(value = "/actors/first_name/{firstName}")
     public ResponseEntity<?> getActorsByFirstName(@PathVariable String firstName){
         List<Actor> actors = actorService.getActorsByFirstName(firstName);
-        if (actors == null || actors.size() == 0)
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No Actors with that first name.");
-        else
-            return new ResponseEntity<>(actors, HttpStatus.OK);
+
+        return actors != null && actors.size() > 0 ? new ResponseEntity<>(actors, HttpStatus.OK)
+                : ResponseEntity.status(HttpStatus.NOT_FOUND).body("No Actors with first name [" + firstName + "]");
     }
 
-    @RequestMapping(value = "/actors/last_name/{lastName}",method = RequestMethod.GET)
-    @ResponseBody
+    @GetMapping(value = "/actors/last_name/{lastName}")
     public ResponseEntity<?> getActorsByLastName(@PathVariable String lastName){
         List<Actor> actors = actorService.getActorsByLastName(lastName);
-        if (actors == null || actors.size() == 0)
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No Actors with that last name.");
-        else
-            return new ResponseEntity<>(actors, HttpStatus.OK);
+
+        return actors != null && actors.size() > 0 ? new ResponseEntity<>(actors, HttpStatus.OK)
+                : ResponseEntity.status(HttpStatus.NOT_FOUND).body("No Actors with last name [" + lastName + "]");
     }
 
-    @RequestMapping(value = "/actors/{actorId}/films", method = RequestMethod.GET)
-    @ResponseBody
-    public ResponseEntity<?> getFilmsWithActor(@PathVariable long actorId){
-        List<Summary> summaries = actorService.getFilmsWithActor(actorId);
-        if (summaries == null || summaries.size() == 0)
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No films associated with actor ["+actorId+"]");
-        else
-            return new ResponseEntity<>(summaries, HttpStatus.OK);
+    @GetMapping(value = "actors/{actorId}/films")
+    public ResponseEntity<?> getFilmsWithActor(@PathVariable int actorId){
+        List<Film> films = actorService.getFilmsWithActor(actorId);
+
+        return films != null && films.size() > 0 ? new ResponseEntity<>(films, HttpStatus.OK)
+                : ResponseEntity.status(HttpStatus.NOT_FOUND).body("No films associated with actor id [" + actorId + "]");
     }
 
-    @RequestMapping(value = "/actors", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<?> createActor(@RequestBody ActorJson actorJson){
-        CreateActorRequest request = new CreateActorRequest();
+    @PostMapping(value = "/actors", consumes = "application/json")
+    public ResponseEntity<?> createActor(@RequestBody CreateActorRequest request){
+        ActorDto actorDto = new ActorDto(request);
+        String error = validationHelper.validateActorCreation(actorDto);
+        return StringHelper.isNullOrEmptyString(error) ? ResponseEntity.status(HttpStatus.CREATED).body(actorService.save(actorDto)) :
+                ResponseEntity.badRequest().body(error);
+    }
 
-        if (actorJson.getFirstName() != null && Common.isStringSafe(actorJson.getFirstName())){
-            request.setFirstName(actorJson.getFirstName());
-        } else {
-            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Actor firstName"));
+    @PutMapping(value = "/actors/{actorId}")
+    public ResponseEntity<?> updateActor(@PathVariable int actorId, @RequestBody UpdateActorRequest request){
+        ActorDto actorDto = new ActorDto(request);
+        String error = validationHelper.validateActorUpdate(actorId, actorDto);
+        return StringHelper.isNullOrEmptyString(error) ? ResponseEntity.ok(actorService.save(actorDto)) :
+                ResponseEntity.badRequest().body(error);
+    }
+
+    @PutMapping(value = "/actors/")
+    public ResponseEntity<?> updateActor(@RequestBody UpdateActorRequest request){
+        ActorDto actorDto = new ActorDto(request);
+        String error = validationHelper.validateActorUpdate(actorDto);
+        return StringHelper.isNullOrEmptyString(error) ? ResponseEntity.ok(actorService.save(actorDto)) :
+                ResponseEntity.badRequest().body(error);
+    }
+
+    @DeleteMapping(value = "/actors/{actorId}")
+    public ResponseEntity<?> deleteActor(@PathVariable int actorId){
+        if(actorId <= 0 || !actorService.exists(actorId)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("actor id is invalid");
         }
-        if (actorJson.getLastName() != null && Common.isStringSafe(actorJson.getLastName())){
-            request.setLastName(actorJson.getLastName());
-        } else {
-            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Actor lastName"));
-        }
-
-        return actorService.insertActor(request);
-    }
-
-    @RequestMapping(value = "/actors/{actorId}", method = RequestMethod.PUT)
-    @ResponseBody
-    public ResponseEntity<?> updateActor(@PathVariable long actorId, @RequestBody ActorJson actorJson){
-        UpdateActorRequest request = new UpdateActorRequest();
-
-        request.setActorId(actorId);
-        if (actorJson.getFirstName() != null && Common.isStringSafe(actorJson.getFirstName()))
-            request.setNewFirstName(actorJson.getFirstName());
-        else
-            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Actor firstName"));
-
-        if (actorJson.getLastName() != null && Common.isStringSafe(actorJson.getLastName()))
-            request.setNewLastName(actorJson.getLastName());
-        else
-            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Actor lastName"));
-
-        return actorService.updateActor(request);
-    }
-
-    @RequestMapping(value = "/actors/{actorId}", method = RequestMethod.DELETE)
-    @ResponseBody
-    public ResponseEntity<?> deleteActor(@PathVariable Long actorId){
-        if (actorId != null && actorId > 0)
-            return actorService.deleteActor(actorId);
-        else
-            return ResponseEntity.badRequest().body("Invalid actorId");
+        actorService.delete(actorId);
+        return ResponseEntity.status(HttpStatus.OK).body("Actor with id [" + actorId + "] was deleted.");
     }
 }

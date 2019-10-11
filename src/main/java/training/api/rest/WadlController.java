@@ -5,7 +5,6 @@ import com.autentia.web.rest.wadl.builder.impl.springframework.SpringWadlBuilder
 import com.autentia.xml.schema.SchemaBuilder;
 import net.java.dev.wadl._2009._02.Application;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +19,7 @@ public class WadlController {
     private final ApplicationBuilder applicationBuilder;
     private final SchemaBuilder schemaBuilder;
 
-    @Autowired @Lazy
+    @Autowired
     public WadlController(RequestMappingHandlerMapping handlerMapping) {
         final SpringWadlBuilderFactory wadlBuilderFactory = new SpringWadlBuilderFactory(handlerMapping);
         applicationBuilder = wadlBuilderFactory.getApplicationBuilder();

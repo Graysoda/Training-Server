@@ -1,139 +1,88 @@
 package training.api.rest;
 
+import org.hibernate.validator.internal.util.StringHelper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import training.api.Common;
-import training.api.rest.jsonObjects.CustomerJson;
+import training.api.ValidationHelper;
 import training.generated.CreateCustomerRequest;
 import training.generated.Customer;
 import training.generated.UpdateCustomerRequest;
-import training.service.impl.CustomerServiceImpl;
+import training.persistence.dto.CustomerDto;
+import training.service.CustomerService;
+import training.service.StoreService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(value = RestConstants.REST_SERVICES_LOCATION, produces = RestConstants.JSON)
+@RequestMapping(value = "/rest", produces = {"application/json"})
 public class CustomerRestController {
-    @Autowired @Lazy private CustomerServiceImpl customerService;
+    @Autowired
+    private CustomerService customerService;
+    @Autowired
+    private StoreService storeService;
+    @Autowired
+    private ValidationHelper validationHelper;
 
-    @RequestMapping(value = "/customers", method = RequestMethod.GET)
+    @GetMapping(value = "/customers")
     public ResponseEntity<List<Customer>> getAllCustomers(){
         return new ResponseEntity<>(customerService.getAllCustomers(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/customers/{customerId}", method = RequestMethod.GET)
-    public ResponseEntity<Customer> getCustomerById(@PathVariable long customerId){
+    @GetMapping("/customer/{customerId}")
+    public ResponseEntity<Customer> getCustomerById(@PathVariable int customerId){
         return new ResponseEntity<>(customerService.getCustomerById(customerId), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/store/{storeId}/customers", method = RequestMethod.GET)
-    public ResponseEntity<List<Customer>> getCustomersbyStore(@PathVariable long storeId){
-        return new ResponseEntity<>(customerService.getCustomersByStore(storeId), HttpStatus.OK);
+    @GetMapping("/store/{storeId}/customers")
+    public ResponseEntity<?> getCustomersByStore(@PathVariable int storeId){
+        if (!storeService.exists(storeId)){
+            return ResponseEntity.badRequest().body("store id invalid.");
+        }
+        return ResponseEntity.ok(customerService.getCustomersByStore(storeId));
     }
 
-    @RequestMapping(value = "/customers/active", method = RequestMethod.GET)
+    @GetMapping("/customers/active")
     public ResponseEntity<List<Customer>> getActiveCustomers(){
-        return new ResponseEntity<>(customerService.getActiveCustomers(), HttpStatus.OK);
+        return ResponseEntity.ok(customerService.getActiveCustomers());
     }
 
-    @RequestMapping(value = "/customers/inactive", method = RequestMethod.GET)
-    public ResponseEntity<?> getInactiveCustomers(){
-        return new ResponseEntity<>(customerService.getInactiveCustomers(), HttpStatus.OK);
+    @GetMapping("/customers/inactive")
+    public ResponseEntity<List<Customer>> getInactiveCustomers(){
+        return ResponseEntity.ok(customerService.getInactiveCustomers());
     }
 
-    @RequestMapping(value = "/customer", method = RequestMethod.POST)
-    public ResponseEntity<?> createCustomer(@RequestBody CustomerJson customerJson){
-        CreateCustomerRequest request = new CreateCustomerRequest();
-
-        if (customerJson.isActive() != null){
-            request.setActive(customerJson.isActive());
-        } else {
-            return ResponseEntity.badRequest().body("Customer isActive cannot be null.");
-        }
-
-        if (customerJson.getStoreId() != null && customerJson.getStoreId() > 0){
-            request.setStoreId(customerJson.getStoreId());
-        } else {
-            return ResponseEntity.badRequest().body(Common.idFailureMessage("Customer storeId"));
-        }
-
-        if (customerJson.getAddressId() != null && customerJson.getAddressId() > 0){
-            request.setAddressId(customerJson.getAddressId());
-        } else {
-            return ResponseEntity.badRequest().body(Common.idFailureMessage("Customer addressId"));
-        }
-
-        if (customerJson.getEmail() != null && Common.isStringSafe(customerJson.getEmail())){
-            request.setEmail(customerJson.getEmail());
-        } else {
-            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Customer email"));
-        }
-
-        if (customerJson.getFirstName() != null && Common.isStringSafe(customerJson.getFirstName())){
-            request.setFirstName(customerJson.getFirstName());
-        } else {
-            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Customer firstName"));
-        }
-
-        if (customerJson.getLastName() != null && Common.isStringSafe(customerJson.getLastName())){
-            request.setLastName(customerJson.getLastName());
-        } else {
-            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Customer lastName"));
-        }
-
-        return customerService.insertCustomer(request);
+    @PostMapping(value = "/customers", consumes = "application/json")
+    public ResponseEntity<?> createCustomer(@RequestBody CreateCustomerRequest request){
+        CustomerDto customer = new CustomerDto(request);
+        String error = validationHelper.validateCustomerCreation(customer);
+        return StringHelper.isNullOrEmptyString(error) ? ResponseEntity.status(HttpStatus.CREATED).body(customerService.save(customer)) :
+                ResponseEntity.badRequest().body(error);
     }
 
-    @RequestMapping(value = "/customer/{customerId}", method = RequestMethod.PUT)
-    public ResponseEntity<?> updateCustomer(@PathVariable long customerId, @RequestBody CustomerJson customerJson){
-        UpdateCustomerRequest request = new UpdateCustomerRequest();
-
-        request.setCustomerId(customerId);
-
-        if (customerJson.isActive() != null){
-            request.setActive(customerJson.isActive());
-        } else {
-            return ResponseEntity.badRequest().body("Customer isActive cannot be null.");
-        }
-
-        if (customerJson.getStoreId() != null && customerJson.getStoreId() > 0){
-            request.setStoreId(customerJson.getStoreId());
-        } else {
-            return ResponseEntity.badRequest().body(Common.idFailureMessage("Customer storeId"));
-        }
-
-        if (customerJson.getAddressId() != null && customerJson.getAddressId() > 0){
-            request.setAddressId(customerJson.getAddressId());
-        } else {
-            return ResponseEntity.badRequest().body(Common.idFailureMessage("Customer addressId"));
-        }
-
-        if (customerJson.getEmail() != null && Common.isStringSafe(customerJson.getEmail())){
-            request.setEmail(customerJson.getEmail());
-        } else {
-            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Customer email"));
-        }
-
-        if (customerJson.getFirstName() != null && Common.isStringSafe(customerJson.getFirstName())){
-            request.setFirstName(customerJson.getFirstName());
-        } else {
-            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Customer firstName"));
-        }
-
-        if (customerJson.getLastName() != null && Common.isStringSafe(customerJson.getLastName())){
-            request.setLastName(customerJson.getLastName());
-        } else {
-            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Customer lastName"));
-        }
-
-        return customerService.updateCustomer(request);
+    @PutMapping(value = "/customer/{customerId}", consumes = "application/json")
+    public ResponseEntity<?> updateCustomer(@PathVariable int customerId, @RequestBody UpdateCustomerRequest request){
+        CustomerDto customer = new CustomerDto(request);
+        String error = validationHelper.validateCustomerUpdate(customerId, customer);
+        return StringHelper.isNullOrEmptyString(error) ? ResponseEntity.ok(customerService.save(customer)) :
+                ResponseEntity.badRequest().body(error);
     }
 
-    @RequestMapping(value = "/customer/{customerId}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteCustomer(@PathVariable long customerId){
-        return customerService.deleteCustomer(customerId);
+    @PutMapping(value = "/customer", consumes = "application/json")
+    public ResponseEntity<?> updateCustomer(@RequestBody UpdateCustomerRequest request){
+        CustomerDto customer = new CustomerDto(request);
+        String error = validationHelper.validateCustomerUpdate(customer);
+        return StringHelper.isNullOrEmptyString(error) ? ResponseEntity.ok(customerService.save(customer)) :
+                ResponseEntity.badRequest().body(error);
+    }
+
+    @DeleteMapping("/customer/{customerId}")
+    public ResponseEntity<?> deleteCustomer(@PathVariable int customerId){
+        if (customerId <= 0 || !customerService.exists(customerId)){
+            return ResponseEntity.badRequest().body("customer id is invalid");
+        }
+        customerService.delete(customerId);
+        return ResponseEntity.ok("Customer with id [" + customerId + "] was deleted");
     }
 }

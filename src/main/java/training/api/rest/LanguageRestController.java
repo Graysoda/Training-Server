@@ -1,27 +1,29 @@
 package training.api.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import training.service.impl.LanguageServiceImpl;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import training.generated.Language;
+import training.service.LanguageService;
+
+import java.util.List;
 
 @RestController
-@RequestMapping(value = RestConstants.REST_SERVICES_LOCATION, produces = RestConstants.JSON)
+@RequestMapping(value = "/rest", produces = {"application/json"})
 public class LanguageRestController {
-	@Autowired @Lazy
-	private LanguageServiceImpl languageService;
+    @Autowired
+    LanguageService languageService;
 
-	@RequestMapping(value = "/languages", method = RequestMethod.GET)
-	@ResponseBody
-	public ResponseEntity<?> getAllLanguages(){
-		return new ResponseEntity<>(languageService.getAllLanguages(), HttpStatus.OK);
-	}
+    @GetMapping("/languages")
+    public ResponseEntity<List<Language>> getAllLanguages(){
+        return ResponseEntity.ok(languageService.getAllLanguages());
+    }
 
-	@RequestMapping(value = "/languages/{languageId}", method = RequestMethod.GET)
-	@ResponseBody
-	public ResponseEntity<?> getLanguageByValue(@PathVariable Long languageId){
-		return new ResponseEntity<>(languageService.getLanguageById(languageId),HttpStatus.OK);
-	}
+    @GetMapping("/languages/{languageId}")
+    public ResponseEntity<Language> getLanguageById(@PathVariable int languageId){
+        return ResponseEntity.ok(languageService.getLanguageById(languageId));
+    }
 }

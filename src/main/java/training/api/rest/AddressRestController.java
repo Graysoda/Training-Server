@@ -1,121 +1,78 @@
 package training.api.rest;
 
+import org.hibernate.validator.internal.util.StringHelper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import training.api.Common;
-import training.api.rest.jsonObjects.AddressJson;
+import training.Constants;
+import training.api.ValidationHelper;
 import training.generated.CreateAddressRequest;
 import training.generated.UpdateAddressRequest;
-import training.service.impl.AddressServiceImpl;
+import training.persistence.dto.AddressDto;
+import training.service.AddressService;
 
 @RestController
-@RequestMapping(value = RestConstants.REST_SERVICES_LOCATION, produces = RestConstants.JSON)
+@RequestMapping(value = "/rest", produces = {"application/json"})
 public class AddressRestController {
-    @Autowired @Lazy private AddressServiceImpl addressService;
+    @Autowired
+    private AddressService addressService;
+    @Autowired
+    private ValidationHelper validationHelper;
 
-    @RequestMapping(value = "/address", method = RequestMethod.GET)
-    public ResponseEntity<?> getAllAddresses(){
-        return new ResponseEntity<>(addressService.getAllAddresses(), HttpStatus.OK);
+    @GetMapping("/address")
+    public ResponseEntity<?> getAllAddresses() {
+        return ResponseEntity.ok(addressService.getAllAddresses());
     }
 
-    @RequestMapping(value = "/address/{addressId}", method = RequestMethod.GET)
-    public ResponseEntity<?> getAddressById(@PathVariable long addressId){
-        return new ResponseEntity<>(addressService.getAddressById(addressId), HttpStatus.OK);
+    @GetMapping("/address/{addressId}")
+    public ResponseEntity<?> getAddressById(@PathVariable int addressId) {
+        return ResponseEntity.ok(addressService.getAddressById(addressId));
     }
 
-    @RequestMapping(value = "/{city}/address", method = RequestMethod.GET)
-    public ResponseEntity<?> getAddressByCity(@PathVariable String city){
-        return new ResponseEntity<>(addressService.getAddressByCity(city),HttpStatus.OK);
+    @GetMapping("/{city}/address")
+    public ResponseEntity<?> getAddressByCity(@PathVariable String city) {
+        return ResponseEntity.ok(addressService.getAddressByCity(city));
     }
 
-    @RequestMapping(value = "/address/postal/{postalCode}", method = RequestMethod.GET)
-    public ResponseEntity<?> getAddressByPostalCode(@PathVariable String postalCode){
-        return new ResponseEntity<>(addressService.getAddressByPostalCode(postalCode), HttpStatus.OK);
+    @GetMapping("/address/postal/{postalCode}")
+    public ResponseEntity<?> getAddressByPostalCode(@PathVariable String postalCode) {
+        return ResponseEntity.ok(addressService.getAddressByPostalCode(postalCode));
     }
 
-    @RequestMapping(value = "/address", method = RequestMethod.POST)
-    public ResponseEntity<?> createAddress(@RequestBody AddressJson addressJson){
-        CreateAddressRequest request = new CreateAddressRequest();
+    @PostMapping("/address")
+    public ResponseEntity<?> createAddress(@RequestBody CreateAddressRequest request) {
+        AddressDto address = new AddressDto(request);
+        String error = validationHelper.validateAddressCreation(address);
 
-        if (addressJson.getAddress() != null && !addressJson.getAddress().isEmpty() && Common.isStringSafe(addressJson.getAddress())){
-            request.setAddress(addressJson.getAddress());
-        } else {
-            return ResponseEntity.badRequest().body("Address first line cannot be null or empty or contain \',\",\\,;.");
-        }
-        if (addressJson.getAddress2() != null && Common.isStringSafe(addressJson.getAddress2())){
-            request.setAddress2(addressJson.getAddress2());
-        } else {
-            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Address address2"));
-        }
-        if (addressJson.getCity() != null){
-            request.setCity(addressJson.getCity());
-        } else {
-            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Address city cannot be null."));
-        }
-        if (addressJson.getDistrict() != null && Common.isStringSafe(addressJson.getDistrict())){
-            request.setDistrict(addressJson.getDistrict());
-        } else {
-            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Address district"));
-        }
-        if (addressJson.getPostalCode() != null && Common.isStringSafe(addressJson.getPostalCode())){
-            request.setPostalCode(addressJson.getPostalCode());
-        } else {
-            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Address postalCode"));
-        }
-        if (addressJson.getPhone() != null && Common.isStringSafe(addressJson.getPhone())){
-            request.setPhone(addressJson.getPhone());
-        } else {
-            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Address phone"));
-        }
-
-        return addressService.insertAddress(request);
+        return StringHelper.isNullOrEmptyString(error) ? ResponseEntity.status(HttpStatus.CREATED).body(addressService.save(address)) :
+                ResponseEntity.badRequest().body(error);
     }
 
-    @RequestMapping(value = "/address/{addressId}", method = RequestMethod.PUT)
-    public ResponseEntity<?> updateAddress(@PathVariable long addressId, @RequestBody AddressJson addressJson){
-        UpdateAddressRequest request = new UpdateAddressRequest();
+    @PutMapping("/address/{addressId}")
+    public ResponseEntity<?> updateAddress(@PathVariable int addressId, @RequestBody UpdateAddressRequest request) {
+        AddressDto address = new AddressDto(request);
+        String error = validationHelper.validateAddressUpdate(addressId, address);
 
-        request.setAddressId(addressId);
-
-        if (addressJson.getAddress() != null && !addressJson.getAddress().isEmpty() && Common.isStringSafe(addressJson.getAddress())){
-            request.setAddress(addressJson.getAddress());
-        } else {
-            return ResponseEntity.badRequest().body("Address first line cannot be null or empty or contain \',\",\\,;.");
-        }
-        if (addressJson.getAddress2() != null && Common.isStringSafe(addressJson.getAddress2())){
-            request.setAddress2(addressJson.getAddress2());
-        } else {
-            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Address address2"));
-        }
-        if (addressJson.getCity() != null){
-            request.setCity(addressJson.getCity());
-        } else {
-            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Address city cannot be null."));
-        }
-        if (addressJson.getDistrict() != null && Common.isStringSafe(addressJson.getDistrict())){
-            request.setDistrict(addressJson.getDistrict());
-        } else {
-            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Address district"));
-        }
-        if (addressJson.getPostalCode() != null && Common.isStringSafe(addressJson.getPostalCode())){
-            request.setPostalCode(addressJson.getPostalCode());
-        } else {
-            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Address postalCode"));
-        }
-        if (addressJson.getPhone() != null && Common.isStringSafe(addressJson.getPhone())){
-            request.setPhone(addressJson.getPhone());
-        } else {
-            return ResponseEntity.badRequest().body(Common.stringFailureMessage("Address phone"));
-        }
-
-        return addressService.updateAddress(request);
+        return StringHelper.isNullOrEmptyString(error) ? ResponseEntity.ok(addressService.save(address)) :
+                ResponseEntity.badRequest().body(error);
     }
 
-    @RequestMapping(value = "/address/{addressId}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteAddress(@PathVariable long addressId){
-        return addressService.deleteAddress(addressId);
+    @PutMapping("/address/")
+    public ResponseEntity<?> updateAddress(@RequestBody UpdateAddressRequest request) {
+        AddressDto address = new AddressDto(request);
+        String error = validationHelper.validateAddressUpdate(address);
+
+        return StringHelper.isNullOrEmptyString(error) ? ResponseEntity.ok(addressService.save(address)) :
+                ResponseEntity.badRequest().body(error);
+    }
+
+    @DeleteMapping("/address/{addressId}")
+    public ResponseEntity<?> deleteAddress(@PathVariable int addressId){
+        if (addressId <= 0 || !addressService.exists(addressId)){
+            return ResponseEntity.badRequest().body("address id " + Constants.DNE);
+        }
+        addressService.deleteById(addressId);
+        return ResponseEntity.ok("Address with id [" + addressId + "] was successfully deleted.");
     }
 }

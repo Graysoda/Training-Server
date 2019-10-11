@@ -8,9 +8,9 @@
     <xs:element name="createRentalRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="customerId" type="xs:long"/>
-                <xs:element name="staffId" type="xs:long"/>
-                <xs:element name="inventoryId" type="xs:long"/>
+                <xs:element name="customerId" type="xs:int"/>
+                <xs:element name="staffId" type="xs:int"/>
+                <xs:element name="inventoryId" type="xs:int"/>
                 <xs:element name="rentalDate" type="xs:string"/>
                 <xs:element name="returnDate" type="xs:string"/>
             </xs:sequence>
@@ -29,10 +29,10 @@
     <xs:element name="updateRentalRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="rentalId" type="xs:long"/>
-                <xs:element name="customerId" type="xs:long" nillable="true"/>
-                <xs:element name="staffId" type="xs:long" nillable="true"/>
-                <xs:element name="inventoryId" type="xs:long" nillable="true"/>
+                <xs:element name="rentalId" type="xs:int"/>
+                <xs:element name="customerId" type="xs:int" nillable="true"/>
+                <xs:element name="staffId" type="xs:int" nillable="true"/>
+                <xs:element name="inventoryId" type="xs:int" nillable="true"/>
                 <xs:element name="rentalDate" type="xs:string" nillable="true"/>
                 <xs:element name="returnDate" type="xs:string" nillable="true"/>
             </xs:sequence>
@@ -51,7 +51,7 @@
     <xs:element name="deleteRentalRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="rentalId" type="xs:long"/>
+                <xs:element name="rentalId" type="xs:int"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -81,15 +81,16 @@
     <xs:element name="getRentalByCustomerIdRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="customerId" type="xs:long"/>
+                <xs:element name="customerId" type="xs:int"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
 
     <xs:element name="getRentalByCustomerIdResponse">
         <xs:complexType>
-            <xs:sequence maxOccurs="unbounded">
-                <xs:element name="rental" type="data:rental"/>
+            <xs:sequence>
+                <xs:element name="rental" type="data:rental" maxOccurs="unbounded"/>
+                <xs:element name="error" type="xs:string" />
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -104,8 +105,9 @@
 
     <xs:element name="getRentalByStartDateResponse">
         <xs:complexType>
-            <xs:sequence maxOccurs="unbounded">
-                <xs:element name="rental" type="data:rental"/>
+            <xs:sequence>
+                <xs:element name="rental" type="data:rental" maxOccurs="unbounded"/>
+                <xs:element name="error" type="xs:string" />
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -113,7 +115,7 @@
     <xs:element name="getRentalByIdRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="rentalId" type="xs:long"/>
+                <xs:element name="rentalId" type="xs:int"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -122,6 +124,7 @@
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="rental" type="data:rental"/>
+                <xs:element name="error" type="xs:string" />
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -136,8 +139,9 @@
 
     <xs:element name="getRentalByReturnDateResponse">
         <xs:complexType>
-            <xs:sequence maxOccurs="unbounded">
-                <xs:element name="rental" type="data:rental"/>
+            <xs:sequence>
+                <xs:element name="rental" type="data:rental" maxOccurs="unbounded"/>
+                <xs:element name="error" type="xs:string" />
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -145,15 +149,16 @@
     <xs:element name="getRentalByStaffIdRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="staffId" type="xs:long"/>
+                <xs:element name="staffId" type="xs:int"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
 
     <xs:element name="getRentalByStaffIdResponse">
         <xs:complexType>
-            <xs:sequence maxOccurs="unbounded">
-                <xs:element name="rental" type="data:rental"/>
+            <xs:sequence>
+                <xs:element name="rental" type="data:rental" maxOccurs="unbounded"/>
+                <xs:element name="error" type="xs:string" />
             </xs:sequence>
         </xs:complexType>
     </xs:element>

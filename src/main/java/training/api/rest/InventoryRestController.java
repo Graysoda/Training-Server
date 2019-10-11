@@ -1,77 +1,72 @@
 package training.api.rest;
 
+import org.hibernate.validator.internal.util.StringHelper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import training.api.Common;
-import training.api.rest.jsonObjects.InventoryJson;
+import training.Constants;
+import training.api.ValidationHelper;
 import training.generated.CreateInventoryRequest;
 import training.generated.Inventory;
 import training.generated.UpdateInventoryRequest;
-import training.service.impl.InventoryServiceImpl;
+import training.persistence.dto.InventoryDto;
+import training.service.InventoryService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(value = RestConstants.REST_SERVICES_LOCATION, produces = RestConstants.JSON)
+@RequestMapping(value = "/rest", produces = {"application/json"})
 public class InventoryRestController {
-    @Autowired @Lazy private InventoryServiceImpl inventoryService;
+    @Autowired
+    private InventoryService inventoryService;
+    @Autowired
+    private ValidationHelper validationHelper;
 
-    @RequestMapping(value = "/inventory", method = RequestMethod.GET)
+    @GetMapping("/inventory")
     public ResponseEntity<List<Inventory>> getAllInventory(){
-        return new ResponseEntity<>(inventoryService.getAllInventory(), HttpStatus.OK);
+        return ResponseEntity.ok(inventoryService.getAllInventory());
     }
 
-    @RequestMapping(value = "/inventory/{inventoryId}", method = RequestMethod.GET)
-    public ResponseEntity<Inventory> getInventoryById(@PathVariable long inventoryId){
-        return new ResponseEntity<>(inventoryService.getInventoryById(inventoryId), HttpStatus.OK);
+    @GetMapping("/inventory/{inventoryId}")
+    public ResponseEntity<Inventory> getInventoryById(@PathVariable int inventoryId){
+        return ResponseEntity.ok(inventoryService.getInevntoryById(inventoryId));
     }
 
-    @RequestMapping(value = "/store/{storeId}/inventory", method = RequestMethod.GET)
-    public ResponseEntity<List<Inventory>> getStoreInventory(@PathVariable long storeId){
-        return new ResponseEntity<>(inventoryService.getStoreInventory(storeId), HttpStatus.OK);
+    @GetMapping("/store/{storeId}/inventory")
+    public ResponseEntity<List<Inventory>> getStoreInventory(@PathVariable int storeId){
+        return ResponseEntity.ok(inventoryService.getStoreInventory(storeId));
     }
 
-    @RequestMapping(value = "/inventory", method = RequestMethod.POST)
-    public ResponseEntity<?> createInventory(@RequestBody InventoryJson inventoryJson){
-        CreateInventoryRequest request = new CreateInventoryRequest();
-
-        if (inventoryJson.getFilmId() != null && inventoryJson.getFilmId() > 0)
-            request.setFilmId(inventoryJson.getFilmId());
-        else
-            return ResponseEntity.badRequest().body(Common.idFailureMessage("Inventory filmId"));
-
-        if (inventoryJson.getStoreId() != null && inventoryJson.getStoreId() > 0)
-            request.setStoreId(inventoryJson.getStoreId());
-        else
-            return ResponseEntity.badRequest().body(Common.idFailureMessage("Inventory storeId"));
-
-        return inventoryService.insert(request);
+    @PostMapping(value = "/inventory", consumes = "application/json")
+    public ResponseEntity<?> createInventory(@RequestBody CreateInventoryRequest request){
+        InventoryDto inventory = new InventoryDto(request);
+        String error = validationHelper.validateInventoryCreation(inventory);
+        return StringHelper.isNullOrEmptyString(error) ? ResponseEntity.ok(inventoryService.save(inventory)) :
+                ResponseEntity.badRequest().body(error);
     }
 
-    @RequestMapping(value = "/inventory/{inventoryId}", method = RequestMethod.PUT)
-    public ResponseEntity<?> updateInventory(@PathVariable long inventoryId, @RequestBody InventoryJson inventoryJson){
-        UpdateInventoryRequest request = new UpdateInventoryRequest();
-
-        request.setInventoryId(inventoryId);
-
-        if (inventoryJson.getFilmId() != null && inventoryJson.getFilmId() > 0)
-            request.setFilmId(inventoryJson.getFilmId());
-        else
-            return ResponseEntity.badRequest().body(Common.idFailureMessage("Inventory filmId"));
-
-        if (inventoryJson.getStoreId() != null && inventoryJson.getStoreId() > 0)
-            request.setStoreId(inventoryJson.getStoreId());
-        else
-            return ResponseEntity.badRequest().body(Common.idFailureMessage("Inventory storeId"));
-
-        return inventoryService.updateInventory(request);
+    @PutMapping(value = "/inventory/{inventoryId}", consumes = "application/json")
+    public ResponseEntity<?> updateInventory(@PathVariable int inventoryId, @RequestBody UpdateInventoryRequest request){
+        InventoryDto inventory = new InventoryDto(request);
+        String error = validationHelper.validateInventoryUpdate(inventoryId, inventory);
+        return StringHelper.isNullOrEmptyString(error) ? ResponseEntity.ok(inventoryService.save(inventory)) :
+                ResponseEntity.badRequest().body(error);
     }
 
-    @RequestMapping(value = "/inventory/{inventoryId}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteInventory(@PathVariable long inventoryId){
-        return inventoryService.deleteInventory(inventoryId);
+    @PutMapping(value = "/inventory", consumes = "application/json")
+    public ResponseEntity<?> updateInventory(@RequestBody UpdateInventoryRequest request){
+        InventoryDto inventory = new InventoryDto(request);
+        String error = validationHelper.validateInventoryUpdate(inventory);
+        return StringHelper.isNullOrEmptyString(error) ? ResponseEntity.ok(inventoryService.save(inventory)) :
+                ResponseEntity.badRequest().body(error);
+    }
+
+    @DeleteMapping("/inventory/{inventoryId}")
+    public ResponseEntity<?> deleteInventory(@PathVariable int inventoryId){
+        if (inventoryId <= 0 || !inventoryService.exists(inventoryId)){
+            return ResponseEntity.badRequest().body("inventory id " + Constants.ID_ERROR_MSG);
+        }
+        inventoryService.delete(inventoryId);
+        return ResponseEntity.ok("inventory with id [" + inventoryId + "] was deleted");
     }
 }
