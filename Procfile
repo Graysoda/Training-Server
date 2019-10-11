@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -Dspring.profile.active=prod -Dserver.port=$PORT -cp target/classes:target/dependency/* -jar target/training-server-1.0.0.jar
+web: java $JAVA_OPTS -Dspring.profile.active=prod -Dserver.port=$PORT -jar target/training-server-1.0.0.jar
