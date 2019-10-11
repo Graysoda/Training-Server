@@ -71,9 +71,6 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <!--<thymeleaf.version>3.0.9.RELEASE</thymeleaf.version>-->
-        <!--<springframework.version>4.3.3.RELEASE</springframework.version>-->
-        <!--<thymeleaf-layout-dialect.version>2.2.1</thymeleaf-layout-dialect.version>-->
     </properties>
 
     <build>
@@ -81,11 +78,11 @@
             <plugin>
                 <groupId>com.heroku.sdk</groupId>
                 <artifactId>heroku-maven-plugin</artifactId>
-                <version>2.0.4</version>
+                <version>2.0.11</version>
                 <configuration>
                     <appName>training-server</appName>
                     <processTypes>
-                        <web>java $JAVA_OPTS -Dspring.profile.active=prod -Dserver.port=$PORT -cp target/classes:target/dependency/* training.Application</web>
+                        <web>java $JAVA_OPTS -Dspring.profile.active=prod -Dserver.port=$PORT -cp target/classes:target/dependency/* Application</web>
                     </processTypes>
                     <jdkVersion>1.8</jdkVersion>
                 </configuration>
