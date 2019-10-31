@@ -18,4 +18,6 @@ public interface FilmDao extends CrudRepository<Film, Integer> {
     @Query("SELECT a FROM Actor a WHERE a.id IN" +
             "(SELECT fa.actorId FROM FilmActor fa WHERE fa.filmId=?1)")
     Iterable<Actor> findActorsInFilm(int filmId);
+
+    Iterable<Film> findAllByCategory(String category);
 }

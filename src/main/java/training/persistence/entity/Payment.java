@@ -13,7 +13,7 @@ public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "payment_id")
-    private int id;
+    private Integer id;
     private Float amount;
     @ManyToOne
     @JoinColumn(referencedColumnName = "customer_id", name = "customer_id")

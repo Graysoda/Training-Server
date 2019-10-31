@@ -16,7 +16,7 @@ public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "customer_id")
-    private int id;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(referencedColumnName = "store_id", name = "store_id")

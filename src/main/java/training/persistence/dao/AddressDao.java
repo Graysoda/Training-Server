@@ -17,4 +17,6 @@ public interface AddressDao extends CrudRepository<Address, Integer> {
 
     @Query("SELECT a FROM Address a WHERE a.city.id=?1")
     Iterable<Address> findByCityId(int cityId);
+
+    boolean existsByAddress(String address);
 }

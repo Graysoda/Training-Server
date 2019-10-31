@@ -87,4 +87,12 @@ public class StaffService {
     public List<Staff> getInactiveStaff() {
         return convert(staffDao.findInactive());
     }
+
+    public boolean existsByUsername(String username) {
+        return staffDao.existsByUsername(username);
+    }
+
+    public training.persistence.entity.Staff getStaffByUsername(String username) {
+        return staffDao.findByUsername(username).orElseThrow(() -> new EntityNotFoundException(username));
+    }
 }

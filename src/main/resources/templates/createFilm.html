@@ -1,0 +1,25 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Film</title>
+    <link th:replace="index :: bootstrap">
+</head>
+<body class="container-fluid">
+    <form action="#" th:action="@{/film/create/}" th:object="${filmDto}" method="post">
+        <div class="form-row">
+            <label for="title">Title</label>
+            <input class="form-control" id="title" type="text" th:field="*{title}">
+        </div>
+        <div class="form-row">
+            <label for="desc">Description</label>
+            <input class="form-control" type="text" id="desc" th:field="*{description}">
+        </div>
+        <div class="form-row">
+            
+        </div>
+    </form>
+</body>
+</html>

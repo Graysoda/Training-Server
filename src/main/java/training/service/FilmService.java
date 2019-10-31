@@ -110,4 +110,8 @@ public class FilmService {
     public boolean exists(int filmId) {
         return filmDao.existsById(filmId);
     }
+
+    public List<Film> getFilmsByCategory(String category) {
+        return convert(filmDao.findAllByCategory(category));
+    }
 }
