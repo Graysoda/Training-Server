@@ -18,8 +18,76 @@
             <input class="form-control" type="text" id="desc" th:field="*{description}">
         </div>
         <div class="form-row">
-            
+            <label for="releaseYear">Release Year</label>
+            <input class="form-control" id="releaseYear" type="text" th:field="*{releaseYear}">
+            <label for="length">Length</label>
+            <input class="form-control" id="length" type="text" th:field="*{length}">
+            <label for="rating">Rating</label>
+            <select class="form-control" id="rating" th:field="*{rating}">
+                <option>G</option>
+                <option>PG</option>
+                <option>PG-13</option>
+                <option>R</option>
+                <option>NC-17</option>
+            </select>
+            <label for="category">Category</label>
+            <select class="form-control" id="category" th:field="*{category}">
+                <option th:each="c : ${category}"
+                        th:value="${c.name}"
+                        th:text="${c.name}">Text...</option>
+            </select>
         </div>
+        <div class="form-row">
+            <label for="language">Language</label>
+            <select class="form-control" id="language" th:field="*{language}">
+                <option th:each="l : ${languages}"
+                        th:value="${l.languageId}"
+                        th:text="${l.name}">Text...</option>
+            </select>
+            <label for="ogLanguage">Original Language</label>
+            <select class="form-control" id="ogLanguage" th:field="*{originalLanguage}">
+                <option th:each="l : ${languages}"
+                        th:value="${l.languageId}"
+                        th:text="${l.name}">Text...</option>
+            </select>
+        </div>
+        <div class="form-row">
+            <label for="rentalDuration">Rental Duration</label>
+            <input class="form-control" id="rentalDuration" type="text" th:field="*{rentalDuration}">
+            <label for="rentalRate">Rental Rate</label>
+            <input class="form-control" id="rentalRate" type="text" th:field="*{rentalRate}">
+            <label for="replacementCost">Replacement Cost</label>
+            <input class="form-control" id="replacementCost" type="text" th:field="*{replacementCost}">
+        </div>
+        <div class="form-row">
+            <label for="specialFeats">Special Features</label>
+            <select multiple id="specialFeats" class="form-control" th:field="*{specialFeatures}">
+                <option>Deleted Scenes</option>
+                <option>Behind the Scenes</option>
+                <option>Trailers</option>
+                <option>Commentaries</option>
+            </select>
+        </div>
+        <div class="form-row">
+            <label for="actors">Actors</label>
+            <table id="actors" class="table">
+                <thead>
+                    <th>
+                        <td>First Name</td>
+                        <td>Last Name</td>
+                    </th>
+                </thead>
+                <tbody>
+                    <tr th:each="actor, itemStat : *{actors}">
+                        <td><input th:id="${'actorFirstName' + itemStat.index}" th:field="*{filmDto.actors[__${itemStat.index}__].firstName}" type="text"></td>
+                        <td><input th:id="${'actorLastName' + itemStat.index}" th:field="*{filmDto.actors[__${itemStat.index}__].lastName}" type="text"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <button class="btn btn-primary" type="submit">Save</button>
+        <button class="btn" type="reset">Reset</button>
     </form>
 </body>
 </html>

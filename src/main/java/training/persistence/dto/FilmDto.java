@@ -75,7 +75,6 @@ public class FilmDto {
         film.setLanguage(language);
         film.setLength(length);
         film.setRating(rating);
-        //film.setRating(MpaaRating.getInstance(rating));
         film.setReleaseYear(releaseYear);
         film.setRentalDuration(rentalDuration);
         film.setRentalRate(rentalRate);

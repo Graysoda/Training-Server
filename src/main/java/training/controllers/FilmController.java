@@ -5,9 +5,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import training.generated.Actor;
 import training.generated.Film;
+import training.persistence.dto.FilmDto;
 import training.service.FilmService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -60,5 +63,13 @@ public class FilmController {
         model.addAttribute("films", films);
 
         return "index";
+    }
+
+    @GetMapping("/film/create")
+    public String getCreateFilmForm(Model model){
+        model.addAttribute("filmDto", new FilmDto());
+        model.addAttribute("actors", new ArrayList<Actor>(15));
+
+        return "createFilm";
     }
 }
