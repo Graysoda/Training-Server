@@ -11,7 +11,7 @@ public class Store {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "store_id")
-    private int id;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(referencedColumnName = "staff_id", name = "manager_staff_id")

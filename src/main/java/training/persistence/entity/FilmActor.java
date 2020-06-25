@@ -12,10 +12,10 @@ import java.io.Serializable;
 public class FilmActor {
     @Id
     @Column(name = "film_id")
-    private int filmId;
+    private Integer filmId;
     @Id
     @Column(name = "actor_id")
-    private int actorId;
+    private Integer actorId;
 
     @Data
     class FAKey implements Serializable {

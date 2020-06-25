@@ -1,15 +1,16 @@
-<!DOCTYPE html>
-<head lang="en">
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
     <meta charset="UTF-8"/>
     <title> Actors </title>
-    <link rel="stylesheet" href="/../css/main.css" th:href="@{../css/main.css}" />
+    <link th:replace="index :: bootstrap">
 </head>
-<body>
-
-<table>
+<body class="container-fluid">
+<table class="table table-bordered">
     <thead>
         <tr>
-            <th> ID </th>
             <th> First Name </th>
             <th> Last Name </th>
         </tr>
@@ -19,9 +20,8 @@
             <td colspan="2"> No Actors Available </td>
         </tr>
         <tr th:each="actor : ${actors}">
-            <td><span th:text="${actor.actorId}"> ID </span></td>
-            <td><span th:text="${actor.firstName}"> First Name </span></td>
-            <td><span th:text="${actor.lastName}"> Last Name </span></td>
+            <td>[[${actor.firstName}]]</td>
+            <td>[[${actor.lastName}]]</td>
         </tr>
     </tbody>
 </table>

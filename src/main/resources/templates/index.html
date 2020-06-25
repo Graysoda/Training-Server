@@ -1,11 +1,74 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title> Index </title>
-    <link rel="stylesheet" type="text/css" th:href="@{css/main.css}" href="css/main.css"/>
+    <title> BusterBlocked </title>
+    <link th:fragment="bootstrap" href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/darkly/bootstrap.min.css" rel="stylesheet" integrity="sha384-w+8Gqjk9Cuo6XH9HKHG5t5I1VR4YBNdPt/29vwgfZR485eoEJZ8rJRbm3TR32P6k" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript" th:src="@{/js/index.js}"></script>
 </head>
-<body>
-    <h1> Hello World! </h1>
+<body class="container-fluid">
+    <h1 class="text-center"> BusterBlocked </h1>
+
+    <div id="navheader" class="navbar" th:fragment="navheader">
+        <div id="search" class="d-flex">
+            <select id="search-select" class="form-control">
+                <option value="title">Title</option>
+                <option value="description">Description</option>
+                <option value="category">Category</option>
+                <option value="actor">Actor</option>
+            </select>
+            <input id="search-input" class="form-control" type="text" placeholder="Search" aria-label="Search">
+        </div>
+        <div id="create-buttons" class="d-flex">
+            <a th:href="@{/actor/create}"><button class="btn btn-primary float-right" id="add-actor">+ Actor</button></a>
+            <a th:href="@{/film/create}"><button class="btn btn-primary float-right" id="add-film">+ Film</button></a>
+        </div>
+    </div>
+
+    <div id="film-list" th:fragment="filmList">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Category</th>
+                    <th>Rating</th>
+                    <th>Length (m)</th>
+                    <th>Rental Rate</th>
+                    <th>Actor(s)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="f,iStat : ${films}" th:id="'row' + ${iStat.count}">
+                    <td>
+                        <a th:text="${#strings.capitalizeWords(#strings.toLowerCase(f.title))}"
+                           th:href="@{/film/{id}(id=${f.filmId})}">Text...</a>
+                    </td>
+                    <td th:text="${f.description}">Text...</td>
+                    <td>
+                        <a th:text="${f.category}"
+                           th:href="@{/films/category/{category}(category=${f.category})}">Text...</a>
+                    </td>
+                    <td>
+                        <a th:text="${f.rating}"
+                           th:href="@{/films/rating/{rating}(rating=${f.rating})}">Text...</a>
+                    </td>
+                    <td th:text="${f.length}">Text...</td>
+                    <td th:text="${f.rentalRate}">Text...</td>
+                    <td>
+                        <a th:each="a, iterStat : ${f.actors}"
+                           th:href="@{/actor/{id}(id=${a.actorId})}"
+                           th:text="!${iterStat.last}
+                           ? ${#strings.capitalizeWords(#strings.toLowerCase(a.firstName))} + ' ' + ${#strings.capitalizeWords(#strings.toLowerCase(a.lastName))} + ', '
+                           : ${#strings.capitalizeWords(#strings.toLowerCase(a.firstName))} + ' ' + ${#strings.capitalizeWords(#strings.toLowerCase(a.lastName))}" >
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>

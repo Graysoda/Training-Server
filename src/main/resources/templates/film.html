@@ -1,0 +1,55 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${#strings.capitalizeWords(#strings.toLowerCase(f.title))}">Text...</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body class="container-fluid">
+    <h1 th:text="${#strings.capitalizeWords(#strings.toLowerCase(f.title))}" class="text-center">Text...</h1>
+
+    <a th:href="@{/film/{id}/update(id=${f.filmId})}"><button class="btn btn-primary float-right">Update</button></a>
+
+    <div>
+        <div class="">Category:
+            <a th:href="@{/films/category/{cat}(cat=f.category)}">[[${f.category}]]</a>
+        </div>
+        <div class="" >[[${f.length}]](m)</div>
+        <div class="" >
+            <a th:href="@{/films/rating/{r}(r=${f.rating})}">[[${f.rating}]]</a>
+        </div>
+    </div>
+
+    <p class="lead">[[${f.description}]]</p>
+    <p>Released: <a th:href="@{/films/released/{y}(y=${f.releaseYear})}">[[${f.releaseYear}]]</a> </p>
+    <p>
+        Available in:
+        <a th:text="${f.language}" th:href="@{/films/language/{l}(l=${f.language})}">[[${f.language}]]</a>
+        <br/>
+        <a th:if="${f.originalLanguage != null}">[[${f.originalLanguage}]]</a>
+    </p>
+    <p>
+        Special Features:
+        <a th:each="feat : ${#strings.listSplit(f.specialFeatures, ',')}"
+           th:text="${feat} + ' '"
+           th:href="@{/films/feature/{feature}(feature=${#strings.toLowerCase(#strings.trim(feat))})}">
+
+        </a>
+    </p>
+
+
+    <h3>Actors</h3>
+    <table>
+        <tbody>
+            <td th:each="a : ${f.actors}">
+                <a th:href="@{/actor/{id}(id=${a.actorId})}">
+                    <img width="200" height="200" src="https://thispersondoesnotexist.com/image" class="img-thumbnail float-left">
+                    <div class="small" th:text="${#strings.capitalizeWords(#strings.toLowerCase(a.firstName + ' ' + a.lastName))}">Text...</div>
+                </a>
+            </td>
+        </tbody>
+    </table>
+</body>
+</html>

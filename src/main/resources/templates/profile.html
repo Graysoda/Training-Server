@@ -1,0 +1,128 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body class="container-fluid">
+    <h1 th:text="${staff.firstName} + ' ' + ${staff.lastName}">Text...</h1>
+
+    <div th:replace="index :: navheader"></div>
+
+    <ul class="nav nav-tabs" id="profileTabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="main-tab" data-toggle="tab" href="#main" role="tab" aria-controls="main" aria-selected="true">Main</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="address-tab" data-toggle="tab" href="#address" role="tab" aria-selected="false" aria-controls="address">Address</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="store-tab" data-toggle="tab" href="#store" role="tab" aria-controls="store" aria-selected="false">Store</a>
+        </li>
+    </ul>
+    <div class="tab-content" id="profileTabContent">
+        <div class="tab-pane fade show active" id="main" role="tabpanel" aria-labelledby="main-tab">
+            <form th:action="@{/update/staff/{id}(id=${staff.staffId})}" th:object="${staffDto}" method="post">
+
+                <div class="form-row">
+                    <div class="col">
+                        <label for="firstName">First Name</label>
+                        <input class="form-control" id="firstName" type="text" th:value="${staff.firstName}" th:field="*{firstName}">
+                    </div>
+                    <div class="col">
+                        <label for="lastName">Last Name</label>
+                        <input class="form-control" id="lastName" type="text" th:value="${staff.lastName}" th:field="*{lastName}">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col">
+                        <label for="username">Username</label>
+                        <input class="form-control" id="username" type="text" th:value="${staff.username}" th:field="*{username}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input class="form-control" id="email" type="email" th:value="${staff.email}" th:field="*{email}">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input class="form-check-input" id="active" type="checkbox" th:value="${staff.active}" th:field="*{active}">
+                            <label class="form-check-label" for="active">Active</label>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-primary" type="submit">Save</button>
+            </form>
+        </div>
+        <div class="tab-pane fade" id="address" role="tabpanel" aria-labelledby="address-tab">
+            <form th:action="@{/update/staff/{id}/address(id=${staff.staffId})" th:object="${addressDto}" method="post">
+                <div class="form-group">
+                    <label for="address1">Address</label>
+                    <input class="form-control" id="address1" type="text" th:value="${staff.address.address}" th:field="*{address}">
+                </div>
+                <div class="form-group">
+                    <label for="address2">Address 2</label>
+                    <input class="form-control" id="address2" type="text" th:value="${staff.address.address2}" th:field="*{address2}">
+                </div>
+                <div class="form-row">
+                    <div class="col">
+                        <label for="country">Country</label>
+                        <select class="form-control" id="country" th:field="*{country}">
+                            <option th:each="c : ${countries}"
+                                    th:value="${c.countryId}"
+                                    th:text="${c.name}"
+                                    th:attr="showselected=(${c.id} == *{staff.address.city.country.id})"></option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <label for="city">City</label>
+                        <select id="city" class="form-control" th:field="*{city}">
+                            <option th:each="c : ${cities}"
+                                    th:value="${c.cityId}"
+                                    th:text="${c.name}"
+                                    th:attr="showselected=(${c.cityId} == *{staff.address.city.cityId})"></option>
+                        </select>
+<!--                        <input class="form-control" id="city" type="text" th:value="${staff.address.city.name}" th:field="*{city}">-->
+                    </div>
+
+                    <div class="col">
+                        <label for="postalCode">Postal Code</label>
+                        <input class="form-control" type="text" id="postalCode" th:value="${staff.address.postalCode}" th:field="*{postalCode}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone</label>
+                    <input class="form-control" type="tel" id="phone" th:value="${staff.address.phone}" th:field="*{phone}">
+                </div>
+                <button class="btn btn-primary" type="submit">Save</button>
+            </form>
+        </div>
+        <div class="tab-pane fade" id="store" role="tabpanel" aria-labelledby="store-tab">
+            <form th:action="@{/update/staff{id}/store(id=${staff.staffId})}" th:object="${storeDto}" method="post">
+                <div class="form-group">
+                    <label for="store-select">Assigned Store</label>
+                    <select id="store-select" class="form-control" th:field="*{id}">
+                        <option th:each="s : ${stores}"
+                                th:value="${s.storeId}"
+                                th:text="${s.address.address}"
+                                th:attr="showselected=(${s.storeId} == *{staff.store.storeId})"></option>
+
+                    </select>
+                </div>
+                <button class="btn btn-primary" type="submit">Save</button>
+            </form>
+        </div>
+
+    </div>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -11,7 +11,7 @@ public class Rental {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "rental_id")
-    private int id;
+    private Integer id;
     @ManyToOne
     @JoinColumn(referencedColumnName = "customer_id", name = "customer_id")
     private Customer customer;

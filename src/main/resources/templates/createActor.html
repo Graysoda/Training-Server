@@ -1,15 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title> Create Actor </title>
+    <link th:replace="index :: bootstrap">
 </head>
-<body>
-    <h1> Form </h1>
-    <form action="#" th:action="@{/actor/create/result/}" th:object="${actor}" method="post">
-        <p>First Name: <input type="text" th:field="*{firstName}"/></p>
-        <p>Last Name: <input type="text" th:field="*{lastName}"/></p>
-        <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+<body class="container-fluid">
+    <h1 class="text-center"> Create Actor </h1>
+    <form action="#" th:action="@{/actor/create}" th:object="${actorDto}" method="post">
+        <div class="form-row">
+            <label for="firstname">First Name</label>
+            <input class="form-control" id="firstname" type="text" th:field="*{firstName}">
+        </div>
+        <div class="form-row">
+            <label for="lastname">Last Name</label>
+            <input class="form-control" id="lastname" type="text" th:field="*{lastName}">
+        </div>
+        <ul>
+            <li th:each="err : ${#fields.errors('*')}" th:text="${err}" />
+        </ul>
+        <div class="form-row">
+            <button class="btn btn-primary" type="submit">Save</button>
+            <button class="btn" type="reset">Reset</button>
+        </div>
     </form>
 </body>
 </html>

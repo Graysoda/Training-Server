@@ -33,11 +33,11 @@ public class ActorService {
     }
 
     public List<Actor> getActorsByFirstName(String firstName) {
-        return convert(actorDao.findByFirstName(firstName));
+        return convert(actorDao.findByFirstName(firstName.toUpperCase()));
     }
 
     public List<Actor> getActorsByLastName(String lastName) {
-        return convert(actorDao.findByLastName(lastName));
+        return convert(actorDao.findByLastName(lastName.toUpperCase()));
     }
 
     public List<Film> getFilmsWithActor(int actorId) {
@@ -53,6 +53,8 @@ public class ActorService {
         } else {
             entity = actor.makeEntity();
         }
+        entity.setFirstName(entity.getFirstName().toUpperCase());
+        entity.setLastName(entity.getLastName().toUpperCase());
         return actorDao.save(entity).makeGenerated();
     }
 

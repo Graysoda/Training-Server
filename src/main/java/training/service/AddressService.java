@@ -76,4 +76,8 @@ public class AddressService {
     public List<Address> getAddressByCityId(int cityId) {
         return convert(addressDao.findByCityId(cityId));
     }
+
+    public boolean existsByAddress(String address) {
+        return addressDao.existsByAddress(address);
+    }
 }
